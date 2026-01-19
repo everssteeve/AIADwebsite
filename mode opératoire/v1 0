@@ -1,0 +1,1013 @@
+
+MODE OPÉRATOIRE EXHAUSTIF
+Claude Code + Framework AIAD
+AI-Agent Iterative Development
+
+Guide méthodologique complet pour le développement
+logiciel assisté par agents IA
+
+Version 1.0 - Janvier 2026
+ 
+Table des matières
+Table des matières	2
+PARTIE 0 : PRÉAMBULE	5
+0.1 Glossaire complet	5
+0.1.1 Termes AIAD	5
+0.1.2 Termes Claude Code	5
+0.2 Matrice RACI	7
+0.2.1 Phase d'Initialisation	7
+0.2.2 Phase de Développement	7
+0.3 Vue d'ensemble du processus	8
+0.3.1 Chronologie type	8
+0.4 Configuration des postes par rôle	9
+0.4.1 Product Engineer (rôle principal)	9
+PARTIE 1 : PHASE D'INITIALISATION	10
+1.1 Étape : Cadrage initial	10
+1.1.1 Questions fondamentales	10
+1.1.2 Template de cadrage	10
+1.2 Étape : Création du PRD	12
+1.2.1 Prompt pour créer le PRD avec un LLM	12
+1.2.2 Structure du PRD	12
+1.3 Étape : Architecture technique	13
+1.3.1 Prompt pour demander des recommandations	13
+1.3.2 Sections de ARCHITECTURE.md	13
+1.4 Étape : Configuration environnement	14
+1.4.1 Installation Warp et Claude Code	14
+1.4.2 Setup du repository	14
+1.5 Étape : Création de CLAUDE.md	16
+1.5.1 Initialisation	16
+1.5.2 Template CLAUDE.md complet	16
+1.6 Étape : Configuration des permissions	18
+1.6.1 Fichier de permissions recommandé	18
+1.7 Étape : Installation MCP et Plugins	19
+1.7.1 MCPs recommandés	19
+1.7.2 Configuration dans CLAUDE.md	19
+1.8 Étape : Configuration des SubAgents	20
+1.8.1 Création de SubAgents	20
+1.8.2 SubAgent : Code Reviewer	20
+1.8.3 SubAgent : Test Writer	20
+1.9 Checklist de fin d'initialisation	22
+PARTIE 2 : PHASE DE PLANIFICATION	23
+2.1 Rituel : Planning d'itération	23
+2.1.1 Ordre du jour	23
+2.1.2 Estimation T-shirt	23
+2.2 Décomposition en tâches	24
+2.2.1 Critères d'atomicité	24
+2.2.2 Exemple de décomposition	24
+2.3 Rédaction des SPECS	25
+2.3.1 Template SPEC	25
+2.3.2 Checklist qualité SPEC	26
+PARTIE 3 : PHASE DE DÉVELOPPEMENT	27
+3.1 Workflow quotidien	27
+3.2 Cycle d'une fonctionnalité	28
+3.2.1 Étape 1 : Lancement	28
+3.2.2 Étape 2 : Validation	28
+3.2.3 Étape 3 : Correction	28
+3.2.4 Étape 4 : Tests	29
+3.2.5 Étape 5 : Revue	29
+3.2.6 Étape 6 : Documentation	29
+3.2.7 Étape 7 : Merge	29
+3.3 Gestion des problèmes	31
+PARTIE 4 : PHASE DE VALIDATION	32
+4.1 Validation QA	32
+4.1.1 Template rapport	32
+4.2 Validation PO	33
+PARTIE 5 : PHASE DE DÉPLOIEMENT	34
+5.1 Checklist pré-déploiement	34
+5.2 Déploiement	34
+PARTIE 6 : RITUELS ET AMÉLIORATION	35
+6.1 Synchro quotidienne	35
+6.2 Rétrospective	35
+6.3 Rétrospective IA	35
+6.4 Métriques	35
+PARTIE 7 : ANNEXES	36
+7.1 Commandes Claude Code	36
+7.2 Troubleshooting	36
+7.3 Checklist quotidienne PE	36
+7.4 FAQ	37
+
+Note : Actualisez la table des matières après ouverture du document (clic droit > Mettre à jour les champs).
+ 
+PARTIE 0 : PRÉAMBULE
+Cette partie introductive fournit toutes les définitions, matrices et vues d'ensemble nécessaires pour comprendre et appliquer le mode opératoire.
+
+0.1 Glossaire complet
+0.1.1 Termes AIAD
+Terme	Définition
+AIAD	AI-Agent Iterative Development. Framework méthodologique pour le développement logiciel assisté par agents IA.
+Product Owner (PO)	Gardien de la vision produit. Responsable du PRD et de la validation d'acceptation.
+Tech Lead	Garant de la cohérence technique. Responsable du document ARCHITECTURE.
+Product Engineer (PE)	Rôle pivot. Orchestre l'agent IA pour implémenter les fonctionnalités.
+QA Engineer	Garant de la qualité. Définit la stratégie de tests.
+DevOps Engineer	Assure la fluidité du pipeline de livraison.
+PRD	Product Requirement Document. Capture la vision produit.
+ARCHITECTURE	Document de référence technique du projet.
+AGENT-GUIDE	Document de configuration de l'agent IA (CLAUDE.md).
+SPECS	Spécifications techniques détaillées pour une tâche.
+Itération	Cycle de développement court (1-2 semaines).
+User Story	Description d'une fonctionnalité du point de vue utilisateur.
+
+0.1.2 Termes Claude Code
+Terme	Définition
+Claude Code	Agent IA de codage Anthropic qui s'exécute dans le terminal.
+CLAUDE.md	Fichier de configuration contextuelle de Claude Code.
+MCP	Model Context Protocol. Permet à Claude d'accéder à des outils externes.
+SubAgent	Agent IA spécialisé invoqué pour des tâches spécifiques.
+Skill	Compétence que Claude active automatiquement selon les besoins.
+Hook	Commande shell automatique à un moment précis du workflow.
+/clear	Commande pour nettoyer le contexte (recommandé avant chaque tâche).
+/context	Commande pour afficher l'utilisation du contexte (tokens).
+/rewind	Commande pour annuler les dernières actions de Claude.
+Plan Mode	Mode de planification (Shift+Tab) pour itérer avant implémentation.
+ 
+0.2 Matrice RACI
+La matrice RACI définit qui fait quoi : R (Réalise), A (Approuve), C (Consulté), I (Informé).
+
+0.2.1 Phase d'Initialisation
+Activité	PO	TL	PE	QA	DevOps
+Cadrage initial	R/A	C	I	I	I
+Rédaction PRD	R/A	C	C	I	I
+Document ARCHITECTURE	I	R/A	C	I	C
+Setup environnement	I	C	C	I	R/A
+Création CLAUDE.md	I	C	R/A	I	I
+
+0.2.2 Phase de Développement
+Activité	PO	TL	PE	QA	DevOps
+Orchestration agent IA	I	I	R/A	I	I
+Validation code	I	C	R/A	C	I
+Génération tests	I	I	R	A/C	I
+Revue de code	I	A	R	C	I
+ 
+0.3 Vue d'ensemble du processus
+Le processus AIAD s'organise en 5 phases principales :
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   PHASE 1    │────▶│   PHASE 2    │────▶│   PHASE 3    │
+│INITIALISATION│     │ PLANIFICATION│     │DÉVELOPPEMENT │
+│  (3-7 jours) │     │  (2-4 heures)│     │(80% itération)│
+└──────────────┘     └──────────────┘     └──────┬───────┘
+                                                  │
+                     ┌──────────────┐     ┌──────▼───────┐
+                     │   PHASE 5    │◀────│   PHASE 4    │
+                     │ DÉPLOIEMENT  │     │  VALIDATION  │
+                     └──────────────┘     └──────────────┘
+
+0.3.1 Chronologie type
+Phase	Durée	Livrables clés
+Initialisation	3-7 jours	PRD, ARCHITECTURE, CLAUDE.md
+Planification	2-4 heures	Sprint backlog, SPECS
+Développement	80% du sprint	Code, tests
+Validation	Variable	Rapport QA, acceptation PO
+Déploiement	0.5-1 jour	Application en production
+ 
+0.4 Configuration des postes par rôle
+0.4.1 Product Engineer (rôle principal)
+Catégorie	Outil	Utilisation
+Terminal	Warp (obligatoire)	Exécution Claude Code
+IDE	VS Code / Cursor	Visualisation code
+Claude Code	Installation complète	Orchestration agent IA
+MCP	Context7, Playwright	Extensions Claude Code
+Git	GitHub/GitLab	Versioning
+ 
+PARTIE 1 : PHASE D'INITIALISATION
+La phase d'initialisation prépare les fondations du projet. Cette phase est critique pour le succès des sprints.
+💡 CONSEIL
+Investissez le temps nécessaire. Une initialisation bâclée se paie cher en corrections.
+
+1.1 Étape : Cadrage initial
+🎭 ACTEUR	Product Owner (avec Tech Lead)
+📥 ENTRÉES	Idée de projet, contraintes business
+📤 SORTIES	Document de cadrage validé
+⏱️ DURÉE	1-2 jours
+
+1.1.1 Questions fondamentales
+•	Quel problème résolvons-nous exactement ?
+•	Pour qui résolvons-nous ce problème (persona) ?
+•	Pourquoi maintenant ? Quelle urgence ?
+•	Quel est l'impact business attendu ?
+•	Comment saurons-nous que nous avons réussi ?
+
+1.1.2 Template de cadrage
+# DOCUMENT DE CADRAGE
+## Projet : [Nom du projet]
+ 
+### 1. CONTEXTE ET VISION
+**Problème identifié :**
+[Description du problème]
+ 
+**Vision :**
+[Vision du produit en 1-2 phrases]
+ 
+**Persona cible :**
+[Description du persona principal]
+ 
+### 2. OBJECTIFS MESURABLES
+| Objectif | Métrique | Cible |
+|----------|----------|-------|
+| [Obj 1]  | [Métrique]| [Valeur] |
+ 
+### 3. FONCTIONNALITÉS
+**MVP (Must Have) :**
+- [Fonctionnalité 1]
+- [Fonctionnalité 2]
+ 
+**Hors périmètre :**
+- [Élément exclu 1]
+ 
+### 4. CONTRAINTES
+Budget : [X €]
+Délai : [X semaines]
+Équipe : [Composition]
+ 
+1.2 Étape : Création du PRD
+🎭 ACTEUR	Product Owner
+📥 ENTRÉES	Document de cadrage validé
+📤 SORTIES	PRD.md complet
+⏱️ DURÉE	2-4 heures
+🔗 DÉPENDANCES	1.1 Cadrage validé
+
+1.2.1 Prompt pour créer le PRD avec un LLM
+Je souhaite créer un PRD pour mon projet.
+ 
+**Contexte :**
+[Coller le document de cadrage]
+ 
+**Format souhaité :**
+1. Contexte et problématique
+2. Objectifs mesurables
+3. Personas détaillés
+4. User Stories (format: En tant que... je veux... afin de...)
+5. Critères d'acceptation pour chaque story
+6. Hors périmètre
+7. Risques et mitigations
+8. Métriques de succès
+ 
+Pour chaque user story, inclure :
+- ID unique (US-001, US-002...)
+- Complexité (S, M, L)
+- Critères d'acceptation testables
+
+Je veux maintenant planifier ce que l'on a défini ensemble en MVP, V1, V2 et hors-périmètre. Propose-moi une répartition et je te ferai mon retour pour l'adapter.
+ 
+
+Consigne : discuter avec le LLM jusqu’à obtenir un résultat qui vous convient (les bons éléments et une planification cohérente).
+1.2.2 Structure du PRD
+Génère un récapitulatif structuré ainsi :
+
+Contexte décrivant Problème et Opportunité
+Objectifs décrivant Objectifs mesurables et métriques de succès	
+Personas décrivant les Profils utilisateurs détaillés
+User Stories décrivant les Fonctionnalités
+Hors périmètre décrivant Ce qui n'est PAS inclus
+Risques décrivant	Identification des risques et mitigation
+Puis, peux-tu mettre l’ensemble des éléments retenus de notre discussion au format Markdown afin d'avoir la version 1.0 du PRD ?
+
+Ainsi je pourrais le copier/coller dans un fichier PRD.md et commencer à construire l’application avec un Agent IA de Codage.
+
+
+Section	Contenu	Importance
+Contexte	Problème, opportunité	Critique
+Objectifs	Objectifs mesurables et métriques de succès	Critique
+Personas	Profils utilisateurs détaillés	Élevée
+User Stories	Fonctionnalités avec critères	Critique
+Hors périmètre	Ce qui n'est PAS inclus	Élevée
+Risques	Identification et mitigation	Moyenne
+ 
+
+1.3 Étape : Architecture technique
+🎭 ACTEUR	Tech Lead
+📥 ENTRÉES	PRD.md validé
+📤 SORTIES	ARCHITECTURE.md complet
+⏱️ DURÉE	1-2 jours
+🔗 DÉPENDANCES	1.2 PRD validé
+
+1.3.1 Prompt pour demander des recommandations
+Utiliser le "Plan Mode" (shift + tab dans la console Claude Code ou le demander explicitement à Claude Code) & déclencher un mode de reflexion avancé ("think" < "think hard" < "think harder" < "ultrathink")
+Quelle stack technique serait idéale pour mon application décrite dans @PRD.md ?
+ 
+Critères :
+- Équipe : [X] Product Engineers
+- Budget : [montant]
+- Contraintes : [web, mobile, etc.]
+ 
+Compare les options pour :
+- Frontend (framework, styling)
+- Backend (framework, langage)
+- Base de données
+- Hébergement
+ 
+Pour chaque option, indique avantages, inconvénients, et compatibilité avec les agents IA.
+ 
+Recommande un choix.
+
+Think hard.
+
+1.3.2 Sections de ARCHITECTURE.md
+Documente l'ensemble des choix techniques dans un fichier ARCHITECTURE.md qui contient les choix retenus et s'il reste certains points à éclaircir, tu peux me demander. Garde uniquement l'architecture choisie, pas besoin de garder les options écartées.
+
+Documente les sections suivantes :
+Vue d'ensemble	(Description high-level de l'architecture)
+Stack technique	(Technologies, versions, justifications)
+Structure du projet	(Organisation des dossiers et modules)
+Conventions de code	(Nommage, formatage, imports)
+Patterns utilisés	(Design patterns avec exemples)
+API et interfaces	(Contrats, formats)
+Base de données	(Schéma, relations)
+Tests	(Frameworks, organisation, couverture)
+Pensez à sortir du mode plan
+
+Section	Contenu
+Vue d'ensemble	Description high-level de l'architecture
+Stack technique	Technologies, versions, justifications
+Structure du projet	Organisation des dossiers et modules
+Conventions de code	Nommage, formatage, imports
+Patterns utilisés	Design patterns avec exemples
+API et interfaces	Contrats, formats
+Base de données	Schéma, relations
+Tests	Frameworks, organisation, couverture
+ 
+1.4 Étape : Configuration environnement
+🎭 ACTEUR	DevOps / Product Engineer
+📥 ENTRÉES	ARCHITECTURE.md validé
+📤 SORTIES	Environnement opérationnel
+⏱️ DURÉE	0.5-1 jour
+🔗 DÉPENDANCES	1.3 Architecture validée
+
+1.4.1 Installation Warp et Claude Code
+# Installation Warp (terminal recommandé)
+# macOS
+brew install --cask warp
+ 
+# Ou télécharger depuis https://www.warp.dev/
+ 
+# Installation Claude Code
+npm install -g @anthropic-ai/claude-code
+ 
+# Vérification
+claude --version
+ 
+# Première utilisation (authentification)
+Claude
+
+1.4.2 Setup du repository
+# Création du projet
+mkdir mon-projet && cd mon-projet
+git init
+ 
+# Fichier .gitignore
+cat > .gitignore << 'EOF'
+node_modules/
+.env
+.env.local
+dist/
+.DS_Store
+EOF
+ 
+# Premier commit
+git add .
+git commit -m "Initial commit"
+ 
+# Connexion GitHub
+gh repo create mon-projet --private --source=. --remote=origin
+git push -u origin main
+// TODO refaire en utilisant Claude Code 
+
+1.5 Étape : Création de CLAUDE.md
+🎭 ACTEUR	Product Engineer + Tech Lead
+📥 ENTRÉES	PRD, ARCHITECTURE, environnement prêt
+📤 SORTIES	CLAUDE.md opérationnel
+⏱️ DURÉE	2-4 heures
+🔗 DÉPENDANCES	1.4 Environnement configuré
+
+1.5.1 Initialisation
+# Se placer à la racine du projet
+cd mon-projet
+ 
+# Lancer Claude Code
+claude
+ 
+# Initialiser CLAUDE.md
+/init
+ 
+# Claude pose des questions et génère un fichier de base
+
+1.5.2 Template CLAUDE.md complet
+# CLAUDE.md - [Nom du projet]
+ 
+## 🎯 Identité du Projet
+Ce projet est **[Nom]**, [description courte].
+**Domaine métier :** [Domaine]
+**Utilisateurs :** [Personas]
+ 
+## 📚 Documentation
+- PRD : @docs/PRD.md
+- Architecture : @docs/ARCHITECTURE.md
+ 
+## 🛠️ Stack Technique
+**Frontend :** React 18 + TypeScript + TailwindCSS
+**Backend :** Node.js + Express + Prisma
+**Database :** PostgreSQL
+ 
+## ✅ RÈGLES ABSOLUES
+ 
+### TOUJOURS :
+1. TypeScript strict (jamais `any`)
+2. Composants fonctionnels (pas de classes)
+3. Validation Zod sur toutes les entrées
+4. Gestion d'erreurs avec try/catch
+5. Tests pour chaque nouvelle fonction
+ 
+### JAMAIS :
+1. Pas de `any` en TypeScript
+2. Pas de `console.log` en production
+3. Pas de secrets dans le code
+4. Pas de logique métier dans les composants UI
+5. Pas de fonctions > 50 lignes
+ 
+## 🎨 Conventions de Code
+| Type | Convention | Exemple |
+|------|------------|---------|
+| Composants | PascalCase.tsx | TaskCard.tsx |
+| Hooks | useCamelCase.ts | useAuth.ts |
+| Services | camelCase.ts | taskService.ts |
+ 
+## 📖 Vocabulaire Métier
+| Terme | Définition |
+|-------|------------|
+| [Terme 1] | [Définition] |
+ 
+1.6 Étape : Configuration des permissions
+🎭 ACTEUR	Product Engineer
+📥 ENTRÉES	Politique de sécurité
+📤 SORTIES	.claude/settings.local.json
+⏱️ DURÉE	30 minutes
+🔗 DÉPENDANCES	1.5 CLAUDE.md créé
+
+1.6.1 Fichier de permissions recommandé
+// .claude/settings.local.json
+{
+  "permissions": {
+    "allow": [
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:*)",
+      "Skill(*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)"
+    ]
+  }
+}
+ 
+1.7 Étape : Installation MCP et Plugins
+🎭 ACTEUR	Product Engineer
+📥 ENTRÉES	Besoins identifiés
+📤 SORTIES	MCPs opérationnels
+⏱️ DURÉE	1-2 heures
+🔗 DÉPENDANCES	1.6 Permissions configurées
+
+1.7.1 MCPs recommandés
+MCP	Usage	Installation dans warp
+Context7	Documentation à jour	claude mcp add context7 -- npx -y @upstash/context7-mcp
+Playwright	Contrôle navigateur	claude mcp add playwright npx @playwright/mcp@latest
+
+Dans Claude code, afficher les mcp installés
+/mcp
+
+Puis 
+Ajoute context7 et playwright dans la config du projet
+
+1.8 Étape : Configuration des SubAgents
+🎭 ACTEUR	Tech Lead + Product Engineer
+📥 ENTRÉES	Besoins en expertise
+📤 SORTIES	SubAgents dans .claude/agents/
+⏱️ DURÉE	2-4 heures
+🔗 DÉPENDANCES	1.7 MCPs installés
+
+1.8.1 Création de SubAgents
+# Dans Claude Code
+/agents
+ 
+# Les agents sont stockés dans :
+# - ~/.claude/agents/     (global)
+# - .claude/agents/       (local au projet)
+
+1.8.2 SubAgent : Code Reviewer
+# .claude/agents/code-reviewer.md
+ 
+# Code Reviewer Agent
+ 
+## Rôle
+Expert en revue de code. Analyse et feedback constructif.
+ 
+## Instructions
+Quand tu reçois du code à reviewer :
+1. Analyse structurelle (architecture, patterns)
+2. Qualité (lisibilité, DRY)
+3. Sécurité (validation, erreurs)
+4. Performance (N+1, mémoisation)
+5. Tests (couverture, cas limites)
+ 
+## Format de sortie
+### ✅ Points positifs
+### ⚠️ Suggestions
+### ❌ À corriger
+### 📊 Score /10
+
+1.8.3 SubAgent : Test Writer
+# .claude/agents/test-writer.md
+ 
+# Test Writer Agent
+ 
+## Rôle
+Expert en écriture de tests.
+ 
+## Instructions
+1. Identifier cas nominal, limites, erreurs
+2. Framework : Vitest (frontend), Jest (backend)
+3. Pattern : Arrange-Act-Assert
+4. Messages descriptifs
+ 
+## Format
+```typescript
+describe('Module', () => {
+  describe('fonction', () => {
+    it('should [comportement] when [condition]', () => {
+      // Arrange - Act - Assert
+    });
+  });
+});
+```
+ 
+// TODO Ajout : https://github.com/Fission-AI/OpenSpec/
+// TODO Ajout : frontend-design de anthropic/claude-plugins-official
+// TODO Ajout : playwright-skill de playwright-skill@playwright-skill 
+
+1.9 Initialisation d’OpenSpec
+Dans warp
+Openspec init 
+Répondre aux différentes questions pour choisir Claude Code.
+Créer le contexte projet d’Openspec 
+
+1.9 Configuration dans CLAUDE.md
+Ajoute ces informations dans mon @CLAUDE.md ne retourche pas à l'existant 
+dans le fichier.
+
+Aperçu de l'objectif du projet
+
+Aperçu de l'architecture globale
+
+Style visuel :
+- Interface claire et minimaliste
+- Pas de mode sombre pour le MVP
+
+Contraintes et Politiques :
+- NE JAMAIS exposer les clés API au client 
+
+Dépendances :
+- Préférer les composants existants plutôt que d'ajouter de nouvelles 
+bibliothèques UI
+
+À la fin de chaque développement qui implique l'interface graphique :
+- Tester avec playwright-skill, l'interface doit être responsive, fonctionnel et répondre au besoin développé
+
+Documentation :
+- Ajoute une section documentation avec les liens vers @PRD.md  & 
+@ARCHITECTURE.md 
+
+Context7 :
+Utilise toujours context7 lorsque j'ai besoin de génération de code, d'étapes de configuration ou d'installation, ou de documentation de bibliothèque/API. Cela signifie que tu dois automatiquement utiliser les outils MCP Context7 pour résoudre l'identifiant de bibliothèque et obtenir la documentation de bibliothèque sans que j'aie à le demander explicitement.
+
+Note : Toutes les spécifications doivent être rédigées en français, y compris les specs OpenSpec (sections Purpose et Scenarios). Seuls les titres de Requirements doivent rester en anglais avec les mots-clés SHALL/MUST pour la validation OpenSpec.
+
+1.10 Checklist de fin d'initialisation
+✓	Élément	Vérification
+☐	Document de cadrage	Validé par stakeholders
+☐	PRD.md	Complet avec user stories
+☐	ARCHITECTURE.md	Stack et conventions définis
+☐	CLAUDE.md	Règles et contexte documentés
+☐	Environnement	Node, Git, Claude Code installés
+☐	Permissions	.claude/settings.local.json configuré
+☐	MCPs	Context7, Playwright installés
+☐	SubAgents	code-reviewer, test-writer créés
+☐	Repository	Git initialisé, remote configuré
+☐	CI/CD	Pipeline de base en place
+⚠️ ATTENTION
+Ne démarrez pas le développement tant que tous les éléments ne sont pas validés.
+ 
+
+// TODO Ajout dans la checklist : https://github.com/Fission-AI/OpenSpec/
+// TODO Ajout dans la checklist : frontend-design de anthropic/claude-plugins-official
+// TODO Ajout dans la checklist : playwright-skill de playwright-skill@playwright-skill 
+
+1.11 Génération du readme.md
+Génère le readme.md à partir des éléments contenus dans PRD.md, ARCHITECTURE.md et CLAUDE.md
+
+
+PARTIE 2 : PHASE DE PLANIFICATION
+La planification transforme les user stories en tâches concrètes prêtes pour l'agent IA.
+2.1 Rituel : Planning d'itération
+🎭 ACTEUR	PO + PE + TL
+📥 ENTRÉES	PRD.md, Product Backlog
+📤 SORTIES	Sprint backlog, Stories sélectionnées
+⏱️ DURÉE	2-4 heures
+🔗 DÉPENDANCES	Phase 1 complète
+
+2.1.1 Ordre du jour
+Durée	Activité	Participants
+15 min	Rappel des objectifs	Tous
+30 min	Présentation des stories candidates	PO
+45 min	Clarification et questions	Tous
+30 min	Estimation (T-shirt sizing)	PE + TL
+30 min	Sélection selon capacité	Tous
+10 min	Engagement de l'équipe	Tous
+
+2.1.2 Estimation T-shirt
+Taille	Complexité	Durée
+XS	Très simple	< 2h
+S	Simple	2-4h
+M	Moyenne	4-8h (1 jour)
+L	Complexe	2-3 jours
+XL	Très complexe	À redécouper
+💡 CONSEIL
+Une story XL doit toujours être redécoupée en stories plus petites.
+ 
+2.2 Décomposition en tâches
+🎭 ACTEUR	Product Engineer
+📥 ENTRÉES	User Stories sélectionnées
+📤 SORTIES	Tâches atomiques
+⏱️ DURÉE	1-2h par story
+🔗 DÉPENDANCES	2.1 Planning terminé
+
+2.2.1 Critères d'atomicité
+•	Réalisable en moins de 4 heures
+•	Objectif unique et clair
+•	Testable indépendamment
+•	Décrite en 1-2 phrases
+
+2.2.2 Exemple de décomposition
+# User Story : US-001 - Création de tâche
+ 
+## Décomposition
+ 
+### Backend
+| ID | Tâche | Durée |
+|----|-------|-------|
+| T-001-1 | Créer schéma Prisma Task | 1h |
+| T-001-2 | Créer route POST /api/tasks | 2h |
+| T-001-3 | Créer validateur Zod | 1h |
+| T-001-4 | Tests unitaires taskService | 2h |
+ 
+### Frontend
+| ID | Tâche | Durée |
+|----|-------|-------|
+| T-001-5 | Créer composant TaskForm | 2h |
+| T-001-6 | Créer hook useCreateTask | 1h |
+| T-001-7 | Intégrer dans page Tasks | 1h |
+| T-001-8 | Tests composant TaskForm | 2h |
+ 
+2.3 Rédaction des SPECS
+🎭 ACTEUR	Product Engineer
+📥 ENTRÉES	Tâche atomique, PRD, ARCHITECTURE
+📤 SORTIES	Fichier SPEC complet
+⏱️ DURÉE	30-60 min par SPEC
+🔗 DÉPENDANCES	2.2 Tâches décomposées
+
+2.3.1 Template SPEC
+# SPEC : T-001-2 - Créer route POST /api/tasks
+ 
+## 📋 Référence
+- User Story : US-001
+- PRD : @docs/PRD.md#us-001
+ 
+## 🎯 Objectif
+Créer l'endpoint API POST /api/tasks pour créer une tâche.
+ 
+## 📁 Fichiers impactés
+### À créer
+- apps/api/src/routes/task-routes.ts
+- apps/api/src/controllers/taskController.ts
+- apps/api/src/services/taskService.ts
+ 
+### À modifier
+- apps/api/src/index.ts
+ 
+## 📐 Interface
+ 
+### Request
+```typescript
+// POST /api/v1/tasks
+interface CreateTaskRequest {
+  title: string;        // 1-200 chars
+  description?: string; // max 2000 chars
+  deadline?: string;    // ISO 8601
+}
+```
+ 
+### Response (201)
+```typescript
+interface CreateTaskResponse {
+  data: {
+    id: string;
+    title: string;
+    status: 'TODO';
+    createdAt: string;
+  }
+}
+```
+ 
+## 🔲 Cas limites
+| Cas | Comportement |
+|-----|--------------|
+| Titre vide | 400 VALIDATION_ERROR |
+| Titre > 200 chars | 400 VALIDATION_ERROR |
+ 
+## 🧪 Tests attendus
+```typescript
+describe('TaskService', () => {
+  it('should create task with minimal data');
+  it('should throw if title empty');
+});
+```
+
+2.3.2 Checklist qualité SPEC
+✓	Critère
+☐	Objectif unique et clair
+☐	Fichiers à créer/modifier listés
+☐	Interfaces TypeScript définies
+☐	Cas d'erreur documentés
+☐	Tests attendus spécifiés
+☐	Exemple entrée/sortie fourni
+ 
+PARTIE 3 : PHASE DE DÉVELOPPEMENT
+Le Product Engineer orchestre l'agent IA pour implémenter les SPECS, une fonctionnalité à la fois.
+
+3.1 Workflow quotidien
+Heure	Activité	Durée
+9h00	Synchro équipe	15 min
+9h15	Revue contexte (PRD, ARCHITECTURE)	15 min
+9h30	Préparation première SPEC	45 min
+10h30	Session Claude Code - Tâche 1	90 min
+12h00	Validation et tests	30 min
+14h00	Session Claude Code - Tâche 2	90 min
+15h30	Revue de code	30 min
+16h00	Mise à jour CLAUDE.md	15 min
+16h15	Git commit/push	15 min
+ 
+3.2 Cycle d'une fonctionnalité
+3.2.1 Étape 1 : Lancement
+# 1. TOUJOURS nettoyer le contexte
+/clear
+ 
+# 2. Vérifier l'espace disponible
+/context
+ 
+# 3. Prompt structuré
+Implémente la fonctionnalité :
+ 
+**SPEC** : @docs/specs/T-001-2-route-post-tasks.md
+**Contexte** : @CLAUDE.md
+**Architecture** : @docs/ARCHITECTURE.md
+ 
+Instructions :
+1. Lis la SPEC en entier
+2. Crée les fichiers dans l'ordre indiqué
+3. Gère tous les cas d'erreur
+4. N'ajoute PAS de fonctionnalités non spécifiées
+ 
+Montre ton plan avant de coder.
+
+3.2.2 Étape 2 : Validation
+# Checklist validation
+☐ Le code compile (npm run build)
+☐ Les fichiers sont au bon endroit
+☐ Les imports sont corrects
+☐ Le linting passe (npm run lint)
+☐ La logique correspond à la SPEC
+ 
+# Si problèmes, demander une revue
+Revois le code avec l'agent code-reviewer :
+@apps/api/src/services/taskService.ts
+
+3.2.3 Étape 3 : Correction
+# Prompt de correction
+J'ai identifié ces problèmes :
+1. [Problème 1]
+2. [Problème 2]
+ 
+Corrige en respectant la SPEC @docs/specs/T-001-2.md
+ 
+# Si trop de problèmes
+/rewind
+ 
+# Limite : 3 itérations max
+# Si toujours bloqué : revoir la SPEC ou escalader
+
+3.2.4 Étape 4 : Tests
+# Génération des tests
+Génère les tests pour @apps/api/src/services/taskService.ts
+selon les scénarios de @docs/specs/T-001-2.md
+ 
+Utilise Jest et les conventions de @CLAUDE.md
+ 
+# Exécution
+npm run test
+ 
+# Couverture
+npm run test:coverage
+# Cible : > 80% backend, > 70% frontend
+
+3.2.5 Étape 5 : Revue
+# Revue automatique
+Revue de code avec l'agent code-reviewer :
+@apps/api/src/services/taskService.ts
+@apps/api/src/__tests__/taskService.test.ts
+ 
+# Impliquer Tech Lead si :
+# - Changement d'architecture
+# - Nouvelle dépendance
+# - Code complexe (> 200 lignes)
+
+3.2.6 Étape 6 : Documentation
+# Mise à jour documentation
+Mets à jour la doc pour la nouvelle fonctionnalité :
+1. Ajoute l'endpoint dans @docs/API.md
+2. Documente les fonctions complexes avec JSDoc
+
+3.2.7 Étape 7 : Merge
+# Commandes Git
+git status
+git add .
+git commit -m "feat(api): add POST /api/tasks endpoint
+ 
+- Create task with title, description, deadline
+- Add validation and error handling
+- Add unit tests
+ 
+Closes #123"
+ 
+git push origin feature/create-task
+ 
+# Nettoyage pour la prochaine tâche
+/clear
+ 
+3.3 Gestion des problèmes
+Problème	Cause	Solution
+Code hors sujet	SPEC ambiguë	Reformuler avec exemples
+Boucle infinie	Tâche trop complexe	Découper davantage
+Erreurs TypeScript	Types manquants	Demander de typer
+Tests échouent	Mock incorrect	Vérifier les mocks
+⚠️ ATTENTION
+Si vous corrigez la même erreur plusieurs fois, ajoutez une règle dans CLAUDE.md.
+ 
+PARTIE 4 : PHASE DE VALIDATION
+La validation assure que le code répond aux exigences du PRD et aux standards de qualité.
+
+4.1 Validation QA
+🎭 ACTEUR	QA Engineer
+📥 ENTRÉES	Code mergé, critères d'acceptation
+📤 SORTIES	Rapport de validation
+⏱️ DURÉE	Variable
+🔗 DÉPENDANCES	Code mergé
+
+Type de test	Objectif	Automatisation
+Fonctionnel	Vérifier critères d'acceptation	70%
+Régression	Rien n'est cassé	100%
+Exploratoire	Trouver bugs non anticipés	0%
+
+4.1.1 Template rapport
+# Rapport de Validation - US-001
+ 
+## Résumé
+| Critère | Statut |
+|---------|--------|
+| AC-001-1 | ✅ Validé |
+| AC-001-2 | ✅ Validé |
+| AC-001-3 | ⚠️ Mineur |
+ 
+## Bugs
+| ID | Sévérité | Description |
+|----|----------|-------------|
+| BUG-042 | Mineur | [Description] |
+ 
+## Conclusion
+**VALIDÉ avec réserves**
+ 
+4.2 Validation PO
+🎭 ACTEUR	Product Owner
+📥 ENTRÉES	Validation QA OK
+📤 SORTIES	Acceptation ou refus
+⏱️ DURÉE	30 min - 1h
+🔗 DÉPENDANCES	Validation QA
+
+1.	PE prépare l'environnement de démo
+2.	PE présente la fonctionnalité
+3.	PO vérifie chaque critère d'acceptation
+4.	PO teste lui-même
+5.	PO donne son verdict
+ 
+PARTIE 5 : PHASE DE DÉPLOIEMENT
+Le déploiement livre le code validé en production de manière contrôlée.
+
+5.1 Checklist pré-déploiement
+✓	Vérification	Commande
+☐	Tests passent	npm run test
+☐	Build réussi	npm run build
+☐	Variables d'env configurées	Vérifier .env.production
+☐	Migrations prêtes	npx prisma migrate status
+☐	Rollback documenté	Procédure en place
+
+5.2 Déploiement
+# Staging
+git tag -a v1.0.0-rc1 -m "Release candidate 1"
+git push origin v1.0.0-rc1
+railway up --environment staging
+ 
+# Vérification
+curl https://staging.app.com/health
+ 
+# Production (après validation staging)
+railway up --environment production
+curl https://app.com/health
+ 
+# Rollback si problème
+railway rollback --environment production
+ 
+PARTIE 6 : RITUELS ET AMÉLIORATION
+
+6.1 Synchro quotidienne
+Élément	Détail
+Durée	15 minutes max
+Fréquence	Quotidienne (9h00)
+Questions	Qu'ai-je fait ? Que vais-je faire ? Blocages ?
+Questions IA	L'agent a-t-il eu des difficultés ? CLAUDE.md mis à jour ?
+
+6.2 Rétrospective
+Catégorie	Question
+START	Qu'est-ce qu'on devrait commencer ?
+STOP	Qu'est-ce qu'on devrait arrêter ?
+CONTINUE	Qu'est-ce qu'on devrait continuer ?
+
+6.3 Rétrospective IA
+•	Quels prompts ont bien fonctionné ?
+•	Quelles erreurs récurrentes documenter ?
+•	Le CLAUDE.md est-il à jour ?
+•	Les SubAgents sont-ils efficaces ?
+•	Comment améliorer les SPECS ?
+
+6.4 Métriques
+Métrique	Cible
+Vélocité	Stable ou croissante
+First-time success	> 70%
+Couverture tests	> 80%
+Bugs production	Tendance décroissante
+ 
+PARTIE 7 : ANNEXES
+
+7.1 Commandes Claude Code
+Commande	Description
+/clear	Nettoie le contexte (avant chaque tâche)
+/context	Affiche l'utilisation du contexte
+/rewind	Annule les dernières actions
+/model	Change de modèle (Haiku, Sonnet, Opus)
+/init	Initialise CLAUDE.md
+/agents	Gère les SubAgents
+Esc	Interrompt Claude
+Shift+Tab	Change le mode d'acceptation
+
+7.2 Troubleshooting
+Problème	Solution
+Claude ne répond pas	/clear puis réessayer
+Code hors sujet	Reformuler SPEC avec exemples
+MCP ne fonctionne pas	claude mcp list pour vérifier
+SubAgent pas trouvé	Vérifier .claude/agents/
+
+7.3 Checklist quotidienne PE
+✓	Activité
+☐	Participer à la synchro
+☐	/clear avant première tâche
+☐	Lire SPEC avant de prompter
+☐	Valider code généré
+☐	Exécuter les tests
+☐	Mettre à jour CLAUDE.md
+☐	Commit et push
+
+7.4 FAQ
+Question	Réponse
+AIAD remplace les développeurs ?	Non, il transforme leur rôle en orchestrateur.
+Faut-il tout adopter ?	Non, commencez par les artefacts, puis les rituels.
+Résultats en combien de temps ?	2-4 semaines pour les premiers gains.
+Taille d'équipe minimum ?	2-3 personnes (rôles combinables).
+
+— Fin du Mode Opératoire —
+
+Version 1.0 - Janvier 2026
