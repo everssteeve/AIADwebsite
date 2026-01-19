@@ -426,7 +426,7 @@ Claude Code pose des questions et génère un fichier `CLAUDE.md` de base. Compl
 
 Créez ou complétez le fichier `CLAUDE.md` à la racine du projet :
 
-```markdown
+````markdown
 # CLAUDE.md - [Nom du projet]
 
 ## 🎯 Identité du Projet
@@ -492,6 +492,7 @@ Ce projet est **[Nom]**, [description en 1-2 phrases].
 ## 🧩 Patterns de Développement
 
 ### Pattern : [Nom du pattern]
+
 ```typescript
 // Exemple de code illustrant le pattern
 ```
@@ -499,6 +500,7 @@ Ce projet est **[Nom]**, [description en 1-2 phrases].
 ## ⛔ Anti-Patterns
 
 ### Anti-pattern : [Nom]
+
 ```typescript
 // ❌ À éviter
 [code problématique]
@@ -512,7 +514,7 @@ Ce projet est **[Nom]**, [description en 1-2 phrases].
 *Section mise à jour au fil du projet avec les learnings de l'équipe.*
 
 - [Date] : [Learning découvert]
-```
+````
 
 ### 1.5.3 Validation de l'AGENT-GUIDE
 
@@ -650,7 +652,7 @@ Ajoute la configuration des MCPs context7 et playwright dans la config du projet
 
 Créez le fichier `.claude/agents/code-reviewer.md` :
 
-```markdown
+````markdown
 # Code Reviewer Agent
 
 ## Rôle
@@ -695,13 +697,13 @@ Quand tu reçois du code à reviewer :
 [Problèmes bloquants à résoudre avant merge]
 
 ### 📊 Score global : X/10
-```
+````
 
 ### 1.8.3 SubAgent : Test Writer
 
 Créez le fichier `.claude/agents/test-writer.md` :
 
-```markdown
+````markdown
 # Test Writer Agent
 
 ## Rôle
@@ -740,7 +742,7 @@ describe('[Module]', () => {
   })
 })
 ```
-```
+````
 
 ### 1.8.4 Validation des SubAgents
 
