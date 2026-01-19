@@ -52,6 +52,7 @@ Les annexes rassemblent les ressources détaillées pour mettre AIAD en pratique
 | **B.3 QA Engineer** | Stratégies de test par contexte, automatisation |
 | **B.4 Tech Lead** | Conduite des design reviews, dette technique |
 | **B.5 Supporters** | Quand intervenir, anti-patterns de sur-intervention |
+| **B.6 Agents Engineer** | Configuration AGENT-GUIDE, optimisation prompts, création SubAgents |
 
 **Pourquoi ces détails existent** : le framework principal définit les responsabilités, mais le quotidien demande des exemples concrets et des cas limites documentés.
 
