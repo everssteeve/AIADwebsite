@@ -1,252 +1,334 @@
 # L'Écosystème AIAD
 
-## Principe Fondamental : Responsabilités, pas Rôles
+## Pourquoi lire cette section ?
 
-Dans AIAD, il n'y a pas de "rôles" au sens traditionnel, mais des **responsabilités** qui doivent être assumées. Une personne peut porter plusieurs responsabilités. Une responsabilité peut être partagée entre plusieurs personnes. L'important est la clarté sur qui assume quoi.
+Cette section définit qui fait quoi dans une équipe AIAD. Sans cette clarté, les responsabilités se chevauchent, les décisions traînent, et l'orchestration des agents IA reste sous-optimale.
 
-## Les Responsabilités Clés
-
-### Product Manager (PM) - Responsable de la Valeur
-
-**Essence :** Maximiser la valeur long-terme en équilibrant vision, réalité marché, et capacités de l'équipe.
-
-**Le PM dans AIAD EST :**
-- Un leader produit avec vision stratégique claire
-- Un expert en découverte de problèmes et validation d'hypothèses
-- Un arbitre de trade-offs complexes
-- Un obsédé de la mesure d'impact réel
-
-**Compétences critiques (non négociables) :**
-1. **Product Strategy** : Vision inspirante et actionnable, positionnement différenciant
-2. **Discovery & Research** : Entretiens utilisateurs, analyse quali/quanti, identification du vrai problème
-3. **Product Analytics** : Définition de métriques pertinentes, analyse comportementale, décisions data-informed
-4. **Outcome-Oriented Thinking** : Focus problèmes résolus vs. fonctionnalités livrées
-5. **Trade-off Mastery** : Arbitrage court/long-terme, gestion de stakeholders contradictoires
-
-**Responsabilités concrètes :**
-- Définir et communiquer le **Product Goal** (horizon 4-12 semaines)
-- Maintenir un **Product Backlog** ordonné par valeur réelle
-- Définir les **Outcome Criteria** pour chaque fonctionnalité majeure
-- Conduire la **Discovery** (problème, solution, validation)
-- Mesurer l'**impact réel** des releases
-- Arbitrer les **trade-offs**
-- Engager et aligner les **stakeholders**
-
-**Indicateurs de succès :**
-- % de fonctionnalités atteignant leurs Outcome Criteria : >70%
-- Temps entre insight et release : <2 semaines
-- Satisfaction stakeholders : >8/10
-- ROI mesuré des fonctionnalités majeures
-
-> 📖 *Voir Annexe B.1 pour les anti-patterns à éviter et exemples détaillés*
+**Temps de lecture : 12 minutes**
 
 ---
 
-### Product Engineer (PE) - Responsable de l'Orchestration
+## Le principe fondamental
 
-**Essence :** Transformer des intentions en réalité technique de qualité en orchestrant un écosystème d'agents IA.
+**Dans AIAD, il n'y a pas de "rôles" au sens traditionnel, mais des responsabilités qui doivent être assumées.**
 
-**Le PE dans AIAD EST :**
-- Un orchestrateur d'agents IA
-- Un architecte de solutions orienté outcomes
-- Un validateur de qualité multi-dimensionnelle
-- Un contributeur actif à la discovery
+### Ce que cela signifie concrètement
 
-**Compétences critiques :**
-1. **Orchestration d'Agents IA** : Formulation d'intentions claires, structuration du contexte, itération sur prompts
-2. **Architecture & Design** : Pensée systémique, anticipation des implications techniques
-3. **Quality Thinking** : Définition de "Done", pensée cas limites, équilibre tests/pragmatisme
-4. **Product Thinking** : Compréhension contexte métier, questionnement des specs
-5. **Décomposition de Complexité** : Division en tâches atomiques, identification des risques
+| Approche traditionnelle | Approche AIAD |
+|------------------------|---------------|
+| Une personne = un rôle | Une personne = plusieurs responsabilités |
+| Rôle défini par un titre | Responsabilité définie par ce qui doit être fait |
+| Frontières rigides | Frontières fluides selon le contexte |
+| "Ce n'est pas mon job" | "Qui assume cette responsabilité ?" |
 
-**Responsabilités concrètes :**
-- Orchestrer les agents IA pour générer du code de qualité
-- Rédiger les SPECs techniques détaillées
-- Valider la qualité du code généré
-- Maintenir le contexte (AGENT-GUIDE, learnings, patterns)
-- Collaborer à la discovery (prototypes, faisabilité)
-- Gérer la dette technique (transparence et remédiation)
+### Exemple
 
-**Indicateurs de succès :**
-- First-time success rate : >70%
-- Ratio code généré / code manuel : >80/20
-- Couverture de tests : >80% backend, >70% frontend
-- Temps moyen par fonctionnalité : tendance décroissante
+Dans une équipe de 3 personnes :
+- Alice assume les responsabilités PM + Tech Lead
+- Bob assume les responsabilités PE + QA
+- Claire assume les responsabilités AE + PE
 
-> 📖 *Voir Annexe B.2 pour le workflow quotidien type et anti-patterns*
+Dans une équipe de 8 personnes, chaque responsabilité peut être portée par une personne dédiée.
+
+**L'important n'est pas qui porte quel titre, mais que chaque responsabilité soit clairement assumée.**
 
 ---
 
-### Agents Engineer (AE) - Responsable de l'Écosystème IA
+## Les cinq responsabilités clés
 
-**Essence :** Construire, optimiser et maintenir l'écosystème d'agents IA qui démultiplie les capacités de l'équipe.
+### 1. Product Manager — Responsable de la Valeur
 
-**Vision :** L'Agents Engineer ne gère pas des outils, il construit un **écosystème d'intelligence augmentée**. C'est l'investissement à plus haut ROI de l'équipe.
+**Essence** : S'assurer que l'équipe construit les bonnes choses pour les bonnes personnes.
 
-**Compétences critiques :**
-1. **IA Engineering** : LLMs (capacités/limites), prompt engineering avancé, fine-tuning contextuel
-2. **Systems Thinking** : Vision holistique, optimisation globale vs. locale
-3. **Broad Technical Knowledge** : Compréhension cross-domain (sécurité, qualité, architecture, DevOps)
-4. **Data-Driven Optimization** : Mesure performance agents, A/B testing configurations
+**Pourquoi cette responsabilité existe** : Sans quelqu'un focalisé sur la valeur, les équipes construisent des fonctionnalités techniquement parfaites que personne n'utilise.
 
-**Responsabilités concrètes :**
-- Sélectionner les agents spécialisés pertinents
-- Configurer et calibrer chaque agent
-- Définir la gouvernance (niveaux de supervision, règles de validation)
-- Former l'équipe à l'utilisation efficace
-- Monitorer les performances des agents
-- Optimiser continuellement l'écosystème
-- Expérimenter avec nouveaux agents
+**Ce que fait le PM :**
 
-**L'écosystème d'agents : approche stratifiée**
+| Action | Fréquence |
+|--------|-----------|
+| Définir le Product Goal (horizon 4-12 semaines) | Mensuel |
+| Maintenir le backlog ordonné par valeur | Continu |
+| Conduire la discovery (problème → solution → validation) | Hebdomadaire |
+| Définir les Outcome Criteria de chaque fonctionnalité | Par fonctionnalité |
+| Mesurer l'impact réel des releases | Post-release |
+| Arbitrer les trade-offs | À la demande |
+
+**Compétences non négociables :**
+
+1. **Product Strategy** : Savoir où on va et pourquoi
+2. **Discovery** : Identifier le vrai problème avant de construire
+3. **Analytics** : Mesurer ce qui compte, décider sur des données
+4. **Trade-off Mastery** : Arbitrer entre court et long terme
+
+**Comment savoir si ça fonctionne :**
+
+| Indicateur | Cible |
+|------------|-------|
+| Fonctionnalités atteignant leurs Outcome Criteria | >70% |
+| Temps entre insight utilisateur et release | <2 semaines |
+
+**Anti-pattern** : Le PM "passe-plat" qui transmet les demandes des stakeholders sans les challenger ni les prioriser.
+
+---
+
+### 2. Product Engineer — Responsable de l'Orchestration
+
+**Essence** : Transformer des intentions en réalité technique en orchestrant des agents IA.
+
+**Pourquoi cette responsabilité existe** : Les agents IA savent générer du code. Ils ne savent pas définir ce qu'il faut construire ni valider si c'est correct. Le PE fait le pont.
+
+**Ce que fait le PE :**
+
+| Action | Fréquence |
+|--------|-----------|
+| Rédiger des SPECs techniques précises | Par fonctionnalité |
+| Orchestrer les agents pour générer le code | Quotidien |
+| Valider la qualité du code généré | Post-génération |
+| Maintenir le contexte (AGENT-GUIDE, patterns) | Continu |
+| Collaborer à la discovery (prototypes, faisabilité) | À la demande |
+| Gérer la dette technique | Continu |
+
+**Compétences non négociables :**
+
+1. **Orchestration d'Agents** : Formuler des intentions claires, structurer le contexte
+2. **Architecture** : Penser système, anticiper les implications
+3. **Quality Thinking** : Définir "Done", penser aux cas limites
+4. **Product Thinking** : Comprendre le pourquoi, pas juste le comment
+
+**Comment savoir si ça fonctionne :**
+
+| Indicateur | Cible |
+|------------|-------|
+| First-time success rate (code généré correct du premier coup) | >70% |
+| Ratio code généré / code manuel | >80/20 |
+| Couverture de tests | >80% backend, >70% frontend |
+
+**Anti-pattern** : Le PE qui réécrit systématiquement le code des agents au lieu d'améliorer ses SPECs et son contexte.
+
+---
+
+### 3. Agents Engineer — Responsable de l'Écosystème IA
+
+**Essence** : Construire et optimiser l'écosystème d'agents qui démultiplie les capacités de l'équipe.
+
+**Pourquoi cette responsabilité existe** : Un agent mal configuré produit du code générique. Un écosystème bien calibré produit du code adapté au contexte. La différence ? L'investissement dans la configuration.
+
+**Ce que fait l'AE :**
+
+| Action | Fréquence |
+|--------|-----------|
+| Sélectionner les agents pertinents | Mensuel |
+| Configurer et calibrer chaque agent | Initial + itératif |
+| Définir la gouvernance (supervision, validation) | Initial |
+| Former l'équipe à l'utilisation efficace | Continu |
+| Monitorer les performances | Hebdomadaire |
+| Expérimenter avec nouveaux agents | Mensuel |
+
+**L'écosystème d'agents : approche par niveaux**
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│        Agents de Gouvernance (Tier 1)               │
+│        Niveau 1 : Gouvernance                       │
 │        Security, Compliance, Architecture           │
-│        → Droit de veto                              │
+│        → Droit de veto sur le code généré           │
 └─────────────────────────────────────────────────────┘
                        ↓
 ┌─────────────────────────────────────────────────────┐
-│        Agents de Qualité (Tier 2)                   │
-│        Quality (tests), Code Review, Performance    │
-│        → Avertissements                             │
+│        Niveau 2 : Qualité                           │
+│        Tests, Code Review, Performance              │
+│        → Avertissements et recommandations          │
 └─────────────────────────────────────────────────────┘
                        ↓
 ┌─────────────────────────────────────────────────────┐
-│        Agents de Productivité (Tier 3)              │
+│        Niveau 3 : Productivité                      │
 │        Documentation, Refactoring, Migration        │
-│        → Suggestions                                │
+│        → Suggestions d'amélioration                 │
 └─────────────────────────────────────────────────────┘
                        ↓
 ┌─────────────────────────────────────────────────────┐
-│        Agent Principal de Développement (Core)      │
+│        Agent Principal                              │
 │        Claude Code / Cursor / Copilot               │
+│        → Génération de code                         │
 └─────────────────────────────────────────────────────┘
 ```
 
-**Principe de sélection d'agents :**
-1. Commencer minimal : Agent principal + Agent Security + Agent Quality
-2. Ajouter par douleur : Quand un problème récurrent émerge
-3. Retirer par obsolescence : Si un agent n'est plus utilisé
-4. Optimiser par mesure : Suivre usage et efficacité
+**Principe de sélection :**
 
-**Indicateurs de succès :**
-- Taux d'adoption des agents : >90%
-- Taux de faux positifs : <20%
-- Temps résolution problèmes agents : <2h
-- Satisfaction PE sur écosystème : >8/10
+1. **Commencer minimal** : Agent principal + Security + Quality
+2. **Ajouter par douleur** : Un problème récurrent ? Chercher un agent
+3. **Retirer par obsolescence** : Agent non utilisé depuis 1 mois ? Supprimer
+4. **Optimiser par mesure** : Suivre l'usage et l'efficacité réelle
 
-> 📖 *Voir Annexe F pour le catalogue complet des agents spécialisés*
+**Comment savoir si ça fonctionne :**
 
----
+| Indicateur | Cible |
+|------------|-------|
+| Taux d'adoption des agents par l'équipe | >90% |
+| Taux de faux positifs des agents | <20% |
+| Satisfaction PE sur l'écosystème | >8/10 |
 
-### QA Engineer - Responsable de la Qualité Multi-Dimensionnelle
-
-**Essence :** Garantir que la qualité est built-in, pas bolt-on.
-
-Le QA dans AIAD n'est pas un "testeur" qui vérifie à la fin. C'est un **architecte de qualité** qui définit les standards, co-crée les stratégies de test avec les agents, et valide la qualité multi-dimensionnelle.
-
-**Compétences critiques :**
-1. **Test Strategy Design** : Stratégie adaptée à chaque type de fonctionnalité
-2. **Quality Thinking** : Penser au-delà des happy paths, identifier cas limites
-3. **Collaboration avec Agents** : Calibrer Agent Quality, valider pertinence des tests générés
-4. **User Empathy** : Tester l'utilisabilité, pas juste la fonctionnalité
-
-**Responsabilités concrètes :**
-- Définir la stratégie de tests globale
-- Contribuer au Definition of Output Done
-- Valider la pertinence des tests générés par les agents
-- Conduire les tests exploratoires
-- Identifier et documenter bugs et régressions
-- Mesurer et communiquer la qualité réelle
-
-**Les 4 niveaux de validation :**
-
-| Niveau | Responsable | Type | Automatisation | Quand |
-|--------|-------------|------|----------------|-------|
-| Unitaire | Agents IA + PE | Tests unitaires | 100% | Post-génération |
-| Intégration | PE + Agent Quality | Tests d'intégration | 90% | Pré-commit |
-| Fonctionnel | QA + Agent Quality | Tests de scénarios | 70% | Pré-merge |
-| Exploratoire | QA | Tests manuels ciblés | 0% | Pré-release |
-
-**Indicateurs de succès :**
-- Couverture de tests : >80% backend, >70% frontend
-- Bugs en production : tendance décroissante (-20% /trimestre)
-- Temps détection bug : <24h
-- Taux de régression : <5%
-
-> 📖 *Voir Annexe B.3 pour les stratégies de test détaillées*
+**Anti-pattern** : L'AE qui accumule des agents "au cas où" sans mesurer leur utilité réelle.
 
 ---
 
-### Tech Lead - Responsable de la Cohérence Technique
+### 4. QA Engineer — Responsable de la Qualité
 
-**Essence :** Garantir que les décisions techniques s'alignent avec la vision long-terme et créent une base solide pour l'évolution du produit.
+**Essence** : Garantir que la qualité est intégrée dès le départ, pas vérifiée à la fin.
 
-Le Tech Lead n'est pas un "super développeur". C'est un **architecte de systèmes évolutifs** et un **coach technique**.
+**Pourquoi cette responsabilité existe** : Les agents génèrent des tests, mais ils ne savent pas penser comme un utilisateur frustré ni anticiper les cas limites métier.
 
-**Compétences critiques :**
-1. **Systems Architecture** : Vision holistique, anticipation des évolutions futures
-2. **Technical Leadership** : Coaching, mentorat, facilitation de décisions complexes
-3. **Strategic Technical Thinking** : Alignement technique et stratégie produit, gestion dette technique
+**Ce que fait le QA :**
 
-**Responsabilités concrètes :**
-- Définir et maintenir le document ARCHITECTURE
-- Valider les décisions architecturales majeures
-- Conduire les revues techniques (design reviews)
-- Établir les standards de qualité et conventions
-- Gérer la dette technique (visibilité et priorisation)
-- Collaborer avec l'Agents Engineer pour calibrer Agent Architecture
-- Coacher les PE sur sujets techniques complexes
+| Action | Fréquence |
+|--------|-----------|
+| Définir la stratégie de tests globale | Initial + revue trimestrielle |
+| Contribuer au Definition of Done | Par fonctionnalité |
+| Valider la pertinence des tests générés | Post-génération |
+| Conduire les tests exploratoires | Pré-release |
+| Mesurer et communiquer la qualité | Hebdomadaire |
 
-**Le rôle dans les décisions techniques :**
+**Les quatre niveaux de validation :**
 
-```
-Décisions Stratégiques (Architecture globale, choix stack)
-→ Tech Lead DÉCIDE avec input équipe
+| Niveau | Qui | Automatisation |
+|--------|-----|----------------|
+| Unitaire | Agents IA + PE | 100% |
+| Intégration | PE + Agent Quality | 90% |
+| Fonctionnel | QA + Agent Quality | 70% |
+| Exploratoire | QA (humain) | 0% |
 
-Décisions Tactiques (Patterns, libraries, approches)
-→ Tech Lead GUIDE, équipe décide
+**Pourquoi le niveau exploratoire reste 100% humain** : Un agent suit des scénarios. Un humain trouve ce qui ne va pas en dehors des scénarios prévus.
 
-Décisions Opérationnelles (Implémentation spécifique)
-→ PE DÉCIDE avec autonomie
-```
+**Comment savoir si ça fonctionne :**
 
-**Indicateurs de succès :**
-- Dette technique : tendance décroissante ou stable
-- Satisfaction PE sur guidelines : >8/10
-- Temps design review : <2h
-- Décisions architecturales revisitées : <10% /an
+| Indicateur | Cible |
+|------------|-------|
+| Bugs en production | Tendance décroissante |
+| Temps de détection d'un bug | <24h |
+| Taux de régression | <5% |
 
-> 📖 *Voir Annexe B.4 pour les anti-patterns et exemples de design reviews*
+**Anti-pattern** : Le QA qui teste uniquement à la fin du cycle au lieu de contribuer à la définition de "Done" dès le départ.
 
 ---
 
-## Stakeholders et Supporters
+### 5. Tech Lead — Responsable de la Cohérence Technique
 
-### Stakeholders - Porteurs d'Intérêts
+**Essence** : Garantir que les décisions techniques d'aujourd'hui ne bloquent pas les évolutions de demain.
 
-**Définition :** Toute entité intéressée par, affectée par, ou impactant le produit.
+**Pourquoi cette responsabilité existe** : Sans vision technique long-terme, chaque fonctionnalité est optimisée localement mais le système global devient incohérent.
 
-**Types de stakeholders :**
-1. **Primaires** : Utilisateurs finaux, Clients, Décideurs, Équipe produit
-2. **Secondaires** : Sponsors financiers, Gouvernance, Partenaires, Concurrents
-3. **Tertiaires** : Législateurs, Communauté, Écosystème
+**Ce que fait le Tech Lead :**
 
-**Principes de gestion :**
-- **Priorisation claire** : Tous les stakeholders ne sont pas égaux
-- **Engagement intentionnel** : Interactions régulières avec prioritaires
-- **Feedback systématique** : Boucles courtes de validation
-- **Transparence** : Communication claire sur décisions et trade-offs
+| Action | Fréquence |
+|--------|-----------|
+| Définir et maintenir le document ARCHITECTURE | Initial + évolutif |
+| Valider les décisions architecturales majeures | À la demande |
+| Conduire les design reviews | Par fonctionnalité majeure |
+| Établir les standards de qualité | Initial |
+| Gérer la dette technique (visibilité + priorisation) | Continu |
+| Coacher les PE sur sujets complexes | À la demande |
 
-### Supporters - Facilitateurs de Succès
+**Le rôle dans les décisions :**
 
-**Définition :** Stakeholders qui facilitent activement le succès de l'équipe en créant les conditions optimales.
+| Type de décision | Rôle du Tech Lead |
+|------------------|-------------------|
+| **Stratégique** (architecture globale, choix stack) | Décide avec input équipe |
+| **Tactique** (patterns, libraries) | Guide, l'équipe décide |
+| **Opérationnelle** (implémentation spécifique) | N'intervient pas |
 
-**Responsabilités critiques :**
-1. **Créer le Climate** : Environnement psychologiquement sûr, culture d'expérimentation
-2. **Lever les Obstacles** : Résoudre problèmes organisationnels que l'équipe ne peut pas résoudre
-3. **Faciliter l'Accès** : Aux ressources, stakeholders, informations
+**Comment savoir si ça fonctionne :**
 
-> 📖 *Voir Annexe B.5 pour les rôles typiques de Supporters et anti-patterns*
+| Indicateur | Cible |
+|------------|-------|
+| Dette technique | Tendance stable ou décroissante |
+| Décisions architecturales revisitées | <10% par an |
+| Temps de design review | <2h |
+
+**Anti-pattern** : Le Tech Lead "super développeur" qui code plus qu'il ne guide, créant un goulot d'étranglement.
+
+---
+
+## Les Supporters : facilitateurs de succès
+
+### Définition
+
+Les Supporters sont des stakeholders qui créent les conditions de succès de l'équipe sans faire partie du quotidien.
+
+### Ce qu'ils font
+
+| Action | Impact |
+|--------|--------|
+| Créer un environnement psychologiquement sûr | L'équipe ose expérimenter et échouer |
+| Lever les obstacles organisationnels | L'équipe n'est pas bloquée par la bureaucratie |
+| Faciliter l'accès aux ressources | L'équipe a ce dont elle a besoin |
+
+### Ce qu'ils ne font pas
+
+- Définir le backlog (c'est le PM)
+- Valider les décisions techniques (c'est le Tech Lead)
+- Participer aux synchronisations quotidiennes
+
+---
+
+## Combiner les responsabilités
+
+### Équipe de 2-3 personnes
+
+| Personne | Responsabilités |
+|----------|-----------------|
+| A | PM + Tech Lead |
+| B | PE + QA + AE |
+
+### Équipe de 4-6 personnes
+
+| Personne | Responsabilités |
+|----------|-----------------|
+| A | PM |
+| B | PE + Tech Lead |
+| C | PE + AE |
+| D | QA |
+
+### Équipe de 7+ personnes
+
+Chaque responsabilité peut être portée par une personne dédiée.
+
+### Règle d'or
+
+**Quelle que soit la taille de l'équipe, chaque responsabilité doit avoir un porteur clairement identifié.**
+
+---
+
+## Erreurs fréquentes
+
+### "On n'a pas besoin d'Agents Engineer, chacun gère ses agents"
+
+**Le problème** : Chaque PE configure différemment, l'écosystème devient incohérent, les bonnes pratiques ne se partagent pas.
+
+**La réalité** : Même à temps partiel, quelqu'un doit avoir la vision globale de l'écosystème IA.
+
+### "Le Tech Lead décide de tout ce qui est technique"
+
+**Le problème** : Goulot d'étranglement, PE déresponsabilisés, frustration générale.
+
+**La réalité** : Le Tech Lead guide les décisions stratégiques. Les décisions opérationnelles appartiennent aux PE.
+
+### "Le PM n'a pas besoin de comprendre la technique"
+
+**Le problème** : Trade-offs mal arbitrés, fonctionnalités impossibles promisées, dette technique ignorée.
+
+**La réalité** : Le PM n'a pas besoin de coder, mais il doit comprendre les implications techniques de ses décisions.
+
+---
+
+## En résumé
+
+| Responsabilité | Question centrale | Focus |
+|----------------|-------------------|-------|
+| **PM** | Construit-on la bonne chose ? | Valeur |
+| **PE** | L'agent produit-il le bon résultat ? | Orchestration |
+| **AE** | L'écosystème est-il optimal ? | Configuration |
+| **QA** | Le résultat est-il fiable ? | Qualité |
+| **Tech Lead** | Le système reste-t-il cohérent ? | Architecture |
+
+---
+
+*Prochaine section : [Les Artefacts](04-artefacts.md)*
