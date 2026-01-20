@@ -1,116 +1,126 @@
-# B.4 Détails Tech Lead
+# B.4 Tech Lead
 
 ## Pourquoi cette annexe ?
 
-Cette annexe détaille les responsabilités du Tech Lead dans AIAD, avec un focus sur la conduite des design reviews, la gestion de la dette technique et la gouvernance architecturale dans un contexte de génération de code par IA.
+Le Tech Lead dans AIAD est le garant de la cohérence technique et de la qualité architecturale du code généré par les agents IA. Cette annexe détaille comment conduire des design reviews, gérer la dette technique, et maintenir des standards sans devenir un bottleneck.
 
 ---
 
-## Rôle Spécifique en Contexte AIAD
+## Le Rôle Tech Lead en Contexte AIAD
 
-### Différences avec le Tech Lead Traditionnel
+### Ce Qui Change
 
 | Tech Lead Traditionnel | Tech Lead AIAD |
 |------------------------|----------------|
-| Revue de code humain | Revue de patterns et cohérence |
-| Mentoring technique individuel | Configuration des agents et AGENT-GUIDE |
-| Code critique lui-même | Valide et guide les outputs IA |
-| Décisions au fil de l'eau | Décisions architecturales documentées (ADRs) |
+| Review du code humain ligne par ligne | Review des patterns et de la cohérence globale |
+| Mentoring technique individuel | Configuration AGENT-GUIDE et standards |
+| Écrit le code critique | Valide et guide les outputs IA |
+| Décisions au fil de l'eau | Décisions documentées (ADRs) |
+| Focus sur le "comment" | Focus sur le "pourquoi" et les contraintes |
 
 ### Responsabilités Clés
 
 1. **Architecture** : Définir et maintenir l'architecture système
-2. **Standards** : Établir et faire respecter les conventions
+2. **Standards** : Établir et faire respecter les conventions via l'AGENT-GUIDE
 3. **Dette Technique** : Identifier, prioriser et planifier le remboursement
-4. **Qualité** : Garantir la cohérence du code généré
-5. **Enablement** : Configurer l'environnement pour une génération optimale
+4. **Review** : Valider la cohérence du code généré (pas ligne par ligne)
+5. **Enablement** : Créer les conditions pour une génération de code optimale
 
 ---
 
-## Conduite des Design Reviews
+## Design Reviews
 
-### Quand Organiser une Design Review ?
+### Quand Organiser une Design Review
 
-| Situation | Review Nécessaire ? |
-|-----------|---------------------|
-| Nouvelle feature simple | Non |
-| Nouvelle feature avec impact architectural | Oui |
-| Changement de modèle de données | Oui |
-| Ajout de nouvelle dépendance majeure | Oui |
-| Refactoring d'un module core | Oui |
-| Bug fix | Non |
+| Situation | Review ? | Justification |
+|-----------|----------|---------------|
+| Nouvelle feature simple | Non | Les patterns existants suffisent |
+| Feature avec impact architectural | **Oui** | Nouvelle structure ou dépendance |
+| Changement de modèle de données | **Oui** | Impact sur plusieurs composants |
+| Nouvelle dépendance majeure | **Oui** | Engagement long terme |
+| Refactoring d'un module core | **Oui** | Risque de régression |
+| Bug fix standard | Non | Correction locale |
+| Optimisation de performance | **Oui** si structurelle | Peut modifier l'architecture |
 
 ### Structure d'une Design Review
 
 ```markdown
 ## Design Review - [Sujet]
 
-**Date** : [YYYY-MM-DD]
+**Date** : YYYY-MM-DD
 **Durée** : 30-60 min
 **Participants** : Tech Lead + PE concerné + [autres si pertinent]
 
 ### Contexte
-[Pourquoi cette review ? Quel est le besoin ?]
+[Pourquoi cette review ? Quel problème résoudre ?]
 
 ### Proposition
-[Description de l'approche proposée]
+[Description de l'approche proposée par le PE]
 
 ### Alternatives Considérées
 | Option | Avantages | Inconvénients |
 |--------|-----------|---------------|
-| A | [...] | [...] |
+| A (proposée) | [...] | [...] |
 | B | [...] | [...] |
+| C (ne rien faire) | [...] | [...] |
 
 ### Points de Discussion
-- [ ] [Question 1]
-- [ ] [Question 2]
+- [ ] [Question technique 1]
+- [ ] [Question technique 2]
+- [ ] [Impact sur l'existant]
 
 ### Décision
-[À remplir pendant la review]
+[Rempli pendant la review]
 
 ### Actions
-- [ ] [Action 1] - Responsable : [Nom]
-- [ ] [Action 2] - Responsable : [Nom]
+- [ ] [Action 1] - Responsable : [Nom] - Deadline : [Date]
+- [ ] [Action 2] - Responsable : [Nom] - Deadline : [Date]
+
+### Suivi
+ADR créé : ADR-XXX (si applicable)
 ```
 
-### Template ADR (Architecture Decision Record)
+### ADR (Architecture Decision Record)
+
+Chaque décision architecturale significative doit être documentée.
 
 ```markdown
-# ADR-[XXX] : [Titre]
+# ADR-XXX : [Titre]
 
 ## Statut
-[Proposé | Accepté | Déprécié | Remplacé par ADR-XXX]
+[Proposé | Accepté | Déprécié | Remplacé par ADR-YYY]
 
 ## Date
-[YYYY-MM-DD]
+YYYY-MM-DD
 
 ## Contexte
-[Quelle situation nécessite une décision ?
-Quelles sont les forces en jeu ?]
+[Quelle situation nécessite une décision ?]
+[Quelles sont les contraintes et forces en jeu ?]
 
 ## Décision
-[Quelle est la décision prise ?
-Formuler de manière active : "Nous allons..."]
+[Quelle est la décision prise ?]
+Formuler de manière active : "Nous allons..."
 
 ## Conséquences
 
 ### Positives
-- [Conséquence positive 1]
-- [Conséquence positive 2]
+- [Bénéfice 1]
+- [Bénéfice 2]
 
 ### Négatives
-- [Conséquence négative 1]
-- [Trade-off accepté]
+- [Coût ou trade-off 1]
+- [Coût ou trade-off 2]
 
 ### Neutres
 - [Changement qui n'est ni positif ni négatif]
 
 ## Alternatives Rejetées
+
 ### [Alternative A]
-[Pourquoi elle n'a pas été retenue]
+[Description et pourquoi rejetée]
 
 ### [Alternative B]
-[Pourquoi elle n'a pas été retenue]
+[Description et pourquoi rejetée]
 ```
 
 ### Exemple d'ADR
@@ -126,104 +136,112 @@ Accepté
 
 ## Contexte
 Nous devons choisir un ORM pour notre backend Node.js/TypeScript.
-Critères :
+
+Contraintes :
 - Type-safety forte (les agents IA génèrent du code plus fiable avec de bons types)
-- Performance (pas d'overhead significatif)
-- Familiarité équipe (courbe d'apprentissage)
+- Performance (pas d'overhead significatif sur les requêtes)
+- Simplicité (proche du SQL natif)
 
 ## Décision
-Nous allons utiliser Drizzle ORM.
+Nous allons utiliser Drizzle ORM pour toutes les interactions base de données.
 
 ## Conséquences
 
 ### Positives
-- Type-safety complète avec inférence
-- Proche du SQL natif (pas de magie)
-- Léger et performant
-- Migrations générées automatiquement
+- Type-safety complète avec inférence depuis le schéma
+- Syntaxe proche du SQL (facile à comprendre et débugger)
+- Léger et performant (pas de client lourd)
+- Migrations générées automatiquement depuis le schéma
 
 ### Négatives
-- Moins mature que Prisma (moins de docs/exemples)
+- Moins mature que Prisma (communauté plus petite)
 - Équipe doit apprendre une nouvelle syntaxe
 
 ### Neutres
-- Changement dans notre workflow de migrations
+- Changement dans le workflow de migrations (drizzle-kit vs prisma migrate)
 
 ## Alternatives Rejetées
 
 ### Prisma
-Type-safety excellente mais:
-- Client généré lourd
-- Syntaxe éloignée du SQL
-- Performance moindre sur requêtes complexes
+Type-safety excellente mais :
+- Client généré volumineux (~1MB)
+- Syntaxe propriétaire éloignée du SQL
+- Performance moindre sur requêtes complexes (N+1 par défaut)
 
 ### TypeORM
-Plus mature mais:
-- Types moins stricts
-- Patterns decorators vieillissants
-- Bugs connus non résolus
-
-### Raw SQL + Kysely
-Plus de contrôle mais:
-- Pas de gestion de migrations intégrée
-- Plus de code boilerplate
+Plus mature mais :
+- Types moins stricts (usage de any fréquent)
+- Patterns decorators obsolètes
+- Bugs connus non résolus depuis des années
 ```
 
 ---
 
 ## Gestion de la Dette Technique
 
+### Types de Dette
+
+| Type | Définition | Exemple |
+|------|------------|---------|
+| **Délibérée** | Compromis accepté pour livrer | "On hardcode maintenant, on paramètre si besoin" |
+| **Accidentelle** | Introduite sans le savoir | Incohérences entre features générées par IA |
+| **Entropie** | Dégradation naturelle | Dépendances obsolètes, tests flaky |
+
 ### Identification de la Dette
 
 ```markdown
-## Sources de Dette Technique
+## Sources de Dette à Surveiller
 
-### 1. Dette Délibérée
-Compromis acceptés pour livrer plus vite
-- "On fait simple maintenant, on refactorera si ça scale"
-- Documentée dans les ADRs
-
-### 2. Dette Accidentelle (à surveiller avec code IA)
+### Code Généré par IA
 - Incohérences de patterns entre features
 - Code dupliqué non détecté
 - Over-engineering local
+- Types trop permissifs (any)
 
-### 3. Dette d'Entropie
-- Dépendances obsolètes
-- Tests flaky non fixés
+### Infrastructure
+- Dépendances avec vulnérabilités
+- Scripts de build fragiles
+- Configuration non versionnée
+
+### Process
+- Tests flaky non adressés
 - Documentation périmée
+- AGENT-GUIDE obsolète
 ```
 
 ### Matrice de Priorisation
 
 | Impact \ Effort | Faible | Moyen | Élevé |
 |-----------------|--------|-------|-------|
-| **Élevé** | 🔴 Urgent | 🟠 Planifier | 🟡 Évaluer |
+| **Élevé** | 🔴 Urgent | 🟠 Planifier | 🟡 Évaluer ROI |
 | **Moyen** | 🟠 Planifier | 🟡 Évaluer | 🔵 Backlog |
-| **Faible** | 🟡 Évaluer | 🔵 Backlog | ⚪ Ignorer |
+| **Faible** | 🟡 Opportuniste | 🔵 Backlog | ⚪ Ignorer |
 
 ### Template de Ticket Dette
 
 ```markdown
-## DEBT-[XXX] : [Titre]
+## DEBT-XXX : [Titre]
 
 ### Type
 [ ] Délibérée (compromis documenté)
 [ ] Accidentelle (découverte)
-[ ] Entropie (dégradation naturelle)
+[ ] Entropie (dégradation)
+
+### Localisation
+[Fichiers, modules, ou zones concernés]
 
 ### Description
-[Quelle est la dette ? Où se trouve-t-elle ?]
+[Quelle est la dette ? Comment s'est-elle formée ?]
 
-### Impact
-[Qu'est-ce que cette dette cause comme problèmes ?]
-- [ ] Performance
-- [ ] Maintenabilité
-- [ ] Sécurité
-- [ ] Expérience développeur
+### Impact Actuel
+- [ ] Performance (ralentissement, timeouts)
+- [ ] Maintenabilité (temps de modification élevé)
+- [ ] Sécurité (vulnérabilité potentielle)
+- [ ] DX (expérience développeur dégradée)
+- [ ] Fiabilité (bugs fréquents dans cette zone)
 
 ### Risque si Non Traité
-[Que se passe-t-il si on ne fait rien ?]
+[Que se passe-t-il dans 3 mois ? 6 mois ?]
 
 ### Solution Proposée
 [Comment rembourser cette dette ?]
@@ -236,129 +254,138 @@ Compromis acceptés pour livrer plus vite
 [ ] XL (> 1 semaine)
 
 ### Priorité
-[ ] 🔴 Urgent
-[ ] 🟠 Planifier dans le mois
-[ ] 🟡 À évaluer
-[ ] 🔵 Backlog
+[ ] 🔴 Urgent (traiter ce cycle)
+[ ] 🟠 Planifier (dans le mois)
+[ ] 🟡 Évaluer (besoin de plus d'info)
+[ ] 🔵 Backlog (quand on aura le temps)
 ```
 
-### Allocation du Temps
+### Règle des 20%
 
 ```markdown
-## Règle des 20%
+## Allocation du Temps pour la Dette
 
-Chaque cycle, allouer ~20% du temps au remboursement de dette :
-- 1 jour sur 5
-- 1 feature sur 5
-- Ou intégré dans chaque feature (boy scout rule)
+### Principe
+Allouer ~20% du temps de chaque cycle au remboursement de dette.
 
-## Quand Augmenter ?
-- Après une période de crunch
+### Options d'Application
+- 1 jour sur 5 dédié à la dette
+- 1 feature sur 5 est du remboursement
+- Intégré dans chaque feature (boy scout rule)
+
+### Quand Augmenter (> 20%)
+- Après une période de crunch/deadline
 - Avant une phase de scaling
 - Quand la vélocité baisse significativement
+- Avant onboarding de nouveaux membres
 
-## Quand Réduire ?
-- Deadline critique imminente
+### Quand Réduire (< 20%)
+- Deadline critique proche
 - Code greenfield sans legacy
+- Déjà très peu de dette
 ```
 
 ---
 
 ## Configuration de l'Environnement IA
 
-### AGENT-GUIDE : Responsabilité du Tech Lead
+### Responsabilité : AGENT-GUIDE
 
-Le Tech Lead est responsable de :
-1. **Créer** l'AGENT-GUIDE initial
-2. **Maintenir** à jour avec l'évolution du projet
-3. **Valider** que les agents produisent du code conforme
-
-### Checklist de Configuration
+Le Tech Lead est responsable de créer et maintenir l'AGENT-GUIDE.
 
 ```markdown
-## Configuration Environnement IA
+## Checklist AGENT-GUIDE
 
-### AGENT-GUIDE
-- [ ] Stack technique documentée
-- [ ] Commandes principales listées
-- [ ] Structure de projet expliquée
-- [ ] Conventions de nommage définies
-- [ ] Patterns à suivre avec exemples
-- [ ] Anti-patterns à éviter listés
-- [ ] Instructions spécifiques pour les agents
+### Structure Projet
+- [ ] Arborescence documentée avec rôle de chaque dossier
+- [ ] Points d'entrée identifiés (main, routes, etc.)
+- [ ] Modules et leurs responsabilités
 
-### Tooling
-- [ ] Linting configuré et strict
-- [ ] TypeScript en mode strict
-- [ ] Pre-commit hooks (lint, format, tests)
-- [ ] CI/CD avec checks bloquants
+### Conventions de Code
+- [ ] Nommage (fichiers, variables, fonctions, classes)
+- [ ] Style (formatage, imports, exports)
+- [ ] Patterns (hooks, services, composants, API)
+- [ ] Gestion d'erreurs
 
-### Templates
-- [ ] Template de composant
-- [ ] Template de test
-- [ ] Template de migration
-- [ ] Exemples de code "gold standard"
+### Exemples de Référence
+- [ ] Composant "gold standard" → src/components/examples/
+- [ ] Hook "gold standard" → src/hooks/examples/
+- [ ] Endpoint API "gold standard" → src/api/examples/
+- [ ] Test "gold standard" → tests/examples/
+
+### Contraintes
+- [ ] Dépendances à utiliser (et alternatives interdites)
+- [ ] Patterns interdits (avec justification)
+- [ ] Règles de sécurité spécifiques
 ```
 
-### Patterns de Code "Gold Standard"
-
-Maintenir des exemples de référence pour les agents :
+### Tooling de Qualité
 
 ```markdown
-## Exemples de Référence
+## Configuration Qualité
 
-### Composant React Type
-→ src/components/examples/ExampleCard.tsx
+### Linting (Obligatoire)
+- ESLint avec règles strictes
+- Règles spécifiques au projet dans .eslintrc
+- CI échoue si lint errors
 
-### Hook Custom Type
-→ src/hooks/examples/useExampleData.ts
+### TypeScript (Obligatoire)
+- strict: true
+- noImplicitAny: true
+- strictNullChecks: true
 
-### Endpoint API Type
-→ src/api/routes/examples/example.route.ts
+### Pre-commit Hooks
+- lint-staged pour lint + format
+- Tests unitaires sur fichiers modifiés
+- Type-check incrémental
 
-### Test Unitaire Type
-→ tests/examples/example.test.ts
+### CI Checks (Bloquants)
+- Lint
+- Type-check
+- Tests unitaires
+- Tests d'intégration
+- Couverture minimum
 ```
 
 ---
 
 ## Review de Code Généré par IA
 
-### Focus de la Review
+### Ce Qu'il Faut Vérifier
 
-| À Vérifier | Priorité |
-|------------|----------|
-| Cohérence avec l'architecture | 🔴 Haute |
-| Respect des patterns du projet | 🔴 Haute |
-| Sécurité (inputs, secrets, permissions) | 🔴 Haute |
-| Performance (N+1, re-renders) | 🟠 Moyenne |
-| Lisibilité et maintenabilité | 🟠 Moyenne |
-| Tests suffisants | 🟠 Moyenne |
-| Documentation si API publique | 🟡 Basse |
+| Aspect | Priorité | Focus |
+|--------|----------|-------|
+| Cohérence architecturale | 🔴 Haute | Le code suit-il l'architecture définie ? |
+| Respect des patterns | 🔴 Haute | Les patterns du projet sont-ils utilisés ? |
+| Sécurité | 🔴 Haute | Inputs validés, pas de secrets, permissions ? |
+| Performance | 🟠 Moyenne | N+1, re-renders inutiles, calculs coûteux ? |
+| Lisibilité | 🟠 Moyenne | Code compréhensible sans contexte ? |
+| Tests | 🟠 Moyenne | Couverture suffisante et tests significatifs ? |
 
-### Checklist de Review Tech Lead
+### Checklist de Review
 
 ```markdown
-## Review Architecturale - PR #[XXX]
+## Review Tech Lead - PR #XXX
 
-### Cohérence
-- [ ] Pattern utilisé conforme à l'architecture
+### Architecture
+- [ ] Code dans le bon module/dossier
 - [ ] Pas de nouvelle dépendance non validée
 - [ ] Pas de duplication de logique existante
-- [ ] Nomenclature conforme
+- [ ] Pattern conforme à l'architecture
 
 ### Qualité
 - [ ] Code compréhensible sans contexte supplémentaire
 - [ ] Pas de over-engineering
 - [ ] Gestion d'erreurs appropriée
-- [ ] Logging suffisant pour debug
+- [ ] Logging suffisant pour debug (si applicable)
 
 ### Sécurité
 - [ ] Pas de secrets en dur
-- [ ] Inputs validés
+- [ ] Inputs validés côté serveur
 - [ ] Permissions vérifiées
+- [ ] Pas de vulnérabilité évidente (injection, XSS)
 
-### Performance
+### Performance (si applicable)
 - [ ] Pas de requête N+1
 - [ ] Pas de calcul coûteux dans le chemin critique
 - [ ] Indexes DB si nouvelle requête
@@ -366,63 +393,137 @@ Maintenir des exemples de référence pour les agents :
 ### Verdict
 [ ] ✅ Approuvé
 [ ] ⚠️ Approuvé avec commentaires mineurs
-[ ] 🔄 Changements requis
-[ ] ❌ Rejet architectural
+[ ] 🔄 Changements requis (non bloquant)
+[ ] ❌ Rejet architectural (bloquant)
+```
+
+### Ce Qu'il Ne Faut PAS Faire
+
+```
+❌ Review ligne par ligne comme du code humain
+❌ Bloquer pour des préférences de style (le linter s'en charge)
+❌ Exiger la perfection sur chaque PR
+❌ Review chaque PR personnellement (déléguer les PRs standard)
 ```
 
 ---
 
-## Anti-patterns du Tech Lead
+## Anti-patterns
 
-### 1. "Le Tech Lead Absent"
+### 1. Le Tech Lead Absent
 
-**Symptôme** : Pas de review architecturale, décisions prises au fil de l'eau
+**Symptôme** : Pas de review architecturale, décisions ad hoc.
+
 ```
 ❌ "Faites comme vous pensez, ça ira"
+❌ Pas d'ADR, architecture implicite
+❌ AGENT-GUIDE inexistant ou obsolète
 ```
 
-**Impact** : Architecture incohérente, dette technique massive
+**Impact** : Architecture incohérente, dette technique massive, code imprévisible.
 
-**Solution** : Présence proactive
+**Correction** :
 ```
-✅ Design review avant les features complexes
-✅ ADRs pour toute décision structurante
-✅ Review régulière du code généré
-```
-
-### 2. "Le Tech Lead Gatekeeper"
-
-**Symptôme** : Tout passe par le Tech Lead
-```
-❌ Bottleneck sur toutes les PRs
+✅ Design review avant features complexes
+✅ ADR pour toute décision structurante
+✅ AGENT-GUIDE maintenu à jour
+✅ Review régulière du code généré (pas toutes les PRs, mais un échantillon)
 ```
 
-**Impact** : Ralentissement, équipe déresponsabilisée
+### 2. Le Tech Lead Gatekeeper
 
-**Solution** : Délégation et automation
+**Symptôme** : Tout passe par le Tech Lead.
+
 ```
-✅ Standards codifiés dans l'AGENT-GUIDE
-✅ Linting/tests automatiques en CI
-✅ Review par les pairs pour les changements standard
-✅ Tech Lead focus sur l'architectural
+❌ Review obligatoire de chaque PR
+❌ File d'attente "waiting for TL review"
+❌ Équipe ne peut rien merger sans approbation
 ```
 
-### 3. "Le Tech Lead Perfectionniste"
+**Impact** : Bottleneck, équipe déresponsabilisée, TL submergé.
 
-**Symptôme** : Refus de toute dette technique
+**Correction** :
+```
+✅ Standards codifiés dans AGENT-GUIDE + linting
+✅ PE peuvent merger si CI vert et self-review fait
+✅ Review par les pairs pour les PRs standard
+✅ TL review uniquement pour changements architecturaux
+```
+
+### 3. Le Tech Lead Perfectionniste
+
+**Symptôme** : Refuse toute dette technique.
+
 ```
 ❌ "On ne peut pas merger ça, c'est pas parfait"
+❌ Bloque pour des edge cases théoriques
+❌ Refuse tout compromis
 ```
 
-**Impact** : Paralysie, frustration
+**Impact** : Paralysie, frustration, livraisons impossibles.
 
-**Solution** : Pragmatisme documenté
+**Correction** :
 ```
-✅ Accepter la dette délibérée si documentée
-✅ Distinguer le "nice to have" du bloquant
+✅ Accepter la dette délibérée si documentée (ADR)
+✅ Distinguer "nice to have" vs "bloquant"
 ✅ Planifier le remboursement plutôt que bloquer
+✅ Perfect is the enemy of done
+```
+
+### 4. Le Tech Lead Codeur
+
+**Symptôme** : Écrit le code lui-même plutôt que de guider.
+
+```
+❌ "Laisse, je vais le faire moi-même"
+❌ Réécrit le code des PE
+❌ Ne délègue pas les décisions techniques simples
+```
+
+**Impact** : PE ne progressent pas, TL submergé, bus factor = 1.
+
+**Correction** :
+```
+✅ Expliquer le "pourquoi", pas faire le "quoi"
+✅ Pair programming plutôt que prise en main
+✅ Documenter pour les prochaines fois
+✅ Déléguer les décisions réversibles
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Métriques à Suivre
+
+| Métrique | Cible | Alerte Si |
+|----------|-------|-----------|
+| Temps de review TL | < 4h | > 1 jour |
+| ADRs documentés | 100% décisions majeures | Décision non documentée |
+| Dette trackée | 100% identifiée | Dette découverte en prod |
+| AGENT-GUIDE à jour | Oui | Dernière MàJ > 1 mois |
+| PRs bloquées par TL | < 10% | > 30% |
+
+---
+
+## Checklist
+
+### Hebdomadaire
+- [ ] ADRs à jour avec décisions récentes
+- [ ] AGENT-GUIDE reflète les nouveaux patterns
+- [ ] Review de la dette technique (nouveaux items ? priorisation ?)
+- [ ] Pas de PR bloquée > 24h
+
+### Par Cycle
+- [ ] Design review des features complexes faite
+- [ ] Dette technique remboursée (~20%)
+- [ ] Métriques qualité stables ou en hausse
+- [ ] Standards respectés dans le code généré
+
+### Trimestrielle
+- [ ] Audit architectural complet
+- [ ] Nettoyage des ADRs obsolètes
+- [ ] Review des dépendances (mises à jour, sécurité)
+- [ ] Retrospective technique avec l'équipe
+
+---
+
+*Annexes connexes : [A.2 Template ARCHITECTURE](A2-architecture.md) • [A.3 Template AGENT-GUIDE](A3-agent-guide.md) • [B.2 Product Engineer](B2-product-engineer.md)*

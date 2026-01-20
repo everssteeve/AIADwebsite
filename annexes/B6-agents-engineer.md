@@ -2,17 +2,13 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe détaille les responsabilités quotidiennes de l'Agents Engineer, le rôle dédié à l'optimisation de l'écosystème d'agents IA au sein d'une équipe AIAD.
+L'Agents Engineer est le spécialiste qui configure et optimise l'écosystème d'agents IA pour l'équipe. Ce rôle existe dans les équipes matures ou les organisations avec plusieurs projets AIAD. Cette annexe détaille le workflow quotidien, la création de subagents, et la progression vers l'expertise.
 
 ---
 
 ## Vue d'Ensemble du Rôle
 
-### Définition
-
-L'Agents Engineer est responsable de la configuration, de l'optimisation et de la maintenance de l'écosystème d'agents IA utilisé par l'équipe. Ce rôle assure que les agents produisent un output de qualité, cohérent avec le projet.
-
-### Positionnement
+### Positionnement dans l'Équipe
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -30,7 +26,7 @@ L'Agents Engineer est responsable de la configuration, de l'optimisation et de l
               ▼             ▼             ▼
          ┌────────┐   ┌────────┐   ┌────────┐
          │ Agent  │   │ Agent  │   │ Agent  │
-         │Principal│   │Quality │   │Security│
+         │Principal│  │Quality │   │Security│
          └────────┘   └────────┘   └────────┘
               │             │             │
               └─────────────┼─────────────┘
@@ -41,209 +37,207 @@ L'Agents Engineer est responsable de la configuration, de l'optimisation et de l
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### Responsabilités Clés
+
+1. **AGENT-GUIDE** : Créer et maintenir le fichier de contexte projet
+2. **Sélection d'agents** : Choisir et configurer les agents pour le projet
+3. **Optimisation** : Améliorer continuellement la qualité des outputs
+4. **Subagents** : Créer des agents spécialisés pour les besoins récurrents
+5. **Formation** : Aider l'équipe à utiliser efficacement les agents
+
 ---
 
-## Responsabilités Principales
+## Workflow Quotidien
 
-### 1. Configuration de l'AGENT-GUIDE
-
-**Objectif** : Créer et maintenir le fichier de contexte projet pour les agents.
+### Structure de la Journée
 
 ```markdown
-## Activités
+## Matin (30 min)
 
-### Création Initiale
-- Analyser la stack technique du projet
-- Documenter les conventions de nommage
-- Identifier les patterns existants
-- Collecter des exemples de code de référence
+### Review
+- [ ] Qualité des outputs de la veille (feedback PE)
+- [ ] Problèmes signalés avec les agents
+- [ ] Patterns récurrents identifiés
 
-### Maintenance Continue
-- Mettre à jour après chaque décision architecturale
-- Ajouter les nouveaux patterns adoptés
-- Supprimer les patterns obsolètes
-- Intégrer les learnings des reviews
+### Priorisation
+- [ ] Ajustements AGENT-GUIDE nécessaires ?
+- [ ] Support à prévoir pour qui ?
 
-### Validation
-- Tester les prompts avec le nouvel AGENT-GUIDE
-- Vérifier que l'output respecte les conventions
-- Ajuster si nécessaire
+## Pendant la Journée
+
+### Support Réactif
+- Répondre aux questions dans le channel dédié
+- Pair prompting si cas complexe
+
+### Amélioration Continue
+- Mettre à jour AGENT-GUIDE si nouvelle décision
+- Créer/améliorer subagents si besoin identifié
+
+### Veille
+- Nouvelles versions des agents
+- Nouvelles techniques de prompting
+- Retours communauté
+
+## Fin de Journée (15 min)
+
+### Documentation
+- [ ] Learnings notés
+- [ ] FAQ mise à jour si questions récurrentes
+
+### Préparation
+- [ ] Actions identifiées pour demain
 ```
 
-**Template de travail** :
+---
+
+## Gestion de l'AGENT-GUIDE
+
+### Responsabilité Principale
+
+L'Agents Engineer est responsable de la qualité et de la mise à jour de l'AGENT-GUIDE.
+
+### Checklist de l'AGENT-GUIDE
 
 ```markdown
 ## Checklist AGENT-GUIDE
 
 ### Structure Projet
-- [ ] Arborescence documentée
-- [ ] Points d'entrée identifiés
-- [ ] Modules et leurs responsabilités
+- [ ] Arborescence documentée avec rôle de chaque dossier
+- [ ] Points d'entrée identifiés (main, routes, API)
+- [ ] Modules et leurs responsabilités claires
 
 ### Conventions de Code
-- [ ] Nommage (fichiers, variables, fonctions)
-- [ ] Style (formatage, imports)
-- [ ] Patterns (hooks, services, composants)
+- [ ] Nommage (fichiers, variables, fonctions, classes)
+- [ ] Style (formatage, imports, exports)
+- [ ] Patterns (hooks, services, composants, API)
+- [ ] Gestion d'erreurs
+- [ ] Logging
 
 ### Exemples de Référence
 - [ ] Au moins 2 exemples par pattern majeur
-- [ ] Exemples de tests
-- [ ] Exemples de documentation
+- [ ] Exemples annotés avec commentaires "pourquoi"
+- [ ] Anti-exemples (ce qu'il ne faut pas faire)
 
 ### Contraintes
-- [ ] Dépendances à utiliser/éviter
-- [ ] Patterns interdits
-- [ ] Règles de sécurité
+- [ ] Dépendances autorisées (et interdites)
+- [ ] Patterns interdits avec justification
+- [ ] Règles de sécurité spécifiques
+- [ ] Limites de l'agent (ce qu'il ne doit pas faire)
+```
+
+### Cycle de Mise à Jour
+
+```
+Nouvelle décision technique
+         │
+         ▼
+Tech Lead documente dans ADR
+         │
+         ▼
+Agents Engineer met à jour AGENT-GUIDE
+         │
+         ▼
+Test avec prompt type
+         │
+         ├── Output conforme → Commit
+         │
+         └── Output non conforme → Ajuster et re-tester
+```
+
+### Template de Section AGENT-GUIDE
+
+```markdown
+## [Nom du Pattern]
+
+### Quand l'utiliser
+[Contexte d'utilisation]
+
+### Structure
+[Code ou structure attendue]
+
+### Exemple de référence
+→ src/[chemin]/[fichier]
+
+### À éviter
+[Anti-pattern avec explication]
+
+### Référence
+- ADR : [si applicable]
+- Date ajout : YYYY-MM-DD
 ```
 
 ---
 
-### 2. Sélection et Configuration des Agents
+## Sélection et Configuration des Agents
 
-**Objectif** : Choisir les bons agents et les configurer pour le contexte projet.
+### Matrice de Sélection
+
+| Besoin | Agent Recommandé | Configuration Clé |
+|--------|------------------|-------------------|
+| Développement général | Claude / GPT-4 | AGENT-GUIDE complet |
+| Revue de sécurité | Agent Security | Règles OWASP + contexte projet |
+| Génération de tests | Agent Quality | Framework de test + conventions |
+| Revue d'architecture | Agent Architecture | Patterns + contraintes |
+| Documentation | Agent Documentation | Templates + style guide |
+
+### Process de Configuration
 
 ```markdown
-## Matrice de Sélection
+## Configuration Nouvel Agent
 
-| Besoin | Agent Recommandé | Configuration |
-|--------|------------------|---------------|
-| Développement général | Claude/GPT-4 | AGENT-GUIDE complet |
-| Sécurité | Agent Security | Règles OWASP + contexte |
-| Tests | Agent Quality | Framework + conventions |
-| Architecture | Agent Architecture | Patterns + contraintes |
-| Documentation | Agent Documentation | Templates + style |
+### 1. Évaluer le Besoin
+- [ ] Quel problème résoudre ?
+- [ ] Quelle fréquence d'utilisation ?
+- [ ] Quels risques si mauvais output ?
+- [ ] ROI estimé (temps gagné vs temps config)
 
-## Process de Configuration
+### 2. Sélectionner l'Agent
+- [ ] Capacités vs besoins (match ?)
+- [ ] Coût vs valeur
+- [ ] Intégration avec l'existant
 
-1. Évaluer le besoin
-   - Quel problème résoudre ?
-   - Quelle fréquence d'utilisation ?
-   - Quels risques ?
+### 3. Configurer le Contexte
+- [ ] Prompt système défini
+- [ ] Fichiers de référence identifiés
+- [ ] Permissions configurées
+- [ ] Limites explicites
 
-2. Sélectionner l'agent approprié
-   - Capacités vs besoins
-   - Coût vs valeur
-   - Intégration existante
-
-3. Configurer le contexte
-   - Prompt système
-   - Fichiers de référence
-   - Permissions
-
-4. Tester et valider
-   - Cas d'usage type
-   - Edge cases
-   - Performance
+### 4. Tester et Valider
+- [ ] Cas d'usage nominal → OK ?
+- [ ] Edge cases → OK ?
+- [ ] Performance acceptable ?
+- [ ] PE pilote satisfait ?
 ```
 
 ---
 
-### 3. Optimisation des Prompts
+## Création de Subagents
 
-**Objectif** : Améliorer continuellement la qualité des interactions avec les agents.
+### Quand Créer un Subagent
 
-```markdown
-## Cycle d'Optimisation
+| Situation | Créer un Subagent ? |
+|-----------|---------------------|
+| Tâche récurrente (> 5 fois/semaine) | **Oui** |
+| Pattern stable et documenté | **Oui** |
+| ROI positif (temps config < temps gagné) | **Oui** |
+| Cas unique | Non |
+| Pattern encore instable | Non |
 
-┌─────────────┐
-│  Observer   │ ← Analyser les outputs des agents
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│  Identifier │ ← Repérer les patterns de succès/échec
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│  Améliorer  │ ← Ajuster AGENT-GUIDE et prompts
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│  Mesurer    │ ← Vérifier l'amélioration
-└──────┬──────┘
-       │
-       └──────────→ (retour à Observer)
-```
-
-**Techniques d'Optimisation** :
-
-```markdown
-## 1. Enrichissement du Contexte
-
-### Avant
-"Crée un composant de liste"
-
-### Après
-"Crée un composant de liste en suivant le pattern de TaskList.tsx.
-Utilise notre hook useQuery et les composants du design system."
-
-## 2. Exemples de Référence
-
-### Pattern "Few-Shot"
-"Voici comment on fait les hooks dans ce projet :
-[Exemple 1]
-[Exemple 2]
-Crée un hook similaire pour..."
-
-## 3. Contraintes Explicites
-
-### Pattern "Guardrails"
-"Contraintes :
-- Utiliser TypeScript strict
-- Pas de any
-- Tests obligatoires
-- Max 50 lignes par fonction"
-
-## 4. Feedback Structuré
-
-### Pattern "Itératif"
-"Bon début. Ajuste :
-1. Ligne 15 : utilise notre type Task, pas un nouveau
-2. Ligne 23 : on préfère useMemo ici
-3. Ajoute le cas d'erreur"
-```
-
----
-
-### 4. Création de SubAgents
-
-**Objectif** : Développer des agents spécialisés pour les besoins récurrents du projet.
-
-```markdown
-## Cas d'Usage pour SubAgents
-
-| Situation | SubAgent | Valeur |
-|-----------|----------|--------|
-| Migrations fréquentes | Migration Agent | Automatise le pattern |
-| API standardisée | API Agent | Génère routes + tests |
-| Composants UI | Component Agent | Respecte le design system |
-| Tests spécifiques | Test Agent | Connaît les mocks/fixtures |
-
-## Process de Création
-
-### 1. Identifier le Besoin
-- Tâche répétitive ?
-- Pattern stable ?
-- ROI positif ?
-
-### 2. Définir le Scope
-- Input attendu
-- Output attendu
-- Contraintes
-
-### 3. Créer le Prompt Système
-```
+### Template de Subagent
 
 ```markdown
 # [Nom] SubAgent
 
 ## Rôle
 Tu es un agent spécialisé dans [domaine].
+Tu génères du code pour le projet [nom projet].
 
 ## Contexte Projet
-[Extrait pertinent de AGENT-GUIDE]
+[Extrait pertinent de l'AGENT-GUIDE]
+
+- Stack : [technologies]
+- Patterns : [patterns clés]
+- Contraintes : [contraintes importantes]
 
 ## Tâche
 Quand on te demande de [action], tu dois :
@@ -254,253 +248,347 @@ Quand on te demande de [action], tu dois :
 ## Contraintes
 - [Contrainte 1]
 - [Contrainte 2]
+- [Contrainte 3]
+
+## Output Attendu
+[Format et structure de l'output]
 
 ## Exemples
-[Exemple input → output]
+
+### Input
+[Exemple de demande]
+
+### Output Attendu
+[Exemple de réponse correcte]
+
+## Ce Que Tu Ne Dois PAS Faire
+- [Anti-pattern 1]
+- [Anti-pattern 2]
 ```
 
+### Exemple : Subagent API Route
+
 ```markdown
-### 4. Tester et Itérer
-- Cas nominal
-- Edge cases
-- Intégration avec workflow
+# API Route SubAgent
+
+## Rôle
+Tu génères des routes API Express pour le projet TaskManager.
+Tu suis strictement les patterns établis.
+
+## Contexte Projet
+- Stack : Node.js + Express + TypeScript + Drizzle ORM
+- Validation : Zod
+- Auth : JWT middleware
+- Errors : src/lib/errors.ts (AppError class)
+
+## Tâche
+Quand on te demande de créer une route API, tu dois :
+1. Créer le schéma Zod de validation
+2. Créer la route avec le handler
+3. Ajouter la route au router principal
+4. Générer les tests correspondants
+
+## Contraintes
+- Toujours valider les inputs avec Zod
+- Toujours utiliser le middleware auth si route protégée
+- Retourner des AppError, jamais throw générique
+- Transactions pour les opérations multi-tables
+
+## Output Attendu
+3 fichiers :
+- src/api/routes/[resource].ts (route)
+- src/api/schemas/[resource].ts (validation)
+- tests/api/[resource].test.ts (tests)
+
+## Exemple de Référence
+→ src/api/routes/tasks.ts
+→ src/api/schemas/task.ts
+→ tests/api/tasks.test.ts
+
+## Ce Que Tu Ne Dois PAS Faire
+- Créer de nouvelles dépendances sans demander
+- Utiliser any en TypeScript
+- Oublier la validation Zod
+- Faire des requêtes N+1
 ```
 
 ---
 
-### 5. Formation et Support de l'Équipe
+## Optimisation des Prompts
 
-**Objectif** : S'assurer que l'équipe utilise efficacement les agents.
+### Cycle d'Optimisation
+
+```
+┌─────────────┐
+│  Observer   │ ← Analyser les outputs des agents
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Identifier │ ← Repérer patterns de succès/échec
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Améliorer  │ ← Ajuster AGENT-GUIDE ou prompts
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Mesurer    │ ← Vérifier l'amélioration
+└──────┬──────┘
+       │
+       └──────────→ (retour à Observer)
+```
+
+### Techniques d'Amélioration
+
+#### 1. Enrichissement du Contexte
 
 ```markdown
-## Activités de Formation
+## Avant (vague)
+"Crée un composant de liste"
 
-### Onboarding Nouveau Membre
-- Présentation de l'écosystème d'agents
-- Demo des cas d'usage principaux
-- Bonnes pratiques de prompting
-- Pièges courants à éviter
+## Après (contextualisé)
+"Crée un composant TaskList en suivant le pattern de UserList.tsx.
+Utilise notre hook useQuery et les composants du design system.
+Voir src/components/UserList.tsx pour référence."
+```
 
-### Sessions Régulières
-- "Prompt of the Week" : partage de prompts efficaces
-- Retours d'expérience
-- Nouvelles fonctionnalités des agents
+#### 2. Few-Shot Examples
 
-### Documentation
-- Guide d'utilisation par agent
-- Catalogue de prompts validés
-- FAQ et troubleshooting
+```markdown
+"Voici comment on crée des hooks dans ce projet :
 
-## Support Quotidien
+Exemple 1 - useUsers.ts :
+[code]
 
-### Répondre aux Questions
-- "Comment faire X avec l'agent ?"
-- "L'agent ne comprend pas mon contexte"
-- "L'output n'est pas bon, que faire ?"
+Exemple 2 - useTasks.ts :
+[code]
 
-### Pair Prompting
-- Session avec un PE pour résoudre un cas complexe
-- Démonstration des techniques d'optimisation
+Crée un hook similaire pour gérer les projets."
+```
 
-### Review des Usages
-- Identifier les mauvaises pratiques
-- Proposer des améliorations
+#### 3. Guardrails Explicites
+
+```markdown
+"Contraintes strictes :
+- TypeScript strict (pas de any)
+- Max 50 lignes par fonction
+- Tests obligatoires
+- Réutiliser les helpers existants de src/lib/"
+```
+
+#### 4. Feedback Structuré
+
+```markdown
+"Output précédent : bon début mais à ajuster.
+
+1. Ligne 15 : utilise notre type Task, pas un nouveau
+2. Ligne 23 : on préfère useMemo ici pour les performances
+3. Manque : ajoute le cas d'erreur réseau
+
+Regenere avec ces corrections."
 ```
 
 ---
 
-## Workflow Quotidien Type
+## Formation et Support de l'Équipe
+
+### Onboarding Nouveau PE
 
 ```markdown
-## Matin (30 min)
+## Onboarding Agents - [Nom]
 
-### Review des Métriques
-- Qualité des outputs (retours de la veille)
-- Problèmes signalés
-- Patterns récurrents
+### Session 1 : Introduction (1h)
+- [ ] Présentation de l'écosystème d'agents
+- [ ] Tour de l'AGENT-GUIDE
+- [ ] Demo des cas d'usage principaux
 
-### Priorisation
-- Quels ajustements faire aujourd'hui ?
-- Support nécessaire pour qui ?
+### Session 2 : Pratique (2h)
+- [ ] Exercice guidé : feature simple avec agent
+- [ ] Pattern Contexte → Tâche → Validation
+- [ ] Gestion des itérations
 
-## Pendant la Journée
+### Session 3 : Autonomie (1h)
+- [ ] Feature complexe en autonomie supervisée
+- [ ] Debrief et questions
+- [ ] Ressources pour continuer
 
-### Support Réactif
-- Répondre aux questions dans le channel dédié
-- Pair prompting si nécessaire
+### Suivi
+- [ ] Check-in J+3
+- [ ] Check-in J+7
+- [ ] Feedback sur l'expérience
+```
 
-### Amélioration Continue
-- Mettre à jour AGENT-GUIDE si nouvelle décision
-- Créer/améliorer des SubAgents si besoin identifié
+### Support Quotidien
 
-### Veille
-- Nouvelles versions des agents
-- Nouvelles techniques de prompting
-- Retours communauté
+| Type de Demande | Réponse |
+|-----------------|---------|
+| "L'agent ne comprend pas mon contexte" | Pair prompting pour enrichir le contexte |
+| "L'output n'est pas bon" | Analyser, ajuster AGENT-GUIDE si pattern |
+| "Comment faire X avec l'agent ?" | Montrer l'exemple, documenter si récurrent |
+| "Bug dans un subagent" | Fix et déploiement |
 
-## Fin de Journée (15 min)
+### Documentation à Maintenir
 
-### Documentation
-- Noter les learnings
-- Mettre à jour la FAQ si questions récurrentes
+- **Guide d'utilisation** : Par agent, avec exemples
+- **Catalogue de prompts** : Prompts validés par situation
+- **FAQ** : Questions fréquentes et réponses
+- **Changelog** : Modifications de l'AGENT-GUIDE
 
-### Préparation Lendemain
-- Actions identifiées
-- Support planifié
+---
+
+## Anti-patterns
+
+### 1. L'AGENT-GUIDE Statique
+
+**Symptôme** : AGENT-GUIDE créé au début et jamais mis à jour.
+
+```
+❌ Dernière modification il y a 3 mois
+❌ Patterns obsolètes documentés
+❌ Nouvelles conventions non ajoutées
+```
+
+**Correction** :
+```
+✅ Mise à jour à chaque décision technique
+✅ Review mensuelle de l'exhaustivité
+✅ Feedback PE intégré régulièrement
+```
+
+### 2. Le Sur-Outillage
+
+**Symptôme** : Trop d'agents configurés "au cas où".
+
+```
+❌ 10 subagents pour un projet simple
+❌ Temps de config > temps gagné
+❌ PE ne savent pas quel agent utiliser
+```
+
+**Correction** :
+```
+✅ Commencer avec 1-2 agents
+✅ Ajouter quand besoin réel identifié
+✅ ROI positif avant de créer
+```
+
+### 3. L'Absence de Mesure
+
+**Symptôme** : "Ça a l'air de marcher" sans données.
+
+```
+❌ Pas de feedback structuré des PE
+❌ Pas de métriques de qualité
+❌ Intuition seule guide les décisions
+```
+
+**Correction** :
+```
+✅ Survey satisfaction PE mensuel
+✅ Tracking des corrections post-génération
+✅ Métriques de temps par feature
+```
+
+### 4. Le Siloing
+
+**Symptôme** : Agents Engineer travaille seul, équipe ne comprend pas.
+
+```
+❌ AGENT-GUIDE non partagé
+❌ PE ne savent pas comment contribuer
+❌ Dépendance totale sur l'AE
+```
+
+**Correction** :
+```
+✅ Transparence sur les configurations
+✅ Formation continue de l'équipe
+✅ PE peuvent proposer des améliorations
+✅ Documentation accessible
+```
+
+### 5. Le Prompt Magique
+
+**Symptôme** : Chercher LE prompt parfait universel.
+
+```
+❌ "J'ai trouvé le prompt parfait"
+❌ Même prompt pour tous les cas
+❌ Frustration quand ça ne marche pas
+```
+
+**Correction** :
+```
+✅ Le contexte compte plus que le prompt
+✅ Différents cas = différentes approches
+✅ L'itération est normale et attendue
 ```
 
 ---
 
 ## Métriques de Succès
 
-```markdown
-## Métriques Quantitatives
-
-| Métrique | Cible | Mesure |
-|----------|-------|--------|
-| Taux de satisfaction PE | > 80% | Survey mensuel |
+| Métrique | Cible | Comment Mesurer |
+|----------|-------|-----------------|
+| Satisfaction PE | > 80% | Survey mensuel |
+| Corrections post-génération | < 3 par output | Review des commits |
+| Questions support/jour | < 5 | Channel support |
 | Temps moyen par feature | -20% vs baseline | Tracking |
-| Corrections post-génération | < 3 par output | Review |
-| Questions support/jour | < 5 | Channel |
-
-## Métriques Qualitatives
-
-### Feedback Équipe
-- "Les agents comprennent notre projet"
-- "L'output est utilisable directement"
-- "Je sais quand utiliser quel agent"
-
-### Observation
-- Code généré respecte les conventions
-- Tests générés sont pertinents
-- Documentation générée est utile
-```
+| AGENT-GUIDE à jour | Oui | Dernière MàJ < 2 semaines |
 
 ---
 
-## Anti-patterns à Éviter
+## Progression de Compétence
 
-### 1. L'AGENT-GUIDE Statique
+### Niveau 1 : Débutant (Mois 1-3)
 
-```markdown
-❌ Anti-pattern
-AGENT-GUIDE créé au début et jamais mis à jour.
-
-✅ Solution
-Mettre à jour à chaque :
-- Nouvelle décision architecturale
-- Nouveau pattern adopté
-- Feedback négatif récurrent
-```
-
-### 2. Le Sur-Outillage
-
-```markdown
-❌ Anti-pattern
-Configurer 10 agents dès le départ "au cas où".
-
-✅ Solution
-Commencer avec 1-2 agents.
-Ajouter quand un besoin réel est identifié.
-```
-
-### 3. L'Absence de Mesure
-
-```markdown
-❌ Anti-pattern
-"Ça a l'air de marcher" sans données.
-
-✅ Solution
-Mesurer :
-- Temps de développement
-- Qualité output
-- Satisfaction équipe
-```
-
-### 4. Le Siloing
-
-```markdown
-❌ Anti-pattern
-Agents Engineer travaille seul, équipe ne comprend pas.
-
-✅ Solution
-- Transparence sur les configurations
-- Formation continue
-- Équipe peut contribuer à l'AGENT-GUIDE
-```
-
-### 5. Le Prompt Magique
-
-```markdown
-❌ Anti-pattern
-Chercher le "prompt parfait" qui marche pour tout.
-
-✅ Solution
-Accepter que :
-- Le contexte compte plus que le prompt
-- L'itération est normale
-- Différents cas = différentes approches
-```
-
----
-
-## Collaboration avec les Autres Rôles
-
-```markdown
-## Avec Product Manager
-- Comprendre les priorités pour focus l'optimisation
-- Proposer des agents pour accélérer certains outcomes
-- Remonter les limitations techniques des agents
-
-## Avec Product Engineers
-- Support quotidien sur l'utilisation des agents
-- Collecter le feedback sur la qualité des outputs
-- Pair prompting sur les cas complexes
-
-## Avec Tech Lead
-- Aligner AGENT-GUIDE avec l'architecture
-- Valider les patterns documentés
-- Discuter des contraintes techniques
-
-## Avec QA Engineer
-- Configurer les agents pour générer des tests
-- Intégrer les critères qualité dans les prompts
-- Automatiser certaines vérifications
-```
-
----
-
-## Évolution du Rôle
-
-```markdown
-## Démarrage (Mois 1-3)
-Focus : Mise en place
+**Focus** : Mise en place
 - Créer l'AGENT-GUIDE initial
 - Configurer les agents de base
-- Former l'équipe
+- Former l'équipe aux fondamentaux
+- Collecter le feedback
 
-## Croissance (Mois 3-6)
-Focus : Optimisation
-- Améliorer les prompts
-- Créer des SubAgents
+### Niveau 2 : Intermédiaire (Mois 3-6)
+
+**Focus** : Optimisation
+- Améliorer les prompts système
+- Créer des subagents spécialisés
 - Mesurer et itérer
+- Réduire les corrections post-génération
 
-## Maturité (Mois 6+)
-Focus : Scalabilité
+### Niveau 3 : Expert (Mois 6+)
+
+**Focus** : Scalabilité
 - Documenter pour d'autres équipes
 - Contribuer aux bonnes pratiques globales
 - Innover sur les usages
-```
+- Mentorer d'autres Agents Engineers
 
 ---
 
-## Ressources
+## Checklist
 
-- [A.3 AGENT-GUIDE Template](A3-agent-guide.md)
-- [F Catalogue d'Agents](F1-agent-security.md)
-- [G.6 Création de SubAgents](G6-creation-subagents.md)
-- [H.1 Prompts Efficaces](H1-prompts-efficaces.md)
+### Hebdomadaire
+- [ ] Feedback PE collecté et analysé
+- [ ] AGENT-GUIDE mis à jour si décisions techniques
+- [ ] Questions récurrentes ajoutées à la FAQ
+- [ ] Subagents testés et fonctionnels
+
+### Mensuelle
+- [ ] Survey satisfaction PE
+- [ ] Review des métriques
+- [ ] Nettoyage des patterns obsolètes
+- [ ] Veille nouvelles techniques
+
+### Trimestrielle
+- [ ] Audit complet de l'AGENT-GUIDE
+- [ ] ROI des subagents évalué
+- [ ] Formation refresh pour l'équipe
+- [ ] Partage des learnings (blog, présentation)
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+*Annexes connexes : [A.3 Template AGENT-GUIDE](A3-agent-guide.md) • [H.1 Prompts Efficaces](H1-prompts-efficaces.md) • [G.6 Création de Subagents](G6-creation-subagents.md) • [F Catalogue d'Agents](F1-agent-security.md)*
