@@ -1,307 +1,416 @@
-# C.2 Boucle PLANIFIER - Détails
+# C.2 Boucle PLANIFIER
 
 ## Pourquoi cette annexe ?
 
-Cette annexe détaille la boucle PLANIFIER : le processus complet, les critères d'entrée et de sortie, et les patterns de décomposition efficaces.
+Une SPEC mal planifiée génère des allers-retours coûteux, des oublis de dépendances et des agents IA mal dirigés. Cette annexe vous guide pour transformer une SPEC validée en un plan d'exécution clair et actionnable.
 
 ---
 
 ## Vue d'Ensemble
 
-### Objectif de la Boucle
-Transformer une SPEC "Ready" en un plan d'exécution clair pour l'implémentation.
+### Ce que vous allez produire
 
-### Durée Typique
-30 minutes à 2 heures selon la complexité de la SPEC.
+À la fin de la boucle PLANIFIER, vous aurez :
+- Une décomposition en tâches de taille maîtrisable
+- Un ordre d'exécution avec dépendances explicites
+- Des prompts préparés pour les agents IA
+- Des points de validation intermédiaires
 
-### Participants
-- **Product Engineer** : Principal responsable
-- **Tech Lead** : Consulté si design complexe
-- **Product Manager** : Disponible pour clarifications
+### Quand utiliser cette boucle
+
+```
+SPEC statut "Ready"
+        │
+        ▼
+   ┌─────────┐
+   │PLANIFIER│  ← Vous êtes ici
+   └────┬────┘
+        │
+        ▼
+ Plan prêt pour IMPLÉMENTER
+```
+
+### Durée typique
+
+| Complexité SPEC | Durée Planification |
+|-----------------|---------------------|
+| Simple (1-2 user stories) | 15-30 min |
+| Moyenne (3-5 user stories) | 30 min - 1h |
+| Complexe (6+ user stories) | 1-2h |
 
 ---
 
-## Critères d'Entrée
+## Étape 1 : Vérifier que la SPEC est Ready
 
-### La SPEC doit être "Ready"
+Avant de planifier, confirmez que la SPEC est complète.
+
+### Checklist SPEC Ready
 
 ```markdown
-## Checklist SPEC Ready
+## La SPEC est-elle prête ?
 
 ### Complétude
 - [ ] Contexte et objectif clairs
 - [ ] User stories avec critères d'acceptation
 - [ ] Cas limites documentés
-- [ ] DoOD défini
+- [ ] DoOD défini ou référencé
 
 ### Clarté
-- [ ] Pas de question bloquante ouverte
-- [ ] Pas d'ambiguïté sur le comportement attendu
+- [ ] Pas de question ouverte bloquante
+- [ ] Comportement attendu sans ambiguïté
 - [ ] Priorité validée par le PM
 
 ### Faisabilité
 - [ ] Dépendances identifiées et disponibles
-- [ ] Effort estimé réaliste
 - [ ] Pas de blocage technique connu
+- [ ] Scope réaliste pour un cycle
 ```
 
-### Si la SPEC n'est pas Ready
+### Que faire si la SPEC n'est pas Ready
 
 | Problème | Action |
 |----------|--------|
-| Questions ouvertes | Clarifier avec PM avant de planifier |
+| Questions ouvertes | Clarifier avec le PM avant de continuer |
 | Dépendance manquante | Traiter la dépendance d'abord |
 | Scope trop large | Découper en plusieurs SPECs |
-| Incertitude technique | Design review avec Tech Lead |
+| Incertitude technique | Prévoir un spike ou consulter le Tech Lead |
 
 ---
 
-## Processus de Planification
+## Étape 2 : Analyser la SPEC
 
-### Étape 1 : Analyse de la SPEC (10-20 min)
+Prenez le temps de comprendre ce que la SPEC demande vraiment.
+
+### Template d'Analyse
 
 ```markdown
-## Analyse SPEC-[XXX]
+## Analyse SPEC-[XXX] : [Titre]
 
-### Compréhension
-[Résumé en mes mots de ce que la SPEC demande]
+### Ma compréhension
+[Résumé en vos mots de ce que la SPEC demande]
 
-### Composants Impactés
-- [Fichier/module 1]
-- [Fichier/module 2]
+### Composants impactés
+| Fichier/Module | Type de modification |
+|----------------|---------------------|
+| [fichier 1] | Création / Modification / Suppression |
+| [fichier 2] | Création / Modification / Suppression |
 
-### Questions Identifiées
-- [Question 1] → Réponse : [...]
-- [Question 2] → Réponse : [...]
+### Questions identifiées
+| Question | Réponse |
+|----------|---------|
+| [Question 1] | [Réponse ou "À clarifier avec PM"] |
+| [Question 2] | [Réponse] |
 
-### Risques Techniques
-- [Risque 1] → Mitigation : [...]
+### Risques techniques
+| Risque | Impact | Mitigation |
+|--------|--------|------------|
+| [Risque 1] | [Haut/Moyen/Bas] | [Comment l'atténuer] |
 ```
 
-### Étape 2 : Décomposition en Tâches (15-30 min)
+### Exemple d'Analyse
+
+```markdown
+## Analyse SPEC-042 : Filtrage des tâches par statut
+
+### Ma compréhension
+Ajouter un filtre sur la page de liste des tâches permettant
+de n'afficher que les tâches avec un statut donné (todo, in_progress, done).
+Le filtre doit persister lors de la navigation.
+
+### Composants impactés
+| Fichier/Module | Type de modification |
+|----------------|---------------------|
+| TaskList.tsx | Modification (ajout du filtre) |
+| useTaskFilter.ts | Création (hook pour la logique) |
+| types/task.ts | Modification (ajout type FilterState) |
+| TaskFilter.tsx | Création (composant UI) |
+
+### Questions identifiées
+| Question | Réponse |
+|----------|---------|
+| Multi-sélection ou sélection unique ? | Multi (confirmé avec PM) |
+| Persister où ? | URL params (standard du projet) |
+
+### Risques techniques
+| Risque | Impact | Mitigation |
+|--------|--------|------------|
+| Performance si beaucoup de tâches | Moyen | Filtrer côté serveur si > 100 tâches |
+```
+
+---
+
+## Étape 3 : Décomposer en Tâches
+
+Transformer la SPEC en tâches atomiques et estimables.
+
+### Règles de Décomposition
+
+| Règle | Pourquoi |
+|-------|----------|
+| Une tâche = un commit potentiel | Permet des commits atomiques |
+| Taille max : 4h | Au-delà, redécouper |
+| Output clair | Savoir quand c'est "fait" |
+| Dépendances explicites | Éviter les blocages |
+
+### Échelle d'Estimation
+
+| Taille | Durée | Exemple |
+|--------|-------|---------|
+| XS | < 30 min | Ajouter un type, renommer une variable |
+| S | 30 min - 2h | Créer un composant simple, écrire des tests |
+| M | 2h - 4h | Implémenter une logique métier complète |
+| L | > 4h | **À redécouper obligatoirement** |
+
+### Template de Décomposition
 
 ```markdown
 ## Décomposition SPEC-[XXX]
 
-### Tâches
-
-| # | Tâche | Type | Estimation | Dépendance |
-|---|-------|------|------------|------------|
-| 1 | [Description] | [Code/Test/Config] | [XS/S/M] | - |
-| 2 | [Description] | [Code/Test/Config] | [XS/S/M] | 1 |
-| 3 | [Description] | [Code/Test/Config] | [XS/S/M] | 1 |
-| 4 | [Description] | [Code/Test/Config] | [XS/S/M] | 2,3 |
-
-### Légende Estimation
-- XS : < 30 min
-- S : 30 min - 2h
-- M : 2h - 4h
-- L : > 4h (à redécouper)
+| # | Tâche | Type | Est. | Dépend |
+|---|-------|------|------|--------|
+| 1 | [Description claire de la tâche] | [Code/Test/Config] | [XS/S/M] | - |
+| 2 | [Description] | [Type] | [Taille] | 1 |
+| 3 | [Description] | [Type] | [Taille] | 1 |
+| 4 | [Description] | [Type] | [Taille] | 2, 3 |
 ```
 
-### Étape 3 : Ordonnancement (5-10 min)
+### Exemple de Décomposition
 
 ```markdown
-## Ordre d'Exécution
+## Décomposition SPEC-042 : Filtrage des tâches
 
-### Séquence
-1. [Tâche 1] - Fondation
-2. [Tâche 2] - Peut être parallélisée avec 3
-3. [Tâche 3] - Peut être parallélisée avec 2
-4. [Tâche 4] - Nécessite 2 et 3
-
-### Points de Validation
-- Après tâche 1 : Vérifier que [...]
-- Après tâche 4 : Test d'intégration
-```
-
-### Étape 4 : Préparation des Prompts (10-20 min)
-
-```markdown
-## Prompts Préparés
-
-### Tâche 1 : [Nom]
-```
-[Prompt préparé pour l'agent IA]
-- Contexte
-- Objectif
-- Contraintes
-- Output attendu
-```
-
-### Tâche 2 : [Nom]
-```
-[Prompt préparé]
-```
+| # | Tâche | Type | Est. | Dépend |
+|---|-------|------|------|--------|
+| 1 | Créer le type FilterState dans types/task.ts | Code | XS | - |
+| 2 | Créer le hook useTaskFilter avec logique de filtrage | Code | S | 1 |
+| 3 | Créer le composant TaskFilter (UI des checkboxes) | Code | S | 1 |
+| 4 | Intégrer TaskFilter dans TaskList | Code | S | 2, 3 |
+| 5 | Ajouter la persistance URL avec useSearchParams | Code | S | 4 |
+| 6 | Écrire les tests pour useTaskFilter | Test | S | 2 |
+| 7 | Écrire les tests pour TaskFilter | Test | S | 3 |
 ```
 
 ---
 
-## Patterns de Décomposition
+## Étape 4 : Choisir un Pattern de Décomposition
+
+Selon le type de feature, certains patterns sont plus adaptés.
 
 ### Pattern 1 : Vertical Slice
 
-Implémenter une fonctionnalité de bout en bout.
+Implémenter une fonctionnalité de bout en bout à chaque étape.
 
 ```
-┌─────────────────────────────────────┐
-│ Tâche 1 : API endpoint              │
-├─────────────────────────────────────┤
-│ Tâche 2 : Logique métier            │
-├─────────────────────────────────────┤
-│ Tâche 3 : UI composant              │
-├─────────────────────────────────────┤
-│ Tâche 4 : Intégration + Tests       │
-└─────────────────────────────────────┘
-
-Avantage : Valeur livrée à chaque slice
-Quand l'utiliser : Features nouvelles, MVP
+┌─────────────────────────────────┐
+│ Tâche 1 : Endpoint API          │
+├─────────────────────────────────┤
+│ Tâche 2 : Logique métier        │
+├─────────────────────────────────┤
+│ Tâche 3 : Composant UI          │
+├─────────────────────────────────┤
+│ Tâche 4 : Intégration + Tests   │
+└─────────────────────────────────┘
 ```
+
+**Quand l'utiliser :**
+- Features nouvelles avec UI et backend
+- MVP et prototypes
+- Quand on veut valider rapidement
+
+**Avantage :** Valeur livrée incrémentalement
 
 ### Pattern 2 : Layer by Layer
 
-Implémenter couche par couche.
+Implémenter couche par couche (données → logique → UI).
 
 ```
-┌─────────────────────────────────────┐
-│ Tâche 1 : Modèle de données         │
-├─────────────────────────────────────┤
-│ Tâche 2 : Repository/Service        │
-├─────────────────────────────────────┤
-│ Tâche 3 : API endpoints             │
-├─────────────────────────────────────┤
-│ Tâche 4 : UI complète               │
-└─────────────────────────────────────┘
-
-Avantage : Clarté architecturale
-Quand l'utiliser : Refactoring, migration
+┌─────────────────────────────────┐
+│ Tâche 1 : Modèle de données     │
+├─────────────────────────────────┤
+│ Tâche 2 : Repository/Service    │
+├─────────────────────────────────┤
+│ Tâche 3 : API endpoints         │
+├─────────────────────────────────┤
+│ Tâche 4 : Composants UI         │
+└─────────────────────────────────┘
 ```
 
-### Pattern 3 : Test-First
+**Quand l'utiliser :**
+- Refactoring de grande ampleur
+- Migrations de données
+- Changements architecturaux
 
-Écrire les tests puis l'implémentation.
+**Avantage :** Clarté des responsabilités
 
-```
-┌─────────────────────────────────────┐
-│ Tâche 1 : Tests unitaires (red)     │
-├─────────────────────────────────────┤
-│ Tâche 2 : Implémentation (green)    │
-├─────────────────────────────────────┤
-│ Tâche 3 : Refactoring (refactor)    │
-├─────────────────────────────────────┤
-│ Tâche 4 : Tests d'intégration       │
-└─────────────────────────────────────┘
+### Pattern 3 : Test-First (TDD)
 
-Avantage : Qualité garantie
-Quand l'utiliser : Logique complexe, bugs critiques
-```
-
-### Pattern 4 : Spike puis Implémentation
-
-Explorer puis implémenter proprement.
+Écrire les tests d'abord, puis l'implémentation.
 
 ```
-┌─────────────────────────────────────┐
-│ Tâche 1 : Spike/POC (throwaway)     │
-├─────────────────────────────────────┤
-│ Tâche 2 : Design basé sur spike     │
-├─────────────────────────────────────┤
-│ Tâche 3 : Implémentation propre     │
-├─────────────────────────────────────┤
-│ Tâche 4 : Tests                     │
-└─────────────────────────────────────┘
-
-Avantage : Réduction de l'incertitude
-Quand l'utiliser : Technologie nouvelle, intégration externe
+┌─────────────────────────────────┐
+│ Tâche 1 : Écrire les tests (red)│
+├─────────────────────────────────┤
+│ Tâche 2 : Implémenter (green)   │
+├─────────────────────────────────┤
+│ Tâche 3 : Refactorer            │
+├─────────────────────────────────┤
+│ Tâche 4 : Tests d'intégration   │
+└─────────────────────────────────┘
 ```
+
+**Quand l'utiliser :**
+- Logique métier complexe
+- Corrections de bugs critiques
+- Algorithmes sensibles
+
+**Avantage :** Comportement garanti par les tests
+
+### Pattern 4 : Spike + Implémentation
+
+Explorer d'abord avec du code jetable, puis implémenter proprement.
+
+```
+┌─────────────────────────────────┐
+│ Tâche 1 : Spike/POC (jetable)   │
+├─────────────────────────────────┤
+│ Tâche 2 : Design basé sur spike │
+├─────────────────────────────────┤
+│ Tâche 3 : Implémentation propre │
+├─────────────────────────────────┤
+│ Tâche 4 : Tests                 │
+└─────────────────────────────────┘
+```
+
+**Quand l'utiliser :**
+- Technologie nouvelle ou inconnue
+- Intégration avec API externe
+- Forte incertitude technique
+
+**Avantage :** Réduction du risque avant investissement
 
 ---
 
-## Critères de Sortie
+## Étape 5 : Définir l'Ordre d'Exécution
 
-### Le Plan est Prêt Quand :
+### Identifier les Dépendances
 
 ```markdown
-## Checklist Plan Prêt
+## Graphe de Dépendances - SPEC-042
 
-### Décomposition
-- [ ] Toutes les tâches identifiées
-- [ ] Aucune tâche > 4h (sinon redécouper)
-- [ ] Dépendances explicites
+        ┌───┐
+        │ 1 │  Type FilterState
+        └─┬─┘
+          │
+    ┌─────┴─────┐
+    ▼           ▼
+  ┌───┐       ┌───┐
+  │ 2 │       │ 3 │  Hook + Composant (parallèle possible)
+  └─┬─┘       └─┬─┘
+    │           │
+    └─────┬─────┘
+          ▼
+        ┌───┐
+        │ 4 │  Intégration
+        └─┬─┘
+          │
+          ▼
+        ┌───┐
+        │ 5 │  Persistance URL
+        └───┘
 
-### Clarté
-- [ ] Chaque tâche est actionnable
-- [ ] Output attendu de chaque tâche clair
-- [ ] Pas de question bloquante
+Tests (6, 7) : parallèles avec 4-5
+```
 
-### Préparation
-- [ ] Prompts principaux préparés
-- [ ] Fichiers à modifier identifiés
-- [ ] Points de validation définis
+### Définir les Points de Validation
+
+Moments où vous vérifiez que tout fonctionne avant de continuer.
+
+```markdown
+## Points de Validation
+
+| Après tâche | Vérification |
+|-------------|--------------|
+| #2 | Hook retourne les bonnes tâches filtrées (test manuel rapide) |
+| #4 | Filtre fonctionne visuellement dans l'UI |
+| #5 | Rafraîchir la page conserve le filtre |
+| #7 | Tous les tests passent |
 ```
 
 ---
 
-## Erreurs Courantes
+## Étape 6 : Préparer les Prompts
 
-### 1. Sur-planification
+Rédiger les prompts principaux à l'avance économise du temps en implémentation.
 
-**Symptôme** : Plan détaillé de 20 tâches pour une feature simple
-```
-❌ 2h de planification pour 4h d'implémentation
-```
+### Template de Prompt
 
-**Solution** : Planification proportionnelle
-```
-✅ Feature simple : 3-5 tâches, 15-30 min de planification
-✅ Feature complexe : 8-12 tâches, 1-2h de planification
-```
+```markdown
+## Prompt - Tâche [#]
 
-### 2. Tâches Trop Grosses
+### Contexte
+[Ce que l'agent doit savoir sur le projet et cette tâche]
 
-**Symptôme** : "Implémenter la feature" comme unique tâche
-```
-❌ Tâche 1 : Implémenter tout
-```
+### Tâche
+[Ce que l'agent doit produire - être spécifique]
 
-**Solution** : Découper jusqu'à ce que chaque tâche soit < 4h
-```
-✅ Tâche 1 : Créer le composant de base
-✅ Tâche 2 : Ajouter la logique de validation
-✅ Tâche 3 : Connecter à l'API
-✅ Tâche 4 : Gérer les états d'erreur
+### Contraintes
+- [Contrainte 1]
+- [Contrainte 2]
+
+### Output attendu
+[Format et contenu de la réponse]
 ```
 
-### 3. Ignorer les Dépendances
+### Exemple de Prompts Préparés
 
-**Symptôme** : Blocage en milieu d'implémentation
-```
-❌ "Oh, j'ai besoin de la migration DB avant"
+```markdown
+## Prompt - Tâche #2 : Hook useTaskFilter
+
+### Contexte
+Application React + TypeScript avec TanStack Query.
+Composant TaskList affiche des tâches avec l'interface Task { id, title, status }.
+Status possible : 'todo' | 'in_progress' | 'done'.
+
+### Tâche
+Créer un hook useTaskFilter qui :
+- Prend une liste de tâches et un tableau de statuts à filtrer
+- Retourne les tâches correspondant aux statuts sélectionnés
+- Retourne toutes les tâches si le filtre est vide
+
+### Contraintes
+- TypeScript strict (pas de any)
+- Fonction pure, pas de mutation
+- Mémoriser le résultat avec useMemo
+
+### Output attendu
+Le fichier src/hooks/useTaskFilter.ts complet avec types exportés.
 ```
 
-**Solution** : Identifier les dépendances explicitement
-```
-✅ Tâche 1 : Migration DB (prérequis)
-✅ Tâche 2 : Endpoint API (dépend de 1)
-✅ Tâche 3 : Composant UI (dépend de 2)
-```
+```markdown
+## Prompt - Tâche #3 : Composant TaskFilter
 
-### 4. Pas de Point de Validation
+### Contexte
+Application React + TypeScript + Tailwind CSS.
+Utilise les composants du projet : Checkbox (avec label prop).
 
-**Symptôme** : Découverte tardive d'un problème
-```
-❌ Tout implémenter puis tester à la fin
-```
+### Tâche
+Créer un composant TaskFilter qui affiche 3 checkboxes :
+- "À faire" (todo)
+- "En cours" (in_progress)
+- "Terminé" (done)
 
-**Solution** : Points de validation intermédiaires
-```
-✅ Après tâche 2 : Vérifier que l'API répond correctement
-✅ Après tâche 4 : Test manuel du happy path
+### Contraintes
+- Utiliser le composant Checkbox existant
+- Props : selectedStatuses, onFilterChange
+- Style Tailwind cohérent avec le reste de l'app
+
+### Output attendu
+Le fichier src/components/TaskFilter.tsx
 ```
 
 ---
 
-## Template de Plan
+## Template Complet de Plan
 
 ```markdown
 # Plan - SPEC-[XXX] : [Titre]
@@ -309,43 +418,190 @@ Quand l'utiliser : Technologie nouvelle, intégration externe
 ## Analyse
 
 ### Objectif
-[Ce que la SPEC doit accomplir]
+[Ce que la SPEC accomplit une fois terminée]
 
 ### Composants Impactés
-- [ ] [Fichier 1]
-- [ ] [Fichier 2]
+| Fichier | Modification |
+|---------|--------------|
+| [fichier] | [type] |
 
 ### Dépendances Externes
-- [Dépendance 1] : [Statut]
+| Dépendance | Statut |
+|------------|--------|
+| [dep] | [Disponible/À traiter] |
 
-## Tâches
+## Décomposition
 
-| # | Tâche | Est. | Dépend. |
-|---|-------|------|---------|
-| 1 | [Description] | [S] | - |
-| 2 | [Description] | [M] | 1 |
-| 3 | [Description] | [S] | 2 |
+| # | Tâche | Type | Est. | Dépend |
+|---|-------|------|------|--------|
+| 1 | [description] | [type] | [taille] | - |
+| 2 | [description] | [type] | [taille] | 1 |
+
+## Ordre d'Exécution
+
+1 → 2 → 3 (séquentiel)
+ou
+1 → (2 | 3) → 4 (2 et 3 parallèles)
 
 ## Points de Validation
-- Après #1 : [Quoi vérifier]
-- Après #3 : [Quoi vérifier]
+
+| Après | Vérification |
+|-------|--------------|
+| #X | [quoi vérifier] |
 
 ## Prompts Préparés
 
-### Tâche 1
-```
+### Tâche #1
 [Prompt]
-```
+
+### Tâche #2
+[Prompt]
 
 ## Risques Identifiés
-- [Risque] → [Mitigation]
+
+| Risque | Mitigation |
+|--------|------------|
+| [risque] | [action] |
 
 ## Prêt à Implémenter
-- [ ] Plan reviewé si complexe
-- [ ] Pas de blocage
+
+- [ ] Plan relu et validé
+- [ ] Pas de blocage identifié
 - [ ] Environnement prêt
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Exemples Pratiques
+
+### Exemple : Feature CRUD Simple
+
+**SPEC :** Ajouter la suppression de tâches
+
+```markdown
+## Décomposition
+
+| # | Tâche | Est. | Dépend |
+|---|-------|------|--------|
+| 1 | Ajouter endpoint DELETE /api/tasks/:id | S | - |
+| 2 | Créer mutation useMutation pour delete | S | 1 |
+| 3 | Ajouter bouton Delete sur TaskCard | XS | 2 |
+| 4 | Ajouter modal de confirmation | S | 3 |
+| 5 | Implémenter optimistic update | S | 4 |
+| 6 | Tests API et composant | S | 5 |
+
+## Ordre : 1 → 2 → 3 → 4 → 5 → 6
+```
+
+### Exemple : Refactoring
+
+**SPEC :** Extraire la logique de validation dans un service
+
+```markdown
+## Décomposition
+
+| # | Tâche | Est. | Dépend |
+|---|-------|------|--------|
+| 1 | Créer ValidationService avec interface | S | - |
+| 2 | Migrer validation TaskForm | S | 1 |
+| 3 | Migrer validation UserForm | S | 1 |
+| 4 | Migrer validation ProjectForm | S | 1 |
+| 5 | Supprimer l'ancien code de validation | XS | 2,3,4 |
+| 6 | Tests du service | M | 1 |
+
+## Ordre : 1 → (2 | 3 | 4 | 6) → 5
+(migrations parallèles après création du service)
+```
+
+---
+
+## Anti-patterns
+
+### "La Sur-planification"
+
+**Symptôme :** Plan de 20 tâches pour une feature simple
+```
+❌ 2h de planification pour 4h d'implémentation
+```
+
+**Solution :**
+```
+✅ Planification proportionnelle au scope
+✅ Feature simple : 3-5 tâches
+✅ Feature complexe : 8-12 tâches max
+```
+
+### "La Tâche Fourre-tout"
+
+**Symptôme :** "Implémenter la feature" comme unique tâche
+```
+❌ Tâche 1 : Implémenter tout
+```
+
+**Solution :**
+```
+✅ Découper jusqu'à ce que chaque tâche soit < 4h
+✅ Une tâche = un commit = un test possible
+```
+
+### "Les Dépendances Implicites"
+
+**Symptôme :** Blocage en milieu d'implémentation
+```
+❌ "Oh, j'ai besoin de la migration DB d'abord"
+```
+
+**Solution :**
+```
+✅ Lister explicitement toutes les dépendances
+✅ Les traiter AVANT de commencer le plan
+✅ Si une dépendance est découverte : mettre à jour le plan
+```
+
+### "Le Plan Figé"
+
+**Symptôme :** Suivre le plan même quand il ne correspond plus à la réalité
+```
+❌ "Le plan dit de faire X, donc je fais X"
+```
+
+**Solution :**
+```
+✅ Le plan est un guide, pas un contrat
+✅ Ajuster si on découvre de nouvelles informations
+✅ Documenter les écarts pour la rétro
+```
+
+---
+
+## Checklist de Sortie
+
+Avant de passer à IMPLÉMENTER, validez :
+
+```markdown
+## Plan Prêt - Checklist
+
+### Décomposition
+- [ ] Toutes les tâches identifiées
+- [ ] Aucune tâche > 4h
+- [ ] Dépendances explicites
+
+### Clarté
+- [ ] Chaque tâche est actionnable
+- [ ] Output attendu clair pour chaque tâche
+- [ ] Pas de question bloquante
+
+### Préparation
+- [ ] Prompts principaux rédigés
+- [ ] Fichiers à modifier identifiés
+- [ ] Points de validation définis
+
+### Environnement
+- [ ] Branche créée depuis main à jour
+- [ ] Environnement de dev fonctionnel
+- [ ] AGENT-GUIDE accessible
+```
+
+---
+
+*Annexes connexes : [A.4 Template SPECS](A4-specs.md) • [C.1 Phase d'Initialisation](C1-phase-initialisation.md) • [C.3 Boucle IMPLÉMENTER](C3-boucle-implementer.md) • [H.1 Prompts Efficaces](H1-prompts-efficaces.md)*

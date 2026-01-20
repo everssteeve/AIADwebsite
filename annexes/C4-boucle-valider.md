@@ -1,73 +1,88 @@
-# C.4 Boucle VALIDER - Détails
+# C.4 Boucle VALIDER
 
 ## Pourquoi cette annexe ?
 
-Cette annexe détaille la boucle VALIDER : le template de rapport QA, les critères de régression et les stratégies de validation efficaces.
+Du code qui compile n'est pas du code qui fonctionne. Sans validation rigoureuse, les bugs atteignent la production, les régressions s'accumulent et la confiance dans le code généré s'effondre. Cette annexe vous guide pour valider efficacement avant d'intégrer.
 
 ---
 
 ## Vue d'Ensemble
 
-### Objectif de la Boucle
-Vérifier que l'output satisfait le DoOD et ne crée pas de régression.
+### Ce que vous allez vérifier
 
-### Durée Typique
-1 à 4 heures selon la complexité de la feature.
+La boucle VALIDER confirme que :
+- Les critères d'acceptation sont satisfaits
+- Le DoOD est respecté
+- Aucune régression n'a été introduite
+- Le code est prêt pour la review et le merge
 
-### Participant Principal
-**QA Engineer** (ou Product Engineer si pas de QA dédié).
+### Le Flux de Validation
+
+```
+┌─────────────────────────────────────────────┐
+│ 1. TESTS AUTOMATISÉS                        │
+│    Unit → Integration → E2E                 │
+├─────────────────────────────────────────────┤
+│ 2. TESTS MANUELS                            │
+│    Happy path → Cas limites → Exploration   │
+├─────────────────────────────────────────────┤
+│ 3. VÉRIFICATION DoOD                        │
+│    Checklist point par point                │
+├─────────────────────────────────────────────┤
+│ 4. RAPPORT                                  │
+│    Valider / Rejeter / Valider avec réserve │
+└─────────────────────────────────────────────┘
+```
+
+### Qui valide ?
+
+| Contexte | Validateur |
+|----------|------------|
+| Équipe avec QA | QA Engineer |
+| Équipe sans QA | Product Engineer (peer ou auto-review) |
+| Feature critique | Tech Lead en support |
 
 ---
 
-## Processus de Validation
+## Étape 1 : Vérifier les Prérequis
 
-### Flux Complet
+Avant de commencer la validation, assurez-vous que l'implémentation est terminée.
 
-```
-┌─────────────────────────────────────────────────┐
-│ 1. PRÉPARATION (10-15 min)                      │
-│    - Lire la SPEC et les critères d'acceptation │
-│    - Identifier les scénarios de test           │
-│    - Préparer l'environnement de test           │
-├─────────────────────────────────────────────────┤
-│ 2. TESTS AUTOMATISÉS                            │
-│    - Exécuter la suite de tests                 │
-│    - Vérifier la couverture                     │
-│    - Analyser les échecs                        │
-├─────────────────────────────────────────────────┤
-│ 3. TESTS MANUELS                                │
-│    - Parcours utilisateur principal             │
-│    - Cas limites                                │
-│    - Exploration                                │
-├─────────────────────────────────────────────────┤
-│ 4. VÉRIFICATION DoOD                            │
-│    - Checklist point par point                  │
-│    - Documentation des écarts                   │
-├─────────────────────────────────────────────────┤
-│ 5. RAPPORT                                      │
-│    - Synthèse des résultats                     │
-│    - Recommandation (valider/rejeter)           │
-│    - Bugs identifiés                            │
-└─────────────────────────────────────────────────┘
-```
-
-### Critères d'Entrée
+### Checklist Prêt pour Validation
 
 ```markdown
-## Checklist Prêt pour Validation
+## L'implémentation est-elle terminée ?
 
-- [ ] Code implémenté et poussé
-- [ ] Tests automatisés écrits par le PE
-- [ ] CI passe (lint, typecheck, tests)
+### Code
+- [ ] Toutes les tâches du plan exécutées
+- [ ] Tous les commits poussés sur la branche
+- [ ] Pas de TODO ou FIXME restants
+
+### CI
+- [ ] Lint passe
+- [ ] Typecheck passe
+- [ ] Tests existants passent
+- [ ] Build réussit
+
+### Documentation
 - [ ] PR créée avec description
-- [ ] Environnement de test accessible
+- [ ] Changements documentés si nécessaire
 ```
+
+### Que faire si les prérequis ne sont pas remplis
+
+| Problème | Action |
+|----------|--------|
+| CI en échec | Retourner à IMPLÉMENTER, corriger |
+| Tests manquants | Demander au PE d'ajouter les tests |
+| PR sans description | Compléter la description avant validation |
+| Code incomplet | Reporter la validation |
 
 ---
 
-## Tests Automatisés
+## Étape 2 : Exécuter les Tests Automatisés
 
-### Exécution Standard
+### Commandes Standard
 
 ```bash
 # Tests unitaires
@@ -79,194 +94,266 @@ pnpm test:integration
 # Tests E2E
 pnpm test:e2e
 
-# Couverture
+# Couverture de code
 pnpm test:coverage
+
+# Tous les tests
+pnpm test
 ```
 
-### Analyse des Résultats
+### Analyser les Résultats
 
 ```markdown
-## Rapport Tests Automatisés
+## Rapport Tests Automatisés - SPEC-[XXX]
 
 ### Résumé
-| Type | Passés | Échoués | Skipped | Couverture |
-|------|--------|---------|---------|------------|
-| Unit | 145 | 0 | 2 | 84% |
-| Integration | 23 | 1 | 0 | - |
-| E2E | 12 | 0 | 0 | - |
+| Type | Total | Passés | Échoués | Skipped |
+|------|-------|--------|---------|---------|
+| Unit | 156 | 154 | 0 | 2 |
+| Integration | 24 | 24 | 0 | 0 |
+| E2E | 12 | 12 | 0 | 0 |
 
-### Échecs
-#### test/integration/tasks.test.ts:45
+### Couverture
+| Métrique | Actuel | Seuil |
+|----------|--------|-------|
+| Lignes | 87% | 80% |
+| Branches | 79% | 70% |
+| Fonctions | 91% | 80% |
+
+### Résultat : ✅ PASSE
+```
+
+### En Cas d'Échec
+
+```markdown
+## Échec Test - Analyse
+
+### Test échoué
+`test/integration/tasks.test.ts:45` - "should create task with valid data"
+
+### Erreur
 ```
 Error: Expected status 200, got 500
-  at TaskAPI.create
-```
-**Cause probable** : [Analyse]
-**Action** : [À corriger / Faux positif]
-
-### Tests Skipped
-- `test/unit/legacy.test.ts` : Désactivé car feature dépréciée
-- `test/unit/flaky.test.ts` : À investiguer (flaky)
+  at TaskAPI.create (tasks.test.ts:47)
 ```
 
-### Critères de Couverture
+### Analyse
+- [ ] Bug réel dans le code → Retour à IMPLÉMENTER
+- [ ] Test obsolète → Mettre à jour le test
+- [ ] Environnement de test incorrect → Corriger la config
+- [ ] Test flaky → Marquer et investiguer séparément
+
+### Action : [Bug réel - retour PE pour fix]
+```
+
+### Seuils de Couverture
 
 | Zone | Minimum | Cible |
 |------|---------|-------|
-| Nouvelles lignes | 80% | 90% |
-| Nouvelles branches | 70% | 80% |
-| Fonctions critiques | 90% | 100% |
+| Nouveau code | 80% | 90% |
+| Code modifié | Pas de régression | +5% |
+| Logique métier | 90% | 100% |
 
 ---
 
-## Tests Manuels
+## Étape 3 : Effectuer les Tests Manuels
 
-### Scénarios Prioritaires
+### Préparer les Scénarios
+
+Basez-vous sur les critères d'acceptation de la SPEC.
 
 ```markdown
-## Scénarios de Test Manuel
+## Scénarios de Test Manuel - SPEC-[XXX]
 
 ### Happy Path (Obligatoire)
-| # | Étape | Résultat Attendu | Résultat | Status |
-|---|-------|------------------|----------|--------|
-| 1 | [Action] | [Attendu] | [Observé] | ✅/❌ |
-| 2 | [Action] | [Attendu] | [Observé] | ✅/❌ |
+| # | Action | Résultat Attendu |
+|---|--------|------------------|
+| 1 | Ouvrir la page des tâches | Liste des tâches affichée |
+| 2 | Cocher le filtre "En cours" | Seules les tâches "in_progress" affichées |
+| 3 | Cocher aussi "Terminé" | Tâches "in_progress" ET "done" affichées |
+| 4 | Décocher tous les filtres | Toutes les tâches affichées |
 
 ### Cas Limites (Obligatoire)
-| # | Cas | Comportement Attendu | Résultat | Status |
-|---|-----|---------------------|----------|--------|
-| 1 | Input vide | Message d'erreur | [Observé] | ✅/❌ |
-| 2 | Input trop long | Troncature/erreur | [Observé] | ✅/❌ |
+| # | Cas | Comportement Attendu |
+|---|-----|---------------------|
+| 1 | Aucune tâche correspondant au filtre | Message "Aucune tâche" |
+| 2 | Liste de 100+ tâches | Affichage fluide, pas de lag |
+| 3 | Rafraîchir la page avec filtre actif | Filtre préservé dans l'URL |
 
 ### Cas d'Erreur (Obligatoire)
-| # | Erreur | Comportement Attendu | Résultat | Status |
-|---|--------|---------------------|----------|--------|
-| 1 | Réseau off | Message "hors ligne" | [Observé] | ✅/❌ |
-| 2 | API 500 | Message d'erreur user-friendly | [Observé] | ✅/❌ |
-
-### Exploration (Optionnel mais recommandé)
-[Notes sur les tests exploratoires effectués]
+| # | Erreur | Comportement Attendu |
+|---|--------|---------------------|
+| 1 | API indisponible | Message d'erreur clair |
+| 2 | Token expiré | Redirection vers login |
 ```
 
-### Checklist Tests Manuels
+### Exécuter et Documenter
 
 ```markdown
-## Checklist Test Manuel
+## Résultats Tests Manuels - SPEC-[XXX]
 
-### Fonctionnel
-- [ ] Tous les critères d'acceptation vérifiés
-- [ ] Navigation intuitive
-- [ ] Messages d'erreur clairs
+### Happy Path
+| # | Action | Résultat | Status |
+|---|--------|----------|--------|
+| 1 | Ouvrir la page des tâches | Liste affichée correctement | ✅ |
+| 2 | Cocher "En cours" | Filtrage correct | ✅ |
+| 3 | Cocher aussi "Terminé" | Multi-filtre OK | ✅ |
+| 4 | Décocher tous | Toutes les tâches | ✅ |
+
+### Cas Limites
+| # | Cas | Résultat | Status |
+|---|-----|----------|--------|
+| 1 | Aucune tâche | Message "Aucune tâche trouvée" | ✅ |
+| 2 | 100+ tâches | Fluide | ✅ |
+| 3 | Refresh avec filtre | Filtre préservé | ✅ |
+
+### Cas d'Erreur
+| # | Erreur | Résultat | Status |
+|---|--------|----------|--------|
+| 1 | API down | Toast "Impossible de charger" | ✅ |
+| 2 | Token expiré | Redirection login OK | ✅ |
+
+### Résultat : ✅ PASSE
+```
+
+### Checklist Tests Manuels Complémentaires
+
+```markdown
+## Vérifications Supplémentaires
 
 ### UI/UX
-- [ ] Responsive (mobile/tablet/desktop)
-- [ ] États visuels corrects (hover, focus, disabled)
-- [ ] Feedback utilisateur (loading, success, error)
+- [ ] Responsive : mobile (320px), tablet (768px), desktop (1200px)
+- [ ] États visuels : hover, focus, active, disabled
+- [ ] Feedback : loading spinner, messages de succès/erreur
+- [ ] Cohérence : style conforme au design system
 
 ### Accessibilité
-- [ ] Navigation clavier fonctionnelle
-- [ ] Focus visible
-- [ ] Labels et ARIA appropriés
+- [ ] Navigation clavier : Tab, Enter, Escape
+- [ ] Focus visible sur tous les éléments interactifs
+- [ ] Contraste suffisant (4.5:1 minimum)
+- [ ] Labels et ARIA pour les lecteurs d'écran
 
-### Performance (check visuel)
-- [ ] Pas de lag perceptible
-- [ ] Pas de flash de contenu
+### Performance (vérification visuelle)
+- [ ] Pas de lag perceptible (< 100ms pour les interactions)
+- [ ] Pas de flash de contenu non stylé
+- [ ] Images chargées ou placeholder visible
 ```
 
 ---
 
-## Critères de Régression
+## Étape 4 : Tester les Régressions
 
-### Zones à Vérifier
+### Identifier les Zones à Risque
 
 ```markdown
-## Analyse de Régression
+## Analyse de Régression - SPEC-[XXX]
 
-### Zones Impactées par le Changement
-- [Zone 1] : Risque [Haut/Moyen/Bas]
-- [Zone 2] : Risque [Haut/Moyen/Bas]
+### Fichiers Modifiés
+- src/components/TaskList.tsx
+- src/hooks/useTaskFilter.ts
+- src/components/TaskFilter.tsx
 
-### Tests de Régression
-| Zone | Test | Résultat |
-|------|------|----------|
-| Page d'accueil | Chargement normal | ✅ |
-| Liste des tâches | Affichage et tri | ✅ |
-| Création de tâche | Workflow complet | ✅ |
+### Zones Impactées Potentiellement
+| Zone | Risque | Raison |
+|------|--------|--------|
+| Affichage liste des tâches | Haut | Modification directe |
+| Création de tâche | Moyen | Même composant parent |
+| Autres pages | Bas | Pas d'impact direct |
 ```
 
-### Smoke Test
+### Exécuter le Smoke Test
 
-Test minimal pour vérifier que l'application fonctionne :
+Test minimal pour vérifier que l'application fonctionne globalement.
 
 ```markdown
 ## Smoke Test
 
-- [ ] Application démarre sans erreur
+### Vérifications Critiques
+- [ ] Application démarre sans erreur console
 - [ ] Page d'accueil s'affiche
-- [ ] Login fonctionne
 - [ ] Navigation principale fonctionne
-- [ ] Fonctionnalité core fonctionne (ex: créer une tâche)
+- [ ] Login/Logout fonctionnel
+- [ ] Fonctionnalité core (créer une tâche) OK
+
+### Zones Impactées
+- [ ] Liste des tâches : affichage normal
+- [ ] Création de tâche : workflow complet
+- [ ] Modification de tâche : mise à jour OK
+- [ ] Suppression de tâche : suppression OK
+
+### Résultat : ✅ Pas de régression détectée
 ```
 
 ---
 
-## Vérification DoOD
+## Étape 5 : Vérifier le DoOD
 
-### Checklist Standard
+Passer en revue chaque critère du Definition of Done.
+
+### Checklist DoOD Standard
 
 ```markdown
 ## Vérification DoOD - SPEC-[XXX]
 
 ### Fonctionnel
-- [ ] Tous les critères d'acceptation satisfaits
-- [ ] Cas limites gérés
-- [ ] Comportement en erreur correct
+- [x] Tous les critères d'acceptation satisfaits
+- [x] Cas limites gérés correctement
+- [x] Comportement en erreur approprié
 
 ### Qualité du Code
-- [ ] Linting passe
-- [ ] Typecheck passe
-- [ ] Conventions du projet respectées
+- [x] Lint passe sans erreur
+- [x] Typecheck passe sans erreur
+- [x] Conventions du projet respectées
+- [x] Pas de code mort ou commenté
 
 ### Tests
-- [ ] Tests unitaires ajoutés
-- [ ] Tests d'intégration (si applicable)
-- [ ] Couverture maintenue
+- [x] Tests unitaires ajoutés pour le nouveau code
+- [x] Tests d'intégration si interaction multi-composants
+- [x] Couverture maintenue ou améliorée
+- [x] Tous les tests passent
 
 ### Sécurité
-- [ ] Pas de secrets exposés
-- [ ] Inputs validés
-- [ ] Pas de vulnérabilité évidente
+- [x] Pas de secrets exposés
+- [x] Inputs utilisateur validés
+- [x] Pas de vulnérabilité évidente (XSS, injection)
 
 ### Performance
-- [ ] Pas de requête N+1
-- [ ] Temps de réponse acceptable
+- [x] Pas de requête N+1 introduite
+- [x] Mémoisation si calculs coûteux
+- [x] Lazy loading si composants lourds
 
 ### Documentation
-- [ ] Code lisible et auto-documenté
-- [ ] Docs mises à jour si API change
+- [x] Code lisible et auto-documenté
+- [x] Commentaires si logique complexe
+- [x] README mis à jour si nouvelle feature publique
 
 ### Review
-- [ ] Code reviewé
+- [ ] Code prêt pour review humaine
+
+### Résultat DoOD : ✅ SATISFAIT
 ```
 
 ---
 
-## Template Rapport QA
+## Étape 6 : Produire le Rapport
+
+### Template de Rapport QA
 
 ```markdown
 # Rapport QA - SPEC-[XXX] : [Titre]
 
-**Date** : [YYYY-MM-DD]
-**QA Engineer** : [Nom]
-**Version testée** : [commit/PR]
+**Date** : YYYY-MM-DD
+**Validateur** : [Nom]
+**Branche** : feat/SPEC-XXX-description
+**Commit** : [hash court]
 
 ---
 
 ## Résumé Exécutif
 
-**Statut** : ✅ Validé / ⚠️ Validé avec réserves / ❌ Rejeté
+**Statut** : ✅ VALIDÉ
 
-**Recommandation** : [Texte court]
+**Recommandation** : Prêt pour review et merge
 
 ---
 
@@ -274,35 +361,29 @@ Test minimal pour vérifier que l'application fonctionne :
 
 | Type | Passés | Échoués | Couverture |
 |------|--------|---------|------------|
-| Unit | [X] | [Y] | [Z%] |
-| Integration | [X] | [Y] | - |
-| E2E | [X] | [Y] | - |
+| Unit | 156 | 0 | 87% |
+| Integration | 24 | 0 | - |
+| E2E | 12 | 0 | - |
 
-### Commentaires
-[Si échecs, détails]
+**Commentaires** : Couverture conforme aux seuils
 
 ---
 
 ## Tests Manuels
 
 ### Critères d'Acceptation
-
-| CA | Description | Status | Notes |
-|----|-------------|--------|-------|
-| CA-1 | [Description] | ✅ | - |
-| CA-2 | [Description] | ✅ | - |
-| CA-3 | [Description] | ⚠️ | [Détail] |
+| CA | Description | Status |
+|----|-------------|--------|
+| CA-1 | Filtrer par statut unique | ✅ |
+| CA-2 | Filtrer par statuts multiples | ✅ |
+| CA-3 | Persistance du filtre | ✅ |
 
 ### Cas Limites
-
-| Cas | Status | Notes |
-|-----|--------|-------|
-| [Cas 1] | ✅ | - |
-| [Cas 2] | ✅ | - |
-
-### Exploration
-
-[Notes sur les tests exploratoires]
+| Cas | Status |
+|-----|--------|
+| Liste vide | ✅ |
+| Grande liste | ✅ |
+| Refresh page | ✅ |
 
 ---
 
@@ -310,8 +391,9 @@ Test minimal pour vérifier que l'application fonctionne :
 
 | Zone | Status |
 |------|--------|
-| [Zone 1] | ✅ Pas de régression |
-| [Zone 2] | ✅ Pas de régression |
+| Liste des tâches | ✅ OK |
+| Création tâche | ✅ OK |
+| Navigation | ✅ OK |
 
 ---
 
@@ -319,100 +401,229 @@ Test minimal pour vérifier que l'application fonctionne :
 
 | Critère | Status |
 |---------|--------|
-| Critères d'acceptation | ✅ |
-| Tests automatisés | ✅ |
-| Linting | ✅ |
-| Typecheck | ✅ |
-| Review | ✅ |
-| Documentation | N/A |
+| Fonctionnel | ✅ |
+| Tests | ✅ |
+| Qualité code | ✅ |
+| Sécurité | ✅ |
+| Performance | ✅ |
 
 ---
 
 ## Bugs Identifiés
 
-### Bug 1 : [Titre]
-- **Sévérité** : [Critique/Majeur/Mineur]
-- **Description** : [Détail]
-- **Reproduction** : [Étapes]
-- **Bloquant** : [Oui/Non]
+Aucun bug identifié.
 
 ---
 
-## Recommandation Finale
+## Verdict Final
 
-[X] **Valider** - Prêt pour merge
-[ ] **Valider avec réserves** - Bug mineur à traiter après merge
-[ ] **Rejeter** - Corrections requises avant retest
-
-### Si Rejet, Actions Requises
-1. [Action 1]
-2. [Action 2]
+**✅ VALIDÉ** - Prêt pour review et merge
 
 ---
 
-**Signature QA** : [Nom]
-**Date** : [YYYY-MM-DD]
+**Signature** : [Nom du validateur]
+**Date** : YYYY-MM-DD
+```
+
+### En Cas de Rejet
+
+```markdown
+## Verdict : ❌ REJETÉ
+
+### Bugs Bloquants
+
+#### Bug #1 : Filtre ne persiste pas après navigation
+- **Sévérité** : Majeur
+- **Description** : Quand on navigue vers une tâche puis revient,
+                    le filtre est réinitialisé
+- **Reproduction** :
+  1. Appliquer un filtre "En cours"
+  2. Cliquer sur une tâche pour voir le détail
+  3. Cliquer "Retour"
+  4. Le filtre n'est plus actif
+- **Attendu** : Le filtre devrait être préservé
+
+### Actions Requises
+1. Corriger la persistance du filtre (utiliser URL params)
+2. Ajouter un test E2E pour ce scénario
+
+### Après Correction
+- Retester le bug #1
+- Valider la non-régression
 ```
 
 ---
 
-## Workflow de Feedback
+## Workflow Décisionnel
 
-### Si Validation Réussie
+### Après Validation Réussie
 
 ```
 Validation ✅
-    │
-    ▼
-Rapport QA créé
-    │
-    ▼
-PR approuvée pour merge
-    │
-    ▼
+     │
+     ▼
+Rapport QA créé et attaché à la PR
+     │
+     ▼
+Notification au PE : "Prêt pour review"
+     │
+     ▼
 → Boucle INTÉGRER
 ```
 
-### Si Validation Échouée
+### Après Rejet
 
 ```
 Validation ❌
-    │
-    ▼
-Rapport QA avec bugs identifiés
-    │
-    ▼
-Feedback au PE avec détails
-    │
-    ▼
-PE corrige
-    │
-    ▼
-Nouveau cycle de validation
+     │
+     ▼
+Rapport QA avec bugs détaillés
+     │
+     ▼
+Feedback au PE avec étapes de reproduction
+     │
+     ▼
+PE corrige les bugs
+     │
+     ▼
+Nouveau cycle de validation (retest ciblé)
 ```
 
-### Format de Feedback
+### Format de Feedback au PE
 
 ```markdown
 ## Feedback QA - SPEC-[XXX]
 
 ### Bugs à Corriger (Bloquants)
-1. **[Titre]**
-   - Description : [...]
-   - Reproduction : [...]
-   - Attendu vs Observé : [...]
 
-### Améliorations Suggérées (Non Bloquantes)
-1. **[Titre]**
-   - Suggestion : [...]
-   - Raison : [...]
+#### Bug #1 : [Titre court]
+**Description** : [Ce qui se passe]
+**Attendu** : [Ce qui devrait se passer]
+**Reproduction** :
+1. [Étape 1]
+2. [Étape 2]
+3. [Étape 3]
+**Fichier probable** : [src/xxx.ts]
 
-### Questions
-- [Question 1]
+### Observations (Non Bloquantes)
+- [Observation 1 - suggestion d'amélioration]
+- [Observation 2]
 
-### Retest Après
-- [ ] Bug 1 corrigé
-- [ ] Bug 2 corrigé
+### Retest
+Après correction, je retesterai :
+- [ ] Bug #1 corrigé
+- [ ] Pas de régression sur les autres tests
+```
+
+---
+
+## Exemples Pratiques
+
+### Exemple : Validation Réussie
+
+```markdown
+## SPEC-042 : Filtrage des tâches
+
+### Contexte
+Feature de filtrage par statut sur la liste des tâches.
+
+### Tests Automatisés
+- 8 nouveaux tests unitaires (tous passent)
+- 2 tests d'intégration ajoutés (passent)
+- Couverture nouvelle : 92%
+
+### Tests Manuels
+Tous les scénarios validés :
+- Filtre unique ✅
+- Filtre multiple ✅
+- Filtre vide ✅
+- Persistance URL ✅
+- Responsive ✅
+
+### Verdict
+✅ VALIDÉ - Excellent travail, code propre et bien testé.
+```
+
+### Exemple : Validation avec Réserve
+
+```markdown
+## SPEC-043 : Export CSV des tâches
+
+### Verdict : ⚠️ VALIDÉ AVEC RÉSERVES
+
+### Fonctionnel
+Tous les critères d'acceptation satisfaits.
+
+### Réserve
+Bug mineur identifié : les caractères spéciaux (é, à, ç)
+s'affichent mal dans Excel sur Windows.
+
+**Impact** : Bas - Affichage incorrect mais données préservées
+**Workaround** : Ouvrir avec l'option "UTF-8" dans Excel
+
+### Recommandation
+Merger maintenant, créer un ticket pour le fix encoding
+dans une prochaine itération.
+```
+
+---
+
+## Anti-patterns
+
+### "La Validation Express"
+
+**Symptôme** : Validation en 5 minutes sans tests manuels
+```
+❌ "Les tests passent, c'est bon"
+```
+
+**Solution** :
+```
+✅ Tests automatisés + tests manuels
+✅ Minimum : happy path + 2 cas limites
+✅ Temps réaliste selon la complexité
+```
+
+### "Le QA Rubber Stamp"
+
+**Symptôme** : Tout est toujours validé, jamais de rejet
+```
+❌ "C'est pas parfait mais ça ira"
+```
+
+**Solution** :
+```
+✅ Appliquer le DoOD sans compromis
+✅ Rejeter si bloquant, avec feedback constructif
+✅ La qualité est non négociable
+```
+
+### "Le Rapport Invisible"
+
+**Symptôme** : Validation orale, pas de trace écrite
+```
+❌ "Je t'ai dit que c'était bon sur Slack"
+```
+
+**Solution** :
+```
+✅ Toujours un rapport écrit
+✅ Attaché à la PR
+✅ Traçabilité pour les audits et rétros
+```
+
+### "Les Tests en Production"
+
+**Symptôme** : Bugs découverts après le merge
+```
+❌ "Ah, j'avais pas testé ce cas"
+```
+
+**Solution** :
+```
+✅ Couvrir systématiquement les cas limites
+✅ Tester les cas d'erreur
+✅ Smoke test sur les zones impactées
 ```
 
 ---
@@ -421,19 +632,47 @@ Nouveau cycle de validation
 
 ### Indicateurs à Suivre
 
-| Métrique | Cible |
-|----------|-------|
-| Taux de première validation | > 80% |
-| Temps moyen de validation | < 4h |
-| Bugs trouvés en prod | 0 |
-| Régressions | 0 |
+| Métrique | Cible | Signal d'Alerte |
+|----------|-------|-----------------|
+| Taux de première validation | > 80% | < 60% |
+| Bugs trouvés en prod | 0 | > 1/mois |
+| Régressions introduites | 0 | > 1/mois |
 
-### Analyse
+### Analyse des Tendances
 
-- **Taux de première validation bas** → SPECs pas assez claires ou DoOD trop strict
-- **Temps de validation élevé** → Automatiser plus ou mieux préparer les scénarios
-- **Bugs en prod** → Renforcer les tests E2E et l'exploration
+| Tendance | Cause Probable | Action |
+|----------|----------------|--------|
+| Taux de 1ère validation bas | SPECs pas assez claires | Améliorer les critères d'acceptation |
+| Bugs en prod fréquents | Tests E2E insuffisants | Renforcer la couverture E2E |
+| Régressions fréquentes | Pas de smoke test | Systématiser les tests de régression |
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Checklist de Sortie
+
+```markdown
+## Validation Terminée - Checklist
+
+### Tests
+- [ ] Tests automatisés exécutés (unit, integration, e2e)
+- [ ] Tests manuels effectués (happy path, cas limites, erreurs)
+- [ ] Smoke test de régression passé
+
+### DoOD
+- [ ] Tous les critères vérifiés
+- [ ] Aucun critère bloquant non satisfait
+
+### Documentation
+- [ ] Rapport QA rédigé
+- [ ] Rapport attaché à la PR
+- [ ] PE notifié du verdict
+
+### Verdict
+- [ ] ✅ VALIDÉ : Prêt pour INTÉGRER
+- [ ] ⚠️ VALIDÉ AVEC RÉSERVES : Merger avec ticket de suivi
+- [ ] ❌ REJETÉ : Retour à IMPLÉMENTER avec feedback
+```
+
+---
+
+*Annexes connexes : [A.5 Template DoOD](A5-dood.md) • [B.3 QA Engineer](B3-qa-engineer.md) • [C.3 Boucle IMPLÉMENTER](C3-boucle-implementer.md) • [C.5 Boucle INTÉGRER](C5-boucle-integrer.md)*

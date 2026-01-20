@@ -2,268 +2,427 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe détaille les 7 premiers jours d'adoption d'AIAD sur un projet. Elle fournit une checklist jour par jour et les critères de succès pour chaque étape.
+Démarrer un projet AIAD sans une initialisation structurée mène à des équipes désalignées, des artefacts incomplets et des agents IA inefficaces. Cette annexe vous guide jour par jour pour poser des fondations solides en 7 jours maximum.
 
 ---
 
-## Vue d'Ensemble
-
-### Durée
-4 à 7 jours selon la complexité du projet et la maturité de l'équipe.
+## Jour 1 : Alignement et Vision
 
 ### Objectif
-À la fin de l'initialisation, l'équipe doit être capable de :
-- Exécuter un cycle complet PLANIFIER → IMPLÉMENTER → VALIDER → INTÉGRER
-- Utiliser les agents IA de manière productive
-- Produire du code conforme aux standards définis
-
-### Participants
-- Product Manager
-- Product Engineer(s)
-- Tech Lead
-- QA Engineer (si présent)
-
----
-
-## Jour 1 : Fondations
-
-### Objectif du Jour
-Établir les artefacts fondamentaux du projet.
+Créer une compréhension partagée du projet et rédiger les premiers artefacts fondateurs.
 
 ### Activités
 
-#### 1. Kickoff d'Alignement (1-2h)
+#### Kickoff d'Alignement (1-2h)
+
+Réunir toute l'équipe (PM, PE, TL, QA si présent) pour aligner la vision.
 
 ```markdown
 ## Ordre du Jour Kickoff
 
-1. **Vision Produit** (PM présente)
-   - Problème adressé
-   - Solution proposée
-   - Utilisateurs cibles
+### 1. Vision Produit (PM présente - 20 min)
+- Quel problème résolvons-nous ?
+- Pour qui ?
+- Quelle est notre proposition de valeur unique ?
 
-2. **Contexte Technique** (Tech Lead présente)
-   - Stack existante ou choisie
-   - Contraintes techniques
-   - Dépendances
+### 2. Contexte Technique (Tech Lead présente - 15 min)
+- Stack choisie ou imposée
+- Contraintes techniques connues
+- Dépendances externes
 
-3. **Outcome Initial** (PM propose, équipe valide)
-   - Premier outcome mesurable à atteindre
-   - Métriques de succès
-   - Horizon temporel
+### 3. Premier Outcome (Discussion collective - 25 min)
+- Quel résultat mesurable visons-nous en premier ?
+- Comment saurons-nous que c'est atteint ?
+- Dans quel horizon temporel ?
 
-4. **Questions / Clarifications**
+### 4. Questions et Clarifications (15 min)
+- Lever les ambiguïtés
+- Identifier les zones d'ombre
 ```
 
-#### 2. Création du PRD Initial (PM, 2-3h)
+#### Rédaction du PRD Initial (PM, 2-3h)
+
+Le PRD pose les fondations produit. Version initiale, pas besoin d'être exhaustif.
 
 ```markdown
-## PRD - Version Initiale
+## PRD v0.1 - [Nom du Projet]
 
-À minima :
-- [ ] Vision en une phrase
-- [ ] Outcome principal avec métrique
-- [ ] Scope in/out clarifié
-- [ ] Contraintes identifiées
+### Vision
+[Une phrase qui capture l'essence du produit]
+
+### Problème
+[Description du problème utilisateur que nous résolvons]
+
+### Outcome Principal
+- **Métrique** : [Ex: Taux de conversion checkout > 70%]
+- **Horizon** : [Ex: Fin du sprint 3]
+
+### Scope
+**In** :
+- [Fonctionnalité 1]
+- [Fonctionnalité 2]
+
+**Out** :
+- [Explicitement exclu 1]
+- [Explicitement exclu 2]
+
+### Contraintes
+- [Contrainte 1]
+- [Contrainte 2]
 ```
 
-#### 3. Création du Document ARCHITECTURE (Tech Lead, 2-3h)
+#### Rédaction du Document ARCHITECTURE (Tech Lead, 2-3h)
+
+Documenter les choix techniques et leurs justifications.
 
 ```markdown
-## ARCHITECTURE - Version Initiale
+## ARCHITECTURE v0.1 - [Nom du Projet]
 
-À minima :
-- [ ] Stack technique documentée avec justifications
-- [ ] Structure de projet définie
-- [ ] Principes architecturaux énoncés
+### Stack Technique
+| Composant | Choix | Justification |
+|-----------|-------|---------------|
+| Frontend | [Ex: React] | [Pourquoi ce choix] |
+| Backend | [Ex: Node.js] | [Pourquoi ce choix] |
+| Database | [Ex: PostgreSQL] | [Pourquoi ce choix] |
+
+### Structure du Projet
+```
+src/
+├── components/    # Composants UI
+├── services/      # Logique métier
+├── api/           # Endpoints
+└── lib/           # Utilitaires
+```
+
+### Principes Architecturaux
+1. [Principe 1 - Ex: Séparation claire UI/logique]
+2. [Principe 2 - Ex: API-first]
+3. [Principe 3 - Ex: Tests obligatoires]
+
+### Décisions Notables
+| Décision | Alternative rejetée | Raison |
+|----------|---------------------|--------|
+| [Choix 1] | [Alternative] | [Pourquoi] |
 ```
 
 ### Checklist Fin de Jour 1
 
+- [ ] Kickoff réalisé, équipe alignée
 - [ ] PRD v0.1 rédigé et partagé
-- [ ] ARCHITECTURE v0.1 rédigé et partagé
-- [ ] Équipe alignée sur la vision et l'outcome initial
-- [ ] Repo créé (si nouveau projet)
+- [ ] ARCHITECTURE v0.1 rédigée et partagée
+- [ ] Repository créé (si nouveau projet)
+- [ ] Pas de question bloquante en suspens
 
 ---
 
-## Jour 2 : Configuration de l'Environnement
+## Jour 2 : Environnement et Agents
 
-### Objectif du Jour
-Avoir un environnement de développement fonctionnel avec les agents IA configurés.
+### Objectif
+Avoir un environnement de développement fonctionnel avec les agents IA configurés et testés.
 
 ### Activités
 
-#### 1. Setup Technique (Tech Lead + PE, 2-3h)
+#### Setup Technique (Tech Lead + PE, 2-3h)
 
-```markdown
-## Setup Projet
+**Nouveau projet :**
+```bash
+# Initialisation
+mkdir mon-projet && cd mon-projet
+git init
+pnpm init
 
-### Si nouveau projet
-- [ ] Repo initialisé
-- [ ] Structure de base créée
-- [ ] Dépendances installées
-- [ ] Scripts de dev/build/test configurés
+# Structure de base
+mkdir -p src/{components,services,api,lib}
+mkdir -p tests/{unit,integration,e2e}
 
-### Si projet existant
-- [ ] Accès au repo pour tous
-- [ ] Environnement local fonctionnel
-- [ ] Documentation existante revue
+# Configuration
+# Copier les configs depuis le template projet
 ```
 
-#### 2. Création de l'AGENT-GUIDE (Tech Lead, 2-3h)
-
+**Projet existant :**
 ```markdown
-## AGENT-GUIDE - Version Initiale
+## Checklist Projet Existant
 
-À minima :
-- [ ] Description du projet
-- [ ] Commandes principales
-- [ ] Structure du projet
-- [ ] Conventions de code
-- [ ] Instructions pour les agents
+- [ ] Accès au repo pour tous les membres
+- [ ] Clone et install fonctionnent
+- [ ] Build et tests passent
+- [ ] Documentation existante identifiée
 ```
 
-#### 3. Configuration des Agents IA (PE, 1-2h)
+#### Création de l'AGENT-GUIDE (Tech Lead, 2-3h)
+
+Le fichier que les agents IA liront pour comprendre le projet.
 
 ```markdown
-## Configuration Agents
+## CLAUDE.md (ou AGENT-GUIDE.md)
 
-- [ ] Agent principal installé/configuré
-- [ ] AGENT-GUIDE accessible à l'agent
-- [ ] Test de génération basique réussi
-- [ ] Intégration IDE fonctionnelle
+### Description du Projet
+[Nom du projet] - [Description en une ligne]
+
+### Commandes
+```bash
+pnpm dev      # Lancer le serveur de dev
+pnpm build    # Build production
+pnpm test     # Lancer les tests
+pnpm lint     # Vérifier le code
 ```
 
-#### 4. Configuration CI/CD (Tech Lead, 1-2h)
+### Structure
+```
+src/
+├── components/   # Composants React (PascalCase.tsx)
+├── services/     # Services métier (camelCase.ts)
+├── api/          # Routes API (kebab-case.ts)
+└── lib/          # Utilitaires partagés
+```
+
+### Conventions de Code
+- TypeScript strict, pas de `any`
+- Composants fonctionnels uniquement
+- Tests unitaires pour toute logique métier
+- Nommage : PascalCase (composants), camelCase (fonctions)
+
+### Patterns à Suivre
+[Exemple de code représentatif du projet]
+
+### Patterns à Éviter
+- Pas de `console.log` en production
+- Pas de logique dans les composants (extraire dans des hooks)
+- Pas de magic numbers (utiliser des constantes)
+```
+
+#### Configuration des Agents IA (PE, 1-2h)
 
 ```markdown
-## CI/CD Basique
+## Checklist Configuration Agent
 
-- [ ] Pipeline de build configuré
-- [ ] Linting automatique
-- [ ] Tests automatiques
-- [ ] Déploiement staging (si applicable)
+### Installation
+- [ ] Extension/CLI installé
+- [ ] Authentification configurée
+- [ ] Modèle sélectionné
+
+### Configuration Projet
+- [ ] AGENT-GUIDE créé à la racine
+- [ ] Fichiers de contexte identifiés
+- [ ] Dossiers exclus configurés (.git, node_modules)
+
+### Test de Validation
+- [ ] Demander à l'agent de décrire le projet → Réponse correcte
+- [ ] Demander de générer un composant simple → Code conforme
+- [ ] Demander de corriger une erreur volontaire → Fix approprié
+```
+
+#### Configuration CI/CD (Tech Lead, 1-2h)
+
+```yaml
+## Pipeline Minimal (.github/workflows/ci.yml)
+
+name: CI
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+      - run: pnpm install
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
 ```
 
 ### Checklist Fin de Jour 2
 
 - [ ] Chaque membre peut lancer le projet localement
-- [ ] AGENT-GUIDE créé et testé
-- [ ] Agents IA configurés et fonctionnels
+- [ ] AGENT-GUIDE créé et versionné
+- [ ] Agent IA configuré et testé avec succès
 - [ ] CI/CD basique opérationnel
-- [ ] Premier commit de l'équipe poussé
+- [ ] Premier commit collectif poussé
 
 ---
 
 ## Jour 3 : Première SPEC
 
-### Objectif du Jour
-Rédiger et valider la première spécification.
+### Objectif
+Rédiger et valider la première spécification, définir le DoOD du projet.
 
 ### Activités
 
-#### 1. Identification de la Première Feature (PM + PE, 1h)
+#### Sélection de la Première Feature (PM + PE, 1h)
+
+Choisir une feature qui permet de valider le workflow sans être trop risquée.
+
+| Critère | Bon Choix | Mauvais Choix |
+|---------|-----------|---------------|
+| Scope | Limité (1-2 jours) | Trop large |
+| Valeur | Visible pour l'utilisateur | Infrastructure invisible |
+| Dépendances | Aucune ou résolues | Bloqué par autre chose |
+| Risque | Faible | Technologie inconnue |
+
+**Exemples de bonnes premières features :**
+- Page d'affichage d'une liste simple
+- Formulaire de création basique
+- Composant UI réutilisable
+
+#### Rédaction de la SPEC (PE, 2-3h)
 
 ```markdown
-## Critères de Sélection - Première Feature
+## SPEC-001 : [Titre de la Feature]
 
-✅ Bon choix :
-- Périmètre limité (1-2 jours d'implémentation)
-- Valeur utilisateur visible
-- Pas de dépendance bloquante
-- Permet de tester le workflow complet
+### Contexte
+[Pourquoi cette feature ? Quel problème résout-elle ?]
 
-❌ Mauvais choix :
-- Feature complexe ou incertaine
-- Fondation technique sans valeur visible
-- Dépend d'éléments non encore en place
+### Objectif
+[Ce que l'utilisateur pourra faire une fois la feature livrée]
+
+### User Stories
+
+#### US-1 : [Titre]
+**En tant que** [type d'utilisateur]
+**Je veux** [action]
+**Afin de** [bénéfice]
+
+**Critères d'acceptation :**
+- [ ] [CA-1 : Critère vérifiable]
+- [ ] [CA-2 : Critère vérifiable]
+
+#### US-2 : [Titre]
+...
+
+### Cas Limites
+| Cas | Comportement Attendu |
+|-----|---------------------|
+| [Cas 1] | [Comportement] |
+| [Cas 2] | [Comportement] |
+
+### Hors Scope
+- [Ce qui n'est PAS inclus dans cette SPEC]
+
+### Notes Techniques
+[Indications pour l'implémentation si nécessaire]
 ```
 
-#### 2. Rédaction de la SPEC (PE, 2-3h)
+#### Review de la SPEC (Équipe, 1h)
 
 ```markdown
-## SPEC-001 - Première Feature
+## Checklist Review SPEC
 
-Inclure :
-- [ ] Contexte et objectif
-- [ ] User stories avec critères d'acceptation
+### Clarté
+- [ ] Chaque user story est compréhensible isolément
+- [ ] Les critères d'acceptation sont testables
+- [ ] Pas d'ambiguïté sur le comportement attendu
+
+### Complétude
+- [ ] Cas nominaux couverts
 - [ ] Cas limites identifiés
-- [ ] Spécification technique si nécessaire
-- [ ] DoOD adapté
+- [ ] Hors scope explicite
+
+### Faisabilité
+- [ ] Réalisable dans le temps imparti
+- [ ] Pas de dépendance bloquante
+- [ ] Complexité technique maîtrisée
 ```
 
-#### 3. Review de la SPEC (Équipe, 1h)
+#### Définition du DoOD (Équipe, 30min)
+
+Définir les critères de "Done" pour le projet.
 
 ```markdown
-## Review SPEC-001
+## DoOD - [Nom du Projet]
 
-Vérifier :
-- [ ] Compréhension partagée du besoin
-- [ ] Critères d'acceptation testables
-- [ ] Effort estimé réaliste
-- [ ] Pas de question bloquante
-```
+### Fonctionnel
+- [ ] Tous les critères d'acceptation satisfaits
+- [ ] Cas limites gérés
 
-#### 4. Définition du DoOD Initial (Équipe, 30min)
+### Code
+- [ ] Lint passe sans erreur
+- [ ] Typecheck passe sans erreur
+- [ ] Pas de TODO ou FIXME laissés
 
-```markdown
-## DoOD - Projet [Nom]
+### Tests
+- [ ] Tests unitaires écrits (couverture > 80%)
+- [ ] Tests passent
 
-Version initiale adaptée au contexte :
-- [ ] [Critère 1]
-- [ ] [Critère 2]
-- ...
+### Review
+- [ ] Code relu par au moins 1 personne
+- [ ] PR approuvée
 
-Note : Ce DoOD sera affiné après les premiers cycles.
+### Documentation
+- [ ] Code auto-documenté (nommage clair)
+- [ ] Commentaires si logique complexe
 ```
 
 ### Checklist Fin de Jour 3
 
-- [ ] SPEC-001 rédigée et validée
-- [ ] DoOD du projet défini
+- [ ] SPEC-001 rédigée et validée par l'équipe
+- [ ] DoOD du projet défini et accepté
 - [ ] SPEC statut "Ready"
-- [ ] Équipe prête à implémenter
+- [ ] Équipe confiante pour démarrer l'implémentation
 
 ---
 
-## Jour 4-5 : Premier Cycle Complet
+## Jours 4-5 : Premier Cycle Complet
 
 ### Objectif
-Exécuter le premier cycle PLANIFIER → IMPLÉMENTER → VALIDER → INTÉGRER.
+Exécuter un cycle complet PLANIFIER → IMPLÉMENTER → VALIDER → INTÉGRER.
 
 ### Jour 4 : PLANIFIER + IMPLÉMENTER
 
 #### PLANIFIER (PE, 1h)
 
 ```markdown
-## Décomposition SPEC-001
+## Plan - SPEC-001
 
-1. [Tâche 1] - estimation
-2. [Tâche 2] - estimation
-3. [Tâche 3] - estimation
+### Décomposition
 
-Ordre d'exécution : 1 → 2 → 3
-Points d'attention : [...]
+| # | Tâche | Estimation | Dépend |
+|---|-------|------------|--------|
+| 1 | [Créer le composant de base] | S | - |
+| 2 | [Ajouter la logique métier] | M | 1 |
+| 3 | [Connecter à l'API] | S | 2 |
+| 4 | [Écrire les tests] | S | 3 |
+
+### Ordre d'Exécution
+1 → 2 → 3 → 4 (séquentiel)
+
+### Points de Validation
+- Après #2 : Vérifier que la logique fonctionne en isolation
+- Après #4 : Tests passent, prêt pour review
 ```
 
 #### IMPLÉMENTER (PE + Agents, 4-6h)
 
 ```markdown
-## Session d'Implémentation
+## Session d'Implémentation - SPEC-001
 
 ### Préparation
-- [ ] AGENT-GUIDE relu
-- [ ] Contexte de la SPEC en tête
+- [ ] Plan relu
+- [ ] AGENT-GUIDE ouvert
 - [ ] Environnement de dev prêt
 
-### Exécution
-- [ ] Tâche 1 : prompt → output → review → commit
-- [ ] Tâche 2 : prompt → output → review → commit
-- [ ] Tâche 3 : prompt → output → review → commit
+### Exécution par Tâche
 
-### Notes
-[Observations sur le workflow, les agents, les difficultés]
+#### Tâche 1 : [Créer le composant de base]
+**Prompt utilisé :**
+> [Résumé du prompt]
+
+**Résultat :** ✅ OK en 1 itération
+**Commit :** `feat(feature): create base component`
+
+#### Tâche 2 : [Ajouter la logique métier]
+**Prompt utilisé :**
+> [Résumé du prompt]
+
+**Résultat :** ⚠️ 2 itérations (manquait validation)
+**Commit :** `feat(feature): add business logic`
+
+[Continuer pour chaque tâche...]
+
+### Notes de Session
+- [Observation sur le workflow]
+- [Difficulté rencontrée et solution]
 ```
 
 ### Jour 5 : VALIDER + INTÉGRER
@@ -271,163 +430,273 @@ Points d'attention : [...]
 #### VALIDER (QA ou PE, 2-4h)
 
 ```markdown
-## Validation SPEC-001
+## Validation - SPEC-001
 
 ### Tests Automatisés
-- [ ] Tests unitaires passent
-- [ ] Tests d'intégration passent (si applicable)
+| Type | Passés | Échoués |
+|------|--------|---------|
+| Unit | 12 | 0 |
+| Integration | 3 | 0 |
 
-### Tests Manuels
-- [ ] Critères d'acceptation vérifiés
-- [ ] Cas limites testés
+### Critères d'Acceptation
+| CA | Status | Notes |
+|----|--------|-------|
+| CA-1 | ✅ | - |
+| CA-2 | ✅ | - |
+
+### Cas Limites
+| Cas | Status |
+|-----|--------|
+| [Cas 1] | ✅ |
+| [Cas 2] | ✅ |
 
 ### DoOD
-- [ ] Checklist complète
+- [x] Critères d'acceptation satisfaits
+- [x] Tests écrits et passent
+- [x] Lint et typecheck OK
+- [ ] Review effectuée
+
+### Verdict : ✅ Prêt pour Review
 ```
 
 #### INTÉGRER (PE, 1-2h)
 
 ```markdown
-## Intégration SPEC-001
+## Intégration - SPEC-001
 
-- [ ] Code reviewé
-- [ ] PR créée avec description
+### Checklist Pré-Merge
+- [ ] Validation QA passée
 - [ ] CI passe
-- [ ] Merge effectué
+- [ ] Branche à jour avec main
+- [ ] Pas de conflits
+
+### Pull Request
+**Titre :** feat(feature): implement SPEC-001 - [Titre]
+
+**Description :**
+- Implémente [résumé]
+- Ajoute [détail]
+- Tests inclus
+
+### Post-Merge
+- [ ] Branche supprimée
+- [ ] SPEC-001 marquée "Done"
 - [ ] Déployé en staging (si applicable)
 ```
 
-### Checklist Fin Jour 5
+### Checklist Fin de Jour 5
 
-- [ ] SPEC-001 implémentée
-- [ ] Tests passants
-- [ ] Code mergé
-- [ ] Premier cycle complet documenté
+- [ ] SPEC-001 implémentée et testée
+- [ ] Code mergé dans main
+- [ ] CI passe sur main
+- [ ] Premier cycle documenté
 
 ---
 
-## Jour 6-7 : Consolidation
+## Jours 6-7 : Consolidation
 
 ### Objectif
-Affiner le workflow et documenter les apprentissages.
+Apprendre du premier cycle et préparer la suite.
 
 ### Activités
 
-#### 1. Rétrospective d'Initialisation (Équipe, 1-2h)
+#### Rétrospective d'Initialisation (Équipe, 1-2h)
 
 ```markdown
 ## Rétro - Phase d'Initialisation
 
 ### Ce qui a bien fonctionné
-- [...]
-- [...]
+- [Point positif 1]
+- [Point positif 2]
 
 ### Ce qui a été difficile
-- [...]
-- [...]
+- [Difficulté 1]
+- [Difficulté 2]
 
-### À améliorer
-- [...]
-- [...]
+### Améliorations pour la suite
+| Amélioration | Action | Responsable |
+|--------------|--------|-------------|
+| [Amélioration 1] | [Action concrète] | [Nom] |
+| [Amélioration 2] | [Action concrète] | [Nom] |
 
-### Actions
-- [ ] [Action 1] - Responsable : [Nom]
-- [ ] [Action 2] - Responsable : [Nom]
+### Questions Ouvertes
+- [Question 1]
 ```
 
-#### 2. Mise à Jour des Artefacts (2-3h)
+#### Mise à Jour des Artefacts (2-3h)
+
+Intégrer les apprentissages du premier cycle.
 
 ```markdown
-## Mise à Jour Post-Premier Cycle
+## Mises à Jour Post-Premier Cycle
 
 ### AGENT-GUIDE
-- [ ] Ajout des learnings
+- [ ] Ajout des patterns découverts
 - [ ] Clarification des conventions si nécessaire
-- [ ] Exemples ajoutés si manquants
+- [ ] Exemples de code du projet ajoutés
 
 ### DoOD
-- [ ] Ajustement si trop strict/laxiste
-- [ ] Clarification des critères ambigus
+- [ ] Ajustement si critères trop stricts/laxistes
+- [ ] Clarification des points ambigus
 
 ### ARCHITECTURE
-- [ ] Mise à jour si décisions prises
-- [ ] ADR si décision architecturale
+- [ ] Documentation des décisions prises
+- [ ] Mise à jour si la structure a évolué
 ```
 
-#### 3. Lancement du Rythme Normal (PM, 1h)
+#### Lancement du Rythme Normal (PM, 1h)
 
 ```markdown
-## Transition vers le Rythme Normal
+## Transition vers Production
 
 ### Backlog de SPECs
-- SPEC-002 : [Titre] - Status : Draft
-- SPEC-003 : [Titre] - Status : Draft
-- SPEC-004 : [Titre] - Status : Draft
-
-### Prochaine Priorité
-SPEC-002 à passer en "Ready"
+| SPEC | Titre | Status | Priorité |
+|------|-------|--------|----------|
+| SPEC-002 | [Titre] | Draft | Haute |
+| SPEC-003 | [Titre] | Draft | Moyenne |
+| SPEC-004 | [Titre] | Draft | Basse |
 
 ### Cadence Établie
-- Cycle cible : [X] jours
-- Synchro : [fréquence et format]
+- Durée de cycle cible : [X] jours
+- Synchro quotidienne : [Format et horaire]
+- Review : [Fréquence]
+
+### Prochaine Priorité
+SPEC-002 à passer en "Ready" pour le prochain cycle
 ```
 
 ### Checklist Fin d'Initialisation
 
-- [ ] Premier cycle complet réalisé
-- [ ] Rétrospective effectuée
-- [ ] Artefacts mis à jour avec les learnings
-- [ ] Backlog de SPECs alimenté
-- [ ] Équipe autonome pour continuer
+- [ ] Premier cycle complet réalisé avec succès
+- [ ] Rétrospective effectuée, actions identifiées
+- [ ] Artefacts mis à jour avec les apprentissages
+- [ ] Backlog alimenté pour les prochains cycles
+- [ ] Équipe autonome et confiante pour continuer
 
 ---
 
-## Critères de Succès
+## Exemples Pratiques
 
-### L'initialisation est Réussie Si :
+### Exemple : Initialisation Projet E-commerce
 
-| Critère | Indicateur |
-|---------|------------|
-| Artefacts en place | PRD, ARCHITECTURE, AGENT-GUIDE, première SPEC |
-| Workflow validé | Un cycle complet exécuté |
-| Agents fonctionnels | Code généré et intégré avec succès |
-| Équipe alignée | Pas de question bloquante sur le "comment" |
-| Rythme établi | Prochain cycle planifié |
+**Jour 1 :**
+- PRD : "Plateforme de vente en ligne pour artisans locaux"
+- Outcome : "10 ventes complétées via la plateforme"
+- Stack : Next.js, Prisma, PostgreSQL
 
-### Signaux d'Alerte
+**Jour 2 :**
+- AGENT-GUIDE avec conventions React/TypeScript
+- Agent testé sur génération de composant ProductCard
 
-| Signal | Action |
-|--------|--------|
-| Jour 3 sans PRD ni ARCHITECTURE | Pause pour compléter les fondations |
-| Agents ne produisent pas du code utilisable | Revoir l'AGENT-GUIDE, consulter support |
-| Premier cycle > 5 jours | Réduire le scope de SPEC-001 |
-| Équipe frustrée ou perdue | Rétrospective immédiate |
+**Jour 3 :**
+- SPEC-001 : "Affichage de la liste des produits"
+- 3 user stories, 8 critères d'acceptation
+
+**Jours 4-5 :**
+- Implémentation : 6 commits, 4 tâches
+- Validation : 15 tests passent, 0 bug
+
+**Jours 6-7 :**
+- Rétro : "Agent génère du code propre, mais oublie souvent les tests"
+- Action : Ajouter dans l'AGENT-GUIDE "Toujours inclure les tests unitaires"
 
 ---
 
-## Templates Jour par Jour
+## Anti-patterns
 
-### Daily Check - Initialisation
+### "Le Kickoff Marathon"
 
-```markdown
-## Daily - Jour [X] Initialisation
+**Symptôme :** Kickoff de 4h+ qui épuise tout le monde
+```
+❌ Essayer de tout définir le premier jour
+```
 
-### Objectif du Jour
-[...]
+**Solution :**
+```
+✅ Kickoff de 2h max
+✅ Questions ouvertes traitées les jours suivants
+✅ Itérer sur les artefacts plutôt que viser la perfection
+```
 
-### Fait Aujourd'hui
-- [...]
+### "Le PRD Parfait"
 
-### Blocages
-- [...]
+**Symptôme :** 3 jours à peaufiner le PRD avant de coder
+```
+❌ "On ne peut pas commencer sans un PRD complet"
+```
 
-### Demain
-- [...]
+**Solution :**
+```
+✅ PRD v0.1 suffisant pour démarrer
+✅ Le PRD évolue avec le projet
+✅ Les détails émergent en faisant
+```
 
-### Besoin d'Aide
-- [...]
+### "L'Agent Non Testé"
+
+**Symptôme :** Configuration agent bâclée, problèmes découverts en implémentation
+```
+❌ "L'agent est installé, c'est bon"
+```
+
+**Solution :**
+```
+✅ Test de génération basique AVANT le cycle
+✅ Validation que l'AGENT-GUIDE est compris
+✅ Ajustements immédiats si output non conforme
+```
+
+### "Le Premier Cycle Trop Ambitieux"
+
+**Symptôme :** SPEC-001 trop complexe, premier cycle qui échoue
+```
+❌ "Autant commencer par quelque chose de significatif"
+```
+
+**Solution :**
+```
+✅ Première feature volontairement simple
+✅ L'objectif est de valider le workflow, pas de livrer
+✅ La complexité vient après la maîtrise
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Checklist Récapitulative
+
+```markdown
+## Initialisation AIAD - Checklist Complète
+
+### Jour 1 : Alignement
+- [ ] Kickoff réalisé
+- [ ] PRD v0.1 rédigé
+- [ ] ARCHITECTURE v0.1 rédigée
+- [ ] Repo créé
+
+### Jour 2 : Environnement
+- [ ] Setup technique fonctionnel
+- [ ] AGENT-GUIDE créé
+- [ ] Agent IA configuré et testé
+- [ ] CI/CD basique opérationnel
+
+### Jour 3 : Première SPEC
+- [ ] Feature sélectionnée
+- [ ] SPEC-001 rédigée et reviewée
+- [ ] DoOD défini
+
+### Jours 4-5 : Premier Cycle
+- [ ] Plan créé
+- [ ] Implémentation terminée
+- [ ] Validation passée
+- [ ] Code intégré
+
+### Jours 6-7 : Consolidation
+- [ ] Rétrospective effectuée
+- [ ] Artefacts mis à jour
+- [ ] Backlog alimenté
+- [ ] Équipe autonome
+```
+
+---
+
+*Annexes connexes : [A.1 Template PRD](A1-prd.md) • [A.2 Template ARCHITECTURE](A2-architecture.md) • [A.3 Template AGENT-GUIDE](A3-agent-guide.md) • [C.2 Boucle PLANIFIER](C2-boucle-planifier.md)*
