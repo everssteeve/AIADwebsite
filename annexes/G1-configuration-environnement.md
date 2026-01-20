@@ -2,48 +2,50 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit les commandes et la structure de projet recommandées pour mettre en place un environnement de développement AIAD.
+Un environnement mal configuré génère des frictions quotidiennes : imports cassés, styles incohérents, commits anarchiques. Cette annexe vous guide pas à pas pour créer un environnement de développement AIAD opérationnel en moins d'une heure, reproductible par toute l'équipe.
 
 ---
 
-## Structure de Projet Recommandée
+## Structure de Projet
 
-### Monorepo (Recommandé)
+### Monorepo (Projets Multi-Apps)
 
 ```
 project-name/
 ├── .github/
-│   ├── workflows/          # CI/CD pipelines
+│   ├── workflows/              # CI/CD pipelines
 │   └── PULL_REQUEST_TEMPLATE.md
 ├── apps/
-│   ├── web/               # Application frontend
+│   ├── web/                    # Application frontend
 │   │   ├── src/
 │   │   ├── tests/
 │   │   ├── package.json
 │   │   └── tsconfig.json
-│   └── api/               # Application backend
+│   └── api/                    # Application backend
 │       ├── src/
 │       ├── tests/
 │       ├── package.json
 │       └── tsconfig.json
 ├── packages/
-│   └── shared/            # Code partagé (types, utils)
+│   └── shared/                 # Code partagé (types, utils)
 │       ├── src/
 │       ├── package.json
 │       └── tsconfig.json
 ├── docs/
-│   ├── PRD.md             # Product Requirements Document
-│   ├── ARCHITECTURE.md    # Documentation architecture
-│   └── specs/             # Spécifications
+│   ├── PRD.md                  # Product Requirements Document
+│   ├── ARCHITECTURE.md         # Documentation architecture
+│   └── specs/                  # Spécifications
 │       └── SPEC-001.md
-├── scripts/               # Scripts utilitaires
-├── .env.example           # Template variables d'environnement
-├── CLAUDE.md              # AGENT-GUIDE
-├── package.json           # Config workspace
-├── pnpm-workspace.yaml    # Config pnpm workspaces
-├── tsconfig.base.json     # Config TypeScript partagée
+├── scripts/                    # Scripts utilitaires
+├── .env.example                # Template variables d'environnement
+├── CLAUDE.md                   # AGENT-GUIDE
+├── package.json                # Config workspace
+├── pnpm-workspace.yaml         # Config pnpm workspaces
+├── tsconfig.base.json          # Config TypeScript partagée
 └── README.md
 ```
+
+**Quand utiliser** : Plusieurs applications (web + API), code partagé entre apps, équipe > 3 personnes.
 
 ### Single App (Projets Simples)
 
@@ -52,16 +54,16 @@ project-name/
 ├── .github/
 │   └── workflows/
 ├── src/
-│   ├── components/        # Composants UI
-│   ├── features/          # Logique par feature
-│   ├── lib/               # Utilitaires
-│   ├── pages/             # Routes/pages
-│   └── types/             # Types TypeScript
+│   ├── components/             # Composants UI
+│   ├── features/               # Logique par feature
+│   ├── lib/                    # Utilitaires
+│   ├── pages/                  # Routes/pages
+│   └── types/                  # Types TypeScript
 ├── tests/
 │   ├── unit/
 │   ├── integration/
 │   └── e2e/
-├── public/                # Assets statiques
+├── public/                     # Assets statiques
 ├── docs/
 │   ├── PRD.md
 │   └── ARCHITECTURE.md
@@ -72,14 +74,16 @@ project-name/
 └── README.md
 ```
 
+**Quand utiliser** : Application unique, projet solo ou petite équipe, prototype/MVP.
+
 ---
 
-## Setup Initial
+## Setup Pas à Pas
 
-### 1. Création du Projet
+### Étape 1 : Créer la Structure
 
 ```bash
-# Créer le dossier
+# Créer et entrer dans le dossier
 mkdir project-name && cd project-name
 
 # Initialiser git
@@ -88,11 +92,16 @@ git init
 # Initialiser pnpm
 pnpm init
 
-# Créer la structure de base
-mkdir -p .github/workflows apps/web apps/api packages/shared docs/specs scripts
+# Créer la structure de base (monorepo)
+mkdir -p .github/workflows apps/web/src apps/web/tests apps/api/src apps/api/tests
+mkdir -p packages/shared/src docs/specs scripts
+
+# OU pour single app
+mkdir -p .github/workflows src/{components,features,lib,pages,types}
+mkdir -p tests/{unit,integration,e2e} public docs
 ```
 
-### 2. Configuration pnpm Workspaces
+### Étape 2 : Configurer pnpm Workspaces
 
 ```yaml
 # pnpm-workspace.yaml
@@ -111,16 +120,18 @@ packages:
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "turbo": "^2.0.0",
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "prettier": "^3.0.0"
   }
 }
 ```
 
-### 3. Configuration TypeScript
+### Étape 3 : Configurer TypeScript
 
 ```json
 // tsconfig.base.json
@@ -161,10 +172,10 @@ packages:
 }
 ```
 
-### 4. Configuration ESLint
+### Étape 4 : Configurer ESLint
 
 ```javascript
-// eslint.config.js
+// eslint.config.js (ESLint 9+ flat config)
 import js from '@eslint/js'
 import typescript from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
@@ -191,7 +202,7 @@ export default [
 ]
 ```
 
-### 5. Configuration Prettier
+### Étape 5 : Configurer Prettier
 
 ```json
 // .prettierrc
@@ -204,116 +215,25 @@ export default [
 }
 ```
 
----
-
-## Variables d'Environnement
-
-### Structure
-
-```bash
-# .env.example
-# ============================================
-# Application
-# ============================================
-NODE_ENV=development
-PORT=3000
-
-# ============================================
-# Database
-# ============================================
-DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-
-# ============================================
-# Authentication
-# ============================================
-JWT_SECRET=your-secret-key-change-in-production
-JWT_EXPIRES_IN=7d
-
-# ============================================
-# External Services
-# ============================================
-# API_KEY=your-api-key
-
-# ============================================
-# Feature Flags (optional)
-# ============================================
-# FEATURE_NEW_UI=false
+```
+// .prettierignore
+node_modules
+dist
+build
+coverage
+.next
+.turbo
+pnpm-lock.yaml
 ```
 
-### Gestion des Secrets
+### Étape 6 : Configurer les Git Hooks
 
 ```bash
-# Ne JAMAIS commiter .env
-echo ".env" >> .gitignore
-echo ".env.local" >> .gitignore
-echo ".env.*.local" >> .gitignore
-
-# Copier le template
-cp .env.example .env
-```
-
----
-
-## Git Configuration
-
-### .gitignore
-
-```gitignore
-# Dependencies
-node_modules/
-.pnpm-store/
-
-# Build outputs
-dist/
-build/
-.next/
-.turbo/
-
-# Environment
-.env
-.env.local
-.env.*.local
-
-# IDE
-.idea/
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-npm-debug.log*
-
-# Testing
-coverage/
-.nyc_output/
-
-# Misc
-*.tsbuildinfo
-```
-
-### Git Hooks (Husky + lint-staged)
-
-```bash
-# Installation
-pnpm add -D husky lint-staged
+# Installer les dépendances
+pnpm add -D husky lint-staged @commitlint/cli @commitlint/config-conventional
 
 # Initialiser husky
 pnpm exec husky init
-```
-
-```json
-// package.json
-{
-  "lint-staged": {
-    "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,md}": ["prettier --write"]
-  }
-}
 ```
 
 ```bash
@@ -326,7 +246,15 @@ pnpm lint-staged
 pnpm exec commitlint --edit $1
 ```
 
-### Commitlint
+```json
+// package.json (ajouter)
+{
+  "lint-staged": {
+    "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,yaml}": ["prettier --write"]
+  }
+}
+```
 
 ```javascript
 // commitlint.config.js
@@ -346,67 +274,52 @@ export default {
 
 ---
 
-## Scripts Utilitaires
+## Variables d'Environnement
 
-### Script de Setup
+### Template .env.example
 
 ```bash
-#!/bin/bash
-# scripts/setup.sh
+# .env.example
+# ============================================
+# Application
+# ============================================
+NODE_ENV=development
+PORT=3000
 
-echo "🚀 Setting up project..."
+# ============================================
+# Database
+# ============================================
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 
-# Vérifier les prérequis
-command -v node >/dev/null 2>&1 || { echo "Node.js required"; exit 1; }
-command -v pnpm >/dev/null 2>&1 || { echo "pnpm required"; exit 1; }
+# ============================================
+# Authentication
+# ============================================
+JWT_SECRET=change-me-in-production
+JWT_EXPIRES_IN=7d
 
-# Installer les dépendances
-echo "📦 Installing dependencies..."
-pnpm install
-
-# Copier les fichiers d'environnement
-if [ ! -f .env ]; then
-  echo "📝 Creating .env file..."
-  cp .env.example .env
-fi
-
-# Setup la base de données (si applicable)
-if [ -f "apps/api/package.json" ]; then
-  echo "🗄️ Setting up database..."
-  pnpm --filter api db:migrate
-fi
-
-echo "✅ Setup complete!"
-echo "Run 'pnpm dev' to start development"
+# ============================================
+# External Services
+# ============================================
+# API_KEY=your-api-key
 ```
 
-### Script de Clean
+### Sécurisation
 
 ```bash
-#!/bin/bash
-# scripts/clean.sh
+# Ajouter au .gitignore
+echo ".env" >> .gitignore
+echo ".env.local" >> .gitignore
+echo ".env.*.local" >> .gitignore
 
-echo "🧹 Cleaning project..."
-
-# Supprimer les builds
-rm -rf dist build .next .turbo
-
-# Supprimer les node_modules (optionnel)
-read -p "Remove node_modules? (y/n) " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  rm -rf node_modules apps/*/node_modules packages/*/node_modules
-  echo "Removed node_modules"
-fi
-
-echo "✅ Clean complete!"
+# Copier le template pour démarrer
+cp .env.example .env
 ```
 
 ---
 
-## Configuration IDE
+## Configuration IDE (VS Code)
 
-### VS Code Settings
+### Settings
 
 ```json
 // .vscode/settings.json
@@ -423,6 +336,10 @@ echo "✅ Clean complete!"
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.turbo": true
   }
 }
 ```
@@ -436,52 +353,237 @@ echo "✅ Clean complete!"
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "bradlc.vscode-tailwindcss",
-    "prisma.prisma",
-    "ms-playwright.playwright"
+    "ms-playwright.playwright",
+    "streetsidesoftware.code-spell-checker"
   ]
 }
 ```
 
 ---
 
-## Checklist Setup Complet
+## Scripts Utilitaires
 
-```markdown
-## Checklist Environnement
+### Script de Setup Initial
 
-### Structure
-- [ ] Dossiers créés selon le template
-- [ ] pnpm workspace configuré
-- [ ] TypeScript configuré (strict mode)
+```bash
+#!/bin/bash
+# scripts/setup.sh
 
-### Qualité
-- [ ] ESLint configuré
-- [ ] Prettier configuré
-- [ ] Git hooks installés (Husky)
-- [ ] Commitlint configuré
+set -e
 
-### Documentation
-- [ ] README.md créé
-- [ ] CLAUDE.md (AGENT-GUIDE) créé
-- [ ] .env.example créé
-- [ ] PRD.md initialisé
-- [ ] ARCHITECTURE.md initialisé
+echo "🚀 Configuration du projet..."
 
-### Git
-- [ ] .gitignore configuré
-- [ ] Repo initialisé
-- [ ] Premier commit effectué
+# Vérifier les prérequis
+command -v node >/dev/null 2>&1 || { echo "❌ Node.js requis"; exit 1; }
+command -v pnpm >/dev/null 2>&1 || { echo "❌ pnpm requis. Installez avec: npm install -g pnpm"; exit 1; }
 
-### IDE
-- [ ] VS Code settings
-- [ ] Extensions recommandées
+# Vérifier la version de Node
+NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
+if [ "$NODE_VERSION" -lt 18 ]; then
+  echo "❌ Node.js 18+ requis (version actuelle: $(node -v))"
+  exit 1
+fi
 
-### CI/CD (optionnel au setup)
-- [ ] GitHub Actions configuré
-- [ ] Tests automatiques
-- [ ] Deploy preview
+# Installer les dépendances
+echo "📦 Installation des dépendances..."
+pnpm install
+
+# Créer le fichier .env si absent
+if [ ! -f .env ]; then
+  echo "📝 Création du fichier .env..."
+  cp .env.example .env
+  echo "⚠️  Pensez à configurer vos variables d'environnement dans .env"
+fi
+
+# Setup les git hooks
+echo "🪝 Configuration des git hooks..."
+pnpm exec husky install
+
+echo "✅ Setup terminé !"
+echo ""
+echo "Prochaines étapes :"
+echo "  1. Configurez vos variables dans .env"
+echo "  2. Lancez 'pnpm dev' pour démarrer"
+```
+
+### Script de Nettoyage
+
+```bash
+#!/bin/bash
+# scripts/clean.sh
+
+echo "🧹 Nettoyage du projet..."
+
+# Supprimer les builds
+rm -rf dist build .next .turbo coverage
+
+# Supprimer le cache
+rm -rf .eslintcache .prettiercache
+
+# Optionnel : supprimer node_modules
+if [ "$1" = "--all" ]; then
+  echo "📦 Suppression des node_modules..."
+  rm -rf node_modules apps/*/node_modules packages/*/node_modules
+  echo "✅ Relancez 'pnpm install' pour réinstaller"
+fi
+
+echo "✅ Nettoyage terminé !"
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Exemples Pratiques
+
+### Exemple 1 : Setup Projet React + Vite
+
+```bash
+# Créer le projet
+pnpm create vite@latest my-app --template react-ts
+cd my-app
+
+# Ajouter les outils de qualité
+pnpm add -D eslint prettier husky lint-staged @commitlint/cli @commitlint/config-conventional
+
+# Créer la documentation AIAD
+mkdir docs
+touch docs/PRD.md docs/ARCHITECTURE.md CLAUDE.md
+
+# Initialiser les hooks
+pnpm exec husky init
+```
+
+### Exemple 2 : Setup Projet Node.js API
+
+```bash
+# Initialiser
+mkdir my-api && cd my-api
+pnpm init
+
+# Installer les dépendances
+pnpm add express zod
+pnpm add -D typescript @types/node @types/express tsx vitest
+
+# Structure
+mkdir -p src/{routes,services,middleware} tests docs
+
+# TypeScript
+echo '{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}' > tsconfig.json
+```
+
+---
+
+## Anti-patterns
+
+### ❌ Pas de TypeScript strict
+
+```json
+// MAUVAIS
+{
+  "compilerOptions": {
+    "strict": false,
+    "noImplicitAny": false
+  }
+}
+```
+
+**Problème** : Les agents génèrent du code non typé, les erreurs passent en production.
+
+**Solution** : Toujours `"strict": true`.
+
+### ❌ Pas de formatage automatique
+
+**Problème** : Chaque commit mélange changements de code et changements de formatage. Les diffs sont illisibles.
+
+**Solution** : Prettier + format on save + lint-staged.
+
+### ❌ Secrets dans le repo
+
+```bash
+# MAUVAIS - .env committé
+DATABASE_URL=postgresql://prod-user:real-password@prod-server:5432/prod
+```
+
+**Problème** : Les secrets sont exposés à tous les contributeurs et dans l'historique git.
+
+**Solution** : .env dans .gitignore, .env.example avec des valeurs fictives.
+
+### ❌ Structure de dossiers anarchique
+
+```
+# MAUVAIS
+src/
+├── utils.ts
+├── helpers.ts
+├── functions.ts
+├── stuff.ts
+└── misc.ts
+```
+
+**Problème** : Impossible de naviguer, les agents ne comprennent pas où placer le code.
+
+**Solution** : Structure par feature ou par couche, documentée dans CLAUDE.md.
+
+### ❌ Pas de git hooks
+
+**Problème** : Du code non formaté, non linté, avec des messages de commit anarchiques arrive dans le repo.
+
+**Solution** : Husky + lint-staged + commitlint.
+
+---
+
+## Checklist Setup Complet
+
+```markdown
+## Checklist Environnement AIAD
+
+### Structure
+- [ ] Dossiers créés selon le template (monorepo ou single app)
+- [ ] pnpm workspace configuré (si monorepo)
+- [ ] README.md avec instructions de setup
+
+### TypeScript
+- [ ] tsconfig.json avec strict: true
+- [ ] Path aliases configurés (@/*)
+- [ ] Declaration maps pour le debug
+
+### Qualité de Code
+- [ ] ESLint configuré
+- [ ] Prettier configuré
+- [ ] Format on save activé dans l'IDE
+
+### Git
+- [ ] .gitignore complet
+- [ ] Husky installé
+- [ ] lint-staged configuré
+- [ ] commitlint configuré
+- [ ] Premier commit effectué
+
+### Documentation AIAD
+- [ ] CLAUDE.md (AGENT-GUIDE) créé
+- [ ] docs/PRD.md initialisé
+- [ ] docs/ARCHITECTURE.md initialisé
+- [ ] .env.example créé
+
+### IDE
+- [ ] .vscode/settings.json configuré
+- [ ] .vscode/extensions.json avec recommandations
+
+### Scripts
+- [ ] scripts/setup.sh fonctionnel
+- [ ] pnpm dev lance le projet
+- [ ] pnpm build produit un build
+- [ ] pnpm test lance les tests
+```
+
+---
+
+*Voir aussi : [G.2 Installation Agents IA](G2-installation-agents-ia.md) · [G.3 Setup CI/CD](G3-setup-ci-cd.md) · [A.3 Template AGENT-GUIDE](A3-agent-guide.md)*

