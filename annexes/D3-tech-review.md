@@ -1,386 +1,531 @@
-# D.3 Tech Review - Détails
+# D.3 Tech Review
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit les critères de priorisation de la dette technique et des templates pour conduire des Tech Reviews efficaces.
-
----
-
-## Vue d'Ensemble
-
-### Objectif
-Examiner les choix techniques, identifier et prioriser la dette technique, valider l'architecture des nouvelles features.
-
-### Cadence Recommandée
-Bi-hebdomadaire ou mensuelle selon le rythme du projet.
-
-### Durée
-30 à 60 minutes.
-
-### Participants
-- Tech Lead (facilite)
-- Product Engineer(s)
-- Agents Engineer (si présent)
-- PM (optionnel, pour contexte business)
+La Tech Review est le gardien de la qualité technique. Mal conduite, elle devient un goulot d'étranglement bureaucratique. Bien conduite, elle prévient les erreurs coûteuses et accélère les décisions architecturales. Cette annexe vous donne les outils pour des reviews qui ajoutent de la valeur sans ralentir l'équipe.
 
 ---
 
 ## Types de Tech Review
 
-### 1. Review de Design
+| Type | Quand | Durée | Output |
+|------|-------|-------|--------|
+| **Design Review** | Avant implémentation complexe | 30-45 min | Décision Go/No-Go + ADR |
+| **Code Review Approfondie** | Changements sensibles/complexes | 30-60 min | Feedback structuré |
+| **Review de Dette** | Périodique (bi-hebdo/mensuel) | 30 min | Priorisation dette |
 
-Avant l'implémentation d'une feature complexe.
+---
+
+## Design Review
+
+Pour valider une approche technique **avant** d'écrire le code.
+
+### Quand Déclencher
+
+| Trigger | Exemples |
+|---------|----------|
+| Nouveau composant structurant | Nouveau service, nouvelle lib majeure |
+| Changement d'architecture | Migration DB, changement de pattern |
+| Incertitude technique | Plusieurs approches possibles |
+| Impact transverse | Touche plusieurs modules/équipes |
+
+### Template Design Review
 
 ```markdown
-## Design Review - [Feature]
+# Design Review - [Feature/Changement]
 
-### Contexte
-- SPEC : [Référence]
-- Objectif technique : [Ce qu'on doit accomplir]
+## Métadonnées
+- **Date** : [Date]
+- **Proposeur** : [PE/TL]
+- **SPEC** : [Référence]
 
-### Proposition
-[Description de l'approche technique proposée]
+## Participants
+- [ ] Tech Lead (facilite)
+- [ ] PE concerné(s)
+- [ ] Agents Engineer (si pertinent)
 
-### Diagramme (si applicable)
-[Schéma d'architecture]
+---
 
-### Points de Discussion
+## 1. Contexte (5 min)
+
+**Problème à résoudre** :
+[Description en 2-3 phrases]
+
+**Contraintes** :
+- [Contrainte 1]
+- [Contrainte 2]
+
+**SPEC associée** : [Lien]
+
+---
+
+## 2. Proposition (10 min)
+
+### Approche Proposée
+[Description technique de l'approche]
+
+### Diagramme
+[Schéma si applicable]
+
+### Changements Requis
+| Composant | Modification |
+|-----------|--------------|
+| [Composant] | [Ce qui change] |
+
+---
+
+## 3. Alternatives Considérées (10 min)
+
+| Alternative | Pour | Contre | Pourquoi Non |
+|-------------|------|--------|--------------|
+| [Option A] | [...] | [...] | [Raison] |
+| [Option B] | [...] | [...] | [Raison] |
+
+---
+
+## 4. Discussion (15 min)
+
+### Points à Valider
 - [ ] [Question technique 1]
 - [ ] [Question technique 2]
+- [ ] [Risque identifié]
 
-### Alternatives Considérées
-| Alternative | Pour | Contre |
-|-------------|------|--------|
-| [A] | [...] | [...] |
-| [B] | [...] | [...] |
+### Notes de Discussion
+[Prise de notes pendant la review]
 
-### Décision
-[À remplir pendant la review]
+---
 
-### ADR à Créer
-[ ] Oui → ADR-XXX
-[ ] Non
+## 5. Décision
+
+**Status** : ✅ Approuvé / ⚠️ Approuvé avec réserves / ❌ Rejeté
+
+**Réserves/Conditions** :
+- [Si applicable]
+
+**ADR à créer** : Oui → ADR-XXX / Non
+
+**Next Steps** :
+| Action | Owner | Deadline |
+|--------|-------|----------|
+| [Action] | [Nom] | [Date] |
 ```
 
-### 2. Review de Code Approfondie
-
-Pour les changements complexes ou sensibles.
+### Exemple : Design Review Migration
 
 ```markdown
-## Code Review - [PR/Changement]
+# Design Review - Migration Redux → Zustand
 
-### Portée
-- Fichiers : [Liste]
-- Lignes modifiées : [N]
-- Type : [Feature/Refactoring/Fix]
+## Contexte
+Performance dégradée sur listes > 1000 items.
+Profiling : 60% du temps CPU dans les re-renders Redux.
+Objectif : améliorer le temps de réponse de 200ms à < 50ms.
 
-### Points d'Attention
+## Proposition
+Migrer vers Zustand avec stores atomiques par domaine.
+Migration incrémentale sur 3 sprints.
 
-#### Architecture
-- [ ] Cohérence avec les patterns existants
-- [ ] Séparation des responsabilités
-- [ ] Extensibilité
+## Alternatives Considérées
+| Alternative | Pour | Contre | Pourquoi Non |
+|-------------|------|--------|--------------|
+| Optimiser Redux (memo, selectors) | Pas de migration | Gains limités (~30%) | Insuffisant |
+| Recoil | API similaire | Maintenance incertaine | Risque long terme |
+| Zustand | Simple, performant, stable | Petite migration | ✅ Choisi |
 
-#### Performance
-- [ ] Complexité algorithmique acceptable
-- [ ] Pas de N+1 queries
-- [ ] Gestion mémoire
+## Décision
+✅ Approuvé
 
-#### Sécurité
-- [ ] Input validation
-- [ ] Pas d'exposition de données sensibles
+ADR-015 créé pour documenter la décision.
 
-#### Maintenabilité
-- [ ] Code lisible
-- [ ] Tests suffisants
-- [ ] Documentation si nécessaire
-
-### Findings
-| Sévérité | Fichier:Ligne | Issue | Suggestion |
-|----------|---------------|-------|------------|
-| 🔴 | [...] | [...] | [...] |
-| 🟡 | [...] | [...] | [...] |
-| 🟢 | [...] | [...] | [...] |
-```
-
-### 3. Review de Dette Technique
-
-Évaluation périodique de la dette accumulée.
-
-```markdown
-## Review Dette Technique - [Date]
-
-### Inventaire
-
-#### Dette Identifiée Cette Période
-| ID | Zone | Description | Impact | Effort |
-|----|------|-------------|--------|--------|
-| D-001 | [Zone] | [Description] | [H/M/L] | [S/M/L] |
-
-#### Dette Existante
-| ID | Zone | Status | Évolution |
-|----|------|--------|-----------|
-| D-001 | [Zone] | [Open/In Progress/Done] | [↑/→/↓] |
-
-### Analyse
-- Dette totale estimée : [X] jours
-- Tendance : 📈 Croissante / 📉 Décroissante / ➡️ Stable
-
-### Actions
-| Action | Priorité | Sprint | Owner |
-|--------|----------|--------|-------|
-| [Action] | [P0/P1/P2] | [Quand] | [Nom] |
+Next Steps :
+- POC sur module Dashboard → PE1 → S42
+- Plan de migration détaillé → TL → S42
 ```
 
 ---
 
-## Priorisation de la Dette Technique
+## Code Review Approfondie
 
-### Matrice Impact/Effort
+Pour les changements complexes qui méritent plus qu'une PR review standard.
+
+### Critères de Déclenchement
+
+| Signal | Action |
+|--------|--------|
+| PR > 500 lignes | Review approfondie recommandée |
+| Nouveau pattern introduit | Review avec TL obligatoire |
+| Code sécurité/paiement | Review approfondie obligatoire |
+| Refactoring majeur | Review avant merge |
+
+### Grille d'Évaluation
+
+```markdown
+# Code Review - [PR/Changement]
+
+## Scope
+- **PR** : [Lien]
+- **Lignes** : [N] lignes modifiées
+- **Fichiers** : [Liste principales]
+
+---
+
+## Architecture
+
+| Critère | Status | Notes |
+|---------|--------|-------|
+| Cohérence avec patterns existants | 🟢/🟡/🔴 | [Notes] |
+| Séparation des responsabilités | 🟢/🟡/🔴 | [Notes] |
+| Couplage approprié | 🟢/🟡/🔴 | [Notes] |
+| Extensibilité si nécessaire | 🟢/🟡/🔴 | [Notes] |
+
+## Performance
+
+| Critère | Status | Notes |
+|---------|--------|-------|
+| Complexité algorithmique | 🟢/🟡/🔴 | [Notes] |
+| Pas de N+1 queries | 🟢/🟡/🔴 | [Notes] |
+| Gestion mémoire appropriée | 🟢/🟡/🔴 | [Notes] |
+
+## Sécurité
+
+| Critère | Status | Notes |
+|---------|--------|-------|
+| Input validation | 🟢/🟡/🔴 | [Notes] |
+| Pas d'exposition données sensibles | 🟢/🟡/🔴 | [Notes] |
+| Auth/Authz correcte | 🟢/🟡/🔴 | [Notes] |
+
+## Maintenabilité
+
+| Critère | Status | Notes |
+|---------|--------|-------|
+| Code lisible | 🟢/🟡/🔴 | [Notes] |
+| Tests suffisants | 🟢/🟡/🔴 | [Notes] |
+| Documentation si nécessaire | 🟢/🟡/🔴 | [Notes] |
+
+---
+
+## Findings
+
+| Sévérité | Fichier | Issue | Action Requise |
+|----------|---------|-------|----------------|
+| 🔴 Bloquant | [file:line] | [Description] | [Fix requis] |
+| 🟡 Important | [file:line] | [Description] | [Suggestion] |
+| 🟢 Mineur | [file:line] | [Description] | [Optionnel] |
+
+---
+
+## Verdict
+
+**Status** : ✅ Approuvé / ⚠️ Changements requis / ❌ Rejeté
+
+**Bloquants à résoudre** :
+- [Item 1]
+
+**Avant merge** :
+- [ ] [Action 1]
+- [ ] [Action 2]
+```
+
+---
+
+## Review de Dette Technique
+
+### Inventaire de la Dette
+
+```markdown
+# Inventaire Dette - [Date]
+
+## Dette Active
+
+| ID | Zone | Description | Impact | Effort | Priorité |
+|----|------|-------------|--------|--------|----------|
+| D-001 | Auth | Session management legacy | 🔴 High | M | P0 |
+| D-002 | API | Inconsistance error handling | 🟡 Med | S | P1 |
+| D-003 | UI | Composants non accessibles | 🟡 Med | L | P1 |
+| D-004 | Tests | Couverture < 60% module X | 🟢 Low | M | P2 |
+
+## Évolution
+
+| Période | Dette Ajoutée | Dette Remboursée | Net |
+|---------|---------------|------------------|-----|
+| S40-S41 | +3 items | -2 items | +1 |
+| S38-S39 | +1 item | -3 items | -2 |
+
+## Allocation
+
+- **Cible** : 20% du temps sur la dette
+- **Actuel** : [X]%
+- **Tendance** : 📈/📉/➡️
+```
+
+### Matrice de Priorisation
 
 ```
          │ Effort Faible  │ Effort Moyen   │ Effort Élevé
 ─────────┼────────────────┼────────────────┼───────────────
-Impact   │ 🔴 QUICK WIN   │ 🟠 PLANIFIER   │ 🟡 ÉVALUER
-Élevé    │ Faire ASAP     │ Sprint prochain│ ROI à valider
+Impact   │ 🔴 QUICK WIN   │ 🟠 PLANIFIER   │ 🟡 ÉVALUER ROI
+Élevé    │ → Sprint actuel│ → Sprint +1    │ → Business case
 ─────────┼────────────────┼────────────────┼───────────────
-Impact   │ 🟠 PLANIFIER   │ 🟡 ÉVALUER     │ 🔵 BACKLOG
-Moyen    │ Opportuniste   │ Si capacité    │ Plus tard
+Impact   │ 🟠 OPPORTUNISTE│ 🟡 SI CAPACITÉ │ 🔵 BACKLOG
+Moyen    │ → Boy scout    │ → Quand possible│ → Plus tard
 ─────────┼────────────────┼────────────────┼───────────────
-Impact   │ 🟡 ÉVALUER     │ 🔵 BACKLOG     │ ⚪ IGNORER
-Faible   │ Boy scout rule │ Quand pertinent│ Pas de ROI
+Impact   │ 🟡 BOY SCOUT   │ 🔵 BACKLOG     │ ⚪ IGNORER
+Faible   │ → Si on passe  │ → Someday/Maybe │ → Pas de ROI
 ```
 
 ### Critères d'Impact
 
-| Score | Critère | Exemple |
-|-------|---------|---------|
-| 🔴 Élevé | Bloque des features / Cause des bugs / Risque sécurité | Couplage empêchant l'évolution |
-| 🟡 Moyen | Ralentit le développement / DX dégradée | Tests lents, code confus |
-| 🟢 Faible | Gêne esthétique / Inconsistance mineure | Nommage inconsistant |
+| Score | Définition | Exemples |
+|-------|------------|----------|
+| 🔴 **Élevé** | Bloque features, cause bugs, risque sécurité | Couplage empêchant évolution, faille connue |
+| 🟡 **Moyen** | Ralentit développement, DX dégradée | Tests lents, code confus, docs obsolètes |
+| 🟢 **Faible** | Gêne esthétique, inconsistance mineure | Nommage variable, formatage |
 
 ### Critères d'Effort
 
-| Score | Critère | Exemple |
-|-------|---------|---------|
-| S | < 2h | Renommer, simplifier une fonction |
-| M | 2h - 1 jour | Extraire un module, refactorer une classe |
-| L | 1-3 jours | Migration, réécriture d'un composant |
-| XL | > 3 jours | Refonte architecture, changement de lib |
-
-### Scoring Détaillé
-
-```markdown
-## Scoring Dette - [ID]
-
-### Impact
-| Critère | Score (1-5) | Commentaire |
-|---------|-------------|-------------|
-| Fréquence d'exposition | [X] | Combien de devs touchent ce code |
-| Vélocité impactée | [X] | Ralentissement estimé |
-| Risque bug/incident | [X] | Probabilité de problème |
-| Blocage feature | [X] | Features impossibles |
-
-**Impact Total** : [Somme] / 20 → [Haut/Moyen/Bas]
-
-### Effort
-| Critère | Estimation |
-|---------|------------|
-| Temps dev | [X]h |
-| Risque régression | [Haut/Moyen/Bas] |
-| Tests à écrire | [X]h |
-| Migration données | [Oui/Non] |
-
-**Effort Total** : [S/M/L/XL]
-
-### ROI
-Priorité = Impact / Effort = [Score]
-```
+| Score | Définition |
+|-------|------------|
+| **S** (Small) | < 2h |
+| **M** (Medium) | 2h - 1 jour |
+| **L** (Large) | 1-3 jours |
+| **XL** | > 3 jours (nécessite découpage) |
 
 ---
 
-## Template Tech Review
+## Template Tech Review Périodique
 
 ```markdown
 # Tech Review - [Date]
 
 ## Participants
-- [Nom] (Tech Lead)
-- [Nom] (PE)
-
-## Agenda
-1. Review des ADRs récents (5 min)
-2. Design review [Feature X] (15 min)
-3. État de la dette technique (10 min)
-4. Discussion ouverte (10 min)
+- [Nom] - Tech Lead (facilite)
+- [Nom] - PE
+- [Nom] - PE
 
 ---
 
-## 1. ADRs Récents
+## 1. ADRs Récents (5 min)
 
-| ADR | Status | Impact |
-|-----|--------|--------|
-| ADR-042 : [Titre] | Accepté | [Notes] |
-
----
-
-## 2. Design Review : [Feature X]
-
-### Proposition
-[Description technique]
-
-### Discussion
-[Notes de discussion]
-
-### Décision
-[Décision prise]
-
-### Actions
-- [ ] [Action 1]
+| ADR | Titre | Status | Notes |
+|-----|-------|--------|-------|
+| ADR-XXX | [Titre] | Accepté | - |
 
 ---
 
-## 3. Dette Technique
+## 2. Design Reviews En Cours (15 min)
 
-### Nouvelles Dettes Identifiées
-| Zone | Issue | Priorité |
-|------|-------|----------|
-| [Zone] | [Description] | [P0/P1/P2] |
+### [Feature X]
+**Status** : En discussion / Validé / Bloqué
 
-### Progress sur la Dette
-| ID | Status Précédent | Status Actuel |
-|----|------------------|---------------|
-| D-001 | Open | In Progress |
+**Points clés** :
+- [Point 1]
+- [Point 2]
 
-### Allocation
-- Sprint en cours : [X]% capacity sur dette
-- Cible : 20%
+**Décision** : [Si applicable]
 
 ---
 
-## 4. Discussion Ouverte
+## 3. Dette Technique (10 min)
 
-### Sujets Abordés
-- [Sujet 1]
-- [Sujet 2]
+### Nouvelles Dettes
+| ID | Zone | Description | Priorité |
+|----|------|-------------|----------|
+| D-XXX | [Zone] | [Desc] | P0/P1/P2 |
 
-### Actions
+### Progress
+| ID | Status Avant | Status Après |
+|----|--------------|--------------|
+| D-XXX | Open | In Progress |
+| D-XXX | In Progress | Done ✅ |
+
+### Allocation Sprint
+- Prévu : 20%
+- Réel : [X]%
+
+---
+
+## 4. Sujets Techniques (10 min)
+
+### [Sujet 1]
+[Discussion et décision]
+
+### [Sujet 2]
+[Discussion et décision]
+
+---
+
+## Actions
+
 | Action | Owner | Deadline |
 |--------|-------|----------|
 | [Action] | [Nom] | [Date] |
 
 ---
 
-## Prochaine Tech Review
-Date : [Date]
-Focus : [Sujet anticipé]
+**Prochaine Tech Review** : [Date]
+**Focus prévu** : [Sujet]
 ```
 
 ---
 
-## Checklist Tech Lead
+## Exemples Pratiques
+
+### Exemple 1 : Quick Win Identifié
 
 ```markdown
-## Préparation Tech Review
+## Dette D-012 : Logs Inconsistants
 
-### Avant (J-1)
-- [ ] Agenda préparé et partagé
-- [ ] ADRs récents identifiés
-- [ ] Design docs collectés
-- [ ] Métriques de dette mises à jour
+**Impact** : 🟡 Moyen - Debugging difficile, 30 min perdues par incident
+**Effort** : S - 2h pour standardiser
 
-### Pendant
-- [ ] Time-keeper sur chaque section
-- [ ] Décisions documentées en direct
-- [ ] Actions avec owners assignés
+**Action** :
+- Créer helper logEvent() standardisé
+- Migrer les 15 appels existants
+- Owner : PE2 - Sprint actuel (boy scout)
+```
 
-### Après (< 24h)
-- [ ] Notes partagées
-- [ ] ADRs créés si nécessaire
-- [ ] Tickets de dette créés/mis à jour
-- [ ] Actions trackées
+### Exemple 2 : Refus de Dette
+
+```markdown
+## Proposition : Réécrire le Module Auth
+
+**Argument** : "Le code est vieux et pas élégant"
+
+**Analyse** :
+- Fonctionne depuis 2 ans sans bug
+- Aucune feature bloquée
+- Effort estimé : 2 semaines
+
+**Décision** : ❌ Non
+
+**Raison** : Dette "pas parfait" ≠ dette à rembourser.
+Le code fonctionne, pas d'impact vélocité mesurable.
+```
+
+### Exemple 3 : ADR Suite à Design Review
+
+```markdown
+# ADR-015 : Migration Zustand
+
+## Status
+Accepté - 2024-01-15
+
+## Contexte
+Performance dégradée sur listes > 1000 items.
+Redux responsable de 60% du temps CPU en re-renders.
+
+## Décision
+Migrer vers Zustand avec stores atomiques.
+
+## Conséquences
++ Performance améliorée (cible : -75% temps réponse)
++ Code simplifié (moins de boilerplate)
+- Coût migration : 3 sprints
+- Formation équipe nécessaire
+
+## Alternatives Rejetées
+- Optimiser Redux : gains insuffisants
+- Recoil : maintenance incertaine
 ```
 
 ---
 
 ## Anti-patterns
 
-### 1. "Le Comité d'Architecture"
+### 1. Le Comité d'Architecture
 
-**Symptôme** : Décisions bloquées en attente de review
+**Symptôme** : Rien ne se fait sans validation
+
 ```
-❌ "On ne peut pas commencer sans la validation Tech Review"
+❌ "On ne peut pas commencer avant la Tech Review de mardi"
+   → Bloqué 5 jours pour une décision de 10 min
 ```
 
 **Solution** : Review asynchrone pour les cas simples
+
 ```
-✅ Design doc partagé pour commentaires
-✅ Tech Review synchrone pour les cas complexes uniquement
+✅ Design doc partagé pour commentaires (24h de délai)
+✅ Tech Review synchrone uniquement si complexe ou controversé
 ```
 
-### 2. "Le Catalogue de Dette"
+### 2. Le Catalogue de Dette Infini
 
-**Symptôme** : Liste de dette qui grandit sans action
+**Symptôme** : Liste qui grandit sans action
+
 ```
-❌ 50 items de dette, aucun résolu
+❌ 47 items de dette, 0 résolu ce trimestre
 ```
 
-**Solution** : Prioriser et agir
+**Solution** : Prioriser et limiter
+
 ```
-✅ Max 10 items actifs
+✅ Max 10-15 items actifs
 ✅ 20% du temps alloué au remboursement
-✅ Archiver la dette "basse priorité"
+✅ Archiver la dette basse priorité (Someday/Maybe)
 ```
 
-### 3. "Le Perfectionnisme"
+### 3. Le Perfectionnisme
 
-**Symptôme** : Tout est de la dette
+**Symptôme** : Tout devient de la dette
+
 ```
 ❌ "Ce code n'est pas parfait, c'est de la dette"
 ```
 
-**Solution** : Définition claire de la dette
+**Solution** : Définition stricte
+
 ```
-✅ Dette = impact mesurable sur la vélocité/qualité
-✅ Code "pas parfait" ≠ dette si fonctionnel et maintenable
+✅ Dette = impact MESURABLE sur vélocité/qualité/sécurité
+✅ Code "pas parfait" mais fonctionnel ≠ dette
 ```
 
-### 4. "La Review Tardive"
+### 4. La Review Tardive
 
-**Symptôme** : Review après que le code est écrit
+**Symptôme** : Review après implémentation
+
 ```
 ❌ "Ah, on aurait dû faire autrement..."
+   → 3 jours de travail à refaire
 ```
 
-**Solution** : Review avant l'implémentation
+**Solution** : Review avant
+
 ```
-✅ Design review pour les features complexes
+✅ Design Review pour les features complexes
 ✅ Spike/POC pour les incertitudes
+✅ Validation du "comment" avant de coder
+```
+
+### 5. Le Bikeshedding
+
+**Symptôme** : 30 minutes sur un nom de variable
+
+```
+❌ Débat sur getUser vs fetchUser vs loadUser
+```
+
+**Solution** : Timeboxer et trancher
+
+```
+✅ "5 min max sur ce sujet. Pas de consensus ? TL tranche."
+✅ Focus sur l'impact réel, pas les préférences
 ```
 
 ---
 
 ## Métriques Techniques
 
-### À Suivre
+### Dashboard Santé du Code
 
 ```markdown
-## Dashboard Technique
+## Métriques Techniques - Semaine [N]
 
-### Santé du Code
-| Métrique | Valeur | Tendance | Cible |
-|----------|--------|----------|-------|
-| Couverture tests | 82% | ↑ | > 80% |
-| Dette technique | 15 jours | → | < 20 jours |
-| Temps de build | 4.2 min | ↑ | < 5 min |
-| Dépendances outdated | 8 | ↓ | < 10 |
-
-### Vélocité
-| Métrique | Valeur | Tendance |
-|----------|--------|----------|
-| Lead time (commit → prod) | 2.1 jours | ↓ |
-| Cycle time (start → done) | 3.5 jours | → |
-| Taux de rollback | 2% | ↓ |
+| Métrique | Valeur | Tendance | Cible | Status |
+|----------|--------|----------|-------|--------|
+| Couverture tests | 82% | ↑ | > 80% | 🟢 |
+| Dette technique | 12 items | → | < 15 | 🟢 |
+| Temps de build | 4.2 min | ↑ | < 5 min | 🟢 |
+| Deps outdated | 8 | ↓ | < 10 | 🟢 |
+| Incidents prod | 1 | ↓ | < 2/mois | 🟢 |
 ```
 
 ### Alertes
@@ -388,9 +533,39 @@ Focus : [Sujet anticipé]
 | Alerte | Seuil | Action |
 |--------|-------|--------|
 | Couverture < 75% | 🔴 | Bloquer merge, ajouter tests |
-| Build > 10 min | 🟡 | Optimiser la CI |
-| Dépendances outdated > 20 | 🟡 | Sprint de mise à jour |
+| Build > 10 min | 🟡 | Prioriser optimisation CI |
+| Deps outdated > 20 | 🟡 | Sprint de mise à jour |
+| > 3 incidents/mois | 🔴 | Post-mortem + action correctrice |
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Checklist
+
+```markdown
+## Checklist Tech Review
+
+### Design Review
+- [ ] Contexte et problème documentés
+- [ ] Alternatives listées avec pour/contre
+- [ ] Diagramme si architecture complexe
+- [ ] Participants pertinents invités
+- [ ] Décision documentée (ADR si significatif)
+
+### Code Review Approfondie
+- [ ] Scope défini (pas de review de 2000 lignes)
+- [ ] Critères d'évaluation appliqués
+- [ ] Findings catégorisés par sévérité
+- [ ] Actions clairement listées
+- [ ] Verdict explicite
+
+### Review de Dette
+- [ ] Inventaire à jour
+- [ ] Priorisation matrice Impact/Effort
+- [ ] Allocation 20% respectée
+- [ ] Items terminés célébrés
+- [ ] Nouvelles dettes identifiées
+```
+
+---
+
+*Annexes connexes : [D.2 Demo & Feedback](./D2-demo-feedback.md) · [D.4 Rétrospective](./D4-retrospective.md) · [A.2 Template Architecture](./A2-architecture.md)*

@@ -1,346 +1,382 @@
-# D.1 Alignment Stratégique - Détails
+# D.1 Alignment Stratégique
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit le template d'ordre du jour, des exemples de décisions et des bonnes pratiques pour conduire un Alignment Stratégique efficace.
+L'Alignment Stratégique est le moment où l'équipe prend les décisions qui comptent. Sans structure, il devient un status meeting où chacun récite ce qu'il a fait. Avec cette annexe, vous transformez 45 minutes en décisions actionnables qui font avancer le produit.
 
 ---
 
-## Vue d'Ensemble
+## Préparation par Rôle
 
-### Objectif
-Aligner l'équipe sur les priorités et les outcomes. Prendre les décisions stratégiques qui impactent la direction du produit.
+Chaque participant arrive préparé. Pas de préparation = pas de décision.
 
-### Cadence Recommandée
-Hebdomadaire ou bi-hebdomadaire selon la maturité du projet.
+| Rôle | Préparation Requise | Livrable |
+|------|---------------------|----------|
+| **PM** | Mettre à jour les métriques, identifier 2-3 décisions à prendre | Agenda envoyé J-1 |
+| **Tech Lead** | Préparer le status technique, risques identifiés | Points techniques listés |
+| **PE** | Mettre à jour le status des SPECs en cours | Blocages remontés |
+| **Stakeholders** | Lire l'agenda, préparer les questions | Présence confirmée |
 
-### Durée
-30 à 60 minutes.
+### Template de Préparation PM
 
-### Participants
-- Product Manager (facilite)
-- Tech Lead
-- Product Engineer(s)
-- Stakeholders clés (optionnel, selon les sujets)
+```markdown
+## Prep Alignment - [Date]
+
+### Métriques à Jour
+- [ ] Dashboard outcomes actualisé
+- [ ] Métriques des features récentes disponibles
+
+### Décisions à Prendre
+1. [Décision 1] : Contexte en 1 phrase, options identifiées
+2. [Décision 2] : Contexte en 1 phrase, options identifiées
+
+### Questions pour l'Équipe
+- [Question 1]
+- [Question 2]
+
+### Agenda Envoyé
+- [ ] Ordre du jour envoyé à [heure] la veille
+```
 
 ---
 
-## Template d'Ordre du Jour
+## Ordre du Jour Type
+
+**Durée totale : 45 minutes**
+
+```
+┌─────────────────────────────────────────────────┐
+│ 1. OUTCOMES (10 min)                            │
+│    Où en est-on par rapport aux objectifs ?     │
+├─────────────────────────────────────────────────┤
+│ 2. DÉCISIONS (20 min)                           │
+│    Quelles décisions doivent être prises ?      │
+├─────────────────────────────────────────────────┤
+│ 3. PRIORITÉS (10 min)                           │
+│    Faut-il ajuster le backlog ?                 │
+├─────────────────────────────────────────────────┤
+│ 4. ACTIONS (5 min)                              │
+│    Qui fait quoi pour quand ?                   │
+└─────────────────────────────────────────────────┘
+```
+
+### Template Complet
 
 ```markdown
 # Alignment Stratégique - [Date]
 
-## Durée Prévue : [X] minutes
+## Participants
+- [ ] PM (facilite)
+- [ ] Tech Lead
+- [ ] PE(s)
+- [ ] [Stakeholder si sujet spécifique]
 
 ---
 
-## 1. Review des Outcomes (10-15 min)
+## 1. Review des Outcomes (10 min)
 
-### Outcome 1 : [Nom]
-- **Cible** : [Métrique cible]
-- **Actuel** : [Valeur actuelle]
-- **Tendance** : 🟢 En bonne voie / 🟡 À surveiller / 🔴 En danger
-- **Analyse** : [Explication si nécessaire]
+| Outcome | Cible | Actuel | Δ | Status |
+|---------|-------|--------|---|--------|
+| [Nom] | [X] | [Y] | [+/-Z] | 🟢/🟡/🔴 |
+| [Nom] | [X] | [Y] | [+/-Z] | 🟢/🟡/🔴 |
 
-### Outcome 2 : [Nom]
-- **Cible** : [Métrique cible]
-- **Actuel** : [Valeur actuelle]
-- **Tendance** : 🟢/🟡/🔴
-- **Analyse** : [Explication si nécessaire]
+**Analyse rapide** : [1-2 phrases sur les tendances]
 
 ---
 
-## 2. Décisions à Prendre (15-20 min)
+## 2. Décisions à Prendre (20 min)
 
 ### Décision 1 : [Titre]
-**Contexte** : [Situation qui nécessite une décision]
 
-**Options** :
-| Option | Avantages | Inconvénients |
-|--------|-----------|---------------|
-| A | [...] | [...] |
-| B | [...] | [...] |
+**Contexte** : [Situation en 2 phrases max]
 
-**Recommandation PM** : [Option X parce que...]
+| Option | Pour | Contre |
+|--------|------|--------|
+| A : [Nom] | [Avantages] | [Inconvénients] |
+| B : [Nom] | [Avantages] | [Inconvénients] |
 
-**Décision** : [À remplir]
-**Owner** : [Nom]
+**Recommandation** : [Option X] parce que [raison]
+
+**Décision** : _______________
+**Owner** : _______________
 
 ### Décision 2 : [Titre]
 [Même structure]
 
 ---
 
-## 3. Ajustement des Priorités (10-15 min)
+## 3. Ajustement des Priorités (10 min)
 
 ### Backlog Actuel
-| Priorité | SPEC | Status | Commentaire |
-|----------|------|--------|-------------|
-| P0 | SPEC-042 | In Progress | - |
-| P0 | SPEC-043 | Ready | - |
-| P1 | SPEC-044 | Draft | Besoin review Tech Lead |
+| Rang | SPEC | Status | Commentaire |
+|------|------|--------|-------------|
+| P0 | SPEC-XXX | [Status] | - |
+| P0 | SPEC-XXX | [Status] | - |
+| P1 | SPEC-XXX | [Status] | - |
 
-### Changements Proposés
-- [Changement 1] : [Justification]
-- [Changement 2] : [Justification]
-
----
-
-## 4. Risques et Blocages (5-10 min)
-
-### Risques Identifiés
-| Risque | Probabilité | Impact | Mitigation |
-|--------|-------------|--------|------------|
-| [Risque 1] | [H/M/L] | [H/M/L] | [Action] |
-
-### Blocages Actuels
-| Blocage | Owner | Status | ETA |
-|---------|-------|--------|-----|
-| [Blocage 1] | [Nom] | [Status] | [Date] |
+### Changements
+- [ ] Aucun changement
+- [ ] [SPEC-XXX] passe de P1 à P0 : [Raison]
+- [ ] [SPEC-XXX] reportée : [Raison]
 
 ---
 
-## 5. Actions et Next Steps (5 min)
+## 4. Actions (5 min)
 
 | Action | Owner | Deadline |
 |--------|-------|----------|
-| [Action 1] | [Nom] | [Date] |
-| [Action 2] | [Nom] | [Date] |
+| [Action] | [Nom] | [Date] |
+| [Action] | [Nom] | [Date] |
 
 ---
 
-## Notes
+## Risques et Blocages Évoqués
 
-[Autres points discutés]
+| Item | Type | Action | Owner |
+|------|------|--------|-------|
+| [Item] | Risque/Blocage | [Action] | [Nom] |
+
+---
+
+Fin : [Heure] | Durée réelle : [X] min
+Prochaine session : [Date]
 ```
 
 ---
 
-## Exemples de Décisions
+## Exemples Pratiques
 
-### Exemple 1 : Priorisation de Feature
+### Exemple 1 : Priorisation Entre Features
 
 ```markdown
-### Décision : Priorisation Feature A vs Feature B
+### Décision : Export CSV vs Dark Mode
 
-**Contexte** :
-Deux features prêtes à développer, capacité pour une seule cette semaine.
-- Feature A : Export CSV demandé par 3 clients enterprise
-- Feature B : Dark mode demandé par la communauté
+**Contexte** : Capacité pour une seule feature cette semaine.
+Export CSV demandé par 3 clients enterprise (€45k ARR).
+Dark mode : 200 votes sur le feedback portal.
 
-**Options** :
-| Option | Avantages | Inconvénients |
-|--------|-----------|---------------|
-| Feature A | Revenus immédiats, clients satisfaits | Impact utilisateurs limité |
-| Feature B | Large audience, améliore satisfaction | Pas de revenu direct |
+| Option | Pour | Contre |
+|--------|------|--------|
+| Export CSV | Revenus immédiats, clients en attente | Impact utilisateurs limité |
+| Dark mode | Large audience, satisfaction | Pas de revenu direct |
 
-**Recommandation PM** : Feature A car impact business mesurable et clients en attente depuis 2 semaines.
+**Recommandation** : Export CSV - impact business mesurable, clients en attente.
 
-**Décision** : Feature A cette semaine, Feature B la semaine suivante.
-**Owner** : PM (communication aux clients), PE (implémentation)
+**Décision** : Export CSV cette semaine. Dark mode sprint suivant.
+**Owner** : PM (comm clients) + PE (implémentation)
 ```
 
-### Exemple 2 : Pivot Technique
+### Exemple 2 : Scope Cut sous Contrainte
 
 ```markdown
-### Décision : Migration de Redux vers Zustand
+### Décision : Réduction Scope SPEC-042
 
-**Contexte** :
-Performance dégradée sur les grandes listes. Redux identifié comme goulot d'étranglement.
-Migration estimée à 3 jours.
+**Contexte** : SPEC-042 (notifications) estimée 2 semaines.
+Deadline client dans 1 semaine. Pas de négociation possible.
 
-**Options** :
-| Option | Avantages | Inconvénients |
-|--------|-----------|---------------|
-| Migrer maintenant | Résout le problème, code plus simple | 3 jours sans feature |
-| Optimiser Redux | Pas de migration | Patch temporaire, re-travail probable |
-| Reporter | Features continuent | Problème persiste |
-
-**Recommandation Tech Lead** : Migrer maintenant. Le problème va empirer et impacte l'UX.
-
-**Décision** : Migration cette semaine. Communiquer aux stakeholders le délai.
-**Owner** : Tech Lead (architecture), PE (implémentation)
-```
-
-### Exemple 3 : Scope Cut
-
-```markdown
-### Décision : Réduction du Scope SPEC-042
-
-**Contexte** :
-SPEC-042 (système de notifications) estimée à 2 semaines.
-Deadline client dans 1 semaine.
-
-**Options** :
-| Option | Avantages | Inconvénients |
-|--------|-----------|---------------|
+| Option | Pour | Contre |
+|--------|------|--------|
 | Scope complet | Feature complète | Deadline ratée |
-| MVP (email only) | Deadline tenue | Pas de push/in-app |
-| Reporter | Qualité préservée | Client déçu |
+| MVP email only | Deadline tenue | Pas de push/in-app |
+| Reporter | Qualité préservée | Client déçu, risque churn |
 
-**Recommandation PM** : MVP avec email uniquement. Push et in-app en v2.
+**Recommandation** : MVP email. Push/in-app en v2 (SPEC-042b).
 
-**Décision** : MVP. SPEC-042 réduite, SPEC-042b créée pour la suite.
-**Owner** : PM (SPEC update), PE (implémentation)
+**Décision** : MVP accepté. SPEC-042 réduite, SPEC-042b créée.
+**Owner** : PM (update specs + comm) + PE (implémentation)
+```
+
+### Exemple 3 : Pivot Technique
+
+```markdown
+### Décision : Migration Redux → Zustand
+
+**Contexte** : Performance dégradée sur grandes listes.
+Redux identifié comme bottleneck. Migration estimée 3 jours.
+
+| Option | Pour | Contre |
+|--------|------|--------|
+| Migrer maintenant | Résout le problème, code simplifié | 3 jours sans feature |
+| Optimiser Redux | Pas de migration | Patch temporaire |
+| Reporter | Features continuent | Problème persiste, UX dégradée |
+
+**Recommandation** : Migrer maintenant. Le problème va empirer.
+
+**Décision** : Migration cette semaine. Stakeholders informés.
+**Owner** : Tech Lead (architecture) + PE (implémentation)
 ```
 
 ---
 
-## Métriques à Présenter
+## Prise de Décision Efficace
 
-### Dashboard Outcomes
+### Framework RAPID Simplifié
 
-```markdown
-## Dashboard - Semaine [N]
+Pour chaque décision importante :
 
-### Outcomes Principaux
-| Outcome | Métrique | Cible | Actuel | Δ Semaine | Status |
-|---------|----------|-------|--------|-----------|--------|
-| Engagement | Sessions/user/semaine | 3.0 | 2.4 | +0.2 | 🟡 |
-| Conversion | Trial→Paid % | 8% | 7.2% | +0.5% | 🟢 |
-| Rétention | M1 Retention | 70% | 65% | +2% | 🟡 |
+| Rôle | Responsabilité | Qui |
+|------|----------------|-----|
+| **Recommande** | Propose une option argumentée | PM ou Tech Lead |
+| **Approuve** | Valide ou ajuste | Stakeholder ou PM |
+| **Décide** | Tranche si désaccord | PM (product) ou TL (technique) |
 
-### Proxy Metrics (Features Récentes)
-| Feature | Métrique | Attendu | Actuel |
-|---------|----------|---------|--------|
-| Task Filter | Usage/jour | 40% | 35% |
-| Bulk Edit | Usage/semaine | 20% | 25% |
-```
+### Règles de Décision
 
-### Visualisation Tendance
+1. **Pas d'info, pas de décision** : Si les données manquent, l'action est d'aller les chercher
+2. **Décision > Consensus** : Mieux vaut une décision imparfaite qu'une non-décision parfaite
+3. **Owner obligatoire** : Chaque décision a un responsable nommé
+4. **Réversibilité** : Préciser si la décision est réversible facilement ou non
 
-```
-Engagement (sessions/user/semaine)
-Target: 3.0
-───────────────────────────────────── 3.0
-                                    ╱
-                               ╱───╱
-                          ╱───╱
-                     ╱───╱
-                ╱───╱
-           ╱───╱
-      ╱───╱
- ╱───╱
-───────────────────────────────────── 2.0
-S1   S2   S3   S4   S5   S6   S7   S8
-```
-
----
-
-## Bonnes Pratiques
-
-### Préparation
-
-| Responsable | Préparation |
-|-------------|-------------|
-| PM | Préparer les métriques, identifier les décisions à prendre |
-| Tech Lead | Préparer le status technique, risques identifiés |
-| PE | Mettre à jour le status des SPECs en cours |
-
-### Pendant la Réunion
-
-1. **Time-boxé** : Chaque section a un temps alloué
-2. **Décisions actionnables** : Sortir avec des owners et deadlines
-3. **Pas de résolution technique** : Si discussion technique longue, planifier une session dédiée
-
-### Après la Réunion
+### Template de Décision Rapide
 
 ```markdown
-## Compte-Rendu Alignment - [Date]
-
-### Décisions Prises
-1. [Décision 1] - Owner: [Nom]
-2. [Décision 2] - Owner: [Nom]
-
-### Actions
-| Action | Owner | Deadline |
-|--------|-------|----------|
-| [Action 1] | [Nom] | [Date] |
-
-### À Suivre
-- [Point à revoir à la prochaine session]
-
-Compte-rendu partagé le [Date] par [PM]
+**[Titre]**
+- Décision : [Ce qu'on fait]
+- Owner : [Qui]
+- Deadline : [Quand]
+- Réversible : Oui/Non
 ```
 
 ---
 
 ## Anti-patterns
 
-### 1. "Le Status Meeting"
+### 1. Le Status Meeting
 
-**Symptôme** : Tour de table de status sans décision
+**Symptôme** : Tour de table sans décision
+
 ```
 ❌ "Qu'est-ce que chacun a fait cette semaine ?"
+   → 40 minutes de monologue, 0 décision
 ```
 
-**Solution** : Focus sur les décisions et les outcomes
+**Solution** : Status partagé en amont, focus sur les décisions
+
 ```
-✅ Status partagé en amont
-✅ Réunion centrée sur décisions et blocages
+✅ Status envoyé J-1, réunion = décisions et blocages uniquement
 ```
 
-### 2. "Le Deep Dive Technique"
+### 2. Le Deep Dive Technique
 
 **Symptôme** : 30 minutes sur un détail d'implémentation
+
 ```
-❌ Discussion architecture pendant l'alignment
+❌ "Comment on va structurer le state manager ?"
+   → Discussion architecture en plein alignment
 ```
 
 **Solution** : Timeboxer et reporter
+
 ```
-✅ "Ce sujet nécessite une session dédiée. Tech Lead, tu peux organiser ?"
+✅ "Sujet technique. Tech Lead, tu organises une session dédiée ?"
 ```
 
-### 3. "Le One-Man Show"
+### 3. Le One-Man Show
 
 **Symptôme** : Seul le PM parle
+
 ```
-❌ Présentation sans interaction
+❌ Présentation PowerPoint de 30 minutes
 ```
 
 **Solution** : Solliciter les inputs
+
 ```
-✅ "Tech Lead, quel est ton avis sur cette priorité ?"
+✅ "Tech Lead, ton avis sur cette priorité ?"
 ✅ "PE, des blocages à signaler ?"
 ```
 
-### 4. "Le Sans Décision"
+### 4. Le Sans Décision
 
 **Symptôme** : Discussion sans conclusion
+
 ```
 ❌ "On en reparle la semaine prochaine"
+   → Sujet reporté 4 fois de suite
 ```
 
 **Solution** : Forcer la décision ou l'action
+
 ```
-✅ "Décision : [X]. Si pas possible aujourd'hui : qui collecte les infos manquantes pour quand ?"
+✅ "On décide maintenant, ou on définit qui collecte les infos pour quand"
+```
+
+### 5. Le Sans Données
+
+**Symptôme** : Décisions basées sur des opinions
+
+```
+❌ "Je pense que les utilisateurs préfèrent..."
+```
+
+**Solution** : Données d'abord
+
+```
+✅ "Qu'est-ce que les métriques/feedback disent ?"
+✅ Si pas de données : "Action = collecter les données"
 ```
 
 ---
 
-## Checklist de Facilitation
+## Compte-Rendu Type
+
+À envoyer dans les 2 heures suivant la session.
 
 ```markdown
-## Checklist PM - Alignment Stratégique
+# Compte-Rendu Alignment - [Date]
 
-### Avant (J-1)
-- [ ] Métriques à jour
-- [ ] Décisions à prendre identifiées
-- [ ] Ordre du jour envoyé
+## Décisions Prises
 
-### Pendant
-- [ ] Commencer à l'heure
-- [ ] Timeboxer chaque section
-- [ ] Noter les décisions et actions
-- [ ] Solliciter tous les participants
+| # | Décision | Owner | Deadline |
+|---|----------|-------|----------|
+| 1 | [Décision] | [Nom] | [Date] |
+| 2 | [Décision] | [Nom] | [Date] |
 
-### Après
-- [ ] Compte-rendu envoyé (< 2h)
-- [ ] Actions trackées
-- [ ] Décisions communiquées aux absents
+## Actions
+
+| # | Action | Owner | Deadline |
+|---|--------|-------|----------|
+| 1 | [Action] | [Nom] | [Date] |
+| 2 | [Action] | [Nom] | [Date] |
+
+## Priorités Mises à Jour
+- [SPEC-XXX] : [Changement]
+
+## Points Reportés
+- [Sujet] → Prochaine session
+
+---
+
+Envoyé par [PM] le [Date] à [Heure]
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Checklist
+
+```markdown
+## Checklist Alignment Stratégique
+
+### Avant (J-1)
+- [ ] Métriques outcomes à jour
+- [ ] Décisions à prendre identifiées (2-3 max)
+- [ ] Agenda envoyé à tous les participants
+- [ ] Salle/visio réservée
+
+### Pendant
+- [ ] Démarrer à l'heure
+- [ ] Timeboxer chaque section
+- [ ] Chaque décision a un owner et une deadline
+- [ ] Notes prises en direct
+- [ ] Solliciter tous les participants
+
+### Après (< 2h)
+- [ ] Compte-rendu envoyé
+- [ ] Actions ajoutées au board/outil de suivi
+- [ ] Décisions communiquées aux absents concernés
+- [ ] SPECs mises à jour si nécessaire
+```
+
+---
+
+*Annexes connexes : [D.2 Demo & Feedback](./D2-demo-feedback.md) · [D.4 Rétrospective](./D4-retrospective.md)*

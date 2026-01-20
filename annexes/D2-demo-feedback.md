@@ -1,265 +1,292 @@
-# D.2 Demo & Feedback - Détails
+# D.2 Demo & Feedback
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit des questions types pour collecter du feedback utile lors des démonstrations, et des bonnes pratiques pour rendre ces sessions productives.
-
----
-
-## Vue d'Ensemble
-
-### Objectif
-Montrer le travail accompli, collecter du feedback utilisateur/stakeholder, et valider que les outputs répondent aux besoins.
-
-### Cadence Recommandée
-À chaque output significatif livré, ou hebdomadaire si flux continu.
-
-### Durée
-15 à 30 minutes.
-
-### Participants
-- Product Engineer (démontre)
-- Product Manager (facilite et collecte le feedback)
-- Stakeholders / Utilisateurs (donnent le feedback)
-- Tech Lead (optionnel)
+La démo est le moment de vérité : soit vous montrez de la valeur et récoltez du feedback utile, soit vous perdez 30 minutes en monologue technique. Cette annexe vous donne les outils pour présenter efficacement et transformer le feedback en actions concrètes.
 
 ---
 
 ## Structure d'une Demo
 
-### Format Recommandé
+**Durée totale : 20-30 minutes**
 
 ```
 ┌─────────────────────────────────────────────────┐
 │ 1. CONTEXTE (2 min)                             │
-│    - Rappel de l'objectif                       │
-│    - Ce qui va être montré                      │
+│    Pourquoi on est là, ce qu'on va voir         │
 ├─────────────────────────────────────────────────┤
 │ 2. DÉMONSTRATION (10-15 min)                    │
-│    - Parcours utilisateur principal             │
-│    - Cas d'usage clés                           │
-│    - (Pas de deep dive technique)               │
+│    Parcours utilisateur, pas de code            │
 ├─────────────────────────────────────────────────┤
-│ 3. QUESTIONS & FEEDBACK (10-15 min)             │
-│    - Questions ouvertes                         │
-│    - Collecte structurée                        │
+│ 3. FEEDBACK (10-15 min)                         │
+│    Questions structurées, collecte active       │
 ├─────────────────────────────────────────────────┤
-│ 4. WRAP-UP (2 min)                              │
-│    - Récap du feedback                          │
-│    - Prochaines étapes                          │
+│ 4. CLÔTURE (2 min)                              │
+│    Récap, prochaines étapes                     │
 └─────────────────────────────────────────────────┘
 ```
 
----
-
-## Questions Types par Catégorie
-
-### Compréhension et Utilité
+### Script de Demo
 
 ```markdown
-## Questions - Compréhension
+## 1. CONTEXTE (2 min)
 
-1. "Est-ce que c'est clair comment utiliser cette fonctionnalité ?"
-   - Si non : "Qu'est-ce qui n'est pas clair ?"
+"On va vous montrer [feature] qui permet de [bénéfice utilisateur].
 
-2. "Est-ce que ça répond au problème qu'on essayait de résoudre ?"
-   - Si partiellement : "Qu'est-ce qui manque ?"
+Rappel du besoin : [problème qu'on résout]
 
-3. "Sur une échelle de 1-5, à quel point cette feature est utile pour vous ?"
-   - Follow-up : "Qu'est-ce qui la rendrait plus utile ?"
+Ce qu'on va voir :
+- [Parcours 1]
+- [Parcours 2]
+
+Questions bienvenues pendant la démo."
+
+## 2. DÉMONSTRATION (10-15 min)
+
+[Montrer le parcours utilisateur principal]
+[Montrer 2-3 cas d'usage clés]
+[Inclure au moins un cas limite ou message d'erreur]
+
+## 3. FEEDBACK (10-15 min)
+
+[Questions structurées - voir section suivante]
+
+## 4. CLÔTURE (2 min)
+
+"Ce qu'on retient :
+- [Point 1]
+- [Point 2]
+
+Prochaines étapes : [actions]
+
+Merci pour vos retours."
 ```
 
-### Expérience Utilisateur
+---
+
+## Questions de Feedback
+
+### Questions Essentielles
+
+À poser systématiquement :
+
+| Question | Ce qu'elle révèle |
+|----------|-------------------|
+| "Est-ce que ça répond au problème ?" | Adéquation besoin/solution |
+| "Qu'est-ce qui manque pour que ce soit utile ?" | Gaps fonctionnels |
+| "Si vous pouviez changer UNE chose ?" | Priorité utilisateur |
+
+### Questions par Objectif
+
+**Valider l'Utilité**
 
 ```markdown
-## Questions - UX
+1. "Sur 1 à 5, à quel point cette feature est utile pour vous ?"
+   → Si < 4 : "Qu'est-ce qui la rendrait plus utile ?"
 
-1. "Comment trouvez-vous le parcours pour [action] ?"
-   - "Y a-t-il des étapes qui semblent inutiles ?"
-   - "Quelque chose vous a surpris ?"
+2. "À quelle fréquence utiliseriez-vous cette fonctionnalité ?"
+   □ Quotidienne  □ Hebdomadaire  □ Mensuelle  □ Rarement
+
+3. "Comment faisiez-vous avant ? Est-ce que c'est mieux ?"
+```
+
+**Évaluer l'UX**
+
+```markdown
+1. "Le parcours pour [action] vous semble-t-il naturel ?"
+   → Si non : "Qu'est-ce qui vous a surpris ?"
 
 2. "Si vous deviez faire cette action 10 fois par jour, qu'est-ce qui vous gênerait ?"
 
-3. "Qu'est-ce que vous chercheriez en premier sur cet écran ?"
-   - Valide la hiérarchie visuelle
-
-4. "Les messages d'erreur sont-ils clairs ?" (si applicable)
+3. "Les messages d'erreur sont-ils clairs ?"
 ```
 
-### Cas d'Usage
+**Identifier les Manques**
 
 ```markdown
-## Questions - Cas d'Usage
+1. "Y a-t-il des cas où cette feature ne fonctionnerait pas pour vous ?"
 
-1. "Dans quelle situation utiliseriez-vous cette fonctionnalité ?"
-   - Valide qu'on a bien compris le besoin
+2. "Y a-t-il quelque chose qu'on devrait enlever ?"
 
-2. "Y a-t-il des cas où cette feature ne fonctionnerait pas pour vous ?"
-   - Identifie les edge cases manqués
-
-3. "Comment faisiez-vous avant ? Est-ce que c'est mieux ?"
-   - Compare avec l'existant
-```
-
-### Priorités et Améliorations
-
-```markdown
-## Questions - Améliorations
-
-1. "Si vous pouviez changer UNE chose, ce serait quoi ?"
-   - Force la priorisation
-
-2. "Qu'est-ce qui manque pour que ce soit vraiment utile ?"
-   - Identifie les gaps
-
-3. "Y a-t-il quelque chose qu'on devrait enlever ?"
-   - Identifie la complexité inutile
-```
-
-### Questions Quantitatives
-
-```markdown
-## Questions - Quantitatif
-
-1. "De 1 à 10, quelle est la probabilité que vous utilisiez cette feature ?"
-   □ 1-3 : Peu probable → Pourquoi ?
-   □ 4-6 : Peut-être → Qu'est-ce qui vous ferait passer à 8+ ?
-   □ 7-10 : Très probable → Super, qu'est-ce qui vous plaît ?
-
-2. "Combien de temps pensez-vous gagner avec cette feature ?"
-   - Valide la proposition de valeur
-
-3. "À quelle fréquence utiliseriez-vous cette fonctionnalité ?"
-   □ Quotidienne
-   □ Hebdomadaire
-   □ Mensuelle
-   □ Rarement
+3. "Qu'est-ce que vous vous attendiez à voir et qui n'y est pas ?"
 ```
 
 ---
 
-## Template de Collecte de Feedback
+## Collecte Structurée du Feedback
+
+### Template de Notes
 
 ```markdown
 # Feedback Demo - [Feature] - [Date]
 
+## Métadonnées
+- **Feature** : [Nom]
+- **SPEC** : [Référence]
+- **Présentateur** : [PE]
+- **Facilitateur** : [PM]
+
 ## Participants
-- [Nom] - [Rôle]
-- [Nom] - [Rôle]
+| Nom | Rôle | Représente |
+|-----|------|------------|
+| [Nom] | [Rôle] | [Segment utilisateur] |
 
-## Résumé Global
-**Réception** : 🟢 Positive / 🟡 Mitigée / 🔴 Négative
+---
 
-**Points Forts**
-- [Ce qui a été apprécié]
-- [Ce qui a été apprécié]
+## Réception Globale
 
-**Points à Améliorer**
-- [Feedback négatif/suggestion]
-- [Feedback négatif/suggestion]
+**Score utilité moyen** : [X]/5
 
-## Feedback Détaillé
+**Verdict** : 🟢 Prêt / 🟡 Ajustements mineurs / 🔴 Revoir
+
+---
+
+## Feedback par Participant
 
 ### [Participant 1]
-| Question | Réponse |
-|----------|---------|
-| Utilité (1-5) | [X] |
-| Principal feedback | [Verbatim] |
-| Suggestion | [Verbatim] |
+| Critère | Score | Verbatim |
+|---------|-------|----------|
+| Utilité | [X]/5 | "[Citation exacte]" |
+| UX | [X]/5 | "[Citation exacte]" |
+| Suggestion principale | - | "[Citation exacte]" |
 
 ### [Participant 2]
-| Question | Réponse |
-|----------|---------|
-| Utilité (1-5) | [X] |
-| Principal feedback | [Verbatim] |
-| Suggestion | [Verbatim] |
+[Même structure]
 
-## Actions Identifiées
+---
 
-| Action | Priorité | Owner |
-|--------|----------|-------|
-| [Action issue du feedback] | [P0/P1/P2] | [Nom] |
-| [Action issue du feedback] | [P0/P1/P2] | [Nom] |
+## Synthèse
 
-## Décisions
+### Ce qui Fonctionne
+- [Point positif 1]
+- [Point positif 2]
 
-- [Décision prise suite au feedback]
-- [Ce qu'on ne fait PAS et pourquoi]
+### À Améliorer
+| Feedback | Fréquence | Priorité suggérée |
+|----------|-----------|-------------------|
+| [Feedback] | [X] personnes | P0/P1/P2 |
+
+### Décisions Prises
+- [Décision 1] : [Action] - Owner: [Nom]
+- [Décision 2] : [Action] - Owner: [Nom]
+
+### Non Retenu (et pourquoi)
+- [Suggestion] : [Raison du non retenu]
+
+---
+
+Partagé le [Date] par [PM]
 ```
 
 ---
 
-## Bonnes Pratiques
+## Exemples Pratiques
 
-### Préparation de la Demo
+### Exemple 1 : Demo Feature - Bon Déroulement
 
 ```markdown
-## Checklist Pré-Demo
+## Demo - Export CSV - 15/01
 
-### Contenu
-- [ ] Scénario de démo préparé
-- [ ] Données de test réalistes
-- [ ] Environnement stable (staging ou local propre)
+### Contexte (2 min)
+"On vous montre l'export CSV demandé par plusieurs clients enterprise.
+Problème résolu : avant, extraction manuelle de 2h par semaine.
+Ce qu'on va voir : export simple, filtres, formats."
 
-### Logistique
-- [ ] Lien de visio partagé (si remote)
-- [ ] Écran à partager testé
-- [ ] Backup si problème technique
+### Démo (12 min)
+- Export basique : 3 clics → fichier téléchargé
+- Filtres : par date, par status, par utilisateur
+- Formats : CSV, Excel
+- Cas limite : export de 10k lignes (message d'attente)
 
-### Participants
-- [ ] Invitations envoyées
-- [ ] Rappel J-1 si nécessaire
-- [ ] Contexte partagé en amont
+### Feedback Collecté
+| Participant | Score | Feedback clé |
+|-------------|-------|--------------|
+| Marie (Client A) | 5/5 | "Exactement ce qu'il fallait" |
+| Jean (Client B) | 4/5 | "Manque l'export PDF pour les rapports" |
+| Sophie (Interne) | 4/5 | "Ajouter les colonnes personnalisables serait top" |
+
+### Décisions
+- Export PDF → SPEC-056 créée (P1)
+- Colonnes personnalisables → V2, pas urgent
+- Feature livrée en l'état ✅
 ```
 
-### Pendant la Demo
+### Exemple 2 : Demo avec Feedback Négatif
+
+```markdown
+## Demo - Nouveau Dashboard - 22/01
+
+### Feedback Collecté
+| Participant | Score | Feedback clé |
+|-------------|-------|--------------|
+| Pierre | 2/5 | "Je ne trouve pas les métriques importantes" |
+| Claire | 3/5 | "Trop de clics pour arriver à ce que je veux" |
+| Marc | 2/5 | "Les graphiques ne correspondent pas à mon usage" |
+
+### Analyse
+Score moyen : 2.3/5 → 🔴 Revoir avant livraison
+
+Problèmes identifiés :
+1. Hiérarchie visuelle ne correspond pas aux priorités utilisateurs
+2. Navigation trop profonde
+3. Métriques par défaut mal choisies
+
+### Décisions
+1. Atelier avec 3 utilisateurs pour redéfinir le layout → Owner: PM
+2. Prototype v2 avant prochaine demo → Owner: PE
+3. Livraison reportée de 1 semaine → Stakeholders informés
+```
+
+---
+
+## Gestion du Feedback Difficile
+
+### Feedback Négatif
+
+**Posture à adopter** :
 
 | ✅ Faire | ❌ Éviter |
 |----------|-----------|
-| Montrer le parcours utilisateur | Montrer le code |
-| Utiliser des données réalistes | "Imaginez que..." |
-| Solliciter les questions | Monologue de 20 min |
-| Accepter le feedback | Défendre/justifier |
-| Noter les verbatims | Interpréter sur le moment |
+| "Merci, c'est utile." | "Oui mais c'était dans la spec..." |
+| "Peux-tu m'en dire plus ?" | "C'est pas possible techniquement." |
+| "Comment tu verrais ça idéalement ?" | "Les autres aiment bien." |
+| [Noter le verbatim exact] | [Interpréter ou reformuler] |
 
-### Gestion du Feedback Négatif
+**Script de réponse** :
 
-```markdown
-## Comment Recevoir du Feedback Négatif
+```
+Feedback négatif reçu →
+  "Merci pour ce retour. Pour bien comprendre : [reformuler].
+   C'est noté, on va regarder ça."
 
-### Posture
-- Remercier pour le feedback
-- Ne pas justifier ou défendre
-- Creuser pour comprendre
-
-### Phrases Utiles
-- "Merci, c'est utile. Peux-tu m'en dire plus ?"
-- "Je comprends. Comment tu verrais ça idéalement ?"
-- "C'est noté, on va regarder ça."
-
-### Ce qu'il ne faut PAS dire
-❌ "Oui mais c'était dans la spec..."
-❌ "C'est pas possible techniquement."
-❌ "Les autres utilisateurs aiment bien."
+Ne pas : justifier, défendre, expliquer les contraintes.
 ```
 
-### Après la Demo
+### Feedback Contradictoire
+
+Quand deux participants veulent des choses opposées :
 
 ```markdown
-## Actions Post-Demo
+## Résolution
 
-### Immédiat (< 2h)
-- [ ] Notes de feedback consolidées
-- [ ] Partagées avec l'équipe
+1. Noter les deux feedbacks sans trancher en séance
+2. Identifier le contexte de chaque demande
+3. Décision PM après la démo :
+   - Si un segment est prioritaire → suivre ce feedback
+   - Si les deux comptent → proposer une config/option
+   - Si aucun n'est critique → ne rien faire
+```
 
-### Court terme (< 48h)
-- [ ] Actions priorisées
-- [ ] SPECs créées/mises à jour si nécessaire
-- [ ] Réponse aux participants si questions ouvertes
+### Feedback Hors Scope
 
-### Suivi
-- [ ] Feedback intégré dans les prochains cycles
-- [ ] Communication quand le feedback est adressé
+```markdown
+## Réponse Type
+
+"C'est un bon point. Ce n'était pas dans le scope de cette version,
+mais je le note pour [SPEC future / backlog / discussion PM]."
+
+→ Ne pas s'engager pendant la démo
+→ Ne pas rejeter non plus
 ```
 
 ---
@@ -268,141 +295,185 @@ Montrer le travail accompli, collecter du feedback utilisateur/stakeholder, et v
 
 ### Demo Asynchrone
 
-Pour les équipes distribuées ou stakeholders indisponibles :
+Pour équipes distribuées ou stakeholders indisponibles.
 
 ```markdown
-## Demo Asynchrone - [Feature]
+## Demo Async - [Feature]
 
 ### Vidéo
-[Lien vers vidéo de 3-5 min]
+[Lien vers Loom/vidéo de 5 min max]
 
-### Contexte
-[Résumé écrit de ce qui est montré]
+### Ce qu'on Montre
+1. [Parcours 1]
+2. [Parcours 2]
+3. [Cas limite]
 
 ### Questions pour Vous
-1. [Question 1]
-2. [Question 2]
-3. [Question 3]
+
+Merci de répondre avant [Date] :
+
+1. Sur 1-5, utilité de cette feature pour vous ?
+   Votre score : ___
+
+2. Qu'est-ce qui manque pour que ce soit vraiment utile ?
+   Votre réponse : ___
+
+3. Une chose à changer ?
+   Votre réponse : ___
 
 ### Comment Répondre
-- Répondre dans ce thread/doc avant [date]
-- Ou planifier un call si besoin de discuter
+- Répondez directement dans ce doc
+- Ou commentez sur la vidéo
+- Questions ? Slack @[PM]
 ```
 
-### Demo "Dogfooding"
+### Dogfooding
 
-L'équipe utilise elle-même la feature :
+L'équipe utilise la feature avant les stakeholders.
 
 ```markdown
 ## Dogfooding - [Feature]
 
 ### Période
-[Date début] → [Date fin]
+Du [Date] au [Date] (5 jours)
 
 ### Participants
-Toute l'équipe
+Toute l'équipe AIAD
 
 ### Instructions
-1. Utiliser [feature] dans votre workflow quotidien
-2. Noter les frictions dans [channel/doc]
-3. Debrief à [date]
+1. Utiliser [feature] dans votre travail quotidien
+2. Noter les frictions dans #dogfooding
+3. Format : "[Friction] - [Impact]"
 
-### Questions à se Poser
-- Est-ce que c'est intuitif ?
-- Est-ce que ça me fait gagner du temps ?
+### Questions Guide
+- Est-ce intuitif ?
 - Qu'est-ce qui m'agace ?
+- Qu'est-ce qui manque ?
+
+### Debrief
+[Date] à [Heure]
 ```
 
 ---
 
 ## Anti-patterns
 
-### 1. "La Demo Parfaite"
+### 1. La Demo Parfaite
 
-**Symptôme** : Montrer uniquement le happy path idéal
+**Symptôme** : Uniquement le happy path idéal
+
 ```
-❌ "Ici tout fonctionne parfaitement..."
+❌ "Ici tout fonctionne parfaitement avec mes données de test..."
 ```
 
 **Impact** : Feedback déconnecté de la réalité
 
-**Solution** : Montrer des cas réalistes
+**Solution** :
 ```
-✅ Inclure des cas limites
-✅ Montrer les messages d'erreur
-✅ Utiliser des données réalistes (pas "Test User")
-```
-
-### 2. "La Demo Technique"
-
-**Symptôme** : Montrer l'architecture au lieu du produit
-```
-❌ "Regardez ce beau refactoring..."
+✅ Inclure au moins un cas limite
+✅ Montrer un message d'erreur
+✅ Utiliser des données réalistes (pas "Test User 1")
 ```
 
-**Impact** : Feedback non pertinent, stakeholders perdus
+### 2. La Demo Technique
 
-**Solution** : Focus utilisateur
-```
-✅ Montrer ce que l'utilisateur voit et fait
-✅ Tech details en aparté si demandé
-```
+**Symptôme** : Montrer le code au lieu du produit
 
-### 3. "Le Feedback Ignoré"
-
-**Symptôme** : Collecter sans suite
 ```
-❌ Demo après demo sans changement
+❌ "Regardez ce refactoring élégant..."
+❌ "L'architecture utilise un pattern observer avec..."
 ```
 
-**Impact** : Stakeholders désengagés
+**Impact** : Stakeholders perdus, feedback non pertinent
 
-**Solution** : Boucle de feedback visible
+**Solution** :
 ```
-✅ Montrer ce qui a changé grâce au feedback
+✅ Montrer uniquement ce que l'utilisateur voit
+✅ Tech details en aparté si demandé explicitement
+```
+
+### 3. Le Feedback Ignoré
+
+**Symptôme** : Demo après demo sans changement visible
+
+```
+❌ Même feedback remonté 3 fois sans réponse
+```
+
+**Impact** : Stakeholders désengagés, démos inutiles
+
+**Solution** :
+```
+✅ Commencer chaque démo par : "Suite à vos retours, on a..."
 ✅ Expliquer ce qu'on ne fait pas et pourquoi
 ```
 
-### 4. "Trop de Stakeholders"
+### 4. Trop de Monde
 
-**Symptôme** : 15 personnes avec opinions contradictoires
+**Symptôme** : 15 participants, opinions contradictoires
+
 ```
-❌ Design by committee
+❌ "Faites-le bleu" vs "Faites-le rouge" vs "Pas de couleur"
 ```
 
-**Impact** : Paralysie, feature diluée
+**Impact** : Paralysie, feature design by committee
 
-**Solution** : Audience ciblée
+**Solution** :
 ```
-✅ Max 5-6 personnes
-✅ Stakeholders représentatifs
-✅ PM arbitre les contradictions
+✅ Max 5-6 participants
+✅ Stakeholders représentatifs des segments clés
+✅ PM arbitre les contradictions après la démo
 ```
 
 ---
 
-## Métriques de Demo
+## Après la Demo
 
-### Indicateurs Qualitatifs
+### Actions Immédiates (< 2h)
 
-| Indicateur | Signal Positif | Signal Négatif |
-|------------|----------------|----------------|
-| Engagement | Questions nombreuses | Silence |
-| Clarté | "Ah oui, je vois" | "Je ne comprends pas" |
-| Utilité | "J'ai hâte de l'utiliser" | "Mouais, peut-être" |
-| UX | Navigation fluide | "Comment on fait pour...?" |
+- [ ] Notes de feedback consolidées
+- [ ] Partagées dans le canal équipe
+- [ ] Verdict : 🟢 Prêt / 🟡 Ajustements / 🔴 Revoir
 
-### Suivi Quantitatif
+### Actions Courtes (< 48h)
+
+- [ ] Feedback priorisé
+- [ ] SPECs créées/mises à jour si nécessaire
+- [ ] Réponse aux participants si questions ouvertes
+
+### Suivi
+
+- [ ] Informer quand le feedback est adressé
+- [ ] Mentionner les changements issus du feedback en début de prochaine demo
+
+---
+
+## Checklist
 
 ```markdown
-## Métriques Demo
+## Checklist Demo & Feedback
 
-| Demo | Date | Participants | Score Utilité (moy) | Actions Générées |
-|------|------|--------------|---------------------|------------------|
-| Feature A | 01/15 | 4 | 4.2/5 | 3 |
-| Feature B | 01/22 | 3 | 3.8/5 | 5 |
+### Préparation
+- [ ] Scénario de démo préparé (pas improvisé)
+- [ ] Données de test réalistes
+- [ ] Environnement stable (staging)
+- [ ] Questions de feedback préparées
+- [ ] Participants invités et confirmés
+
+### Pendant
+- [ ] Contexte donné en 2 min max
+- [ ] Focus utilisateur, pas technique
+- [ ] Cas limite inclus
+- [ ] Questions de feedback posées
+- [ ] Verbatims notés exactement
+
+### Après
+- [ ] Notes partagées < 2h
+- [ ] Feedback priorisé
+- [ ] Actions identifiées avec owners
+- [ ] Participants remerciés
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+*Annexes connexes : [D.1 Alignment Stratégique](./D1-alignment-strategique.md) · [D.3 Tech Review](./D3-tech-review.md)*
