@@ -1,429 +1,479 @@
-# E.2 Template Revue Trimestrielle
+# E.2 Revue Trimestrielle
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit un template complet pour conduire la revue trimestrielle AIAD : questions à aborder, format, participants et outputs attendus.
+La revue trimestrielle permet de prendre du recul sur la performance à long terme du produit et de l'équipe. Elle relie les efforts quotidiens aux résultats business et ajuste les orientations stratégiques. Sans cette vision macro, on risque de s'activer sans progresser vers les vrais objectifs.
 
 ---
 
 ## Vue d'Ensemble
 
-### Objectif
-Évaluer la santé globale du produit et de l'équipe sur le trimestre passé, définir les orientations pour le trimestre suivant.
-
-### Cadence
-Tous les 3 mois (fin de Q1, Q2, Q3, Q4).
-
-### Durée
-2 à 3 heures.
-
-### Participants
-- Product Manager (facilite)
-- Tech Lead
-- Product Engineer(s)
-- QA Engineer
-- Stakeholders clés (direction, sponsor produit)
+| Aspect | Détail |
+|--------|--------|
+| **Objectif** | Évaluer la santé globale, mesurer la progression vers les outcomes, ajuster la stratégie |
+| **Cadence** | Tous les 3 mois (fin Q1, Q2, Q3, Q4) |
+| **Durée** | 2h30 (pas plus) |
+| **Facilitateur** | Product Manager |
+| **Participants** | PM, Tech Lead, PE(s), QA, Stakeholders clés |
 
 ---
 
-## Préparation (1 semaine avant)
+## Métriques Stratégiques
 
-### Collecte de Données
+### Métriques de niveau outcome
 
-```markdown
-## Checklist Préparation
+| Métrique | Description | Source | Fréquence calcul |
+|----------|-------------|--------|------------------|
+| Progression outcome | % d'atteinte de la cible | PRD / Analytics | Mensuel |
+| Vélocité trend | Évolution features/mois sur 3 mois | Board | Mensuel |
+| Qualité trend | Évolution bugs/incidents sur 3 mois | Monitoring | Mensuel |
+| ROI AIAD | Gain de productivité vs avant | Estimation | Trimestriel |
 
-### Métriques à Collecter
-- [ ] Outcomes : progression vers les cibles
-- [ ] Vélocité : features livrées, cycle time
-- [ ] Qualité : bugs, incidents, couverture
-- [ ] Dette technique : évolution, remboursement
-- [ ] Satisfaction équipe : feedback informel ou sondage
-
-### Documents à Préparer
-- [ ] Dashboard du trimestre
-- [ ] Liste des features livrées
-- [ ] Incidents majeurs et post-mortems
-- [ ] Retours utilisateurs consolidés
-- [ ] État de la roadmap
-
-### Input des Participants
-Demander à chaque participant de préparer :
-- 1-2 succès du trimestre
-- 1-2 échecs ou déceptions
-- 1-2 suggestions pour le trimestre suivant
-```
-
----
-
-## Agenda Détaillé
+### Template de collecte
 
 ```markdown
-# Revue Trimestrielle - Q[X] 2026
+## Données Trimestrielles à Collecter
 
-## Agenda
-
-| Bloc | Durée | Contenu |
-|------|-------|---------|
-| 1 | 15 min | Check-in et contexte |
-| 2 | 30 min | Revue des Outcomes |
-| 3 | 30 min | Revue Opérationnelle |
-| 4 | 20 min | Revue Technique |
-| 5 | 20 min | Retours Équipe |
-| 6 | 30 min | Orientations Q+1 |
-| 7 | 15 min | Actions et Clôture |
-
-**Total : 2h40**
-```
-
----
-
-## Bloc 1 : Check-in et Contexte (15 min)
-
-```markdown
-## Check-in
-
-### Tour de Table Express
-Chaque participant en 1 phrase :
-- Comment je vois ce trimestre ?
-- Un mot pour le résumer ?
-
-### Contexte Business
-(PM présente, 5 min)
-- Événements majeurs du trimestre
-- Changements de contexte
-- Ce qui a impacté le produit
-```
-
----
-
-## Bloc 2 : Revue des Outcomes (30 min)
-
-```markdown
-## Revue des Outcomes
-
-### Outcome 1 : [Nom]
-
-#### Progression
-| Métrique | Début Q | Fin Q | Cible Q | Cible Annuelle |
-|----------|---------|-------|---------|----------------|
-| [Métrique] | [X] | [Y] | [Z] | [W] |
-
-#### Analyse
-- **Atteint ?** Oui / Partiellement / Non
-- **Facteurs de succès** : [Ce qui a contribué]
-- **Obstacles rencontrés** : [Ce qui a freiné]
-- **Learnings** : [Ce qu'on a appris]
-
-#### Projection
-- Au rythme actuel, cible annuelle atteinte : [Oui/Non]
-- Ajustements nécessaires : [Si applicable]
-
-### Outcome 2 : [Nom]
-[Même structure]
-
-### Synthèse Outcomes
-| Outcome | Status | Confiance Cible Annuelle |
-|---------|--------|--------------------------|
-| [O1] | 🟢/🟡/🔴 | Haute/Moyenne/Basse |
-| [O2] | 🟢/🟡/🔴 | Haute/Moyenne/Basse |
-```
-
----
-
-## Bloc 3 : Revue Opérationnelle (30 min)
-
-```markdown
-## Revue Opérationnelle
+### Outcomes (par outcome défini dans le PRD)
+| Outcome | Début Q | Fin Q | Cible Q | Cible Annuelle | Status |
+|---------|---------|-------|---------|----------------|--------|
+| [O1] | | | | | |
+| [O2] | | | | | |
 
 ### Vélocité
-
-#### Métriques
-| Métrique | Q-1 | Ce Q | Δ | Trend |
-|----------|-----|------|---|-------|
-| Features livrées | [X] | [Y] | [Z] | ↑/→/↓ |
-| Cycle time moyen | [X]j | [Y]j | [Z]j | ↑/→/↓ |
-| Prévisibilité | [X]% | [Y]% | [Z]% | ↑/→/↓ |
-
-#### Analyse
-- Vélocité en hausse/baisse de [X]%
-- Principale cause : [...]
-- Impact sur la roadmap : [...]
+| Mois | Features | Cycle Time | Prévisibilité |
+|------|----------|------------|---------------|
+| M1 | | | |
+| M2 | | | |
+| M3 | | | |
 
 ### Qualité
+| Mois | Bugs Prod | Incidents | Couverture | Uptime |
+|------|-----------|-----------|------------|--------|
+| M1 | | | | |
+| M2 | | | | |
+| M3 | | | | |
 
-#### Métriques
-| Métrique | Valeur | vs Q-1 | Cible |
-|----------|--------|--------|-------|
-| Bugs en prod | [X] | [Δ] | 0 |
-| Incidents | [X] | [Δ] | 0 |
-| Couverture tests | [X]% | [Δ]% | 80% |
-| Rollbacks | [X] | [Δ] | <5% |
+### Dette Technique
+- Début trimestre : ___ jours
+- Fin trimestre : ___ jours
+- Remboursement effectué : ___ jours
+```
 
-#### Incidents Majeurs
-| Date | Incident | Impact | Root Cause | Résolu |
-|------|----------|--------|------------|--------|
-| [Date] | [Desc] | [Users affectés] | [Cause] | ✅/❌ |
+---
+
+## Comparaison Avant/Après AIAD
+
+### Métriques de référence
+
+Mesurer l'impact de l'adoption AIAD nécessite une baseline.
+
+| Métrique | Avant AIAD | Après AIAD (Q actuel) | Δ |
+|----------|------------|----------------------|---|
+| Cycle time moyen | ___j | ___j | __% |
+| Features/mois/dev | ___ | ___ | __% |
+| Bugs en prod/mois | ___ | ___ | __% |
+| Time to first PR | ___j | ___j | __% |
+| Taux de rework | ___% | ___% | __% |
+
+### Calcul du ROI simplifié
+
+```markdown
+## ROI AIAD - Q[X]
+
+### Gains
+- Temps économisé : [X] jours × [Y] €/jour = [Z] €
+  - Base: Features/mois passé de [A] à [B] = +[C]%
+  - Cycle time réduit de [X]j à [Y]j = -[Z]%
+
+### Coûts
+- Licences agents IA : [X] €/mois × 3 = [Y] €
+- Temps formation : [X] jours × [Y] €/jour = [Z] €
+- Overhead process : [estimation] €
+
+### ROI
+- Gains - Coûts = [X] €
+- ROI % = (Gains - Coûts) / Coûts × 100 = [Y]%
+```
+
+---
+
+## Identification des Tendances
+
+### Analyse des patterns
+
+Questions à se poser :
+
+| Domaine | Questions | Indicateurs |
+|---------|-----------|-------------|
+| Vélocité | Accélère-t-on ? Stagne-t-on ? | Trend 3 mois features/cycle time |
+| Qualité | Dégrade-t-on ? Stabilise-t-on ? | Trend bugs/incidents |
+| Équipe | Fatigue ? Montée en compétence ? | Feedback + vélocité individuelle |
+| Process | AIAD fonctionne-t-il ? Frictions ? | Retros + blocages récurrents |
+
+### Template d'analyse
+
+```markdown
+## Analyse des Tendances Q[X]
+
+### Vélocité
+- **Observation** : [Ce que montrent les données]
+- **Hypothèse** : [Pourquoi ce trend]
+- **Action** : [Ce qu'on fait]
+
+### Qualité
+- **Observation** : [Ce que montrent les données]
+- **Hypothèse** : [Pourquoi ce trend]
+- **Action** : [Ce qu'on fait]
 
 ### Process AIAD
-
-#### Ce qui fonctionne bien
-- [Point 1]
-- [Point 2]
-
-#### Ce qui peut être amélioré
-- [Point 1]
-- [Point 2]
-
-#### Adaptations faites ce trimestre
-- [Adaptation 1] → Résultat : [...]
-- [Adaptation 2] → Résultat : [...]
+- **Ce qui fonctionne** : [Points positifs]
+- **Ce qui frotte** : [Points de friction]
+- **Adaptations proposées** : [Changements à tester]
 ```
 
 ---
 
-## Bloc 4 : Revue Technique (20 min)
+## Décisions de Pivot ou Ajustement
+
+### Framework de décision
+
+| Signal | Seuil | Décision type |
+|--------|-------|---------------|
+| Outcome très en retard | < 50% progression à mi-année | Pivot ou abandon |
+| Vélocité en chute | -30% sur 2 mois | Investigation urgente |
+| Qualité dégradée | +100% bugs | Stop feature, focus qualité |
+| Équipe en souffrance | Feedback négatif récurrent | Réduction scope |
+
+### Questions clés à trancher
 
 ```markdown
-## Revue Technique
+## Décisions Trimestrielles
 
-### État de la Dette
+### Sur les Outcomes
+- [ ] Les cibles annuelles sont-elles encore atteignables ?
+- [ ] Faut-il ajuster les cibles (hausse ou baisse) ?
+- [ ] Y a-t-il un outcome à abandonner ?
+- [ ] Un nouvel outcome doit-il être ajouté ?
 
-| Métrique | Début Q | Fin Q | Δ |
-|----------|---------|-------|---|
-| Dette estimée (jours) | [X] | [Y] | [Z] |
-| Items critiques | [X] | [Y] | [Z] |
-| Remboursement effectué | - | [X]j | - |
+### Sur la Roadmap
+- [ ] Quelles initiatives prioriser Q+1 ?
+- [ ] Quelles initiatives reporter/abandonner ?
+- [ ] Quel budget pour la dette technique ?
 
-#### Évolution
-```
-Début Q    ████████████████████ 20j
-Mi-Q       ████████████████ 16j
-Fin Q      ████████████ 12j
-```
+### Sur l'Équipe
+- [ ] La composition est-elle adaptée ?
+- [ ] Des recrutements sont-ils nécessaires ?
+- [ ] Des formations sont-elles requises ?
 
-#### Actions Dette ce Trimestre
-- ✅ [Action réalisée 1]
-- ✅ [Action réalisée 2]
-- ❌ [Action non réalisée - raison]
-
-### Architecture
-
-#### Changements Majeurs
-- [ADR-XXX] : [Décision et impact]
-- [ADR-YYY] : [Décision et impact]
-
-#### Risques Techniques
-| Risque | Niveau | Mitigation Prévue |
-|--------|--------|-------------------|
-| [Risque 1] | 🔴/🟡/🟢 | [Action] |
-
-### Agents IA
-
-#### Performance des Agents
-| Aspect | Évaluation | Notes |
-|--------|------------|-------|
-| Qualité du code généré | [1-5] | [...] |
-| Productivité | [1-5] | [...] |
-| Courbe d'apprentissage équipe | [1-5] | [...] |
-
-#### Améliorations AGENT-GUIDE
-- [Amélioration 1]
-- [Amélioration 2]
+### Sur le Process
+- [ ] AIAD fonctionne-t-il pour ce contexte ?
+- [ ] Quelles adaptations tester Q+1 ?
 ```
 
 ---
 
-## Bloc 5 : Retours Équipe (20 min)
+## Communication aux Stakeholders
+
+### Format exécutif (1 page)
 
 ```markdown
-## Retours Équipe
+# Bilan Trimestriel Q[X] 2026
 
-### Satisfaction et Bien-être
+## En Bref
+[2-3 phrases : état global, points saillants, orientation]
 
-#### Sondage (si réalisé)
-| Question | Score /5 | Δ Q-1 |
-|----------|----------|-------|
-| Satisfaction générale | [X] | [Δ] |
-| Charge de travail | [X] | [Δ] |
-| Clarté des priorités | [X] | [Δ] |
-| Autonomie | [X] | [Δ] |
-| Collaboration | [X] | [Δ] |
-
-#### Tour de Table
-Chaque membre partage (préparé en amont) :
-
-**[Nom]**
-- Fierté du trimestre : [...]
-- Frustration : [...]
-- Suggestion : [...]
-
-**[Nom]**
-- Fierté : [...]
-- Frustration : [...]
-- Suggestion : [...]
-
-### Thèmes Récurrents
-- [Thème 1] mentionné par [N] personnes
-- [Thème 2] mentionné par [N] personnes
-```
-
----
-
-## Bloc 6 : Orientations Q+1 (30 min)
-
-```markdown
-## Orientations Q+1
-
-### Contexte Stratégique
-(Input direction si présente)
-- Priorités business Q+1 : [...]
-- Contraintes : [...]
-- Opportunités : [...]
-
-### Objectifs Proposés
-
-#### Outcomes
-| Outcome | Cible Q+1 | Justification |
-|---------|-----------|---------------|
-| [O1] | [Cible] | [Pourquoi] |
-| [O2] | [Cible] | [Pourquoi] |
-
-#### Initiatives Majeures
-1. **[Initiative 1]**
-   - Objectif : [...]
-   - Effort estimé : [...]
-   - Impact attendu : [...]
-
-2. **[Initiative 2]**
-   - Objectif : [...]
-   - Effort estimé : [...]
-   - Impact attendu : [...]
-
-#### Dette Technique
-- Budget prévu : [X]% du temps
-- Focus : [Zones prioritaires]
-
-### Discussion et Validation
-- [ ] Objectifs validés par les stakeholders
-- [ ] Équipe alignée
-- [ ] Risques identifiés
-```
-
----
-
-## Bloc 7 : Actions et Clôture (15 min)
-
-```markdown
-## Actions
-
-### Actions Décidées
-
-| # | Action | Owner | Deadline | Lien |
-|---|--------|-------|----------|------|
-| 1 | [Action] | [Nom] | [Date] | [Ticket/Doc] |
-| 2 | [Action] | [Nom] | [Date] | [Ticket/Doc] |
-| 3 | [Action] | [Nom] | [Date] | [Ticket/Doc] |
-
-### Suivi
-- Actions trackées dans [Outil]
-- Review mi-trimestre prévue : [Date]
-
-## Clôture
-
-### Feedback sur la Revue
-- Format : [Score /5]
-- Durée : [OK / Trop long / Trop court]
-- Suggestions : [...]
-
-### Prochaine Revue
-- Date : [Date fin Q+1]
-- Facilitateur : [Nom]
-
-### Compte-Rendu
-- Partagé à : [Liste]
-- Par : [Nom]
-- Avant : [Date]
-```
-
----
-
-## Template Compte-Rendu
-
-```markdown
-# Compte-Rendu Revue Trimestrielle Q[X] 2026
-
-**Date** : [Date]
-**Participants** : [Liste]
-**Durée** : [X]h
-
----
-
-## Résumé Exécutif
-
-### Santé du Trimestre : [🟢/🟡/🔴]
-
-[2-3 phrases résumant le trimestre]
-
-### Chiffres Clés
-- Features livrées : [X]
-- Outcomes atteints : [X/Y]
-- Satisfaction équipe : [X/5]
-
----
+## Santé : [🟢/🟡/🔴]
 
 ## Outcomes
 
-| Outcome | Progression | Status |
-|---------|-------------|--------|
-| [O1] | [X% → Y%] | 🟢/🟡/🔴 |
-| [O2] | [X% → Y%] | 🟢/🟡/🔴 |
+| Outcome | Progression | Confiance annuelle |
+|---------|-------------|-------------------|
+| [O1] | __% | Haute/Moyenne/Basse |
+| [O2] | __% | Haute/Moyenne/Basse |
 
-**Analyse** : [Résumé]
+## Chiffres Clés
 
----
+| Métrique | Valeur | vs Q-1 |
+|----------|--------|--------|
+| Features livrées | [X] | [+/-Y%] |
+| Cycle Time | [X]j | [+/-Y%] |
+| Bugs prod | [X] | [+/-Y%] |
 
-## Points Saillants
+## Réalisations Majeures
+- ✅ [Réalisation 1]
+- ✅ [Réalisation 2]
 
-### Succès
-- [Succès 1]
-- [Succès 2]
+## Risques
+- ⚠️ [Risque 1 et mitigation]
 
-### Difficultés
-- [Difficulté 1]
-- [Difficulté 2]
-
-### Learnings
-- [Learning 1]
-- [Learning 2]
-
----
-
-## Orientations Q+1
-
-### Priorités
+## Focus Q+1
 1. [Priorité 1]
 2. [Priorité 2]
 3. [Priorité 3]
 
-### Cibles
-| Outcome | Cible Q+1 |
-|---------|-----------|
-| [O1] | [Cible] |
+---
+*Contact : [PM] | Détails : [lien document complet]*
+```
+
+### Niveaux de communication
+
+| Audience | Format | Fréquence | Contenu |
+|----------|--------|-----------|---------|
+| Direction | 1 page exécutive | Trimestriel | Outcomes, ROI, risques |
+| Stakeholders produit | Présentation 15 min | Trimestriel | Features, roadmap, feedback |
+| Équipe élargie | Email + dashboard | Trimestriel | Célébration + orientations |
 
 ---
 
-## Actions
+## Exemples Pratiques
+
+### Exemple 1 : Startup early-stage
+
+**Contexte** : Équipe de 4, product-market fit en cours
+
+**Revue simplifiée (1h30)** :
+1. Outcomes utilisateurs (30 min) - Les métriques d'engagement progressent-elles ?
+2. Vélocité (20 min) - Livre-t-on assez vite pour itérer ?
+3. Décisions (30 min) - Pivot ? Persévérer ? Ajuster ?
+4. Actions (10 min)
+
+**Focus métriques** :
+- 1-2 outcomes max (engagement, rétention)
+- Cycle time
+- Feedback utilisateurs qualitatif
+
+### Exemple 2 : Scale-up avec plusieurs squads
+
+**Contexte** : 3 squads, 15 personnes, multiple products
+
+**Revue structurée (2h30)** :
+1. Vue consolidée (20 min) - Santé globale
+2. Deep-dive par squad (45 min) - Outcomes spécifiques
+3. Cross-squad (30 min) - Dépendances, mutualisations
+4. Technique (20 min) - Architecture, dette
+5. Orientations (25 min) - Priorisation globale
+6. Actions (10 min)
+
+**Spécificités** :
+- Dashboard par squad + consolidé
+- Comparaison inter-squads (avec bienveillance)
+- Alignement sur les priorités cross
+
+### Exemple 3 : Équipe en contexte réglementé
+
+**Contexte** : Fintech, contraintes compliance fortes
+
+**Revue avec volet conformité (2h30)** :
+1. Outcomes business (30 min)
+2. Compliance check (20 min) - Audits, écarts, remédiation
+3. Sécurité (15 min) - Vulnérabilités, incidents
+4. Opérationnel (30 min)
+5. Technique (20 min)
+6. Orientations (25 min)
+7. Actions (10 min)
+
+**Métriques spécifiques** :
+- Couverture audits
+- Temps résolution vulnérabilités
+- Incidents de sécurité
+
+---
+
+## Anti-patterns
+
+### ❌ Revue "théâtre"
+
+```
+❌ Présentation PowerPoint de 50 slides
+   Tout le monde regarde son téléphone
+   Aucune décision prise
+
+✅ Discussion structurée autour de données
+   Participation active
+   Décisions documentées avec owners
+```
+
+### ❌ Focus uniquement sur les outputs
+
+```
+❌ "On a livré 15 features ce trimestre !"
+   Mais aucun outcome n'a progressé
+
+✅ "On a livré 12 features, l'engagement a progressé de 20%"
+   Les features servent les outcomes
+```
+
+### ❌ Pas de suite aux décisions
+
+```
+❌ "On avait dit qu'on réduirait la dette..."
+   3 mois plus tard, rien n'a changé
+
+✅ Actions avec owners et deadlines
+   Suivi à mi-trimestre
+   Rappel en début de prochaine revue
+```
+
+### ❌ Blame game
+
+```
+❌ "Le trimestre a échoué parce que [équipe/personne]..."
+   Ambiance toxique, aucun apprentissage
+
+✅ "Voici ce qui n'a pas fonctionné et ce qu'on apprend"
+   Analyse systémique, pas personnelle
+```
+
+---
+
+## Template Complet de Revue
+
+### Agenda (2h30)
+
+| Bloc | Durée | Contenu | Responsable |
+|------|-------|---------|-------------|
+| 1 | 10 min | Check-in + contexte | PM |
+| 2 | 30 min | Revue des Outcomes | PM |
+| 3 | 25 min | Revue Opérationnelle | PE lead |
+| 4 | 20 min | Revue Technique | Tech Lead |
+| 5 | 20 min | Retours Équipe | Tous |
+| 6 | 30 min | Orientations Q+1 | PM + Direction |
+| 7 | 15 min | Actions et Clôture | PM |
+
+### Bloc 1 : Check-in (10 min)
+
+```markdown
+## Check-in
+Tour de table en 1 phrase : "Mon sentiment sur ce trimestre"
+
+## Contexte Business
+(PM, 5 min)
+- Événements marquants
+- Changements de contexte
+- Ce qui a impacté le produit
+```
+
+### Bloc 2 : Revue des Outcomes (30 min)
+
+```markdown
+## Outcome : [Nom]
+
+### Progression
+| Début Q | Fin Q | Cible Q | Cible Annuelle |
+|---------|-------|---------|----------------|
+| [X] | [Y] | [Z] | [W] |
+
+### Analyse
+- **Atteint ?** Oui / Partiellement / Non
+- **Facteurs positifs** : [Ce qui a contribué]
+- **Obstacles** : [Ce qui a freiné]
+- **Learnings** : [Ce qu'on retient]
+
+### Projection
+- Cible annuelle réaliste : Oui / Non
+- Ajustement proposé : [Si applicable]
+```
+
+### Bloc 3 : Revue Opérationnelle (25 min)
+
+```markdown
+## Vélocité
+
+| Métrique | M1 | M2 | M3 | Trend |
+|----------|----|----|-----|-------|
+| Features | | | | |
+| Cycle Time | | | | |
+| Prévisibilité | | | | |
+
+## Qualité
+
+| Métrique | Valeur Q | vs Q-1 | Status |
+|----------|----------|--------|--------|
+| Bugs prod | | | |
+| Incidents | | | |
+| Couverture | | | |
+
+## Process AIAD
+- **Fonctionne bien** : [Points positifs]
+- **À améliorer** : [Frictions identifiées]
+```
+
+### Bloc 4 : Revue Technique (20 min)
+
+```markdown
+## Dette Technique
+
+| Métrique | Début Q | Fin Q | Δ |
+|----------|---------|-------|---|
+| Dette estimée | [X]j | [Y]j | |
+| Items critiques | | | |
+
+## Architecture
+- ADR majeurs ce trimestre : [Liste]
+- Risques techniques : [Liste]
+
+## Agents IA
+- Qualité code généré : [Score /5]
+- Améliorations AGENT-GUIDE : [Liste]
+```
+
+### Bloc 5 : Retours Équipe (20 min)
+
+```markdown
+## Tour de Table
+
+Chaque membre partage :
+- 1 fierté du trimestre
+- 1 frustration
+- 1 suggestion
+
+## Thèmes Récurrents
+- [Thème 1] (mentionné par X personnes)
+- [Thème 2] (mentionné par X personnes)
+```
+
+### Bloc 6 : Orientations Q+1 (30 min)
+
+```markdown
+## Contexte Stratégique
+(Input direction)
+- Priorités business
+- Contraintes
+- Opportunités
+
+## Propositions
+
+### Outcomes Q+1
+| Outcome | Cible | Justification |
+|---------|-------|---------------|
+| | | |
+
+### Initiatives Majeures
+1. [Initiative] - Effort: __, Impact: __
+2. [Initiative] - Effort: __, Impact: __
+
+### Budget Dette
+- % temps alloué : __
+- Focus : [Zones prioritaires]
+```
+
+### Bloc 7 : Actions et Clôture (15 min)
+
+```markdown
+## Actions Décidées
 
 | Action | Owner | Deadline |
 |--------|-------|----------|
-| [Action 1] | [Nom] | [Date] |
-| [Action 2] | [Nom] | [Date] |
+| | | |
 
----
+## Suivi
+- Review mi-trimestre : [Date]
+- Prochaine revue : [Date]
 
-**Compte-rendu rédigé par** : [Nom]
-**Date** : [Date]
+## Feedback sur la session
+- Format : [OK / À améliorer]
+- Durée : [OK / Trop long / Trop court]
 ```
 
 ---
@@ -431,28 +481,49 @@ Chaque membre partage (préparé en amont) :
 ## Checklist Facilitateur
 
 ```markdown
-## Checklist Revue Trimestrielle
-
-### 1 Semaine Avant
-- [ ] Data collectée
-- [ ] Dashboard préparé
-- [ ] Agenda envoyé
-- [ ] Input demandé aux participants
+## 1 Semaine Avant
+- [ ] Données collectées et dashboard préparé
+- [ ] Agenda envoyé aux participants
+- [ ] Input demandé à chacun (fierté/frustration/suggestion)
 - [ ] Salle/visio réservée
+- [ ] Temps bloqué chez les participants
 
-### Le Jour J
-- [ ] Matériel prêt (présentation, board)
-- [ ] Timer pour chaque bloc
-- [ ] Notes en temps réel
-- [ ] Actions documentées avec owners
+## Jour J
+- [ ] Support prêt (dashboard, template notes)
+- [ ] Timer configuré pour chaque bloc
+- [ ] Prise de notes en temps réel
+- [ ] Actions documentées avec owners pendant la session
 
-### Après
-- [ ] Compte-rendu rédigé (< 48h)
-- [ ] Partagé aux participants et stakeholders
+## Après (< 48h)
+- [ ] Compte-rendu rédigé et partagé
 - [ ] Actions créées dans l'outil de suivi
 - [ ] Date prochaine revue calendrier
+- [ ] Feedback collecté sur le format
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Checklist Qualité Revue
+
+```markdown
+## Préparation
+- [ ] Données factuelles collectées (pas d'estimation au doigt mouillé)
+- [ ] Tous les participants ont préparé leur input
+- [ ] Stakeholders clés présents ou représentés
+
+## Déroulement
+- [ ] Temps respecté pour chaque bloc
+- [ ] Tout le monde a pu s'exprimer
+- [ ] Discussions factuelles, pas de blame
+- [ ] Décisions prises et documentées
+
+## Outputs
+- [ ] Orientations Q+1 validées
+- [ ] Actions avec owners et deadlines
+- [ ] Compte-rendu partagé
+- [ ] Suivi planifié
+```
+
+---
+
+*Voir aussi : [E.1 Exemples de Dashboards](E1-exemples-dashboards.md) | [D.1 Alignment Stratégique](D1-alignment-strategique.md) | [D.4 Rétrospective](D4-retrospective.md)*

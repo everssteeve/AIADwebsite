@@ -2,393 +2,452 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit des maquettes et templates pour créer des dashboards AIAD efficaces, permettant de visualiser les métriques clés à différentes fréquences.
+Visualiser les bonnes métriques permet de piloter efficacement un projet AIAD. Cette annexe fournit des templates de dashboards prêts à l'emploi, adaptés à chaque rôle et fréquence de revue. Un bon dashboard aide à la décision, pas à la confusion.
 
 ---
 
-## Dashboard Hebdomadaire
+## Dashboard par Rôle
 
-### Vue d'Ensemble
+### Dashboard Product Manager
 
-Ce dashboard est conçu pour la revue hebdomadaire avec l'équipe et le suivi opérationnel.
+Focus : outcomes et valeur livrée.
+
+| Métrique | Fréquence | Source | Seuil d'alerte |
+|----------|-----------|--------|----------------|
+| Progression outcomes | Hebdo | PRD tracking | < 80% trend |
+| Features livrées vs planifiées | Hebdo | Backlog | < 70% |
+| Satisfaction utilisateurs | Mensuel | NPS/CSAT | < 7/10 |
+| Time-to-market | Mensuel | Dates release | > +20% dérive |
+
+**Template visuel PM :**
 
 ```
-┌────────────────────────────────────────────────────────────────────┐
-│                    DASHBOARD AIAD - Semaine 3/2026                 │
-├────────────────────────────────────────────────────────────────────┤
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    MÉTRIQUES D'OUTPUTS                       │  │
-│  │                                                              │  │
-│  │  Cycle Time     Features Livrées    Taux 1ère Valid.       │  │
-│  │  ┌─────────┐    ┌─────────┐         ┌─────────┐            │  │
-│  │  │  2.3j   │    │    4    │         │   85%   │            │  │
-│  │  │   ↓     │    │   ↑     │         │    →    │            │  │
-│  │  │ -0.5j   │    │  +1     │         │   =     │            │  │
-│  │  └─────────┘    └─────────┘         └─────────┘            │  │
-│  │                                                              │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    FLUX DE TRAVAIL                           │  │
-│  │                                                              │  │
-│  │  Ready      In Progress    In Review      Done              │  │
-│  │  ┌────┐     ┌────┐         ┌────┐        ┌────┐            │  │
-│  │  │ 5  │────▶│ 2  │────────▶│ 1  │───────▶│ 4  │            │  │
-│  │  └────┘     └────┘         └────┘        └────┘            │  │
-│  │                                                              │  │
-│  │  WIP Limit: 3 ✅                                            │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    QUALITÉ                                   │  │
-│  │                                                              │  │
-│  │  Couverture Tests    Bugs en Prod     Dette Tech           │  │
-│  │       84%                 0              12j                │  │
-│  │       ████████░░         ✓              ████████████        │  │
-│  │       Cible: 80%    Cible: 0           Cible: <20j         │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    ALERTES                                   │  │
-│  │                                                              │  │
-│  │  ⚠️ SPEC-045 en WIP depuis 4 jours (limite: 3j)            │  │
-│  │  ✅ Tous les tests passent                                  │  │
-│  │  ✅ Pas de blocage en cours                                 │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-└────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  OUTCOMES                          LIVRAISONS              │
+│  ┌───────────────────┐            ┌───────────────────┐    │
+│  │ Engagement: 2.4   │            │ Features: 4/5     │    │
+│  │ Cible: 3.0  ▲     │            │ Cette semaine     │    │
+│  │ ████████░░░ 80%   │            │ ████████████░░    │    │
+│  └───────────────────┘            └───────────────────┘    │
+│                                                             │
+│  PROCHAINES PRIORITÉS              ALERTES                 │
+│  1. Onboarding v2                  ⚠️ SPEC-045 bloquée    │
+│  2. Export CSV                     ✅ Tests OK             │
+│  3. Notifications                                          │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Template Markdown
+### Dashboard Product Engineer
+
+Focus : flux de travail et productivité.
+
+| Métrique | Fréquence | Source | Seuil d'alerte |
+|----------|-----------|--------|----------------|
+| Cycle time | Quotidien | Board | > 3 jours |
+| WIP en cours | Temps réel | Board | > limite |
+| Taux première validation | Hebdo | Review | < 75% |
+| Qualité code généré | Hebdo | Linter/Tests | > 5 erreurs/PR |
+
+**Template visuel PE :**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  KANBAN LIVE                                                │
+│  ┌─────────┬─────────┬─────────┬─────────┐                 │
+│  │ Ready   │ WIP     │ Review  │ Done    │                 │
+│  │   5     │   2/3   │   1     │   4     │                 │
+│  │ ○○○○○   │ ●●○     │ ●       │ ●●●●    │                 │
+│  └─────────┴─────────┴─────────┴─────────┘                 │
+│                                                             │
+│  CYCLE TIME: 2.3j (cible: <3j) ✅                          │
+│  SPEC EN COURS: SPEC-046 - Filtres (jour 2)               │
+│                                                             │
+│  CI/CD: main ✅ | PR #234 ⏳ | PR #235 ❌ (tests e2e)      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Dashboard Tech Lead
+
+Focus : santé technique et architecture.
+
+| Métrique | Fréquence | Source | Seuil d'alerte |
+|----------|-----------|--------|----------------|
+| Couverture tests | Quotidien | CI | < 80% |
+| Dette technique | Hebdo | Estimation | > 20 jours |
+| Bugs en production | Temps réel | Monitoring | > 0 critique |
+| Incidents | Temps réel | Alerting | Tout incident |
+
+**Template visuel TL :**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  SANTÉ TECHNIQUE                                            │
+│  ┌───────────┬───────────┬───────────┬───────────┐         │
+│  │ Coverage  │ Dette     │ Bugs Prod │ Incidents │         │
+│  │   84%     │   12j     │     0     │     0     │         │
+│  │    🟢     │    🟢     │    🟢     │    🟢     │         │
+│  └───────────┴───────────┴───────────┴───────────┘         │
+│                                                             │
+│  DETTE: 20j → 15j → 12j (↓40% ce trimestre)               │
+│                                                             │
+│  ADR RÉCENTS:                                               │
+│  - ADR-012: Migration Zustand ✅                           │
+│  - ADR-013: API v2 (en discussion)                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Dashboard par Fréquence
+
+### Dashboard Hebdomadaire
+
+Pour la synchronisation d'équipe et le suivi opérationnel.
 
 ```markdown
 # Dashboard Hebdo - Semaine [N]
 
-## Métriques d'Outputs
+## Métriques Clés
 
-| Métrique | Valeur | Δ Semaine | Tendance | Cible |
-|----------|--------|-----------|----------|-------|
-| Cycle Time | 2.3j | -0.5j | ↓ | < 3j |
-| Features Livrées | 4 | +1 | ↑ | 3-5 |
-| Taux 1ère Validation | 85% | = | → | > 80% |
-| SPECs Complétées | 4/5 | - | - | 100% |
+| Métrique | Valeur | Δ Semaine | Cible | Status |
+|----------|--------|-----------|-------|--------|
+| Cycle Time | 2.3j | -0.5j | < 3j | 🟢 |
+| Features Livrées | 4 | +1 | 3-5 | 🟢 |
+| Taux 1ère Valid. | 85% | = | > 80% | 🟢 |
+| WIP actuel | 2 | - | ≤ 3 | 🟢 |
 
 ## Flux de Travail
 
-| Status | Count | Limite |
-|--------|-------|--------|
-| Ready | 5 | - |
-| In Progress | 2 | 3 |
-| In Review | 1 | 2 |
-| Done (semaine) | 4 | - |
-
-**WIP Status** : ✅ OK (3/3 max)
+| Status | Count | Limite | Alert |
+|--------|-------|--------|-------|
+| Ready | 5 | - | - |
+| In Progress | 2 | 3 | ✅ |
+| In Review | 1 | 2 | ✅ |
+| Done (semaine) | 4 | - | - |
 
 ## Qualité
 
-| Métrique | Valeur | Status |
-|----------|--------|--------|
-| Couverture Tests | 84% | 🟢 |
-| Bugs en Prod | 0 | 🟢 |
-| Tests Flaky | 2 | 🟡 |
-| Incidents | 0 | 🟢 |
+| Métrique | Valeur | Cible | Status |
+|----------|--------|-------|--------|
+| Couverture Tests | 84% | 80% | 🟢 |
+| Bugs en Prod | 0 | 0 | 🟢 |
+| Tests Flaky | 2 | 0 | 🟡 |
 
-## Dette Technique
+## Alertes
 
-- **Total estimé** : 12 jours
-- **Trend** : ↓ (était 15j la semaine dernière)
-- **Quick wins traités** : 2
+- ⚠️ SPEC-045 en WIP depuis 4 jours (limite: 3j)
+- 🟡 2 tests flaky à investiguer
 
-## Alertes & Actions
+## Actions Semaine
 
-### Alertes
-- ⚠️ SPEC-045 en cours depuis 4 jours
-
-### Actions de la Semaine
-- [x] Fix tests flaky sur auth
-- [ ] Review SPEC-046 avec PM
+- [ ] Débloquer SPEC-045 avec Alice
+- [ ] Fix tests flaky auth
 ```
 
----
+### Dashboard Mensuel
 
-## Dashboard Mensuel
-
-### Vue d'Ensemble
-
-Dashboard pour la revue mensuelle et le reporting aux stakeholders.
-
-```
-┌────────────────────────────────────────────────────────────────────┐
-│                  DASHBOARD AIAD - Janvier 2026                      │
-├────────────────────────────────────────────────────────────────────┤
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    OUTCOMES                                  │  │
-│  │                                                              │  │
-│  │  Engagement         Conversion        Rétention             │  │
-│  │  (sessions/user)    (trial→paid)      (M1)                  │  │
-│  │                                                              │  │
-│  │  2.4  ──────────▶ Cible: 3.0        8.2%                    │  │
-│  │  ████████░░░░░░                      ████████████░░░         │  │
-│  │                                      Cible: 8%  ✓           │  │
-│  │                                                              │  │
-│  │  Trend:                              Trend:                  │  │
-│  │  S1: 2.1 → S2: 2.2 → S3: 2.3 → S4: 2.4                     │  │
-│  │      ↗         ↗         ↗         ↗                        │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    VÉLOCITÉ                                  │  │
-│  │                                                              │  │
-│  │  Features/Mois    Cycle Time Moyen   Prévisibilité          │  │
-│  │      14              2.5j                82%                 │  │
-│  │                                                              │  │
-│  │  Historique (3 mois):                                       │  │
-│  │  Nov: 10 │ Dec: 12 │ Jan: 14                                │  │
-│  │  ████████│█████████│████████████                            │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    SANTÉ TECHNIQUE                           │  │
-│  │                                                              │  │
-│  │  Couverture    Dette Tech    Incidents    Uptime            │  │
-│  │    84%           12j            0         99.9%              │  │
-│  │    🟢            🟢             🟢          🟢               │  │
-│  │                                                              │  │
-│  │  Trend Dette: 20j → 15j → 12j (↓ 40% en 3 mois)            │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │                    HIGHLIGHTS                                │  │
-│  │                                                              │  │
-│  │  ✅ Feature "Filtres avancés" livrée - adoption 35%        │  │
-│  │  ✅ Migration Zustand terminée - perf +40%                  │  │
-│  │  ⚠️ Outcome engagement en retard sur cible                 │  │
-│  │  📋 Focus M+1: Notifications, Onboarding v2                │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-└────────────────────────────────────────────────────────────────────┘
-```
-
-### Template Markdown
+Pour le reporting stakeholders et le suivi des outcomes.
 
 ```markdown
 # Dashboard Mensuel - [Mois Année]
 
 ## Outcomes
 
-### Outcome 1 : Engagement
-| Semaine | Valeur | Δ |
-|---------|--------|---|
-| S1 | 2.1 | - |
-| S2 | 2.2 | +0.1 |
-| S3 | 2.3 | +0.1 |
-| S4 | 2.4 | +0.1 |
+### Outcome 1 : [Nom]
+
+| Semaine | Valeur | Progression |
+|---------|--------|-------------|
+| S1 | 2.1 | ████████░░░░ |
+| S2 | 2.2 | █████████░░░ |
+| S3 | 2.3 | █████████░░░ |
+| S4 | 2.4 | ██████████░░ |
 
 **Cible** : 3.0 | **Actuel** : 2.4 (80%)
-**Trend** : ↗ En progression
-**Prévision** : Cible atteinte M+2 si trend maintenu
+**Projection** : Cible atteinte M+2 si trend maintenu
 
-### Outcome 2 : Conversion
-[Même structure]
-
-## Vélocité
+## Vélocité (3 derniers mois)
 
 | Métrique | M-2 | M-1 | Ce Mois | Trend |
 |----------|-----|-----|---------|-------|
-| Features livrées | 10 | 12 | 14 | ↑ |
-| Cycle Time moyen | 3.2j | 2.8j | 2.5j | ↓ |
+| Features | 10 | 12 | 14 | ↑ +17% |
+| Cycle Time | 3.2j | 2.8j | 2.5j | ↓ -11% |
 | Prévisibilité | 75% | 78% | 82% | ↑ |
 
 ## Santé Technique
 
-| Indicateur | Valeur | Status | Trend |
-|------------|--------|--------|-------|
-| Couverture Tests | 84% | 🟢 | ↑ |
-| Dette Technique | 12j | 🟢 | ↓ |
-| Incidents Prod | 0 | 🟢 | → |
-| Uptime | 99.9% | 🟢 | → |
+| Indicateur | Valeur | vs M-1 | Status |
+|------------|--------|--------|--------|
+| Couverture | 84% | +2% | 🟢 |
+| Dette Tech | 12j | -3j | 🟢 |
+| Incidents | 0 | = | 🟢 |
 
-## Réalisations Clés
+## Réalisations
 
-### Livrées
-- ✅ [Feature 1] - Impact : [X]
-- ✅ [Feature 2] - Impact : [X]
-
-### En Cours
-- 🔄 [Feature 3] - ETA : [Date]
-
-### Reportées
-- ⏸️ [Feature 4] - Raison : [X]
-
-## Risques & Mitigations
-
-| Risque | Probabilité | Impact | Mitigation |
-|--------|-------------|--------|------------|
-| [Risque 1] | Moyenne | Haut | [Action] |
+- ✅ Filtres avancés - adoption 35%
+- ✅ Migration Zustand - perf +40%
+- 🔄 Notifications - ETA S+2
 
 ## Focus Mois Prochain
 
-1. [Priorité 1]
-2. [Priorité 2]
-3. [Priorité 3]
+1. Finaliser notifications
+2. Onboarding v2
+3. Réduire dette à <10j
 ```
 
 ---
 
-## Dashboard Temps Réel (Dev)
+## Métriques Vélocité avec Agents
 
-Pour le suivi quotidien par l'équipe technique.
+### Métriques spécifiques AIAD
+
+| Métrique | Description | Formule | Cible |
+|----------|-------------|---------|-------|
+| Code acceptance rate | % code agent accepté sans modif | Commits directs / Total | > 70% |
+| Prompt efficiency | Itérations par tâche | Prompts / Tâche complétée | < 3 |
+| Agent productivity | Features par PE par semaine | Features / PE / Semaine | > 2 |
+| Context quality | Taux réussite première génération | 1ère génération OK / Total | > 60% |
+
+### Dashboard Agent Performance
 
 ```
-┌────────────────────────────────────────────────────────────────────┐
-│                    AIAD LIVE - 19 Jan 2026 14:32                   │
-├────────────────────────────────────────────────────────────────────┤
-│                                                                    │
-│  ┌──────────────┬──────────────┬──────────────┬──────────────┐   │
-│  │   READY      │  IN PROGRESS │  IN REVIEW   │    DONE      │   │
-│  │              │              │              │   (today)    │   │
-│  ├──────────────┼──────────────┼──────────────┼──────────────┤   │
-│  │ SPEC-048     │ SPEC-045 🔴  │ SPEC-044     │ SPEC-043     │   │
-│  │ SPEC-049     │   Alice      │   Bob→Review │              │   │
-│  │ SPEC-050     │   4 days     │              │              │   │
-│  │ SPEC-051     │              │              │              │   │
-│  │ SPEC-052     │ SPEC-046     │              │              │   │
-│  │              │   Charlie    │              │              │   │
-│  │              │   1 day      │              │              │   │
-│  └──────────────┴──────────────┴──────────────┴──────────────┘   │
-│                                                                    │
-│  🔴 SPEC-045 dépasse le cycle time moyen (4j > 2.5j)             │
-│                                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐  │
-│  │ CI/CD STATUS                                                 │  │
-│  │ main: ✅ Build passing | Coverage: 84% | Last deploy: 2h ago│  │
-│  │ PR #234: ⏳ Running... (3/5 checks)                         │  │
-│  │ PR #235: ❌ Failed - test:e2e                               │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-└────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  PERFORMANCE AGENTS - Semaine 3                             │
+│                                                             │
+│  Acceptance Rate    Prompt Efficiency    PE Productivity   │
+│      78%                 2.1                  2.5          │
+│  ████████████░░░     ███████████░░░      █████████████░░   │
+│  Cible: >70% ✅      Cible: <3 ✅        Cible: >2 ✅      │
+│                                                             │
+│  QUALITÉ CODE GÉNÉRÉ                                        │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ Lint errors/PR: 1.2 (↓ était 3.5)                   │   │
+│  │ Tests ajoutés: 94% des features                     │   │
+│  │ Refactoring demandés: 15% (↓ était 30%)             │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  TOP AMÉLIORATIONS AGENT-GUIDE CE MOIS:                    │
+│  1. Convention nommage hooks → -50% corrections            │
+│  2. Pattern error handling → -40% bugs                     │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Implémentation Technique
+## Qualité du Code Généré
 
-### Option 1 : Notion / Coda
+### Métriques à suivre
 
-Configuration simple avec formules et vues.
+| Catégorie | Métrique | Mesure | Outil |
+|-----------|----------|--------|-------|
+| Syntaxe | Erreurs lint | Par PR | ESLint |
+| Tests | Couverture nouvelle | % lignes | Vitest/Jest |
+| Sécurité | Vulnérabilités | Count | Snyk/npm audit |
+| Performance | Bundle size delta | Ko | Bundlesize |
+| Maintenabilité | Complexité | Score | SonarQube |
+
+### Seuils d'alerte
+
+```yaml
+quality_gates:
+  lint_errors_per_pr:
+    warning: 3
+    critical: 10
+  coverage_new_code:
+    warning: 70%
+    critical: 50%
+  security_vulns:
+    warning: 1 (low)
+    critical: 1 (high+)
+  bundle_increase:
+    warning: 10Ko
+    critical: 50Ko
+```
+
+---
+
+## Implémentation
+
+### Option 1 : Notion / Coda (Simple)
+
+**Structure de base :**
 
 ```markdown
-## Structure Base de Données Notion
+## Tables Notion
 
-### Table : SPECs
-| Propriété | Type | Usage |
-|-----------|------|-------|
-| Nom | Title | Identifiant |
-| Status | Select | Ready/InProgress/InReview/Done |
-| Assignee | Person | Responsable |
-| Start Date | Date | Début travail |
-| End Date | Date | Fin travail |
-| Cycle Time | Formula | End - Start |
+### Table SPECs
+- Nom (Title)
+- Status (Select: Ready/InProgress/Review/Done)
+- Assignee (Person)
+- Start Date (Date)
+- End Date (Date)
+- Cycle Time (Formula): dateBetween(End, Start, "days")
 
-### Formules Utiles
-- Cycle Time : `dateBetween(prop("End Date"), prop("Start Date"), "days")`
-- WIP Count : `length(filter(SPECs, Status = "In Progress"))`
+### Table Outcomes
+- Nom (Title)
+- Métrique (Text)
+- Cible (Number)
+- Actuel (Number)
+- Progression (Formula): Actuel / Cible * 100
+
+### Vues Dashboard
+1. Board Kanban filtré sur "Cette semaine"
+2. Graphique progression Outcomes
+3. Tableau métriques calculées
 ```
 
-### Option 2 : Google Sheets + Data Studio
-
-Pour des dashboards plus visuels et partageables.
+### Option 2 : Google Sheets + Looker Studio (Intermédiaire)
 
 ```markdown
 ## Structure Sheets
 
-### Onglet : Raw Data
-| Date | SPEC_ID | Event | Assignee |
-|------|---------|-------|----------|
-| 2026-01-15 | SPEC-042 | started | Alice |
-| 2026-01-17 | SPEC-042 | completed | Alice |
+### Onglet: Events
+| Date | SPEC_ID | Event | Assignee | Notes |
+|------|---------|-------|----------|-------|
 
-### Onglet : Metrics (calculé)
-| Week | Cycle_Time_Avg | Features_Done | First_Pass_Rate |
-|------|----------------|---------------|-----------------|
-| W1 | 2.5 | 3 | 80% |
+### Onglet: Metrics (calculé)
+| Week | Cycle_Time | Done_Count | First_Pass |
+|------|------------|------------|------------|
 
-### Data Studio
-- Connecter le Sheet
-- Créer les graphiques
-- Partager en lecture
+### Formules clés
+- Cycle Time: =AVERAGEIFS(...)
+- WIP: =COUNTIF(Status, "InProgress")
+
+## Looker Studio
+- Connecter Sheet
+- Scorecards pour métriques clés
+- Time series pour trends
+- Filtres par période
 ```
 
-### Option 3 : Script + Static Site
-
-Pour le contrôle total et l'automatisation.
+### Option 3 : Script automatisé (Avancé)
 
 ```typescript
-// scripts/generate-dashboard.ts
-interface Metrics {
+// metrics-collector.ts
+interface WeeklyMetrics {
+  week: string
   cycleTime: number
   featuresDelivered: number
+  firstPassRate: number
   coverage: number
   techDebt: number
 }
 
-async function collectMetrics(): Promise<Metrics> {
-  // Fetch from GitHub/Linear/Jira API
-  const issues = await fetchIssues()
-  const coverage = await fetchCoverage()
+async function collectMetrics(): Promise<WeeklyMetrics> {
+  const [issues, coverage, debt] = await Promise.all([
+    fetchFromLinear(), // ou GitHub/Jira
+    fetchFromCI(),
+    fetchTechDebtEstimate()
+  ])
 
   return {
-    cycleTime: calculateCycleTime(issues),
-    featuresDelivered: issues.filter(i => i.closedThisWeek).length,
+    week: getCurrentWeek(),
+    cycleTime: calculateAvgCycleTime(issues),
+    featuresDelivered: countCompleted(issues),
+    firstPassRate: calculateFirstPass(issues),
     coverage: coverage.total,
-    techDebt: await fetchTechDebtDays()
+    techDebt: debt.days
   }
 }
 
-async function generateDashboard(metrics: Metrics) {
-  const template = await readFile('dashboard-template.html')
-  const html = template
-    .replace('{{cycleTime}}', metrics.cycleTime.toFixed(1))
-    .replace('{{features}}', metrics.featuresDelivered.toString())
-
-  await writeFile('dashboard.html', html)
-}
+// Exécution: cron hebdo ou GitHub Action
 ```
 
 ---
 
-## Bonnes Pratiques
+## Exemples Pratiques
 
-### Design
+### Exemple 1 : Startup early-stage (équipe 3 personnes)
 
-| Principe | Application |
-|----------|-------------|
-| Hiérarchie visuelle | Metrics importantes en haut/grand |
-| Contexte | Toujours montrer cible + trend |
-| Actionnable | Lier aux alertes et actions |
-| Scannable | Vue en 30 secondes |
+Dashboard minimaliste sur Notion :
+- 1 board Kanban
+- 3 métriques : Cycle Time, Features/semaine, Bugs prod
+- Revue : 15 min lundi matin
 
-### Maintenance
+### Exemple 2 : Scale-up (équipe 8 personnes)
+
+Dashboard complet sur Looker Studio :
+- Vue temps réel + hebdo + mensuel
+- Métriques par squad si plusieurs
+- Alertes Slack automatiques
+- Revue : 30 min lundi + mensuel 1h
+
+### Exemple 3 : Entreprise (reporting direction)
+
+Dashboard exécutif :
+- Focus outcomes et ROI
+- Comparaison avant/après AIAD
+- Trend 6 mois minimum
+- Format : 1 page, scannable en 30 secondes
+
+---
+
+## Anti-patterns
+
+### ❌ Dashboard vanity metrics
+
+```
+❌ "200 commits cette semaine !"
+   → Mesure l'activité, pas la valeur
+
+✅ "4 features livrées, outcome progression +5%"
+   → Mesure la valeur délivrée
+```
+
+### ❌ Dashboard trop complexe
+
+```
+❌ 50 métriques sur un écran
+   → Information overload, personne ne regarde
+
+✅ 5-7 métriques clés, le reste en drill-down
+   → Scannable, actionnable
+```
+
+### ❌ Métriques sans contexte
+
+```
+❌ "Cycle Time: 2.5j"
+   → C'est bien ? C'est mal ?
+
+✅ "Cycle Time: 2.5j (cible: <3j, trend: ↓)"
+   → Contexte = compréhension = action
+```
+
+### ❌ Dashboard statique jamais mis à jour
+
+```
+❌ Dernière mise à jour: il y a 3 semaines
+   → Perte de confiance, abandon
+
+✅ Automatisation ou routine claire
+   → Dashboard toujours fiable
+```
+
+---
+
+## Checklist Dashboard
 
 ```markdown
-## Routine Dashboard
+## Setup Initial
+- [ ] Métriques clés identifiées (5-7 max)
+- [ ] Sources de données connectées
+- [ ] Cibles définies pour chaque métrique
+- [ ] Seuils d'alerte configurés
+- [ ] Responsable maintenance désigné
 
-### Quotidien (automatisé)
-- Mise à jour des métriques temps réel
-- Alertes si seuils dépassés
+## Design
+- [ ] Hiérarchie visuelle claire (important = visible)
+- [ ] Contexte présent (cible, trend, période)
+- [ ] Scannable en 30 secondes
+- [ ] Actions possibles identifiables
 
-### Hebdomadaire (5 min)
-- Vérifier la cohérence des données
-- Ajouter les highlights manuels
-
-### Mensuel (30 min)
-- Revue des cibles
-- Ajustement des seuils d'alerte
-- Archive des données historiques
+## Maintenance
+- [ ] Routine de mise à jour définie
+- [ ] Automatisation si possible
+- [ ] Revue mensuelle des métriques pertinentes
+- [ ] Archive des données historiques
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+*Voir aussi : [E.2 Revue Trimestrielle](E2-revue-trimestrielle.md) | [D.1 Alignment Stratégique](D1-alignment-strategique.md)*
