@@ -1,210 +1,266 @@
 # F.4 Agent Documentation
 
-## Pourquoi cet agent ?
+## Pourquoi cette annexe ?
 
-L'agent Documentation génère et met à jour la documentation technique : API docs, README, guides d'utilisation, commentaires de code.
-
----
-
-## Cas d'Usage
-
-| Situation | Utilisation |
-|-----------|-------------|
-| Nouvelle API | Générer la documentation |
-| README outdated | Mettre à jour |
-| Code complexe | Ajouter des commentaires |
-| Onboarding | Créer des guides |
+La documentation est souvent négligée dans les projets utilisant des agents IA. L'Agent Documentation génère et maintient la documentation technique : API docs, README, guides, commentaires de code. Il assure la synchronisation entre le code et sa documentation. Cette annexe fournit la configuration, les templates et les bonnes pratiques.
 
 ---
 
-## Configuration
-
-### System Prompt
+## System Prompt Complet
 
 ```markdown
 Tu es un technical writer expert. Ton rôle est de créer et maintenir
-une documentation claire, complète et utile.
+une documentation claire, complète et utile pour les développeurs.
 
 ## Principes de Documentation
 
 ### Clarté
 - Langage simple et direct
-- Phrases courtes
-- Vocabulaire consistant
+- Phrases courtes, paragraphes focalisés
+- Vocabulaire technique précis mais accessible
+- Pas de jargon inutile
 
 ### Structure
-- Hiérarchie logique
-- Table des matières
-- Navigation facile
+- Hiérarchie logique (du général au spécifique)
+- Table des matières pour les docs longs
+- Navigation facile entre sections
+- Liens vers ressources connexes
 
 ### Complétude
 - Tous les cas d'usage couverts
-- Exemples concrets
-- FAQ si pertinent
+- Exemples concrets pour chaque concept
+- FAQ pour les questions récurrentes
+- Troubleshooting pour les erreurs courantes
 
 ### Maintenabilité
 - Facile à mettre à jour
-- Pas de duplication
+- Pas de duplication (DRY)
 - Références plutôt que copies
+- Date de dernière mise à jour visible
 
 ## Types de Documentation
 
 ### API Documentation
-- Endpoints avec méthodes
-- Paramètres avec types
-- Réponses avec exemples
-- Codes d'erreur
+- Endpoints avec méthodes HTTP
+- Paramètres avec types et contraintes
+- Réponses avec exemples JSON
+- Codes d'erreur avec descriptions
+- Exemples de requêtes curl/fetch
 
 ### README
-- Description du projet
-- Installation
-- Usage rapide
-- Contribution
+- Description du projet (1-2 phrases)
+- Quick start (< 5 min pour démarrer)
+- Installation détaillée
+- Configuration requise
+- Liens vers doc complète
 
 ### Guides
 - Tutoriels pas à pas
-- Cas d'usage
-- Troubleshooting
+- Cas d'usage concrets
+- Prérequis explicites
+- Screenshots si pertinent
 
 ### Code Comments
-- JSDoc pour les fonctions publiques
-- Commentaires pour la logique complexe
+- JSDoc/TSDoc pour API publiques
+- Commentaires pour logique complexe uniquement
 - Pas de commentaires évidents
+- TODO avec ticket associé
+
+## Format de Réponse
+
+Pour la documentation générée :
+1. Titre et contexte
+2. Contenu structuré
+3. Exemples de code
+4. Notes et warnings si nécessaire
+5. Liens connexes
 ```
 
 ---
 
-## Utilisation
+## Utilisation par Contexte
 
 ### Générer Documentation API
 
 ```markdown
-## Prompt : Doc API
+## Contexte
+Génère la documentation pour cette API REST.
 
-Génère la documentation pour cette API :
+## Code Source
+[Endpoints/routes avec leurs handlers]
 
-### Endpoints
-[Code des routes/endpoints]
+## Modèles de Données
+[Types/interfaces/schemas]
 
-### Modèles
-[Types/interfaces]
+## Format Souhaité
+- [ ] Markdown simple
+- [ ] OpenAPI/Swagger YAML
+- [ ] JSDoc dans le code
 
-### Format Attendu
-Documentation OpenAPI/Swagger ou Markdown avec :
-- Description de chaque endpoint
-- Paramètres (path, query, body)
-- Réponses (success, errors)
-- Exemples de requêtes/réponses
+## Niveau de Détail
+- [ ] Minimal (endpoints + params)
+- [ ] Standard (+ exemples + erreurs)
+- [ ] Complet (+ cas d'usage + troubleshooting)
 ```
 
 ### Mettre à Jour README
 
 ```markdown
-## Prompt : Update README
+## Contexte
+Met à jour le README pour refléter l'état actuel du projet.
 
-Met à jour le README pour refléter l'état actuel du projet :
+## README Actuel
+[Contenu du README.md]
 
-### README Actuel
-[Contenu actuel]
-
-### Changements Récents
-- [Nouvelle feature 1]
+## Changements Récents
+- [Nouvelle feature]
 - [Changement de config]
 - [Nouvelle dépendance]
+- [Commande modifiée]
 
-### Output
-README mis à jour avec les nouvelles informations intégrées
-de manière cohérente.
+## Instructions
+- Intégrer les changements de manière cohérente
+- Garder le style existant
+- Mettre à jour la date de dernière modification
 ```
 
-### Ajouter JSDoc
+### Ajouter JSDoc/TSDoc
 
 ```markdown
-## Prompt : Ajouter JSDoc
+## Contexte
+Ajoute la documentation JSDoc/TSDoc à ce code.
 
-Ajoute la documentation JSDoc à ces fonctions :
-
+## Code
 ```typescript
-[Code sans documentation]
+[Fonctions/classes à documenter]
 ```
 
-### Règles
+## Règles
 - Description claire de la fonction
 - @param avec type et description
 - @returns avec type et description
-- @throws si applicable
+- @throws si la fonction peut lever des exceptions
 - @example avec usage typique
+- @see pour les références croisées
+
+## Style
+- Première phrase = résumé (sans "This function...")
+- Description supplémentaire après ligne vide si nécessaire
+```
+
+### Créer Guide d'Utilisation
+
+```markdown
+## Contexte
+Crée un guide pour [feature/workflow].
+
+## Public Cible
+- [ ] Développeur débutant
+- [ ] Développeur expérimenté
+- [ ] DevOps
+- [ ] Product Manager
+
+## Contenu Attendu
+1. Introduction (pourquoi ce guide)
+2. Prérequis
+3. Étapes pas à pas
+4. Exemples concrets
+5. Troubleshooting
+6. Ressources complémentaires
 ```
 
 ---
 
-## Rapport Type
+## Exemples Pratiques
+
+### Exemple 1 : Documentation API Générée
+
+**Input :**
+```typescript
+// src/api/tasks.ts
+router.get('/tasks', async (req, res) => {
+  const { status, assignee, limit = 50, offset = 0 } = req.query
+  const tasks = await taskService.findAll({ status, assignee, limit, offset })
+  res.json({ data: tasks, pagination: { total: tasks.total, limit, offset } })
+})
+
+router.post('/tasks', validateBody(CreateTaskSchema), async (req, res) => {
+  const task = await taskService.create(req.body)
+  res.status(201).json(task)
+})
+
+router.delete('/tasks/:id', async (req, res) => {
+  await taskService.delete(req.params.id)
+  res.status(204).send()
+})
+```
+
+**Output de l'Agent :**
 
 ```markdown
-# Documentation Générée - TaskService API
+# Tasks API
 
-## Vue d'Ensemble
-
-API de gestion des tâches pour l'application TaskFlow.
-
-**Base URL** : `/api/v1/tasks`
-**Auth** : Bearer token requis
-
----
+Base URL: `/api/v1/tasks`
 
 ## Endpoints
 
-### GET /tasks
+### List Tasks
 
-Récupère la liste des tâches avec filtres optionnels.
+Récupère la liste des tâches avec filtres et pagination.
+
+```
+GET /tasks
+```
 
 **Query Parameters**
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| status | string | Non | Filtrer par statut (todo, in_progress, done) |
-| assignee | string | Non | Filtrer par assigné (user ID) |
-| limit | number | Non | Nombre max de résultats (défaut: 50) |
-| offset | number | Non | Offset pour pagination |
+
+| Paramètre | Type | Requis | Défaut | Description |
+|-----------|------|--------|--------|-------------|
+| status | string | Non | - | Filtrer par statut (`todo`, `in_progress`, `done`) |
+| assignee | string | Non | - | Filtrer par ID de l'assigné |
+| limit | number | Non | 50 | Nombre max de résultats (1-100) |
+| offset | number | Non | 0 | Décalage pour pagination |
 
 **Response 200**
+
 ```json
 {
   "data": [
     {
-      "id": "task_123",
+      "id": "task_abc123",
       "title": "Implement login",
       "status": "in_progress",
-      "assignee": "user_456",
+      "assignee": "user_xyz789",
       "createdAt": "2026-01-15T10:00:00Z"
     }
   ],
   "pagination": {
-    "total": 150,
+    "total": 42,
     "limit": 50,
     "offset": 0
   }
 }
 ```
 
-**Errors**
-| Code | Description |
-|------|-------------|
-| 401 | Token manquant ou invalide |
-| 403 | Accès non autorisé au projet |
+**Exemple**
 
-**Example**
 ```bash
-curl -X GET "https://api.taskflow.com/api/v1/tasks?status=todo" \
-  -H "Authorization: Bearer <token>"
+curl "https://api.example.com/api/v1/tasks?status=todo&limit=10" \
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
 ---
 
-### POST /tasks
+### Create Task
 
 Crée une nouvelle tâche.
 
+```
+POST /tasks
+```
+
 **Request Body**
+
 ```json
 {
   "title": "string (required, 1-200 chars)",
@@ -216,194 +272,484 @@ Crée une nouvelle tâche.
 ```
 
 **Response 201**
+
 ```json
 {
-  "id": "task_789",
+  "id": "task_def456",
   "title": "New task",
   "status": "todo",
-  "createdAt": "2026-01-19T14:30:00Z"
+  "createdAt": "2026-01-20T14:30:00Z"
 }
 ```
 
 **Errors**
-| Code | Description |
-|------|-------------|
+
+| Code | Raison |
+|------|--------|
 | 400 | Validation error (title manquant ou trop long) |
-| 401 | Non authentifié |
-| 403 | Pas de permission de création |
+| 401 | Token manquant ou invalide |
 
 ---
 
-### PUT /tasks/:id
-
-Met à jour une tâche existante.
-
-[...]
-
----
-
-### DELETE /tasks/:id
+### Delete Task
 
 Supprime une tâche.
 
-[...]
+```
+DELETE /tasks/:id
+```
+
+**Path Parameters**
+
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| id | string | ID de la tâche à supprimer |
+
+**Response 204**
+
+Pas de contenu.
+
+**Errors**
+
+| Code | Raison |
+|------|--------|
+| 404 | Tâche non trouvée |
+| 403 | Pas de permission pour supprimer cette tâche |
+```
 
 ---
 
-## Modèles
+### Exemple 2 : JSDoc Généré
 
-### Task
+**Input :**
+```typescript
+async function findUsersByRole(role, options) {
+  const users = await db.users.findMany({
+    where: { role, active: true },
+    skip: options?.offset,
+    take: options?.limit,
+    orderBy: { createdAt: 'desc' }
+  })
+  return users
+}
+```
+
+**Output de l'Agent :**
 
 ```typescript
-interface Task {
-  id: string           // Identifiant unique
-  title: string        // Titre (1-200 caractères)
-  description?: string // Description optionnelle
-  status: TaskStatus   // Statut actuel
-  assignee?: string    // ID de l'utilisateur assigné
-  dueDate?: string     // Date d'échéance (ISO 8601)
-  createdAt: string    // Date de création
-  updatedAt: string    // Dernière modification
+/**
+ * Retrieves active users filtered by role with pagination support.
+ *
+ * Returns users sorted by creation date (newest first). Only active
+ * users are included in the results.
+ *
+ * @param role - The role to filter users by (e.g., 'admin', 'editor', 'viewer')
+ * @param options - Optional pagination parameters
+ * @param options.offset - Number of users to skip (default: 0)
+ * @param options.limit - Maximum number of users to return (default: no limit)
+ * @returns Promise resolving to array of users matching the criteria
+ * @throws {DatabaseError} If the database query fails
+ *
+ * @example
+ * // Get first 10 admin users
+ * const admins = await findUsersByRole('admin', { limit: 10 })
+ *
+ * @example
+ * // Get editors with pagination
+ * const page2 = await findUsersByRole('editor', { offset: 20, limit: 10 })
+ *
+ * @see {@link User} for the user type definition
+ * @see {@link updateUserRole} to modify a user's role
+ */
+async function findUsersByRole(
+  role: UserRole,
+  options?: { offset?: number; limit?: number }
+): Promise<User[]> {
+  const users = await db.users.findMany({
+    where: { role, active: true },
+    skip: options?.offset,
+    take: options?.limit,
+    orderBy: { createdAt: 'desc' }
+  })
+  return users
 }
-
-type TaskStatus = 'todo' | 'in_progress' | 'done'
 ```
 
 ---
 
-## Codes d'Erreur
+### Exemple 3 : README Mis à Jour
 
-| Code | Nom | Description |
-|------|-----|-------------|
-| 400 | Bad Request | Requête malformée ou validation échouée |
-| 401 | Unauthorized | Authentication requise |
-| 403 | Forbidden | Pas de permission pour cette action |
-| 404 | Not Found | Ressource non trouvée |
-| 429 | Too Many Requests | Rate limit dépassé |
-| 500 | Internal Error | Erreur serveur |
+**Input (changements) :**
+- Nouvelle feature : Export CSV
+- Node.js minimum version : 20
+- Nouvelle variable d'env : EXPORT_PATH
 
-### Format d'Erreur
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Title is required",
-    "details": {
-      "field": "title",
-      "constraint": "required"
-    }
-  }
-}
+**Output de l'Agent :**
+
+```markdown
+# TaskFlow
+
+Application de gestion de tâches avec collaboration en temps réel.
+
+## Features
+
+- Création et gestion de tâches
+- Assignation aux membres de l'équipe
+- Filtres et recherche avancée
+- **Export CSV** des tâches *(nouveau)*
+
+## Quick Start
+
+### Prérequis
+
+- Node.js >= 20.0.0
+- pnpm >= 8.0.0
+- PostgreSQL 15+
+
+### Installation
+
+```bash
+git clone https://github.com/org/taskflow.git
+cd taskflow
+pnpm install
+cp .env.example .env
+# Configurer les variables dans .env
+pnpm db:migrate
+pnpm dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+## Configuration
+
+### Variables d'Environnement
+
+| Variable | Requis | Description |
+|----------|--------|-------------|
+| DATABASE_URL | Oui | URL de connexion PostgreSQL |
+| JWT_SECRET | Oui | Secret pour les tokens JWT |
+| EXPORT_PATH | Non | Répertoire pour les exports CSV (défaut: ./exports) |
+
+## Documentation
+
+- [API Reference](./docs/api.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Changelog](./CHANGELOG.md)
+
+---
+
+*Dernière mise à jour : 2026-01-20*
 ```
 
 ---
 
 ## Templates
 
-### Template README
+### Template README Minimal
 
 ```markdown
 # [Nom du Projet]
 
 [Description en 1-2 phrases]
 
+## Quick Start
+
+```bash
+npm install
+npm run dev
+```
+
+## Documentation
+
+[Lien vers doc complète]
+
+## License
+
+[Type de license]
+```
+
+### Template README Complet
+
+```markdown
+# [Nom du Projet]
+
+[Description en 1-2 phrases]
+
+[![CI](badge)](link)
+[![Coverage](badge)](link)
+
 ## Features
 
 - [Feature 1]
 - [Feature 2]
-- [Feature 3]
 
 ## Quick Start
 
-### Prerequisites
+### Prérequis
 
-- Node.js >= 18
-- pnpm >= 8
+- [Prérequis 1]
+- [Prérequis 2]
 
 ### Installation
 
 ```bash
-git clone [repo-url]
-cd [project-name]
-pnpm install
+[Commandes d'installation]
 ```
 
-### Development
+### Configuration
+
+[Instructions de configuration]
+
+### Démarrage
 
 ```bash
-pnpm dev
+[Commande de démarrage]
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+## Usage
+
+[Exemples d'utilisation basiques]
 
 ## Documentation
 
-- [API Documentation](./docs/api.md)
-- [Contributing](./CONTRIBUTING.md)
+- [Guide utilisateur](link)
+- [API Reference](link)
+- [Contributing](link)
 
 ## Tech Stack
 
 - [Tech 1]
 - [Tech 2]
 
+## Contributing
+
+[Instructions ou lien vers CONTRIBUTING.md]
+
 ## License
 
-[License type]
-```
-
-### Template JSDoc
-
-```typescript
-/**
- * [Description de la fonction]
- *
- * @param {ParamType} paramName - Description du paramètre
- * @param {Object} options - Options de configuration
- * @param {boolean} options.flag - Description de l'option
- * @returns {ReturnType} Description du retour
- * @throws {ErrorType} Quand [condition d'erreur]
- *
- * @example
- * ```typescript
- * const result = functionName(param, { flag: true })
- * // => expected output
- * ```
- */
-```
+[Type de license]
 
 ---
 
-## Bonnes Pratiques
+*Maintenu par [équipe/personne]*
+```
 
-### Quand Documenter
-
-| Situation | Action |
-|-----------|--------|
-| Nouvelle API publique | Documentation complète |
-| Changement d'API | Mise à jour immédiate |
-| Code complexe | Commentaires explicatifs |
-| Feature majeure | Guide d'utilisation |
-
-### Éviter
-
-- Documentation qui paraphrase le code
-- Commentaires évidents (`// Increment counter`)
-- Documentation non maintenue
-- Duplication d'information
-
-### Outils Complémentaires
+### Template API Endpoint
 
 ```markdown
-## Stack Documentation
+### [Method] [Path]
 
-1. **Agent IA** : Génération initiale, mise à jour intelligente
-2. **TypeDoc** : Doc auto depuis TypeScript
-3. **Swagger/OpenAPI** : API documentation
-4. **Storybook** : Documentation composants UI
-5. **Docusaurus** : Site de documentation
+[Description courte]
+
+**Authentication**: [Required/Optional/None]
+
+**Path Parameters**
+
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| param | type | description |
+
+**Query Parameters**
+
+| Paramètre | Type | Requis | Défaut | Description |
+|-----------|------|--------|--------|-------------|
+| param | type | Oui/Non | value | description |
+
+**Request Body**
+
+```json
+{
+  "field": "type (required/optional)"
+}
+```
+
+**Response [Status]**
+
+```json
+{
+  "field": "value"
+}
+```
+
+**Errors**
+
+| Code | Raison |
+|------|--------|
+| 4XX | Description |
+
+**Exemple**
+
+```bash
+curl -X METHOD "url" \
+  -H "Authorization: Bearer TOKEN" \
+  -d '{"field": "value"}'
+```
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Anti-patterns
+
+### ❌ Documentation qui paraphrase le code
+
+**Problème** : Commentaires qui répètent ce que le code dit déjà.
+
+```typescript
+// ❌ Mauvais
+// Increment the counter by 1
+counter++
+
+// ❌ Mauvais
+/**
+ * Gets user by ID
+ * @param id The ID
+ * @returns The user
+ */
+function getUserById(id) { ... }
+
+// ✅ Bon (le code est assez clair, pas de commentaire nécessaire)
+counter++
+
+// ✅ Bon (ajoute de l'information utile)
+/**
+ * Retrieves a user with their preferences and recent activity.
+ * Returns null if user is deactivated or not found.
+ */
+function getUserById(id) { ... }
+```
+
+### ❌ Documentation non maintenue
+
+**Problème** : Doc qui ne correspond plus au code actuel.
+
+**Solution** :
+- Mettre à jour la doc dans la même PR que le code
+- Ajouter un check en CI qui vérifie la cohérence
+- Date de dernière mise à jour visible
+
+### ❌ Duplication d'information
+
+**Problème** : Même information à plusieurs endroits → désynchronisation.
+
+**Solution** : Une source de vérité, des liens partout ailleurs.
+
+```markdown
+// ❌ Mauvais : Même liste dans README, CONTRIBUTING, et docs/
+## Available Scripts
+- npm run dev
+- npm run build
+...
+
+// ✅ Bon : Une seule source
+## Available Scripts
+
+Voir [package.json](./package.json) pour la liste complète des scripts.
+
+Scripts principaux :
+- `npm run dev` - Démarre le serveur de développement
+- `npm run build` - Build de production
+```
+
+### ❌ Exemples qui ne fonctionnent pas
+
+**Problème** : Exemples de code outdated ou avec des erreurs.
+
+**Solution** :
+- Tester les exemples (doctest, mdx-test)
+- Extraire les exemples depuis les tests
+- CI qui vérifie que les exemples compilent
+
+### ❌ Documentation sans structure
+
+**Problème** : Mur de texte sans navigation.
+
+**Solution** : Titres, table des matières, sections courtes.
+
+---
+
+## Checklist Agent Documentation
+
+### Avant Génération
+- [ ] Type de doc à générer identifié
+- [ ] Public cible défini
+- [ ] Niveau de détail choisi
+- [ ] Format de sortie spécifié
+
+### Pendant Génération
+- [ ] Structure logique (général → spécifique)
+- [ ] Exemples pour chaque concept
+- [ ] Ton adapté au public
+- [ ] Pas de duplication
+
+### Après Génération
+- [ ] Exemples de code testés
+- [ ] Liens vérifiés
+- [ ] Cohérence avec doc existante
+- [ ] Date de mise à jour ajoutée
+
+---
+
+## Outils Complémentaires
+
+| Besoin | Outil | Usage |
+|--------|-------|-------|
+| Doc API auto | TypeDoc, Swagger | Génère depuis code/types |
+| Doc interactive | Storybook | Composants UI |
+| Site de doc | Docusaurus, Astro | Documentation complète |
+| Vérification liens | markdown-link-check | CI check |
+| Test exemples | doctest, mdx-test | Valide les snippets |
+
+**Recommandation** : L'Agent Documentation génère le contenu initial et les mises à jour. Les outils automatisent la publication et la validation.
+
+---
+
+## Synchronisation Code/Doc
+
+### Stratégie Recommandée
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Code Change                           │
+└─────────────────────┬───────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│         Agent Documentation détecte le changement        │
+│         et propose une mise à jour de la doc            │
+└─────────────────────┬───────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│              Review humain de la proposition             │
+└─────────────────────┬───────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│           Commit doc + code dans la même PR             │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Prompt de Détection de Changement
+
+```markdown
+## Contexte
+Compare ces deux versions pour identifier les changements à documenter.
+
+## Avant
+[Code/API avant le changement]
+
+## Après
+[Code/API après le changement]
+
+## Documentation Actuelle
+[Doc existante]
+
+## Output Attendu
+1. Changements détectés (breaking, new, deprecated)
+2. Sections de doc à mettre à jour
+3. Proposition de mise à jour
+```
+
+---
+
+*Voir aussi : [F.6 Agent Code Review](./F6-agent-code-review.md) • [A.3 Template Agent-Guide](./A3-agent-guide.md) • [B.2 Product Engineer](./B2-product-engineer.md)*
