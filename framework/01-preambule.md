@@ -74,19 +74,6 @@ Un Product Engineer avec un écosystème d'agents bien configuré surpasse un d�
 
 ---
 
-## Ce qu'apporte AIAD v1.3
-
-| Version | Évolution clé |
-|---------|---------------|
-| v1.0 | Fondations : les agents IA changent le développement |
-| v1.1 | L'orchestration devient une compétence centrale |
-| v1.2 | Abandon des Sprints rigides |
-| **v1.3** | **Simplification radicale** |
-
-**v1.3 en trois mots** : moins de processus, plus de résultats.
-
----
-
 ## Erreurs fréquentes
 
 ### "L'IA va juste nous faire coder plus vite"
