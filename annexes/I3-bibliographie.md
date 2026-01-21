@@ -1,342 +1,349 @@
-# I.3 Bibliographie
+# I.3 Bibliographie et Ressources
 
 ## Pourquoi cette annexe ?
 
-Cette annexe compile les sources et lectures recommandées pour approfondir les concepts du framework AIAD.
+Les bonnes ressources accélèrent l'apprentissage. Cette bibliographie curate les meilleures sources pour approfondir les concepts AIAD : livres fondateurs, articles de référence, documentations officielles et créateurs à suivre. Organisée par niveau et par rôle pour un accès rapide.
 
 ---
 
-## Livres Fondamentaux
+## Lecture Express par Profil
 
-### Développement Agile
+### Je suis PM, par où commencer ?
+1. **Inspired** de Marty Cagan (product management moderne)
+2. **The Mom Test** de Rob Fitzpatrick (interviews utilisateurs)
+3. **Shape Up** de Basecamp (alternative aux sprints)
 
-**Scrum Guide**
-- Auteurs : Ken Schwaber, Jeff Sutherland
-- Lien : [scrumguides.org](https://scrumguides.org)
-- Pertinence : Base des pratiques itératives adaptées dans AIAD
+### Je suis PE/Dev, par où commencer ?
+1. **A Philosophy of Software Design** de John Ousterhout (simplicité)
+2. **Prompt Engineering Guide** de DAIR.AI (prompting)
+3. Documentation TanStack Query (data fetching moderne)
 
-**User Story Mapping**
-- Auteur : Jeff Patton
-- Éditeur : O'Reilly, 2014
-- Pertinence : Technique de découpage des fonctionnalités en SPECs
+### Je suis Tech Lead, par où commencer ?
+1. **Clean Architecture** de Robert C. Martin (principes)
+2. **Team Topologies** de Skelton & Pais (organisation)
+3. **DORA Metrics** (mesure de performance)
 
-**The Lean Startup**
-- Auteur : Eric Ries
-- Éditeur : Crown Business, 2011
-- Pertinence : Build-Measure-Learn, expérimentation rapide
+### Je découvre AIAD, par où commencer ?
+1. Ce site web (framework + mode opératoire)
+2. Documentation Claude/Anthropic (agents IA)
+3. **The Twelve-Factor App** (bonnes pratiques)
 
-**Shape Up**
-- Auteur : Basecamp
-- Lien : [basecamp.com/shapeup](https://basecamp.com/shapeup)
-- Pertinence : Alternative aux sprints, focus sur l'autonomie des équipes
+---
+
+## Livres Essentiels
+
+### Développement Produit
+
+| Livre | Auteur | Pourquoi le Lire |
+|-------|--------|------------------|
+| **Inspired** | Marty Cagan | La référence product management. Comment créer des produits que les gens aiment. |
+| **Continuous Discovery Habits** | Teresa Torres | Discovery continue, interviews, opportunity solution trees. Indispensable pour le PM moderne. |
+| **The Mom Test** | Rob Fitzpatrick | Comment poser les bonnes questions aux utilisateurs sans biais. Court et actionnable. |
+| **Shape Up** | Basecamp | Alternative aux sprints. Cycles de 6 semaines, autonomie, betting table. Gratuit en ligne. |
+| **The Lean Startup** | Eric Ries | Build-Measure-Learn. Fondamental pour comprendre l'expérimentation rapide. |
+
+```markdown
+## Ordre de Lecture Recommandé (PM)
+
+1. The Mom Test (2h) → Savoir interviewer
+2. Inspired (8h) → Framework mental product
+3. Continuous Discovery Habits (6h) → Process continu
+4. Shape Up (4h) → Alternative aux sprints
+```
 
 ---
 
 ### Architecture et Code
 
-**Clean Architecture**
-- Auteur : Robert C. Martin
-- Éditeur : Prentice Hall, 2017
-- Pertinence : Principes de séparation des responsabilités
+| Livre | Auteur | Pourquoi le Lire |
+|-------|--------|------------------|
+| **Clean Architecture** | Robert C. Martin | Principes SOLID, séparation des responsabilités. Base pour toute architecture propre. |
+| **A Philosophy of Software Design** | John Ousterhout | Gestion de la complexité, simplicité. Le livre que j'aurais voulu lire plus tôt. |
+| **Domain-Driven Design** | Eric Evans | Modélisation du domaine métier. Dense mais fondamental pour les gros projets. |
+| **Refactoring** | Martin Fowler | Catalogue de refactorings avec code smells. Référence incontournable. |
+| **Designing Data-Intensive Applications** | Martin Kleppmann | Pour comprendre les systèmes distribués. Niveau avancé. |
 
-**Domain-Driven Design**
-- Auteur : Eric Evans
-- Éditeur : Addison-Wesley, 2003
-- Pertinence : Modélisation du domaine métier
+```markdown
+## Ordre de Lecture Recommandé (Dev/TL)
 
-**A Philosophy of Software Design**
-- Auteur : John Ousterhout
-- Éditeur : Yaknyam Press, 2018
-- Pertinence : Simplicité et gestion de la complexité
-
-**Refactoring**
-- Auteur : Martin Fowler
-- Éditeur : Addison-Wesley, 2018 (2ème édition)
-- Pertinence : Techniques de refactoring, code smells
+1. A Philosophy of Software Design (4h) → Mindset
+2. Clean Architecture (6h) → Principes
+3. Refactoring (consulter) → Catalogue
+4. DDD (12h+) → Quand projets complexes
+```
 
 ---
 
 ### Tests et Qualité
 
-**Test-Driven Development by Example**
-- Auteur : Kent Beck
-- Éditeur : Addison-Wesley, 2002
-- Pertinence : Fondamentaux du TDD
-
-**Growing Object-Oriented Software, Guided by Tests**
-- Auteurs : Steve Freeman, Nat Pryce
-- Éditeur : Addison-Wesley, 2009
-- Pertinence : TDD avancé et design émergent
-
-**Working Effectively with Legacy Code**
-- Auteur : Michael Feathers
-- Éditeur : Prentice Hall, 2004
-- Pertinence : Ajouter des tests sur du code existant
-
----
-
-### Produit
-
-**Inspired**
-- Auteur : Marty Cagan
-- Éditeur : Wiley, 2017
-- Pertinence : Product management moderne, discovery
-
-**Continuous Discovery Habits**
-- Auteur : Teresa Torres
-- Éditeur : Product Talk, 2021
-- Pertinence : Discovery continue, interview utilisateurs
-
-**The Mom Test**
-- Auteur : Rob Fitzpatrick
-- Éditeur : CreateSpace, 2013
-- Pertinence : Comment interviewer les utilisateurs efficacement
+| Livre | Auteur | Pourquoi le Lire |
+|-------|--------|------------------|
+| **Test-Driven Development by Example** | Kent Beck | TDD expliqué par son créateur. Fondamental. |
+| **Growing Object-Oriented Software, Guided by Tests** | Freeman & Pryce | TDD avancé, outside-in, design émergent. |
+| **Working Effectively with Legacy Code** | Michael Feathers | Comment ajouter des tests sur du code existant. Indispensable en contexte legacy. |
 
 ---
 
 ### IA et Agents
 
-**Prompt Engineering Guide**
-- Source : DAIR.AI
-- Lien : [promptingguide.ai](https://www.promptingguide.ai)
-- Pertinence : Techniques de prompt engineering
+| Ressource | Source | Pourquoi la Consulter |
+|-----------|--------|----------------------|
+| **Prompt Engineering Guide** | DAIR.AI | Techniques de prompting complètes. Gratuit, maintenu. |
+| **Anthropic Documentation** | Anthropic | Best practices officielles pour Claude. |
+| **Building LLM Apps** | LangChain | Patterns pour applications IA. |
 
-**Building LLM Applications**
-- Source : Anthropic Documentation
-- Lien : [docs.anthropic.com](https://docs.anthropic.com)
-- Pertinence : Bonnes pratiques pour les applications LLM
-
-**AI-Assisted Development**
-- Source : GitHub Copilot Research
-- Lien : [github.blog/tag/copilot](https://github.blog/tag/copilot/)
-- Pertinence : Études sur la productivité avec l'IA
+**Liens**
+- [promptingguide.ai](https://www.promptingguide.ai)
+- [docs.anthropic.com](https://docs.anthropic.com)
+- [langchain.com/docs](https://python.langchain.com/docs)
 
 ---
 
-## Articles et Papers
+## Articles de Référence
 
-### Méthodologie
+### Méthodologie et Process
 
-**The Twelve-Factor App**
-- Auteur : Heroku
-- Lien : [12factor.net](https://12factor.net)
-- Pertinence : Principes pour applications cloud natives
+| Article | Pourquoi le Lire |
+|---------|------------------|
+| **The Twelve-Factor App** | 12 principes pour apps cloud-native. Checklist incontournable. |
+| **DORA Metrics** | Les 4 métriques qui comptent vraiment pour mesurer la perf DevOps. |
+| **Team Topologies** | Comment organiser les équipes pour le flow. |
+| **Conventional Commits** | Standard pour messages de commit. Adoptez-le. |
 
-**DORA Metrics**
-- Source : DORA Research
-- Lien : [dora.dev](https://dora.dev)
-- Pertinence : Métriques de performance des équipes DevOps
-
-**Team Topologies**
-- Auteurs : Matthew Skelton, Manuel Pais
-- Pertinence : Organisation des équipes techniques
+**Liens**
+- [12factor.net](https://12factor.net)
+- [dora.dev](https://dora.dev)
+- [conventionalcommits.org](https://conventionalcommits.org)
 
 ---
 
-### Pratiques Techniques
+### Talks Incontournables
 
-**Conventional Commits**
-- Lien : [conventionalcommits.org](https://conventionalcommits.org)
-- Pertinence : Standard pour les messages de commit
+| Talk | Speaker | Durée | Pourquoi le Regarder |
+|------|---------|-------|---------------------|
+| **Simple Made Easy** | Rich Hickey | 1h | Distinction entre simple et facile. Change votre façon de penser. |
+| **The Art of Destroying Software** | Greg Young | 45min | Pourquoi le code jetable est une force. |
+| **Making Impossible States Impossible** | Richard Feldman | 25min | Modélisation de données avec types. |
+| **Boundaries** | Gary Bernhardt | 30min | Functional core, imperative shell. |
 
-**Semantic Versioning**
-- Lien : [semver.org](https://semver.org)
-- Pertinence : Versioning des APIs et packages
-
-**Keep a Changelog**
-- Lien : [keepachangelog.com](https://keepachangelog.com)
-- Pertinence : Format de changelog
+**Où les trouver** : YouTube, rechercher le titre + speaker.
 
 ---
 
-### React et Frontend
+## Documentation Technique
 
-**React Documentation**
-- Lien : [react.dev](https://react.dev)
-- Pertinence : Documentation officielle, hooks, patterns
+### Stack AIAD Recommandée
 
-**TanStack Query Documentation**
-- Lien : [tanstack.com/query](https://tanstack.com/query)
-- Pertinence : Data fetching, caching, mutations
-
-**Testing Library Documentation**
-- Lien : [testing-library.com](https://testing-library.com)
-- Pertinence : Tests d'interface centrés utilisateur
+| Technologie | Documentation | Ce qu'on y Trouve |
+|-------------|---------------|-------------------|
+| **Astro** | [docs.astro.build](https://docs.astro.build) | Framework, Content Collections, Islands |
+| **React** | [react.dev](https://react.dev) | Hooks, patterns, guides officiels |
+| **TypeScript** | [typescriptlang.org](https://www.typescriptlang.org/docs) | Handbook, types avancés |
+| **TanStack Query** | [tanstack.com/query](https://tanstack.com/query) | Data fetching, cache, mutations |
+| **Tailwind CSS** | [tailwindcss.com/docs](https://tailwindcss.com/docs) | Utility classes, customisation |
+| **Vitest** | [vitest.dev](https://vitest.dev) | Unit testing, mocking |
+| **Playwright** | [playwright.dev](https://playwright.dev) | E2E testing, cross-browser |
+| **Zod** | [zod.dev](https://zod.dev) | Schema validation, type inference |
 
 ---
 
-### TypeScript
+### Outils de Développement
 
-**TypeScript Handbook**
-- Lien : [typescriptlang.org/docs](https://www.typescriptlang.org/docs)
-- Pertinence : Documentation officielle TypeScript
-
-**Total TypeScript**
-- Auteur : Matt Pocock
-- Lien : [totaltypescript.com](https://www.totaltypescript.com)
-- Pertinence : TypeScript avancé, patterns
+| Outil | Documentation | Usage |
+|-------|---------------|-------|
+| **pnpm** | [pnpm.io](https://pnpm.io) | Package manager rapide |
+| **ESLint** | [eslint.org](https://eslint.org) | Linting JavaScript/TypeScript |
+| **Prettier** | [prettier.io](https://prettier.io) | Formatage automatique |
+| **Husky** | [typicode.github.io/husky](https://typicode.github.io/husky) | Git hooks |
+| **GitHub Actions** | [docs.github.com/actions](https://docs.github.com/actions) | CI/CD |
 
 ---
 
 ## Blogs et Newsletters
 
-### Engineering Blogs
+### Engineering Blogs à Suivre
 
-**Vercel Blog**
-- Lien : [vercel.com/blog](https://vercel.com/blog)
-- Focus : Next.js, performance, edge computing
+| Blog | Focus | Fréquence |
+|------|-------|-----------|
+| **Vercel Blog** | Next.js, performance, edge | Hebdo |
+| **Linear Blog** | Product dev, design | Mensuel |
+| **Stripe Engineering** | APIs, fiabilité | Mensuel |
+| **Netflix Tech Blog** | Scale, architecture | Bi-mensuel |
 
-**Netflix Tech Blog**
-- Lien : [netflixtechblog.com](https://netflixtechblog.com)
-- Focus : Architecture à grande échelle
-
-**Stripe Engineering**
-- Lien : [stripe.com/blog/engineering](https://stripe.com/blog/engineering)
-- Focus : APIs, fiabilité, developer experience
-
-**Linear Blog**
-- Lien : [linear.app/blog](https://linear.app/blog)
-- Focus : Product development, design, engineering
+**Liens**
+- [vercel.com/blog](https://vercel.com/blog)
+- [linear.app/blog](https://linear.app/blog)
+- [stripe.com/blog/engineering](https://stripe.com/blog/engineering)
+- [netflixtechblog.com](https://netflixtechblog.com)
 
 ---
 
-### Newsletters
+### Newsletters Recommandées
 
-**Bytes.dev**
-- Lien : [bytes.dev](https://bytes.dev)
-- Focus : JavaScript, React, écosystème frontend
+| Newsletter | Auteur | Pourquoi S'abonner |
+|------------|--------|-------------------|
+| **Bytes.dev** | ui.dev | JavaScript/React, ton léger, hebdo |
+| **The Pragmatic Engineer** | Gergely Orosz | Engineering management, carrière. Référence. |
+| **TLDR** | Dan | Tech news condensées, quotidien |
+| **Kent C. Dodds** | Kent C. Dodds | React, testing, patterns |
 
-**TLDR Newsletter**
-- Lien : [tldr.tech](https://tldr.tech)
-- Focus : Tech, startup, développement
+**Liens**
+- [bytes.dev](https://bytes.dev)
+- [blog.pragmaticengineer.com](https://blog.pragmaticengineer.com)
+- [tldr.tech](https://tldr.tech)
 
-**The Pragmatic Engineer**
-- Auteur : Gergely Orosz
-- Lien : [blog.pragmaticengineer.com](https://blog.pragmaticengineer.com)
-- Focus : Engineering management, carrière tech
+---
+
+### Créateurs à Suivre
+
+| Qui | Plateforme | Expertise |
+|-----|------------|-----------|
+| **Theo (t3.gg)** | YouTube, Twitter | TypeScript, full-stack moderne |
+| **Matt Pocock** | Twitter, totaltypescript.com | TypeScript avancé |
+| **Kent C. Dodds** | Blog, YouTube | React, testing |
+| **Tanner Linsley** | GitHub, Twitter | TanStack (Query, Router, Table) |
+| **Ryan Carniato** | Twitter, YouTube | Signals, SolidJS, réactivité |
 
 ---
 
 ## Podcasts
 
-**Syntax**
-- Hosts : Wes Bos, Scott Tolinski
-- Focus : Web development, JavaScript
-- Lien : [syntax.fm](https://syntax.fm)
-
-**Shop Talk Show**
-- Hosts : Dave Rupert, Chris Coyier
-- Focus : Frontend, design, CSS
-- Lien : [shoptalkshow.com](https://shoptalkshow.com)
-
-**Software Engineering Daily**
-- Focus : Architecture, interviews techniques
-- Lien : [softwareengineeringdaily.com](https://softwareengineeringdaily.com)
+| Podcast | Hosts | Format | Pour Qui |
+|---------|-------|--------|----------|
+| **Syntax** | Wes Bos, Scott Tolinski | 30-60min | Web dev généraliste |
+| **Software Engineering Daily** | Sean | 45min | Architecture, interviews |
+| **JS Party** | Changelog | 60min | JavaScript écosystème |
+| **The Changelog** | Adam, Jerod | 60min | Open source, tendances |
 
 ---
 
 ## Conférences
 
-### Vidéos Recommandées
+### Vidéos de Conférences
 
-**"Simple Made Easy"**
-- Speaker : Rich Hickey
-- Événement : Strange Loop 2011
-- Pertinence : Distinction entre simple et facile
-
-**"The Art of Destroying Software"**
-- Speaker : Greg Young
-- Pertinence : Code jetable, architecture évolutive
-
-**"Making Impossible States Impossible"**
-- Speaker : Richard Feldman
-- Pertinence : Modélisation de données, types
+| Conférence | Focus | Chaîne YouTube |
+|------------|-------|----------------|
+| **React Conf** | React écosystème | @ReactConf |
+| **ViteConf** | Vite, build tools | @vikiconf |
+| **Node Congress** | Node.js, backend | @GitNation |
+| **Devoxx FR** | Java, architecture | @DevoxxFR |
 
 ---
 
-### Conférences à Suivre
+## Anti-patterns Bibliographie
 
-**React Conf**
-- Focus : React, écosystème
-- Vidéos : [youtube.com/@ReactConf](https://www.youtube.com/@ReactConf)
-
-**Node Congress**
-- Focus : Node.js, backend JavaScript
-- Vidéos : [youtube.com/@GitNation](https://www.youtube.com/@GitNation)
-
-**Devoxx**
-- Focus : Java, architecture, pratiques
-- Vidéos : [youtube.com/@DevoxxFR](https://www.youtube.com/@DevoxxFR)
-
----
-
-## Outils et Documentation
-
-### Documentation Officielle
-
-| Outil | Documentation |
-|-------|--------------|
-| Astro | [docs.astro.build](https://docs.astro.build) |
-| TypeScript | [typescriptlang.org](https://www.typescriptlang.org) |
-| Tailwind CSS | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
-| Vitest | [vitest.dev](https://vitest.dev) |
-| Playwright | [playwright.dev](https://playwright.dev) |
-| Zod | [zod.dev](https://zod.dev) |
-
-### Outils de Développement
-
-| Outil | Usage | Documentation |
-|-------|-------|--------------|
-| pnpm | Package manager | [pnpm.io](https://pnpm.io) |
-| ESLint | Linting | [eslint.org](https://eslint.org) |
-| Prettier | Formatting | [prettier.io](https://prettier.io) |
-| Husky | Git hooks | [typicode.github.io/husky](https://typicode.github.io/husky) |
-
----
-
-## Comment Utiliser cette Bibliographie
+### Ce qu'il NE faut PAS faire
 
 ```markdown
-## Recommandations par Niveau
+❌ Lire un livre sans pratiquer
+   → Appliquer immédiatement sur un projet
 
-### Débutant
-1. React Documentation
-2. TypeScript Handbook
-3. The Mom Test
+❌ Suivre toutes les newsletters
+   → Choisir 2-3 max, les lire vraiment
 
-### Intermédiaire
-1. Clean Architecture
-2. User Story Mapping
-3. Test-Driven Development by Example
+❌ Regarder des talks sans notes
+   → Noter 3 takeaways max par talk
 
-### Avancé
-1. Domain-Driven Design
-2. A Philosophy of Software Design
-3. Team Topologies
+❌ Accumuler les "à lire plus tard"
+   → File d'attente de 5 items max
 
-## Recommandations par Rôle
-
-### Product Manager
-1. Inspired
-2. Continuous Discovery Habits
-3. Shape Up
-
-### Product Engineer
-1. Clean Architecture
-2. Refactoring
-3. Testing Library Documentation
-
-### QA Engineer
-1. Growing Object-Oriented Software
-2. Working Effectively with Legacy Code
-3. Playwright Documentation
-
-### Tech Lead
-1. Team Topologies
-2. DORA Metrics
-3. The Pragmatic Engineer Blog
+❌ Lire uniquement son domaine
+   → PM lire du technique, Dev lire du produit
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Plan de Lecture par Niveau
+
+### Débutant (0-2 ans)
+
+```markdown
+## Mois 1-3 : Fondations
+- [ ] React Documentation (complet)
+- [ ] TypeScript Handbook (sections 1-3)
+- [ ] The Mom Test
+
+## Mois 4-6 : Pratique
+- [ ] A Philosophy of Software Design
+- [ ] Test-Driven Development by Example
+- [ ] Prompt Engineering Guide
+
+## Continu
+- Newsletter : Bytes.dev
+- Blog : React Blog
+```
+
+---
+
+### Intermédiaire (2-5 ans)
+
+```markdown
+## Trimestre 1 : Architecture
+- [ ] Clean Architecture
+- [ ] Refactoring (chapitres sélectionnés)
+- [ ] DORA Metrics
+
+## Trimestre 2 : Produit
+- [ ] Inspired
+- [ ] Shape Up
+- [ ] Continuous Discovery Habits
+
+## Continu
+- Newsletter : The Pragmatic Engineer
+- Talks : 1 par semaine
+```
+
+---
+
+### Senior (5+ ans)
+
+```markdown
+## Focus : Leadership & Systèmes
+- [ ] Team Topologies
+- [ ] Domain-Driven Design
+- [ ] Designing Data-Intensive Applications
+
+## Focus : Contribution
+- [ ] Écrire des articles
+- [ ] Contribuer à l'open source
+- [ ] Mentorer des juniors
+
+## Continu
+- Newsletter : The Pragmatic Engineer
+- Conférences : Speaker ou attendee
+```
+
+---
+
+## Checklist Bibliographie
+
+```markdown
+## Pour bien utiliser cette annexe
+
+### Choix des Ressources
+- [ ] Identifier mon niveau actuel
+- [ ] Identifier mon rôle principal
+- [ ] Choisir 1 livre à lire ce mois
+- [ ] Choisir 2 newsletters max à suivre
+
+### Mise en Pratique
+- [ ] Appliquer sur un projet réel
+- [ ] Prendre des notes
+- [ ] Partager avec l'équipe
+
+### Mise à Jour
+- [ ] Revisiter cette liste chaque trimestre
+- [ ] Proposer des ajouts si ressource utile trouvée
+```
+
+---
+
+## Ressources Connexes
+
+- [H.1 Prompts Efficaces](H1-prompts-efficaces.md) - Mettre en pratique le prompting
+- [H.5 Notes d'Apprentissage](H5-notes-apprentissage.md) - Capitaliser les learnings
+- [I.4 Communauté](I4-communaute.md) - Échanger avec d'autres praticiens
+
+---
+
+*Dernière mise à jour : Janvier 2025*

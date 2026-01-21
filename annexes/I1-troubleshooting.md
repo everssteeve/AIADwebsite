@@ -2,311 +2,459 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit des solutions aux problèmes courants rencontrés avec le framework AIAD, organisées par catégorie.
+Quand quelque chose ne fonctionne pas, chaque minute compte. Cette annexe fournit des solutions immédiates aux problèmes courants rencontrés avec AIAD : problèmes d'agents IA, de process, techniques ou d'équipe. Format diagnostic → cause → solution.
 
 ---
 
-## Problèmes avec les Agents IA
+## Problèmes Agents IA
 
-### Agent ne comprend pas le contexte du projet
+### L'agent ignore le contexte projet
 
-**Symptôme**
-L'agent génère du code qui ne suit pas les patterns du projet.
+**Symptômes**
+- Code généré qui ne suit pas les conventions
+- Import de librairies non utilisées dans le projet
+- Patterns incohérents avec l'existant
 
-**Causes possibles**
-1. AGENT-GUIDE incomplet ou absent
-2. Contexte projet non chargé
-3. Exemples de référence manquants
-
-**Solutions**
+**Diagnostic rapide**
 ```markdown
-1. Vérifier que AGENT-GUIDE existe et est complet
-   - Conventions de nommage documentées ?
-   - Patterns avec exemples de code ?
-   - Structure de projet décrite ?
+- [ ] AGENT-GUIDE existe ?
+- [ ] AGENT-GUIDE chargé dans le contexte ?
+- [ ] Exemples de code inclus ?
+- [ ] Conventions documentées avec exemples concrets ?
+```
 
-2. S'assurer que l'agent charge le contexte
-   - Fichier AGENT-GUIDE référencé dans le prompt système ?
-   - Fichiers d'exemple inclus ?
+**Solutions par cause**
 
-3. Ajouter des exemples concrets
-   - "Voici comment on fait X dans notre projet : [code]"
-   - Inclure 2-3 exemples de chaque pattern
+| Cause | Solution | Temps |
+|-------|----------|-------|
+| AGENT-GUIDE absent | Créer avec template [A.3](A3-agent-guide.md) | 1h |
+| AGENT-GUIDE non chargé | Vérifier configuration agent | 5min |
+| Conventions vagues | Ajouter exemples concrets | 30min |
+| Contexte trop long | Prioriser les sections critiques | 15min |
+
+**Template de correction AGENT-GUIDE**
+```markdown
+## Conventions Obligatoires
+
+### Nommage
+- Composants : PascalCase (`UserProfile.tsx`)
+- Hooks : camelCase avec prefix `use` (`useAuth.ts`)
+- Utilitaires : kebab-case (`format-date.ts`)
+
+### Exemple Concret
+```typescript
+// ✅ BON : suit nos conventions
+export function UserProfile({ userId }: UserProfileProps) {
+  const { data: user } = useUser(userId)
+  return <Card>{user.name}</Card>
+}
+
+// ❌ MAUVAIS : ignore nos conventions
+export default function userProfile(props: any) {
+  const [user, setUser] = useState(null)
+  // fetch manuel au lieu de notre hook
+}
+```
 ```
 
 ---
 
-### Agent génère du code de mauvaise qualité
+### L'agent génère du code de mauvaise qualité
 
-**Symptôme**
-Code fonctionnel mais mal structuré, non idiomatique, ou difficile à maintenir.
+**Symptômes**
+- Code fonctionnel mais difficile à maintenir
+- Types `any` partout
+- Pas de gestion d'erreurs
+- Duplication de code existant
 
-**Causes possibles**
-1. Prompt trop vague
-2. Pas de contraintes de qualité spécifiées
-3. Pas de feedback itératif
-
-**Solutions**
+**Diagnostic rapide**
 ```markdown
-1. Améliorer les prompts
-   ❌ "Crée une fonction de filtrage"
-   ✅ "Crée une fonction de filtrage qui :
-       - Utilise les types TypeScript stricts
-       - Suit notre pattern de hook existant
-       - Est testable (pas d'effets de bord)"
+- [ ] Prompt spécifie les contraintes qualité ?
+- [ ] Exemples de bon code fournis ?
+- [ ] Règles de lint documentées ?
+- [ ] Tests attendus mentionnés ?
+```
 
-2. Spécifier les contraintes qualité
-   - "Le code doit passer ESLint sans warning"
-   - "Complexité cyclomatique < 10"
-   - "Couverture de test > 80%"
+**Comparaison prompt faible vs fort**
 
-3. Itérer plutôt que recommencer
-   - Demander des corrections spécifiques
-   - Pointer vers les lignes problématiques
+```markdown
+❌ Prompt Faible
+"Crée une fonction de filtrage des utilisateurs"
+
+✅ Prompt Fort
+"Crée une fonction de filtrage des utilisateurs qui :
+- Utilise les types TypeScript stricts (pas de `any`)
+- Suit le pattern de notre hook `useFilter` existant (voir src/hooks/)
+- Est pure (pas d'effet de bord)
+- Gère le cas liste vide
+- Inclut les tests unitaires
+
+Exemple de référence : src/hooks/useProductFilter.ts"
+```
+
+**Checklist qualité à inclure dans les prompts**
+```markdown
+## Contraintes Qualité
+
+- [ ] TypeScript strict (no any, no ts-ignore)
+- [ ] ESLint sans warning
+- [ ] Composants < 150 lignes
+- [ ] Fonctions < 30 lignes
+- [ ] Un seul niveau d'abstraction par fonction
+- [ ] Tests pour les cas nominaux et limites
 ```
 
 ---
 
-### Agent fait des erreurs répétitives
+### L'agent répète les mêmes erreurs
 
-**Symptôme**
-L'agent refait les mêmes erreurs malgré les corrections.
+**Symptômes**
+- Mêmes corrections demandées à chaque prompt
+- L'agent "oublie" les préférences
+- Patterns incorrects récurrents
 
-**Solutions**
+**Solution : documenter les erreurs**
+
+Ajouter une section dans AGENT-GUIDE :
+
 ```markdown
-1. Documenter les erreurs dans AGENT-GUIDE
-   ## Erreurs à Éviter
-   - Ne pas utiliser `any` (utiliser `unknown` si nécessaire)
-   - Ne pas faire de console.log en production
-   - Toujours utiliser notre Button, jamais <button> natif
+## Erreurs Fréquentes à Éviter
 
-2. Créer une checklist de validation
-   Avant de soumettre, vérifier :
-   - [ ] Pas de `any`
-   - [ ] Pas de console.log
-   - [ ] Composants UI du design system utilisés
+### 1. Ne jamais utiliser `any`
+❌ `function process(data: any)`
+✅ `function process(data: unknown)` puis narrowing
 
-3. Mettre à jour les exemples de référence
-   Remplacer les mauvais exemples par des bons
+### 2. Ne jamais faire de fetch dans useEffect
+❌ `useEffect(() => { fetch(...) }, [])`
+✅ Utiliser `useQuery` de TanStack Query
+
+### 3. Toujours utiliser nos composants UI
+❌ `<button onClick={...}>`
+✅ `<Button variant="primary" onClick={...}>`
+
+### 4. Ne jamais console.log en production
+❌ `console.log('debug:', data)`
+✅ `logger.debug('message', { data })`
+```
+
+---
+
+### L'agent produit trop ou pas assez de code
+
+**Symptômes**
+- Code minimal qui manque de robustesse
+- Ou au contraire, sur-ingénierie massive
+- Scope mal interprété
+
+**Solution : calibrer le scope dans le prompt**
+
+```markdown
+## Template Prompt avec Scope Explicite
+
+### Contexte
+[Pourquoi cette tâche existe]
+
+### Scope Inclus
+- [ ] Item 1
+- [ ] Item 2
+- [ ] Item 3
+
+### Scope Exclu
+- Item A (sera fait dans SPEC-043)
+- Item B (non nécessaire pour le MVP)
+
+### Niveau de Robustesse Attendu
+- Gestion d'erreurs : basique / standard / robuste
+- Tests : unitaires seulement / + intégration / + E2E
+- Documentation : JSDoc / + README / + Storybook
 ```
 
 ---
 
 ## Problèmes de Process
 
-### SPECs trop longues à implémenter
+### SPECs qui débordent systématiquement
 
-**Symptôme**
-Les SPECs prennent systématiquement plus de temps que prévu.
+**Symptômes**
+- "Presque fini" pendant plusieurs jours
+- Scope qui grandit en cours de route
+- Estimations toujours dépassées
 
-**Causes possibles**
-1. SPECs trop grosses
-2. DoOD mal défini
-3. Dépendances non identifiées
-
-**Solutions**
+**Diagnostic**
 ```markdown
-1. Découper les SPECs
-   Règle : une SPEC = 1-2 jours max
+- [ ] SPEC découpée en tâches < 2h ?
+- [ ] DoOD défini et vérifiable ?
+- [ ] Dépendances identifiées avant de commencer ?
+- [ ] Périmètre figé (pas de scope creep) ?
+```
 
-   ❌ "SPEC-042 : Système complet de notifications"
-   ✅ "SPEC-042a : Modèle de données notifications"
-      "SPEC-042b : API notifications"
-      "SPEC-042c : UI liste notifications"
-      "SPEC-042d : Push notifications"
+**Règle du découpage**
 
-2. Clarifier le DoOD avant de commencer
-   - Chaque item doit être vérifiable
-   - Pas d'ambiguïté sur "c'est fini"
+```markdown
+## Taille Optimale d'une SPEC
 
-3. Identifier les dépendances
-   - Lister explicitement les prérequis
-   - Bloquer la SPEC tant que dépendances non prêtes
+| Indicateur | Trop Petit | Optimal | Trop Gros |
+|------------|------------|---------|-----------|
+| Durée | < 2h | 4h - 2j | > 3j |
+| Tâches | 1 | 3-7 | > 10 |
+| Fichiers | 1 | 3-10 | > 15 |
+| User Stories | 0 | 1-3 | > 5 |
+```
+
+**Exemple de découpage**
+
+```markdown
+❌ SPEC Trop Grosse
+"SPEC-042 : Système complet de notifications"
+- Modèle de données
+- API CRUD
+- WebSocket temps réel
+- UI liste + détail + préférences
+- Push notifications mobile
+→ Durée réelle : 2 semaines de chaos
+
+✅ SPECs Découpées
+"SPEC-042a : Modèle données notifications" (1j)
+"SPEC-042b : API CRUD notifications" (1j)
+"SPEC-042c : UI liste notifications" (1j)
+"SPEC-042d : WebSocket temps réel" (2j)
+"SPEC-042e : Push notifications" (2j)
+→ Durée réelle : 2 semaines, mais prévisibles
 ```
 
 ---
 
-### Reviews qui traînent
+### Reviews qui bloquent le flux
 
-**Symptôme**
-Les PRs restent en review pendant des jours.
+**Symptômes**
+- PRs en attente > 24h
+- Contexte perdu quand le reviewer regarde enfin
+- Frustration des deux côtés
 
-**Solutions**
+**Solutions structurelles**
+
 ```markdown
-1. Définir un SLA de review
-   "Toute PR doit avoir une première review dans les 4h"
+## SLA de Review
 
-2. Limiter la taille des PRs
-   - Max 400 lignes de changement
-   - Découper si plus gros
+| Type de PR | Délai 1ère review | Délai merge |
+|------------|-------------------|-------------|
+| Hotfix | 1h | 2h |
+| Bug fix | 4h | 8h |
+| Feature | 8h | 24h |
+| Refactoring | 24h | 48h |
+```
 
-3. Rotation des reviewers
-   - Pas toujours les mêmes personnes
-   - Tout le monde review
+**Checklist avant de demander une review**
+```markdown
+## Prêt pour Review ?
 
-4. Review asynchrone efficace
-   - Description de PR complète
-   - Screenshots/vidéos pour UI
-   - Tests qui passent avant review
+- [ ] Tests passent (CI vert)
+- [ ] Description PR complète
+- [ ] Screenshots/vidéos si UI
+- [ ] Self-review effectuée
+- [ ] Taille raisonnable (< 400 lignes)
+- [ ] Un seul sujet par PR
+```
+
+**Optimiser la taille des PRs**
+
+```markdown
+## Stratégie de Découpage
+
+Grande feature → plusieurs PRs :
+
+1. PR 1 : Types et interfaces (reviewable en 10min)
+2. PR 2 : Logique métier + tests (reviewable en 30min)
+3. PR 3 : UI composants (reviewable en 20min)
+4. PR 4 : Intégration + E2E (reviewable en 15min)
+
+Total : 4 reviews rapides > 1 review interminable
 ```
 
 ---
 
-### Rétrospectives inefficaces
+### Rétrospectives sans impact
 
-**Symptôme**
-Les mêmes problèmes reviennent, les actions ne sont pas suivies.
+**Symptômes**
+- Mêmes problèmes discutés chaque fois
+- Actions non suivies
+- Équipe désengagée
 
-**Solutions**
+**Diagnostic**
 ```markdown
-1. Structurer la rétro
-   - Timebox chaque section
-   - Facilitation tournante
-   - Format varié (pas toujours le même)
+- [ ] Actions limitées (max 3) ?
+- [ ] Chaque action a un owner ?
+- [ ] Actions SMART (spécifiques, mesurables) ?
+- [ ] Suivi en début de rétro suivante ?
+```
 
-2. Limiter les actions
-   - Max 3 actions par rétro
-   - Chaque action a un owner
-   - Actions SMART (spécifiques, mesurables)
+**Template de suivi d'actions**
 
-3. Suivre les actions
-   - Revue des actions précédentes en début de rétro
-   - Tracker visible (board dédié)
+```markdown
+## Actions Rétro Sprint 12
+
+| Action | Owner | Deadline | Critère Succès | Statut |
+|--------|-------|----------|----------------|--------|
+| Documenter les erreurs agents récurrentes | Alice | S13 | Section ajoutée dans AGENT-GUIDE | ✅ Done |
+| Réduire taille max des PRs à 300 lignes | Bob | S13 | Règle PR ajoutée + config | 🔄 En cours |
+| Timebox les standups à 10min | Équipe | Immédiat | Mesure sur 5 standups | ❌ Non fait |
+
+## Revue Début Rétro S13
+- Action 1 : Terminée, impact visible (moins de corrections)
+- Action 2 : En cours, 80% fait
+- Action 3 : Non fait → reporter ou abandonner ?
 ```
 
 ---
 
 ## Problèmes Techniques
 
-### Build qui échoue en CI mais pas en local
+### Build échoue en CI mais pas en local
 
-**Symptôme**
-"Ça marche sur ma machine" mais le CI est rouge.
+**Diagnostic systématique**
 
-**Causes courantes**
-1. Versions de dépendances différentes
-2. Variables d'environnement manquantes
-3. Cache local masque un problème
-4. Différences OS (Windows vs Linux)
-
-**Solutions**
 ```bash
-# 1. Nettoyer le cache local
-rm -rf node_modules
-rm -rf .next  # ou équivalent
-pnpm install
+# 1. Nettoyer l'environnement local
+rm -rf node_modules .next .astro dist
+pnpm install --frozen-lockfile
 pnpm build
 
 # 2. Vérifier les versions exactes
-# Utiliser un lockfile strict
-pnpm install --frozen-lockfile
+node --version  # Comparer avec CI
+pnpm --version  # Comparer avec CI
 
 # 3. Reproduire l'environnement CI
-# Utiliser Docker ou act pour GitHub Actions
+# Option A : Docker
+docker build -t test-build .
+docker run test-build pnpm build
+
+# Option B : act (pour GitHub Actions)
 act -j build
 
 # 4. Vérifier les variables d'environnement
-# S'assurer que toutes les vars sont dans le CI
-cat .env.example  # Toutes doivent être dans CI secrets
+# Lister celles utilisées
+grep -r "process.env" src/
+# Comparer avec celles définies en CI
 ```
+
+**Causes fréquentes et solutions**
+
+| Cause | Symptôme | Solution |
+|-------|----------|----------|
+| Lockfile outdated | Versions différentes | `pnpm install --frozen-lockfile` |
+| Env vars manquantes | Undefined errors | Ajouter au CI secrets |
+| Cache local | Marche après clean | Forcer fresh install en CI |
+| Casing fichiers | Linux ≠ Windows | Respecter la casse exacte |
+| Dépendances dev | Module not found | Vérifier `devDependencies` |
 
 ---
 
-### Tests flaky
+### Tests instables (flaky)
 
-**Symptôme**
-Tests qui passent parfois et échouent parfois.
+**Identification**
 
-**Causes courantes**
-1. Dépendance au timing
-2. État partagé entre tests
-3. Mocks incomplets
-4. Tests d'intégration fragiles
-
-**Solutions**
 ```typescript
-// 1. Éviter les timeouts arbitraires
-// ❌
+// Ajouter temporairement pour identifier les flaky
+describe('Ma suite', () => {
+  it.each(Array(10).fill(null))('test répété %#', async () => {
+    // Test suspect
+  })
+})
+```
+
+**Solutions par type de flaky**
+
+```typescript
+// ❌ Problème : timing arbitraire
 await new Promise(r => setTimeout(r, 1000))
 expect(element).toBeVisible()
 
-// ✅
+// ✅ Solution : attendre la condition
 await waitFor(() => {
   expect(element).toBeVisible()
-})
+}, { timeout: 5000 })
 
-// 2. Isoler l'état entre tests
+// ❌ Problème : état partagé entre tests
+let globalState = []
+
+// ✅ Solution : reset dans beforeEach
 beforeEach(() => {
-  // Reset complet de l'état
+  globalState = []
   jest.clearAllMocks()
-  queryClient.clear()
 })
 
-// 3. Mocker de manière déterministe
-// ❌ Dépendre d'une vraie API
-// ✅ MSW pour mocker les requêtes
-const server = setupServer(
-  rest.get('/api/tasks', (req, res, ctx) => {
-    return res(ctx.json(mockTasks))
-  })
-)
+// ❌ Problème : ordre des tests dépendant
+it('test 1', () => { sharedData = 'set' })
+it('test 2', () => { expect(sharedData).toBe('set') })
 
-// 4. Retry automatique pour tests instables (temporaire)
-// Configurer dans vitest.config.ts
-{
-  test: {
-    retry: 2,  // Retry tests flaky
-  }
-}
-// MAIS : identifier et fixer la cause racine
+// ✅ Solution : tests indépendants
+it('test 1', () => {
+  const localData = 'set'
+  expect(localData).toBe('set')
+})
+
+// ❌ Problème : dates/heures dynamiques
+expect(result.createdAt).toBe(new Date())
+
+// ✅ Solution : mocker le temps
+jest.useFakeTimers()
+jest.setSystemTime(new Date('2024-01-15'))
 ```
 
 ---
 
 ### Performance dégradée
 
-**Symptôme**
-Application lente, temps de réponse augmentés.
+**Diagnostic rapide**
 
-**Diagnostic**
-```typescript
-// 1. Identifier les goulots d'étranglement
-// Frontend : React DevTools Profiler
-// Backend : Logging des temps de réponse
+```markdown
+## Checklist Performance
 
-// 2. Vérifier les requêtes N+1
-// Logger les queries SQL
-const prisma = new PrismaClient({
-  log: ['query'],
-})
+### Frontend
+- [ ] Bundle size vérifié ? (`pnpm analyze`)
+- [ ] Lazy loading des routes ?
+- [ ] Images optimisées (WebP, lazy) ?
+- [ ] Re-renders excessifs ? (React DevTools)
+- [ ] Requêtes N+1 côté client ?
 
-// 3. Mesurer le bundle size
-// npx vite-bundle-analyzer
-// npx @next/bundle-analyzer
-
-// 4. Profiler en production
-// Utiliser les outils du framework (Next.js analytics, etc.)
+### Backend
+- [ ] Requêtes DB avec EXPLAIN ANALYZE ?
+- [ ] Index manquants ?
+- [ ] Caching en place ?
+- [ ] Pagination implémentée ?
 ```
 
-**Solutions courantes**
-```typescript
-// 1. Ajouter des indexes manquants
-// Identifier avec EXPLAIN ANALYZE
-await prisma.$queryRaw`EXPLAIN ANALYZE SELECT * FROM tasks WHERE...`
+**Solutions communes**
 
-// 2. Implémenter du caching
-// TanStack Query côté client
+```typescript
+// 1. Réduire les re-renders React
+const MemoizedComponent = memo(ExpensiveComponent)
+const cachedValue = useMemo(() => heavyComputation(data), [data])
+const stableCallback = useCallback(() => doSomething(), [])
+
+// 2. Optimiser le data fetching
 const { data } = useQuery({
-  queryKey: ['tasks'],
-  staleTime: 5 * 60 * 1000,  // 5 min
+  queryKey: ['users'],
+  staleTime: 5 * 60 * 1000,  // Cache 5 min
+  gcTime: 30 * 60 * 1000,    // Garde en mémoire 30 min
 })
 
 // 3. Lazy loading des composants
-const HeavyComponent = lazy(() => import('./HeavyComponent'))
+const HeavyChart = lazy(() => import('./HeavyChart'))
 
-// 4. Optimiser les re-renders
-const MemoizedComponent = memo(MyComponent)
-const cachedValue = useMemo(() => expensiveCalculation(), [deps])
+// Dans le JSX
+<Suspense fallback={<ChartSkeleton />}>
+  <HeavyChart data={data} />
+</Suspense>
+
+// 4. Virtualisation des longues listes
+import { useVirtualizer } from '@tanstack/react-virtual'
+
+const rowVirtualizer = useVirtualizer({
+  count: items.length,
+  getScrollElement: () => parentRef.current,
+  estimateSize: () => 35,
+})
 ```
 
 ---
@@ -315,121 +463,159 @@ const cachedValue = useMemo(() => expensiveCalculation(), [deps])
 
 ### Silos de connaissance
 
-**Symptôme**
-Une seule personne comprend certaines parties du code.
+**Symptômes**
+- "Seul X sait comment ça marche"
+- Bus factor = 1
+- Blocage quand quelqu'un est absent
 
-**Solutions**
+**Actions correctives**
+
 ```markdown
-1. Pair programming régulier
-   - Rotation des pairs
-   - Notamment sur les parties critiques
+## Plan Anti-Silos
 
-2. Documentation vivante
-   - ADRs pour les décisions
-   - README par module
-   - Commentaires "pourquoi" pas "quoi"
+### Court terme (cette semaine)
+- [ ] Identifier les 3 zones les plus risquées
+- [ ] Planifier 1 session pair programming par zone
 
-3. Mob programming occasionnel
-   - Pour les features complexes
-   - Pour onboarder sur une zone
+### Moyen terme (ce mois)
+- [ ] Rotation des reviewers obligatoire
+- [ ] Documentation des décisions critiques (ADR)
+- [ ] Mob programming sur les nouvelles features complexes
 
-4. Review croisées
-   - Pas toujours le même reviewer
-   - Questions encouragées en review
+### Long terme (ce trimestre)
+- [ ] Chaque zone a 2+ personnes compétentes
+- [ ] README technique par module
+- [ ] Onboarding documenté pour chaque zone
+```
+
+**Template ADR pour décisions critiques**
+
+```markdown
+# ADR-003 : Choix de TanStack Query pour le data fetching
+
+## Statut
+Accepté (2024-01-15)
+
+## Contexte
+Besoin de gérer le cache et les états de chargement de manière cohérente.
+
+## Décision
+Utiliser TanStack Query pour tout le data fetching côté client.
+
+## Conséquences
+- ✅ Cache automatique
+- ✅ États loading/error standardisés
+- ⚠️ Courbe d'apprentissage pour l'équipe
+- ⚠️ Dépendance externe
+
+## Personnes Impliquées
+@alice, @bob, @charlie
 ```
 
 ---
 
-### Communication défaillante
+### Résistance à l'adoption AIAD
 
-**Symptôme**
-Malentendus fréquents, travail en double, frustration.
+**Symptômes**
+- "On a toujours fait autrement"
+- Adoption superficielle (checkbox)
+- Retour aux anciennes habitudes
 
-**Solutions**
+**Stratégie d'adoption progressive**
+
 ```markdown
-1. Canaux de communication clairs
-   - Sync : meetings, calls
-   - Async : Slack/Teams, commentaires PR
-   - Documentation : Notion/Confluence
+## Plan d'Adoption
 
-2. Conventions de communication
-   - Réponse async < 4h
-   - Urgence = call, pas message
-   - Tout le monde lit les PRs
+### Phase 1 : Quick Wins (2 semaines)
+- Commencer par UN seul aspect (ex: AGENT-GUIDE)
+- Mesurer avant/après
+- Célébrer les succès
 
-3. Standups efficaces
-   - Max 15 min
-   - Focus sur les blocages
-   - Discussions détaillées après
+### Phase 2 : Expansion (1 mois)
+- Ajouter les SPECs sur 1 projet pilote
+- Former l'équipe
+- Collecter le feedback
 
-4. Documentation des décisions
-   - Pas de décision orale uniquement
-   - Résumé écrit après discussion
+### Phase 3 : Standardisation (2 mois)
+- Étendre aux autres projets
+- Adapter au contexte spécifique
+- Documenter les learnings
+
+## Métriques d'Adoption
+
+| Métrique | Avant | Après 1 mois | Objectif |
+|----------|-------|--------------|----------|
+| Temps moyen par feature | 5j | 3j | -40% |
+| Bugs en production | 8/mois | 5/mois | -50% |
+| Satisfaction équipe | 6/10 | 7/10 | 8/10 |
 ```
 
 ---
 
-### Résistance au framework
+## Anti-patterns Troubleshooting
 
-**Symptôme**
-L'équipe n'adopte pas les pratiques AIAD.
+### Ce qu'il NE faut PAS faire
 
-**Solutions**
 ```markdown
-1. Comprendre les résistances
-   - Écouter les objections
-   - Identifier les freins (temps, complexité, habitudes)
+❌ Changer plusieurs choses à la fois
+   → Change une seule variable, vérifie, répète
 
-2. Démontrer la valeur
-   - Commencer petit (un projet pilote)
-   - Mesurer avant/après
-   - Célébrer les succès
+❌ Blâmer l'outil/le framework
+   → Le problème est probablement dans ton code
 
-3. Adapter au contexte
-   - Pas besoin de tout appliquer
-   - Customiser pour l'équipe
-   - Évolution progressive
+❌ Passer des heures sans demander d'aide
+   → 30min bloqué = demander de l'aide
 
-4. Former et accompagner
-   - Sessions de formation
-   - Mentoring entre pairs
-   - Support disponible
+❌ Contourner sans comprendre
+   → Le hack reviendra te hanter
+
+❌ Corriger sans documenter
+   → Le prochain (ou toi dans 3 mois) refera la même erreur
 ```
 
 ---
 
-## Checklist de Diagnostic
+## Checklist de Diagnostic Universel
 
 ```markdown
-## Quand quelque chose ne va pas
+## Quand Quelque Chose Ne Va Pas
 
-### 1. Identifier le symptôme
-- [ ] Quel est le problème exact ?
+### 1. Identifier
+- [ ] Quel est le symptôme exact ?
 - [ ] Depuis quand ?
-- [ ] Qui est affecté ?
-- [ ] Quelle est la fréquence ?
+- [ ] Qui/quoi est affecté ?
+- [ ] Est-ce reproductible ?
 
-### 2. Chercher la cause racine
-- [ ] 5 Whys : pourquoi ? (5 fois)
+### 2. Isoler
 - [ ] Qu'est-ce qui a changé récemment ?
-- [ ] Le problème est-il reproductible ?
+- [ ] Le problème existe-t-il dans un environnement minimal ?
+- [ ] Les logs disent quoi ?
 
-### 3. Trouver une solution
-- [ ] Solution existe dans ce guide ?
-- [ ] L'équipe a-t-elle déjà rencontré ça ?
-- [ ] Besoin d'aide externe ?
+### 3. Résoudre
+- [ ] Solution trouvée dans cette annexe ?
+- [ ] Solution trouvée en ligne (Stack Overflow, GitHub issues) ?
+- [ ] Besoin d'escalader ?
 
-### 4. Implémenter et vérifier
-- [ ] Solution testée en local
-- [ ] Solution déployée
-- [ ] Problème résolu vérifié
+### 4. Vérifier
+- [ ] Fix testé localement ?
+- [ ] Fix déployé et vérifié ?
+- [ ] Pas de régression introduite ?
 
 ### 5. Documenter
-- [ ] Cause documentée
-- [ ] Solution documentée
-- [ ] Ajouté à ce guide si pertinent
+- [ ] Cause racine comprise ?
+- [ ] Solution documentée (ici ou dans le code) ?
+- [ ] Prévention mise en place ?
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Ressources Connexes
+
+- [A.3 Template AGENT-GUIDE](A3-agent-guide.md) - Prévenir les problèmes d'agents
+- [A.4 Template SPECS](A4-specs.md) - Structurer correctement les SPECs
+- [D.4 Rétrospective](D4-retrospective.md) - Améliorer continuellement
+- [H.3 Anti-patterns](H3-anti-patterns.md) - Éviter les erreurs courantes
+
+---
+
+*Dernière mise à jour : Janvier 2025*

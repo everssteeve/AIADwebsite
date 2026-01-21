@@ -1,243 +1,343 @@
-# I.4 Communauté
+# I.4 Communauté AIAD
 
 ## Pourquoi cette annexe ?
 
-Cette annexe présente les canaux de support, de contribution et d'échange autour du framework AIAD.
+Apprendre seul est lent, apprendre ensemble est rapide. Cette annexe présente comment rejoindre la communauté AIAD, obtenir de l'aide, contribuer au framework et participer à son évolution. La communauté est le moteur de l'amélioration continue d'AIAD.
 
 ---
 
-## Canaux de Support
+## Obtenir de l'Aide
 
-### Support Officiel
-
-**Documentation**
-- Site principal : [aiad.dev](https://aiad.dev) *(exemple)*
-- Guide de démarrage rapide
-- Tutoriels pas à pas
-- Référence complète
-
-**GitHub**
-- Repository : [github.com/aiad-framework](https://github.com/aiad-framework) *(exemple)*
-- Issues pour les bugs et feature requests
-- Discussions pour les questions
-- Wiki pour la documentation communautaire
-
-**Discord**
-- Serveur : [discord.gg/aiad](https://discord.gg/aiad) *(exemple)*
-- Canaux par sujet (#general, #help, #agents, #specs)
-- Support en temps réel
-- Partage d'expériences
-
----
-
-### Comment Obtenir de l'Aide
+### Avant de Demander
 
 ```markdown
-## Avant de Demander
+## Checklist Pré-Question
 
-1. Vérifier la documentation
-   - La réponse est souvent dans le guide
-   - Utiliser la recherche du site
+- [ ] Consulté la documentation ? (ce site)
+- [ ] Cherché dans le troubleshooting ? ([I.1](I1-troubleshooting.md))
+- [ ] Recherché dans les issues GitHub ?
+- [ ] Essayé de reproduire le problème de manière isolée ?
+```
 
-2. Consulter le troubleshooting
-   - [I.1 Troubleshooting](I1-troubleshooting.md)
-   - FAQ des problèmes courants
+Si oui à tout et toujours bloqué → demander de l'aide.
 
-3. Chercher dans les issues GitHub
-   - Peut-être que quelqu'un a eu le même problème
-   - Les issues fermées contiennent souvent des solutions
+---
 
-## Comment Bien Poser une Question
+### Où Demander
 
-### Template de Question
+| Canal | Usage | Temps de Réponse |
+|-------|-------|------------------|
+| **GitHub Issues** | Bugs, feature requests | 24-48h |
+| **GitHub Discussions** | Questions, discussions ouvertes | 24-72h |
+| **Discord** | Questions rapides, entraide | Minutes à heures |
+| **Stack Overflow** | Questions techniques génériques | Variable |
 
-**Contexte**
-- Version du framework utilisée
-- Stack technique (React, Node, etc.)
-- OS et environnement
+---
 
-**Problème**
-- Description claire du problème
-- Ce que j'ai essayé
-- Messages d'erreur (complets)
+### Comment Bien Poser une Question
 
-**Reproduction**
-- Étapes pour reproduire
-- Code minimal si possible
+Une bonne question obtient une bonne réponse rapidement.
 
-**Attendu**
-- Ce que je voudrais qu'il se passe
+```markdown
+## Template de Question
+
+### Contexte
+- Version AIAD / outils utilisés
+- Stack technique (Astro, React, etc.)
+- Environnement (OS, Node version)
+
+### Problème
+**Ce que je veux faire :**
+[Description claire de l'objectif]
+
+**Ce que j'ai essayé :**
+1. [Tentative 1]
+2. [Tentative 2]
+
+**Ce qui se passe :**
+[Comportement actuel avec message d'erreur complet]
+
+**Ce que j'attendais :**
+[Comportement souhaité]
+
+### Reproduction
+[Étapes minimales pour reproduire OU lien vers repo minimal]
+```
+
+**Exemple concret**
+
+```markdown
+### Contexte
+- AIAD website avec Astro 4.x
+- Node 20, pnpm 8
+- Windows 11
+
+### Problème
+**Ce que je veux faire :**
+Générer automatiquement les SPECs depuis un PRD
+
+**Ce que j'ai essayé :**
+1. Utilisé le template A.4 manuellement
+2. Demandé à Claude de découper le PRD
+
+**Ce qui se passe :**
+Les SPECs générées sont trop grosses (5-7 jours chacune)
+
+**Ce que j'attendais :**
+SPECs de 1-2 jours comme recommandé
+
+### Question
+Quel prompt utiliser pour obtenir des SPECs bien dimensionnées ?
 ```
 
 ---
 
-## Contribution
+### Anti-patterns Questions
 
-### Comment Contribuer
+```markdown
+❌ "Ça marche pas"
+   → Quoi exactement ? Message d'erreur ? Comportement ?
 
-**Types de Contributions**
+❌ "J'ai tout essayé"
+   → Lister ce qui a été essayé précisément
 
-| Type | Description | Prérequis |
-|------|-------------|-----------|
-| Documentation | Améliorer/corriger la doc | Aucun |
-| Bug reports | Signaler des problèmes | Reproduction |
-| Bug fixes | Corriger des bugs | PR + tests |
-| Features | Nouvelles fonctionnalités | Discussion préalable |
-| Translations | Traduire la documentation | Maîtrise de la langue |
-| Examples | Exemples et tutoriels | Cas d'usage réel |
+❌ Question sans contexte
+   → Versions, stack, OS, configuration
+
+❌ Screenshot de code
+   → Copier-coller le code en texte (formaté)
+
+❌ Demander sans avoir cherché
+   → Montrer les recherches effectuées
+```
+
+---
+
+## Contribuer au Framework
+
+### Types de Contributions
+
+| Type | Difficulté | Impact | Comment Commencer |
+|------|------------|--------|-------------------|
+| **Corrections doc** | Facile | Moyen | Typos, liens cassés, clarifications |
+| **Exemples** | Facile | Haut | Cas d'usage, templates |
+| **Bug reports** | Facile | Variable | Issue détaillée avec reproduction |
+| **Bug fixes** | Moyen | Haut | PR avec tests |
+| **Nouvelles annexes** | Moyen | Haut | Discussion préalable requise |
+| **Features framework** | Difficile | Très haut | Discussion + design préalable |
 
 ---
 
 ### Processus de Contribution
 
 ```markdown
-## 1. Trouver un Sujet
+## 1. Identifier une Contribution
 
 ### Issues "Good First Issue"
-- Idéales pour commencer
-- Bien documentées
-- Scope limité
+- Marquées pour les débutants
+- Scope bien défini
+- Support disponible
 
 ### Issues "Help Wanted"
-- Nécessitent de l'aide
 - Plus complexes
+- Besoin d'aide communauté
 - Impact plus important
 
 ### Proposer une Idée
-- Ouvrir une discussion GitHub
-- Expliquer le problème et la solution proposée
+- Ouvrir une Discussion GitHub
+- Expliquer le problème et la solution
 - Attendre validation avant de coder
 
-## 2. Préparer la Contribution
+## 2. Préparer l'Environnement
 
-### Fork et Clone
 ```bash
-git clone https://github.com/YOUR_USERNAME/aiad-framework.git
-cd aiad-framework
+# Fork et clone
+git clone https://github.com/VOTRE_USERNAME/aiad-website.git
+cd aiad-website
 pnpm install
+
+# Créer une branche
+git checkout -b feat/ma-contribution
+
+# Vérifier que tout marche
+pnpm dev
+pnpm test
 ```
 
-### Créer une Branche
+## 3. Développer
+
+- Suivre les conventions du projet (voir CLAUDE.md)
+- Ajouter des tests si code
+- Mettre à jour la documentation si nécessaire
+- Committer régulièrement avec messages clairs
+
+## 4. Soumettre
+
 ```bash
-git checkout -b feature/ma-contribution
+# Push
+git push origin feat/ma-contribution
 ```
 
-### Développer
-- Suivre les conventions du projet
-- Ajouter des tests
-- Mettre à jour la documentation
-
-## 3. Soumettre
-
-### Pull Request
-- Titre descriptif
-- Description complète
-- Lien vers l'issue
-
-### Review
-- Répondre aux commentaires
-- Faire les ajustements demandés
-- Être patient et courtois
+- Créer une PR sur GitHub
+- Remplir le template de PR
+- Attendre la review (répondre aux commentaires)
+- Merger après approbation
 ```
 
 ---
 
-### Guide de Style
+### Guide de Style Contributions
 
 ```markdown
-## Conventions de Code
+## Code
 
-- Suivre le guide existant dans CLAUDE.md
-- Utiliser Prettier pour le formatage
-- ESLint doit passer sans warning
+- TypeScript strict (no any)
+- ESLint sans warning
+- Prettier formaté
+- Tests pour les nouvelles fonctionnalités
 
-## Conventions de Commit
+## Documentation
+
+- Français pour le contenu
+- Markdown valide
+- Exemples concrets pour chaque concept
+- Liens vers annexes connexes
+
+## Commits
 
 Format : type(scope): description
 
 Types :
 - feat: nouvelle fonctionnalité
 - fix: correction de bug
-- docs: documentation
-- style: formatage (pas de changement de code)
-- refactor: refactoring
+- docs: documentation uniquement
+- style: formatage (pas de changement logique)
+- refactor: restructuration sans changement fonctionnel
 - test: ajout ou modification de tests
-- chore: maintenance
+- chore: maintenance, dépendances
 
-Exemple :
-feat(agents): add security agent configuration
-docs(glossary): add MCP definition
-fix(specs): correct template formatting
-
-## Documentation
-
-- Français pour le contenu principal
-- Exemples de code commentés
-- Liens vers les sections connexes
+Exemples :
+- feat(annexes): add security agent template
+- docs(glossary): clarify DoOD definition
+- fix(search): correct index generation
 ```
 
 ---
 
-## Événements
+### Template Pull Request
 
-### Meetups
+```markdown
+## Description
+[Résumé concis de ce que fait cette PR]
 
-**AIAD Meetup Paris** *(exemple)*
-- Fréquence : Mensuel
-- Format : Présentations + networking
-- Inscription : [meetup.com/aiad-paris](https://meetup.com/aiad-paris)
+## Motivation
+[Pourquoi ce changement est nécessaire]
 
-**AIAD Online Meetup** *(exemple)*
-- Fréquence : Bimensuel
-- Format : Webinaire + Q&A
-- Lien : Annoncé sur Discord
+## Changements
+- [Changement 1]
+- [Changement 2]
+- [Changement 3]
 
----
+## Tests
+- [ ] Tests existants passent
+- [ ] Nouveaux tests ajoutés (si applicable)
+- [ ] Testé manuellement
 
-### Conférences
+## Checklist
+- [ ] Code suit les conventions du projet
+- [ ] Documentation mise à jour
+- [ ] Pas de console.log ou code de debug
+- [ ] Self-review effectuée
 
-**AIAD Conference** *(exemple)*
-- Annuel
-- Présentations, workshops, networking
-- CFP ouvert 3 mois avant
+## Screenshots
+[Si changements visuels]
 
----
-
-### Workshops
-
-**"Premiers Pas avec AIAD"** *(exemple)*
-- Durée : 3h
-- Format : Hands-on
-- Niveau : Débutant
-
-**"Agents IA Avancés"** *(exemple)*
-- Durée : Journée complète
-- Format : Théorie + pratique
-- Niveau : Intermédiaire
+## Issue liée
+Closes #[numéro]
+```
 
 ---
 
-## Ambassadeurs
+## Événements et Rencontres
 
-### Programme Ambassadeur
+### Types d'Événements
 
-Les ambassadeurs AIAD sont des membres actifs de la communauté qui :
-- Partagent leur expérience
-- Aident les nouveaux arrivants
+| Événement | Format | Fréquence | Pour Qui |
+|-----------|--------|-----------|----------|
+| **Office Hours** | Q&A en ligne | Bi-mensuel | Tous niveaux |
+| **Workshops** | Pratique guidée | Mensuel | Débutants à intermédiaires |
+| **Meetups** | Présentations + networking | Mensuel | Tous |
+| **Conférence AIAD** | Journée complète | Annuel | Tous |
+
+---
+
+### Participer aux Événements
+
+```markdown
+## Comment Rester Informé
+
+1. S'abonner à la newsletter (site web)
+2. Rejoindre le Discord (#events)
+3. Suivre le repo GitHub (releases)
+
+## Proposer un Talk
+
+1. Soumettre via le formulaire
+2. Format : 15min, 30min ou workshop
+3. Sujets appréciés :
+   - Retours d'expérience
+   - Cas d'usage spécifiques
+   - Tips et astuces
+   - Intégrations avec d'autres outils
+```
+
+---
+
+## Programme Ambassadeur
+
+### Qu'est-ce qu'un Ambassadeur ?
+
+Les ambassadeurs AIAD sont des membres actifs qui :
+- Partagent leur expérience AIAD
+- Aident les nouveaux membres
 - Organisent des événements locaux
 - Contribuent à la documentation
+- Font le lien entre communauté et core team
 
-**Avantages**
-- Accès anticipé aux nouvelles versions
-- Invitations aux événements
-- Badge sur le profil GitHub
-- Réseau avec d'autres ambassadeurs
+---
 
-**Comment Devenir Ambassadeur**
-1. Être actif dans la communauté (6 mois minimum)
-2. Avoir contribué (code, doc, ou support)
-3. Postuler via le formulaire
-4. Entretien avec l'équipe core
+### Avantages
+
+| Avantage | Description |
+|----------|-------------|
+| **Accès anticipé** | Preview des nouvelles versions |
+| **Badge** | Reconnaissance sur GitHub et Discord |
+| **Réseau** | Accès au groupe privé ambassadeurs |
+| **Événements** | Invitations aux événements exclusifs |
+| **Influence** | Input direct sur la roadmap |
+
+---
+
+### Comment Devenir Ambassadeur
+
+```markdown
+## Critères
+
+1. **Activité** : Membre actif depuis 6+ mois
+2. **Contributions** : Au moins une contribution significative
+   - Code/documentation
+   - Réponses dans la communauté
+   - Organisation d'événement
+3. **Engagement** : Volonté de s'investir régulièrement
+
+## Processus
+
+1. Postuler via le formulaire
+2. Review par l'équipe core
+3. Entretien (30min)
+4. Période d'essai (3 mois)
+5. Confirmation ou feedback
+```
 
 ---
 
@@ -248,127 +348,199 @@ Les ambassadeurs AIAD sont des membres actifs de la communauté qui :
 La communauté maintient des templates additionnels :
 
 ```markdown
-## Templates Populaires
+## Par Stack
 
-### Par Stack
-- aiad-template-nextjs
-- aiad-template-remix
-- aiad-template-astro
-- aiad-template-vue
+| Template | Maintenu par | Lien |
+|----------|--------------|------|
+| aiad-template-nextjs | @contributor1 | github.com/... |
+| aiad-template-remix | @contributor2 | github.com/... |
+| aiad-template-vue | @contributor3 | github.com/... |
+| aiad-template-svelte | @contributor4 | github.com/... |
 
-### Par Cas d'Usage
-- aiad-template-saas
-- aiad-template-ecommerce
-- aiad-template-blog
-- aiad-template-dashboard
+## Par Cas d'Usage
 
-### Agents Communautaires
-- agent-database-migrations
-- agent-api-documentation
-- agent-accessibility-checker
-- agent-i18n
+| Template | Description |
+|----------|-------------|
+| aiad-template-saas | SaaS avec auth, billing |
+| aiad-template-ecommerce | E-commerce basique |
+| aiad-template-blog | Blog avec CMS |
+| aiad-template-dashboard | Admin dashboard |
 ```
 
 ---
 
-### Exemples et Projets
+### Agents Communautaires
 
-**Projets Showcase**
-- Projets utilisant AIAD en production
-- Partagés avec accord des équipes
-- Source d'inspiration et de learnings
+```markdown
+## Agents Spécialisés
 
-**Case Studies**
-- Études de cas détaillées
-- Métriques avant/après
-- Témoignages d'équipes
+| Agent | Spécialité | Créé par |
+|-------|------------|----------|
+| agent-db-migrations | Migrations DB | @contributor |
+| agent-api-docs | Documentation OpenAPI | @contributor |
+| agent-a11y | Audit accessibilité | @contributor |
+| agent-i18n | Internationalisation | @contributor |
+| agent-perf-audit | Audit performance | @contributor |
+
+## Proposer un Agent
+
+1. Créer un repo avec le format agent-[nom]
+2. Inclure README avec usage
+3. Inclure system prompt documenté
+4. Soumettre pour review communautaire
+```
+
+---
+
+### Case Studies
+
+```markdown
+## Études de Cas Publiées
+
+| Entreprise | Contexte | Résultats |
+|------------|----------|-----------|
+| Startup A | MVP en 6 semaines | 3x plus rapide qu'estimé |
+| Agence B | Migration legacy | -40% bugs post-deploy |
+| Scale-up C | Équipe de 8 PE | Onboarding en 2 semaines |
+
+## Partager Votre Case Study
+
+1. Remplir le template case study
+2. Faire valider par votre entreprise
+3. Soumettre pour publication
+4. Review et publication
+
+Intérêt : visibilité, contribution communauté
+```
 
 ---
 
 ## Code de Conduite
 
+### Nos Valeurs
+
 ```markdown
-## Notre Engagement
+## Bienveillance
+- Supposer la bonne foi
+- Aider plutôt que critiquer
+- Accueillir les débutants
 
-Nous nous engageons à faire de la participation à notre communauté
-une expérience sans harcèlement pour tous, indépendamment de l'âge,
-la taille, le handicap, l'ethnicité, l'identité et expression de genre,
-le niveau d'expérience, l'éducation, le statut socio-économique,
-la nationalité, l'apparence, la race, la religion,
-ou l'identité et orientation sexuelle.
+## Respect
+- Respecter les opinions différentes
+- Pas de discrimination
+- Communication professionnelle
 
-## Nos Standards
+## Collaboration
+- Partager ses connaissances
+- Créditer les contributions des autres
+- Construire ensemble
+```
 
-### Comportements Positifs
-- Utiliser un langage accueillant et inclusif
-- Respecter les points de vue et expériences différents
-- Accepter gracieusement les critiques constructives
-- Se concentrer sur ce qui est le mieux pour la communauté
-- Faire preuve d'empathie envers les autres membres
+---
+
+### Comportements Attendus
+
+```markdown
+✅ Utiliser un langage inclusif
+✅ Respecter les points de vue différents
+✅ Accepter les critiques constructives
+✅ Se concentrer sur le meilleur pour la communauté
+✅ Faire preuve d'empathie
+```
+
+---
 
 ### Comportements Inacceptables
-- Langage ou images sexualisés
-- Trolling, commentaires insultants ou désobligeants
-- Harcèlement public ou privé
-- Publication d'informations privées sans permission
-- Toute conduite inappropriée dans un cadre professionnel
-
-## Application
-
-Les cas de comportement abusif peuvent être signalés à
-conduct@aiad.dev. Toutes les plaintes seront examinées
-et donneront lieu à une réponse appropriée.
-```
-
----
-
-## Roadmap Communautaire
 
 ```markdown
-## 2024 - Objectifs
-
-### Q1
-- [ ] Lancement Discord officiel
-- [ ] 10 premiers ambassadeurs
-- [ ] Template Next.js v1
-
-### Q2
-- [ ] Premier meetup physique
-- [ ] 100 contributeurs
-- [ ] 5 case studies publiées
-
-### Q3
-- [ ] Première AIAD Conference
-- [ ] Certification AIAD
-- [ ] 20 templates communautaires
-
-### Q4
-- [ ] 1000 membres Discord
-- [ ] Programme de partenariats
-- [ ] AIAD v2.0 avec feedback communauté
+❌ Harcèlement sous toute forme
+❌ Langage ou images offensants
+❌ Trolling ou commentaires désobligeants
+❌ Publication d'informations privées
+❌ Comportement inapproprié en contexte professionnel
 ```
 
 ---
 
-## Contact
+### Signalement
 
-### Équipe Core
+```markdown
+## En Cas de Problème
 
-Pour les questions non publiques :
-- Email : hello@aiad.dev *(exemple)*
-- Twitter/X : @aiad_framework *(exemple)*
-- LinkedIn : AIAD Framework *(exemple)*
+1. Signaler à conduct@aiad.dev (exemple)
+2. Décrire la situation factuellement
+3. Inclure des preuves si possible
 
-### Partenariats
+## Traitement
 
-Pour les partenariats entreprise :
-- Email : partners@aiad.dev *(exemple)*
-
-### Presse
-
-Pour les demandes presse :
-- Email : press@aiad.dev *(exemple)*
+1. Accusé de réception sous 24h
+2. Investigation
+3. Action appropriée
+4. Suivi avec le rapporteur
+```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Anti-patterns Communauté
+
+### Ce qu'il NE faut PAS faire
+
+```markdown
+❌ Poser une question sans avoir cherché
+   → Montrer les recherches effectuées
+
+❌ Ignorer le code de conduite
+   → Le lire et l'appliquer
+
+❌ Contribuer sans suivre les guidelines
+   → Lire CONTRIBUTING.md avant
+
+❌ S'attendre à une réponse immédiate
+   → La communauté est bénévole
+
+❌ Critiquer sans proposer d'alternative
+   → Suggestion constructive ou PR
+
+❌ Disparaître après avoir reçu de l'aide
+   → Confirmer que le problème est résolu
+```
+
+---
+
+## Checklist Nouveau Membre
+
+```markdown
+## Première Semaine
+
+- [ ] Lire le README du projet
+- [ ] Parcourir la documentation
+- [ ] Rejoindre Discord
+- [ ] Se présenter dans #introductions
+- [ ] Lire le code de conduite
+
+## Premier Mois
+
+- [ ] Poser au moins une question
+- [ ] Répondre à une question si possible
+- [ ] Identifier une contribution potentielle
+- [ ] Suivre les annonces
+
+## Contribution
+
+- [ ] Lire CONTRIBUTING.md
+- [ ] Faire une première contribution (typo, doc)
+- [ ] Participer à une discussion
+- [ ] Proposer une amélioration
+```
+
+---
+
+## Ressources Connexes
+
+- [I.1 Troubleshooting](I1-troubleshooting.md) - Résoudre les problèmes courants
+- [I.3 Bibliographie](I3-bibliographie.md) - Ressources pour approfondir
+- [H.5 Notes d'Apprentissage](H5-notes-apprentissage.md) - Capitaliser et partager
+
+---
+
+*Dernière mise à jour : Janvier 2025*
