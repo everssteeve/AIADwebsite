@@ -4,20 +4,49 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Site web pour le Framework AIAD (AI-Agent Iterative Development) - une plateforme de documentation statique présentant le framework et son Mode Opératoire. Architecture JAMstack optimisée pour performance, SEO et accessibilité.
+Site web pour le Framework AIAD (AI-Agent Iterative Development) - une plateforme de documentation statique présentant le framework et son Mode Opératoire. **Actuellement en phase de documentation/planification, l'implémentation n'a pas encore démarré.**
 
-## Tech Stack
+## Current Repository State
+
+Ce repository contient la **documentation source** et les **documents de planification** pour le futur site web:
+
+### Content (Source pour le site)
+- `framework/` - Framework AIAD théorique (8 chapitres, 01 à 08)
+- `mode opératoire/` - Guide pratique opérationnel (8 chapitres, 00 à 07)
+- `annexes/` - 45+ fichiers organisés par catégorie (A-I):
+  - **A**: Templates (PRD, Architecture, Agent-Guide, Specs, DOOD, DOOUD)
+  - **B**: Rôles AIAD (Product Manager, Product Engineer, QA, Tech Lead, etc.)
+  - **C**: Phases et boucles itératives
+  - **D**: Rituels et synchronisations
+  - **E**: Métriques et dashboards
+  - **F**: Agents spécialisés (Security, Quality, Architecture, etc.)
+  - **G**: Configuration et installation
+  - **H**: Bonnes pratiques et patterns
+  - **I**: Troubleshooting, glossaire, bibliographie
+- `communication/` - Documents de communication (décideur, product manager)
+
+### Planning Documents
+- `PRD.md` - Product Requirements Document complet
+- `ARCHITECTURE.md` - Architecture technique planifiée
+- `Cadrage.md` - Document de cadrage initial
+
+### Cross-references
+Chaque dossier contient un `referentiel.md` servant d'index des fichiers et `intention.md` décrivant les objectifs de la section.
+
+## Planned Tech Stack (for implementation)
+
+When implementation starts, the project will use:
 
 - **Framework**: Astro 4.x (SSG, content-first, MDX natif)
 - **Language**: TypeScript 5.x (strict mode)
-- **Styling**: Tailwind CSS 3.x (utility-first)
-- **Content**: MDX 3.x via Astro Content Collections
+- **Styling**: Tailwind CSS 3.x
+- **Content**: MDX via Astro Content Collections
 - **Search**: Pagefind (index statique)
 - **Package Manager**: pnpm 8.x
 - **Testing**: Vitest (unit), Playwright (E2E)
-- **Hosting**: Vercel (static deployment)
+- **Hosting**: Vercel
 
-## Commands
+## Planned Commands (post-implementation)
 
 ```bash
 pnpm dev              # Start dev server
@@ -28,44 +57,32 @@ pnpm lint:fix         # ESLint fix
 pnpm typecheck        # Astro check + tsc
 pnpm format           # Prettier format
 pnpm test:unit        # Run Vitest
-pnpm test:unit:watch  # Vitest watch mode
 pnpm test:e2e         # Run Playwright
-pnpm test:e2e:ui      # Playwright UI mode
 pnpm test             # Run all tests
 ```
 
-## Architecture
+## Planned Architecture
 
-### Content Structure
+### Content Collections Structure
+```
+src/content/
+├── framework/     # Théorie AIAD (from framework/)
+├── mode-operatoire/ # Pratique (from mode opératoire/)
+└── annexes/       # Resources (from annexes/)
+```
 
-Two main content collections in `src/content/`:
-- **framework/**: AIAD Framework (4 parties - théorie)
-- **mode-operatoire/**: Mode Opératoire (7 parties - pratique)
-
-Each MDX file has typed frontmatter (title, description, order, section).
-
-### Key Directories
-
-- `src/components/`: Astro components (common/, layout/, content/, search/)
-- `src/content/`: MDX content managed by Content Collections
-- `src/layouts/`: BaseLayout, PageLayout, DocsLayout
-- `src/pages/`: File-based routing, dynamic routes with [...slug].astro
-- `src/lib/`: Utility functions (utils.ts, reading-time.ts, navigation.ts)
-- `public/templates/`: Downloadable template files (PRD, ARCHITECTURE, CLAUDE.md, SPECS)
-
-### Patterns
-
-- **Content Collections**: Type-safe MDX with Zod schema validation in `src/content/config.ts`
+### Key Patterns
+- **Content Collections**: Type-safe MDX with Zod schema in `src/content/config.ts`
+- **Dynamic Routes**: `[...slug].astro` for content pages
+- **Island Architecture**: Interactive components with `client:load`/`client:idle`
 - **Layout Composition**: DocsLayout extends BaseLayout
-- **Island Architecture**: Interactive components use `client:load` or `client:idle` directives
-- **Dynamic Routes**: `[...slug].astro` generates pages from content collections
 
-## Code Conventions
+## Code Conventions (for implementation)
 
 ### Naming
-- Components: PascalCase.astro (`SearchDialog.astro`)
-- Utilities: kebab-case.ts (`reading-time.ts`)
-- Content: kebab-case.mdx (`product-engineer.mdx`)
+- Components: PascalCase.astro
+- Utilities: kebab-case.ts
+- Content: kebab-case.mdx
 - Constants: SCREAMING_SNAKE_CASE
 
 ### Formatting
@@ -74,13 +91,6 @@ Each MDX file has typed frontmatter (title, description, order, section).
 - 2 space indent
 - Trailing commas (es5)
 - 100 char line width
-
-### Imports Order
-1. Node.js native modules
-2. External dependencies
-3. Internal aliases (@/)
-4. Relative imports
-5. Types (last)
 
 ### Path Aliases
 ```
@@ -93,15 +103,14 @@ Each MDX file has typed frontmatter (title, description, order, section).
 
 ## Quality Requirements
 
-- **Performance**: Lighthouse > 90 all metrics, LCP < 2s
-- **Accessibility**: RGAA AA compliance, keyboard navigation, 4.5:1 contrast
+- **Performance**: Lighthouse > 90, LCP < 2s
+- **Accessibility**: RGAA AA, keyboard navigation, 4.5:1 contrast
 - **SEO**: Semantic HTML, meta tags, sitemap, Open Graph
-- **Eco-design**: RGESN compliance, optimized images (WebP), lazy loading
+- **Eco-design**: RGESN compliance, WebP images, lazy loading
 
 ## Content Guidelines
 
 - French language only (MVP)
-- Framework content is theoretical, Mode Opératoire is practical
+- Framework = théorie, Mode Opératoire = pratique
 - Cross-link between Framework and Mode Opératoire sections
-- Include reading time on documentation pages
 - Badge "Essentiel" on critical sections
