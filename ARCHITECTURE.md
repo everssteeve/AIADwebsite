@@ -1,7 +1,7 @@
 # Architecture Technique - Site Web AIAD
 
-**Version :** 1.0
-**Date :** 16 janvier 2026
+**Version :** 1.1
+**Date :** 21 janvier 2026
 **Statut :** Validé
 
 ---
@@ -16,6 +16,8 @@
 6. [API et interfaces](#api-et-interfaces)
 7. [Base de données](#base-de-données)
 8. [Tests](#tests)
+9. [Sécurité](#sécurité)
+10. [ADR](#adr-architecture-decision-records)
 
 ---
 
@@ -1032,8 +1034,238 @@ jobs:
 
 ---
 
+## Sécurité
+
+### Principes fondamentaux
+
+| Principe | Description | Justification |
+|----------|-------------|---------------|
+| **Static-first** | Pas de serveur runtime = surface d'attaque minimale | Aucune injection SQL, RCE, ou vulnérabilité serveur possible |
+| **Zero secrets client** | Aucun secret exposé côté client | Variables d'environnement uniquement au build |
+| **HTTPS only** | TLS obligatoire via Vercel | Chiffrement de bout en bout |
+| **Dependency hygiene** | Audit régulier des dépendances | Prévention des supply chain attacks |
+
+### Headers HTTP de sécurité
+
+Configuration Vercel (`vercel.json`) :
+
+```json
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.mailchimp.com; frame-ancestors 'none';"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Protection des formulaires
+
+**Newsletter (Mailchimp)** :
+
+```astro
+<!-- NewsletterForm.astro -->
+---
+const honeypotField = 'b_' + import.meta.env.PUBLIC_MAILCHIMP_USER_ID + '_' + import.meta.env.PUBLIC_MAILCHIMP_LIST_ID
+---
+
+<form
+  action="https://aiad.us1.list-manage.com/subscribe/post"
+  method="POST"
+  class="newsletter-form"
+>
+  <!-- Champ réel -->
+  <input
+    type="email"
+    name="EMAIL"
+    required
+    autocomplete="email"
+    aria-label="Adresse email"
+  />
+
+  <!-- Honeypot anti-spam (invisible) -->
+  <div aria-hidden="true" style="position: absolute; left: -5000px;">
+    <input type="text" name={honeypotField} tabindex="-1" value="" />
+  </div>
+
+  <!-- Champs cachés Mailchimp -->
+  <input type="hidden" name="u" value={import.meta.env.PUBLIC_MAILCHIMP_USER_ID} />
+  <input type="hidden" name="id" value={import.meta.env.PUBLIC_MAILCHIMP_LIST_ID} />
+
+  <button type="submit">S'abonner</button>
+</form>
+```
+
+### Gestion des dépendances
+
+**Audit automatique** (`.github/workflows/security.yml`) :
+
+```yaml
+name: Security Audit
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Chaque lundi à 9h
+  push:
+    branches: [main]
+    paths:
+      - 'pnpm-lock.yaml'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - run: pnpm audit --audit-level=moderate
+```
+
+**Mise à jour des dépendances** :
+
+```bash
+# Vérifier les vulnérabilités
+pnpm audit
+
+# Mettre à jour les dépendances mineures/patch
+pnpm update
+
+# Vérifier les mises à jour majeures disponibles
+pnpm outdated
+```
+
+### RGPD et données utilisateur
+
+| Donnée | Stockage | Durée | Consentement |
+|--------|----------|-------|--------------|
+| Préférences (thème) | localStorage | Permanent | Implicite (fonctionnel) |
+| Progression Getting Started | localStorage | Permanent | Implicite (fonctionnel) |
+| Email newsletter | Mailchimp | Jusqu'à désinscription | Explicite (double opt-in) |
+| Analytics | Vercel Analytics | 30 jours | Anonymisé, pas de cookies |
+
+**Pas de cookies** = pas de bandeau de consentement requis.
+
+**localStorage** : données stockées localement, jamais transmises au serveur.
+
+**Implémentation du consentement newsletter** :
+
+```astro
+<!-- Checkbox RGPD obligatoire -->
+<label class="flex items-center gap-2">
+  <input type="checkbox" name="gdpr" required />
+  <span class="text-sm">
+    J'accepte de recevoir la newsletter AIAD.
+    <a href="/mentions-legales#confidentialite" class="underline">
+      Politique de confidentialité
+    </a>
+  </span>
+</label>
+```
+
+### Checklist sécurité pré-déploiement
+
+- [ ] `pnpm audit` sans vulnérabilité critique/haute
+- [ ] Variables d'environnement non exposées dans le bundle
+- [ ] Headers de sécurité configurés dans `vercel.json`
+- [ ] CSP testée et fonctionnelle
+- [ ] Formulaires avec honeypot anti-spam
+- [ ] Liens externes avec `rel="noopener noreferrer"`
+- [ ] Images avec attribut `alt` (accessibilité + SEO)
+
+---
+
+## ADR (Architecture Decision Records)
+
+### Format ADR
+
+Chaque décision architecturale significative doit être documentée selon ce template :
+
+```markdown
+# ADR-XXX : [Titre de la décision]
+
+**Date :** YYYY-MM-DD
+**Statut :** Proposé | Accepté | Déprécié | Remplacé par ADR-YYY
+**Décideurs :** [Noms]
+
+## Contexte
+
+[Décrivez le contexte et les forces en jeu, incluant les contraintes techniques, business ou organisationnelles]
+
+## Décision
+
+[Décrivez la décision prise et les raisons principales]
+
+## Conséquences
+
+### Positives
+- [Avantage 1]
+- [Avantage 2]
+
+### Négatives
+- [Inconvénient 1]
+- [Trade-off accepté]
+
+## Alternatives considérées
+
+[Mentionnez brièvement les alternatives écartées et pourquoi]
+```
+
+### Comment créer une nouvelle ADR
+
+1. Créer un fichier `docs/adr/adr-XXX-titre.md`
+2. Utiliser le prochain numéro séquentiel disponible
+3. Remplir le template ci-dessus
+4. Faire valider par le Tech Lead
+5. Mettre à jour l'index ci-dessous
+
+### Index des ADRs
+
+| ID | Titre | Date | Statut |
+|----|-------|------|--------|
+| - | *Aucune ADR pour l'instant* | - | - |
+
+### ADRs à venir (suggestions)
+
+Les décisions suivantes mériteraient une ADR formelle :
+
+- **ADR-001** : Choix d'Astro comme framework frontend
+- **ADR-002** : Architecture Content Collections pour le contenu MDX
+- **ADR-003** : Stratégie de recherche statique avec Pagefind
+- **ADR-004** : Choix de Vercel pour l'hébergement
+- **ADR-005** : Stratégie i18n pour le multilinguisme (Phase 2)
+
+---
+
 ## Changelog
 
 | Version | Date | Modifications |
 |---------|------|---------------|
+| 1.1 | 21/01/2026 | Ajout sections Sécurité et ADR |
 | 1.0 | 16/01/2026 | Version initiale |
