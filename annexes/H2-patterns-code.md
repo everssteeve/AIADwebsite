@@ -2,11 +2,11 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe présente des patterns de code recommandés par contexte technique, avec des exemples concrets utilisables comme références pour les agents IA.
+Les patterns de code documentés permettent aux agents IA de produire du code cohérent avec l'existant. Cette annexe sert de catalogue de référence : chaque pattern peut être copié dans l'AGENT-GUIDE du projet ou fourni directement dans un prompt pour guider la génération.
 
 ---
 
-## Patterns React
+## Patterns React / TypeScript
 
 ### Composant Fonctionnel Standard
 
@@ -34,17 +34,21 @@ export const TaskCard = memo(function TaskCard({
     <div className="rounded-lg border p-4">
       <h3 className="font-medium">{task.title}</h3>
       <p className="text-sm text-gray-600">{task.description}</p>
-      {/* ... */}
+      {/* Actions */}
     </div>
   )
 })
 ```
 
-**Points Clés :**
+**Caractéristiques** :
 - Export nommé avec `memo` pour éviter les re-renders inutiles
-- Types explicites pour les props
-- Handlers définis dans le composant si simple
-- Nommage clair
+- Interface de props explicite et typée
+- Handlers définis dans le composant si simples
+- Nommage clair des fonctions
+
+**Quand l'utiliser** : Composants d'affichage réutilisables, cartes, items de liste.
+
+---
 
 ### Hook Custom avec Query
 
@@ -86,7 +90,7 @@ export function useTaskList(projectId: string) {
       return { previous }
     },
     onError: (_, __, context) => {
-      // Rollback
+      // Rollback si erreur
       queryClient.setQueryData(['tasks', projectId], context?.previous)
     },
     onSettled: () => {
@@ -106,6 +110,16 @@ export function useTaskList(projectId: string) {
 }
 ```
 
+**Caractéristiques** :
+- Encapsule toute la logique data d'une entité
+- Optimistic update pour l'UX
+- Rollback en cas d'erreur
+- API de retour claire et typée
+
+**Quand l'utiliser** : Gestion de données avec CRUD, cache et synchronisation serveur.
+
+---
+
 ### Composant avec Formulaire
 
 ```typescript
@@ -115,7 +129,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 const taskSchema = z.object({
-  title: z.string().min(1, 'Required').max(100, 'Too long'),
+  title: z.string().min(1, 'Requis').max(100, 'Trop long'),
   description: z.string().optional(),
   priority: z.enum(['low', 'medium', 'high']),
 })
@@ -140,7 +154,7 @@ export function TaskForm({ onSubmit, initialData }: TaskFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">Titre</label>
         <input
           id="title"
           {...register('title')}
@@ -152,27 +166,35 @@ export function TaskForm({ onSubmit, initialData }: TaskFormProps) {
       </div>
 
       <div>
-        <label htmlFor="priority">Priority</label>
+        <label htmlFor="priority">Priorité</label>
         <select id="priority" {...register('priority')}>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
+          <option value="low">Basse</option>
+          <option value="medium">Moyenne</option>
+          <option value="high">Haute</option>
         </select>
       </div>
 
       <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Saving...' : 'Save'}
+        {isSubmitting ? 'Enregistrement...' : 'Enregistrer'}
       </button>
     </form>
   )
 }
 ```
 
+**Caractéristiques** :
+- Validation Zod avec schéma réutilisable
+- Type inféré du schéma (pas de duplication)
+- Gestion des états loading et erreurs
+- Accessibilité (labels, messages d'erreur)
+
+**Quand l'utiliser** : Formulaires avec validation complexe.
+
 ---
 
 ## Patterns API (Node.js)
 
-### Route avec Validation
+### Route avec Validation (Hono)
 
 ```typescript
 // src/routes/tasks.ts
@@ -190,8 +212,6 @@ const createTaskSchema = z.object({
   priority: z.enum(['low', 'medium', 'high']).default('medium'),
   projectId: z.string().uuid(),
 })
-
-const updateTaskSchema = createTaskSchema.partial()
 
 app.use('*', authMiddleware)
 
@@ -233,26 +253,6 @@ app.get('/:id', async (c) => {
   return c.json({ data: task })
 })
 
-// PATCH /tasks/:id
-app.patch('/:id', zValidator('json', updateTaskSchema), async (c) => {
-  const userId = c.get('userId')
-  const taskId = c.req.param('id')
-  const data = c.req.valid('json')
-
-  const task = await taskService.findById(taskId)
-
-  if (!task) {
-    return c.json({ error: 'Task not found' }, 404)
-  }
-
-  if (!taskService.canEdit(task, userId)) {
-    return c.json({ error: 'Forbidden' }, 403)
-  }
-
-  const updated = await taskService.update(taskId, data)
-  return c.json({ data: updated })
-})
-
 // DELETE /tasks/:id
 app.delete('/:id', async (c) => {
   const userId = c.get('userId')
@@ -275,13 +275,23 @@ app.delete('/:id', async (c) => {
 export default app
 ```
 
+**Caractéristiques** :
+- Validation Zod intégrée au framework
+- Vérification des permissions systématique
+- Codes HTTP appropriés (201, 204, 403, 404)
+- Séparation route/service
+
+**Quand l'utiliser** : APIs REST avec authentification.
+
+---
+
 ### Service Layer
 
 ```typescript
 // src/services/task.service.ts
 import { db } from '@/db'
 import { tasks, type Task, type NewTask } from '@/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 
 export const taskService = {
   async findById(id: string): Promise<Task | null> {
@@ -295,14 +305,6 @@ export const taskService = {
       .from(tasks)
       .where(eq(tasks.createdBy, userId))
       .orderBy(tasks.createdAt)
-  },
-
-  async findByProject(projectId: string): Promise<Task[]> {
-    return db
-      .select()
-      .from(tasks)
-      .where(eq(tasks.projectId, projectId))
-      .orderBy(tasks.order)
   },
 
   async create(data: NewTask): Promise<Task> {
@@ -323,6 +325,7 @@ export const taskService = {
     await db.delete(tasks).where(eq(tasks.id, id))
   },
 
+  // Méthodes de permission
   canAccess(task: Task, userId: string): boolean {
     return task.createdBy === userId
   },
@@ -337,11 +340,19 @@ export const taskService = {
 }
 ```
 
+**Caractéristiques** :
+- Une méthode par opération CRUD
+- Types explicites pour entrées/sorties
+- Logique de permission centralisée
+- Pas de logique HTTP (séparation des responsabilités)
+
+**Quand l'utiliser** : Toute entité métier avec persistance.
+
 ---
 
 ## Patterns Tests
 
-### Test Unitaire
+### Test Unitaire avec Factory
 
 ```typescript
 // tests/unit/filterTasks.test.ts
@@ -349,6 +360,7 @@ import { describe, it, expect } from 'vitest'
 import { filterTasks } from '@/utils/filterTasks'
 import type { Task } from '@/types'
 
+// Factory pour créer des données de test
 const createTask = (overrides: Partial<Task> = {}): Task => ({
   id: 'task-1',
   title: 'Test Task',
@@ -360,8 +372,8 @@ const createTask = (overrides: Partial<Task> = {}): Task => ({
 })
 
 describe('filterTasks', () => {
-  describe('status filter', () => {
-    it('should filter tasks by single status', () => {
+  describe('filtre par status', () => {
+    it('filtre par status unique', () => {
       const tasks = [
         createTask({ id: '1', status: 'todo' }),
         createTask({ id: '2', status: 'done' }),
@@ -374,7 +386,7 @@ describe('filterTasks', () => {
       expect(result.every((t) => t.status === 'todo')).toBe(true)
     })
 
-    it('should filter tasks by multiple statuses', () => {
+    it('filtre par multiples status', () => {
       const tasks = [
         createTask({ id: '1', status: 'todo' }),
         createTask({ id: '2', status: 'in_progress' }),
@@ -384,37 +396,31 @@ describe('filterTasks', () => {
       const result = filterTasks(tasks, { status: ['todo', 'in_progress'] })
 
       expect(result).toHaveLength(2)
-      expect(result.map((t) => t.status)).toEqual(['todo', 'in_progress'])
-    })
-
-    it('should return all tasks when status filter is empty', () => {
-      const tasks = [
-        createTask({ id: '1', status: 'todo' }),
-        createTask({ id: '2', status: 'done' }),
-      ]
-
-      const result = filterTasks(tasks, { status: [] })
-
-      expect(result).toHaveLength(2)
     })
   })
 
-  describe('edge cases', () => {
-    it('should return empty array when tasks is empty', () => {
-      const result = filterTasks([], { status: ['todo'] })
-      expect(result).toEqual([])
+  describe('cas limites', () => {
+    it('retourne tableau vide si tasks vide', () => {
+      expect(filterTasks([], { status: ['todo'] })).toEqual([])
     })
 
-    it('should return all tasks when no filters provided', () => {
+    it('retourne tout si pas de filtre', () => {
       const tasks = [createTask({ id: '1' }), createTask({ id: '2' })]
-
-      const result = filterTasks(tasks, {})
-
-      expect(result).toHaveLength(2)
+      expect(filterTasks(tasks, {})).toHaveLength(2)
     })
   })
 })
 ```
+
+**Caractéristiques** :
+- Factory pour créer des données de test cohérentes
+- Structure describe/it hiérarchique
+- Tests des cas limites séparés
+- Assertions spécifiques (pas juste `toBeDefined`)
+
+**Quand l'utiliser** : Tests de fonctions pures, utilitaires.
+
+---
 
 ### Test d'Intégration API
 
@@ -431,20 +437,18 @@ describe('Tasks API', () => {
   let userId: string
 
   beforeEach(async () => {
-    // Setup test user
     const user = await createTestUser()
     userId = user.id
     authToken = generateAuthToken(user)
   })
 
   afterEach(async () => {
-    // Cleanup
     await db.delete(tasks)
     await db.delete(users)
   })
 
   describe('POST /tasks', () => {
-    it('should create a task', async () => {
+    it('crée une tâche', async () => {
       const response = await app.request('/tasks', {
         method: 'POST',
         headers: {
@@ -452,36 +456,32 @@ describe('Tasks API', () => {
           Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
-          title: 'New Task',
+          title: 'Nouvelle tâche',
           priority: 'high',
           projectId: 'project-1',
         }),
       })
 
       expect(response.status).toBe(201)
-
       const { data } = await response.json()
-      expect(data.title).toBe('New Task')
-      expect(data.priority).toBe('high')
+      expect(data.title).toBe('Nouvelle tâche')
       expect(data.createdBy).toBe(userId)
     })
 
-    it('should return 400 for invalid data', async () => {
+    it('retourne 400 si données invalides', async () => {
       const response = await app.request('/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({
-          title: '', // Invalid: empty
-        }),
+        body: JSON.stringify({ title: '' }),
       })
 
       expect(response.status).toBe(400)
     })
 
-    it('should return 401 without auth', async () => {
+    it('retourne 401 sans authentification', async () => {
       const response = await app.request('/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -494,11 +494,18 @@ describe('Tasks API', () => {
 })
 ```
 
+**Caractéristiques** :
+- Setup/teardown pour isolation des tests
+- Tests des cas happy path, erreur et authentification
+- Vérification des codes HTTP et du body
+
+**Quand l'utiliser** : Tests d'endpoints API avec base de données.
+
 ---
 
 ## Patterns Utilitaires
 
-### API Client
+### API Client avec Gestion d'Erreurs
 
 ```typescript
 // src/lib/api.ts
@@ -521,7 +528,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
     throw new ApiError(
       response.status,
       error.code ?? 'UNKNOWN_ERROR',
-      error.message ?? 'An error occurred'
+      error.message ?? 'Une erreur est survenue'
     )
   }
 
@@ -581,6 +588,63 @@ export const api = {
 }
 ```
 
+**Caractéristiques** :
+- Classe d'erreur typée avec code et status
+- Gestion automatique du token
+- Typage générique des réponses
+- Support du 204 No Content
+
+**Quand l'utiliser** : Communication avec une API REST.
+
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Anti-patterns Associés
+
+| Pattern | Anti-pattern à Éviter |
+|---------|----------------------|
+| Hook custom | useEffect + useState pour le fetch |
+| Service layer | Logique métier dans les routes |
+| Factory test | Données de test en dur répétées |
+| API client typé | fetch brut avec any |
+
+Voir [H.3 Anti-patterns](H3-anti-patterns.md) pour les détails.
+
+---
+
+## Checklist
+
+```markdown
+## Vérification Pattern
+
+### Structure
+- [ ] Le pattern est dans le bon fichier/dossier
+- [ ] Le nommage suit les conventions du projet
+- [ ] Les imports sont ordonnés correctement
+
+### Typage
+- [ ] Pas de `any` non justifié
+- [ ] Interfaces explicites pour les props/params
+- [ ] Types exportés si réutilisables
+
+### Tests
+- [ ] Le code est testable (pas de side effects cachés)
+- [ ] Les cas limites sont identifiables
+```
+
+---
+
+## Résumé
+
+| Contexte | Pattern Recommandé |
+|----------|-------------------|
+| Composant d'affichage | Functional + memo |
+| Data fetching | Hook custom + TanStack Query |
+| Formulaire | react-hook-form + Zod |
+| API endpoint | Route + Service séparés |
+| Persistance | Service layer |
+| Test unitaire | Factory + describe/it |
+| Client HTTP | API wrapper typé |
+
+---
+
+*Liens connexes : [H.1 Prompts Efficaces](H1-prompts-efficaces.md) · [H.3 Anti-patterns](H3-anti-patterns.md) · [A.3 Template AGENT-GUIDE](A3-template-agent-guide.md)*

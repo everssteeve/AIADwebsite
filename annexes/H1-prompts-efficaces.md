@@ -2,20 +2,19 @@
 
 ## Pourquoi cette annexe ?
 
-Cette annexe fournit des exemples de prompts qui produisent du code de qualité, avec des explications sur ce qui les rend efficaces.
+Le prompting est la compétence centrale du Product Engineer. Un bon prompt produit du code de qualité en une itération. Un mauvais prompt génère des allers-retours frustrants. Cette annexe fournit les patterns éprouvés pour communiquer efficacement avec les agents IA de code.
 
 ---
 
 ## Anatomie d'un Bon Prompt
 
-### Structure Recommandée
+### Les 4 Composantes
 
 ```
 ┌─────────────────────────────────────────┐
 │ 1. CONTEXTE                             │
-│    Quoi : projet, stack, fichier        │
-│    Où : emplacement dans le code        │
-│    Quand : état actuel                  │
+│    Projet, stack, fichier concerné      │
+│    État actuel du code                  │
 ├─────────────────────────────────────────┤
 │ 2. TÂCHE                                │
 │    Objectif clair et spécifique         │
@@ -31,21 +30,25 @@ Cette annexe fournit des exemples de prompts qui produisent du code de qualité,
 └─────────────────────────────────────────┘
 ```
 
+### Principe Clé
+
+Plus le prompt est précis, moins il y a d'itérations. Le temps investi dans la rédaction du prompt est toujours rentabilisé.
+
 ---
 
-## Prompts par Catégorie
+## Prompts par Type de Tâche
 
 ### Création de Fonctionnalité
 
-#### ❌ Prompt Faible
+#### Prompt Faible
 
 ```
 Ajoute un bouton de suppression
 ```
 
-**Problèmes** : Pas de contexte, pas de spécification du comportement
+**Problèmes** : Pas de contexte, pas de comportement attendu, pas de contraintes techniques.
 
-#### ✅ Prompt Efficace
+#### Prompt Efficace
 
 ```markdown
 ## Contexte
@@ -75,13 +78,13 @@ Ajouter un bouton de suppression sur TaskCard avec :
 
 ### Correction de Bug
 
-#### ❌ Prompt Faible
+#### Prompt Faible
 
 ```
 Le formulaire ne marche pas, corrige le bug
 ```
 
-#### ✅ Prompt Efficace
+#### Prompt Efficace
 
 ```markdown
 ## Bug
@@ -126,13 +129,13 @@ Trouve et corrige la cause.
 
 ### Écriture de Tests
 
-#### ❌ Prompt Faible
+#### Prompt Faible
 
 ```
 Écris des tests pour cette fonction
 ```
 
-#### ✅ Prompt Efficace
+#### Prompt Efficace
 
 ```markdown
 ## Fonction à Tester
@@ -179,13 +182,13 @@ describe('filterTasks', () => {
 
 ### Refactoring
 
-#### ❌ Prompt Faible
+#### Prompt Faible
 
 ```
 Refactorise ce code
 ```
 
-#### ✅ Prompt Efficace
+#### Prompt Efficace
 
 ```markdown
 ## Code à Refactorer
@@ -215,8 +218,6 @@ function processOrder(order) {
 
 ### Documentation
 
-#### ✅ Prompt Efficace
-
 ```markdown
 ## Code à Documenter
 ```typescript
@@ -245,8 +246,6 @@ lue par des développeurs externes.
 
 ### Exploration de Code
 
-#### ✅ Prompt Efficace
-
 ```markdown
 ## Question
 Comment la gestion des erreurs API fonctionne dans ce projet ?
@@ -272,7 +271,7 @@ Explique-moi le flow avec les fichiers et lignes concernés.
 
 ### Pattern "Step by Step"
 
-Pour les tâches complexes, demander étape par étape.
+Pour les tâches complexes, décomposer en étapes successives.
 
 ```markdown
 ## Tâche Complexe
@@ -287,6 +286,10 @@ pour le système de notifications. Pas d'implémentation encore.
 3. Frontend : hook useNotifications
 4. UI : composant NotificationCenter
 ```
+
+**Avantage** : Permet de valider l'architecture avant d'investir dans l'implémentation.
+
+---
 
 ### Pattern "Show Me First"
 
@@ -306,9 +309,13 @@ Ensuite je te demanderai d'implémenter.
 ```
 ```
 
+**Avantage** : Évite de partir dans une mauvaise direction.
+
+---
+
 ### Pattern "Like This One"
 
-Utiliser un exemple comme référence.
+Utiliser un exemple existant comme référence.
 
 ```markdown
 ## Modèle
@@ -329,7 +336,11 @@ Crée un hook useProjectMembers qui suit le même pattern.
 - Ajoute un filtre optionnel par rôle
 ```
 
-### Pattern "Contrainte d'Abord"
+**Avantage** : L'agent réplique les bonnes pratiques existantes.
+
+---
+
+### Pattern "Contraintes d'Abord"
 
 Commencer par les contraintes pour éviter les mauvaises directions.
 
@@ -344,23 +355,61 @@ Commencer par les contraintes pour éviter les mauvaises directions.
 Avec ces contraintes, implémente un composant Tooltip accessible.
 ```
 
+**Avantage** : L'agent ne proposera pas de solution incompatible.
+
 ---
 
-## Anti-patterns à Éviter
+## Exemples Pratiques
 
-### 1. Trop Vague
+### Prompt Complet pour une Feature
 
 ```markdown
-❌ "Améliore ce code"
-❌ "Fais quelque chose pour la performance"
-❌ "Ajoute des tests"
+## Contexte
+Projet : app de gestion de tâches (TaskFlow)
+Stack : Next.js 14, TypeScript, TanStack Query, Tailwind, Prisma
+Fichier : src/features/tasks/components/TaskCard.tsx
 
-✅ "Réduis la complexité cyclomatique de cette fonction de 15 à moins de 10"
-✅ "Ajoute du caching sur cet appel API qui est fait 10x/page"
-✅ "Ajoute des tests pour les cas d'erreur de cette fonction"
+L'utilisateur voit une liste de tâches. Chaque carte affiche
+titre, status et assigné. On veut ajouter la priorité.
+
+## Tâche
+Ajouter un indicateur de priorité visuel sur TaskCard :
+- Badge coloré (high=rouge, medium=jaune, low=vert)
+- Position : coin supérieur droit
+- Tooltip au hover avec le label
+
+## Contraintes
+- Utiliser le composant Badge de src/components/ui/Badge.tsx
+- Utiliser les couleurs du design system (voir tailwind.config)
+- Le composant TaskCard ne doit pas dépasser 80 lignes
+
+## Fichiers de Référence
+```tsx
+// src/components/ui/Badge.tsx
+export function Badge({ variant, children }) { ... }
+// variants: 'success' | 'warning' | 'danger' | 'info'
 ```
 
-### 2. Trop de Contexte Inutile
+## Comportement Attendu
+- Tâche high → Badge rouge "Haute" avec tooltip "Priorité haute"
+- Tâche medium → Badge jaune "Moyenne"
+- Tâche low → Badge vert "Basse"
+- Pas de priorité → Pas de badge affiché
+```
+
+---
+
+## Anti-patterns
+
+### Trop Vague
+
+| Mauvais | Pourquoi | Bon |
+|---------|----------|-----|
+| "Améliore ce code" | Pas de critère | "Réduis la complexité cyclomatique de 15 à < 10" |
+| "Fais quelque chose pour la performance" | Pas de métrique | "Ajoute du caching sur cet appel API fait 10x/page" |
+| "Ajoute des tests" | Pas de scope | "Ajoute des tests pour les cas d'erreur de cette fonction" |
+
+### Trop de Contexte
 
 ```markdown
 ❌ [500 lignes de code pour une question sur 5 lignes]
@@ -369,7 +418,7 @@ Avec ces contraintes, implémente un composant Tooltip accessible.
    "Voici le fichier complet si tu en as besoin : [lien]"
 ```
 
-### 3. Multiple Tâches en Une
+### Multiples Tâches en Une
 
 ```markdown
 ❌ "Ajoute la feature X, corrige le bug Y, et refactorise Z"
@@ -378,31 +427,62 @@ Avec ces contraintes, implémente un composant Tooltip accessible.
 ✅ Ou explicitement : "En 3 parties distinctes..."
 ```
 
-### 4. Assumer la Solution
+### Assumer la Solution
 
 ```markdown
 ❌ "Utilise Redux pour gérer cet état"
-   (Peut-être que ce n'est pas la meilleure solution)
+   (Peut-être pas la meilleure solution)
 
 ✅ "J'ai besoin de partager cet état entre 3 composants.
     Quelle approche recommandes-tu ? (Context, Zustand, prop drilling...)"
 ```
 
----
-
-## Checklist Prompt
+### Oublier les Contraintes du Projet
 
 ```markdown
-## Avant d'Envoyer
+❌ "Crée un modal de confirmation"
+   (L'agent va créer un nouveau composant)
 
-- [ ] Le contexte est suffisant ?
-- [ ] L'objectif est clair et spécifique ?
-- [ ] Les contraintes sont mentionnées ?
-- [ ] Le comportement attendu est décrit ?
-- [ ] C'est une seule tâche (pas plusieurs mélangées) ?
-- [ ] Le code inclus est le minimum nécessaire ?
+✅ "Crée un modal de confirmation en utilisant notre
+    composant Modal de src/components/ui/Modal.tsx"
 ```
 
 ---
 
-*Retour aux [Annexes](../framework/08-annexes.md)*
+## Checklist
+
+```markdown
+## Avant d'Envoyer un Prompt
+
+### Contenu
+- [ ] Le contexte projet/fichier est fourni
+- [ ] L'objectif est clair et spécifique
+- [ ] Les contraintes techniques sont mentionnées
+- [ ] Le comportement attendu est décrit
+
+### Structure
+- [ ] C'est une seule tâche (pas plusieurs mélangées)
+- [ ] Le code inclus est le minimum nécessaire
+- [ ] Les fichiers de référence sont indiqués si utile
+
+### Qualité
+- [ ] Un junior comprendrait ce qu'on attend
+- [ ] Il n'y a pas d'ambiguïté sur le résultat
+- [ ] Les patterns du projet sont mentionnés
+```
+
+---
+
+## Résumé
+
+| Principe | Application |
+|----------|-------------|
+| **Contexte** | Toujours inclure projet, stack, fichier |
+| **Spécificité** | Objectif mesurable, comportement décrit |
+| **Contraintes** | Ce qu'il faut respecter ET éviter |
+| **Référence** | Montrer les patterns existants à suivre |
+| **Une chose à la fois** | Découper les tâches complexes |
+
+---
+
+*Liens connexes : [H.2 Patterns de Code](H2-patterns-code.md) · [H.3 Anti-patterns](H3-anti-patterns.md) · [B.2 Product Engineer](B2-product-engineer.md)*
