@@ -1,9 +1,9 @@
 # Product Requirement Document (PRD)
 ## Site Web Framework AIAD
 
-**Version:** 1.0  
-**Date:** 16 janvier 2026  
-**Auteur:** Product Owner  
+**Version:** 1.1
+**Date:** 21 janvier 2026
+**Auteur:** Product Manager
 **Statut:** Validé pour implémentation
 
 ---
@@ -25,7 +25,7 @@
 
 ### Problème
 
-Le Framework AIAD (AI-Agent Iterative Development) et son Mode Opératoire Exhaustif existent uniquement sous forme de documents Word de 50+ pages, créant plusieurs obstacles majeurs :
+Le Framework AIAD (AI-Agent Iterative Development) et son Mode Opératoire Exhaustif existent uniquement sous forme de fichiers markdown (de 50+ fichiers), créant plusieurs obstacles majeurs :
 
 1. **Accessibilité limitée** : Format document difficile à partager, consulter et maintenir à jour
 2. **Découvrabilité nulle** : Impossible à trouver via les moteurs de recherche
@@ -33,6 +33,7 @@ Le Framework AIAD (AI-Agent Iterative Development) et son Mode Opératoire Exhau
 4. **Absence de versioning visible** : Difficile de suivre les évolutions du framework
 5. **Pas de communauté** : Aucun moyen de fédérer les utilisateurs et contributeurs
 6. **Mode opératoire inaccessible** : Le guide pratique détaillé reste enfermé dans un document
+7. **Annexes riches mais fragmentées** : 45 annexes détaillées (templates, guides, bonnes pratiques) non exploitées
 
 Les équipes de développement adoptent les agents IA de codage (Claude Code, Cursor, etc.) de manière empirique, sans méthodologie structurée pour :
 - Redéfinir les rôles et responsabilités
@@ -50,6 +51,7 @@ Créer **la plateforme de référence mondiale pour le développement logiciel a
 - Fédérer une communauté de praticiens partageant bonnes pratiques et retours d'expérience
 - Établir AIAD comme standard de facto dans le domaine
 - Fournir un guide opérationnel concret (Mode Opératoire) en complément du framework théorique
+- Rendre accessibles les 45 annexes détaillées (templates, guides techniques, bonnes pratiques)
 
 ---
 
@@ -71,22 +73,23 @@ Créer **la plateforme de référence mondiale pour le développement logiciel a
 ### Objectifs Produit par Phase
 
 #### MVP (4 semaines)
-- ✅ 100% du Framework AIAD v1.0 accessible en ligne
-- ✅ 100% du Mode Opératoire Exhaustif accessible en ligne
+- ✅ 100% du Framework AIAD (8 chapitres) accessible en ligne
+- ✅ 100% du Mode Opératoire (8 chapitres) accessible en ligne
+- ✅ 100% des Annexes (45 fichiers, 9 catégories A-I) accessibles en ligne
 - ✅ Navigation intuitive (< 3 clics pour accéder à n'importe quelle section)
-- ✅ Templates téléchargeables (Markdown + PDF)
+- ✅ Templates téléchargeables (Markdown + PDF) depuis les Annexes catégorie A
 - ✅ Score Lighthouse > 90 sur tous les critères
 - ✅ Site responsive (mobile, tablette, desktop)
 - ✅ SEO optimisé (sitemap, meta tags, structure sémantique)
 
 #### V1 (+4 semaines)
 - Parcours "Getting Started" interactif
-- Guide détaillé phase d'initialisation
-- Pages rôles AIAD (5 rôles + Agents Spécialisés)
-- FAQ enrichie (30+ questions)
+- Pages rôles AIAD enrichies (6 rôles - catégorie B des annexes)
+- Pages agents spécialisés (7 agents - catégorie F des annexes)
+- FAQ enrichie (30+ questions - basée sur annexe I1-Troubleshooting)
 - Newsletter opérationnelle
 - 3 études de cas publiées
-- Documentation avancée Mode Opératoire (MCPs, SubAgents)
+- Documentation communication par audience (basée sur dossier Communication)
 
 #### Plus tard (non daté)
 - Assistant IA "AIAD CoPilot"
@@ -327,9 +330,10 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 
 **Critères d'acceptation :**
 - [ ] Menu de navigation principal avec :
-  - Les 4 parties du Framework AIAD
-  - Les 7 parties du Mode Opératoire
-  - Séparation visuelle claire entre Framework et Mode Opératoire
+  - Les 8 chapitres du Framework AIAD (Préambule à Annexes)
+  - Les 8 chapitres du Mode Opératoire (Préambule à Annexes)
+  - Les 9 catégories d'Annexes (A-I : Templates, Rôles, Boucles, Rituels, Métriques, Agents, Configuration, Bonnes Pratiques, Ressources)
+  - Séparation visuelle claire entre Framework, Mode Opératoire et Annexes
 - [ ] Sous-menu déroulant pour chaque partie (ex: Framework > Partie 1 > Rôles > Product Engineer)
 - [ ] Breadcrumb sur toutes les pages (ex: Accueil > Framework > Partie 1 > Rôles > Product Engineer)
 - [ ] Navigation clavier fonctionnelle (Tab, Shift+Tab, Enter)
@@ -349,12 +353,12 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 **Critères d'acceptation :**
 - [ ] Barre de recherche accessible depuis toutes les pages (header)
 - [ ] Raccourci clavier pour focus (ex: Ctrl+K ou Cmd+K)
-- [ ] Recherche full-text sur Framework AIAD + Mode Opératoire
+- [ ] Recherche full-text sur Framework AIAD + Mode Opératoire + Annexes
 - [ ] Affichage des résultats avec :
   - Titre de la page
   - Extrait de contexte (snippet)
   - Chemin de navigation (breadcrumb)
-  - Badge indiquant source (Framework / Mode Opératoire)
+  - Badge indiquant source (Framework / Mode Opératoire / Annexes)
 - [ ] Résultats classés par pertinence
 - [ ] Temps de recherche < 500ms
 - [ ] Affichage "Aucun résultat" avec suggestions alternatives
@@ -389,7 +393,7 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 **Complexité :** S (Small)
 
 **Critères d'acceptation :**
-- [ ] Page Glossaire accessible depuis le menu principal
+- [ ] Page Glossaire accessible depuis le menu principal (basée sur annexe I2-glossaire.md)
 - [ ] Termes du Framework AIAD + termes Claude Code du Mode Opératoire
 - [ ] Termes classés par ordre alphabétique
 - [ ] Recherche/filtrage des termes
@@ -409,24 +413,25 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 **Complexité :** S
 
 **Critères d'acceptation :**
-- [ ] Page "Templates" accessible depuis le menu principal
-- [ ] Liste des 4 templates principaux du Framework :
-  - PRD (Product Requirement Document)
-  - ARCHITECTURE
-  - AGENT-GUIDE (CLAUDE.md)
-  - SPECS
-- [ ] Liste des templates du Mode Opératoire :
-  - Template de cadrage
-  - Fichiers de configuration (.claude/settings.local.json)
-  - Exemples de SubAgents
-  - Checklists par phase
+- [ ] Page "Templates" accessible depuis le menu principal (basée sur Annexes catégorie A)
+- [ ] Liste des 6 templates fondateurs (Annexes A1-A6) :
+  - A1 : PRD (Product Requirement Document)
+  - A2 : ARCHITECTURE
+  - A3 : AGENT-GUIDE (CLAUDE.md)
+  - A4 : SPECS
+  - A5 : DoOD (Definition of Obviously Done)
+  - A6 : DoOuD (Definition of Obviously Undone)
+- [ ] Liens vers templates complémentaires dans autres catégories :
+  - Catégorie C : Guides des boucles AIAD (C1-C5)
+  - Catégorie D : Guides des rituels (D1-D5)
+  - Catégorie G : Guides de configuration technique (G1-G6)
 - [ ] Pour chaque template :
   - Nom et description courte
   - Cas d'usage (quand l'utiliser)
   - Aperçu visuel (screenshot ou extrait)
   - Formats disponibles (Markdown, PDF)
-- [ ] Filtrage par rôle (Product Owner, Tech Lead, Product Engineer)
-- [ ] Filtrage par source (Framework / Mode Opératoire)
+- [ ] Filtrage par rôle (Product Manager, Product Engineer, Tech Lead, QA Engineer, etc.)
+- [ ] Filtrage par catégorie d'annexe (A-I)
 
 ---
 
@@ -465,26 +470,52 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 #### EPIC 5 : Accéder au Mode Opératoire
 
 ##### US-015 : Comprendre la structure du Mode Opératoire
-**En tant que** Product Engineer  
-**Je veux** visualiser les 7 parties du Mode Opératoire  
+**En tant que** Product Engineer
+**Je veux** visualiser les 8 chapitres du Mode Opératoire
 **Afin de** comprendre comment l'utiliser au quotidien
 
 **Complexité :** M
 
 **Critères d'acceptation :**
 - [ ] Page "Mode Opératoire" accessible depuis le menu principal
-- [ ] Vue d'ensemble avec les 7 parties :
-  - Partie 0 : Préambule (glossaire, RACI, vue d'ensemble)
-  - Partie 1 : Phase d'initialisation
-  - Partie 2 : Phase de planification
-  - Partie 3 : Phase de développement
-  - Partie 4 : Phase de validation
-  - Partie 5 : Phase de déploiement
-  - Partie 6 : Rituels et amélioration
-  - Partie 7 : Annexes
-- [ ] Indication du temps nécessaire pour chaque partie
-- [ ] Navigation directe vers chaque partie
-- [ ] Badge "Essentiel" sur les parties critiques (1, 2, 3)
+- [ ] Vue d'ensemble avec les 8 chapitres :
+  - 00-preambule : Préambule (glossaire, RACI, vue d'ensemble)
+  - 01-initialisation : Phase d'initialisation (Démarrage projet)
+  - 02-planification : Phase de planification (PLANIFIER)
+  - 03-developpement : Phase de développement (IMPLÉMENTER)
+  - 04-validation : Phase de validation (VALIDER)
+  - 05-deploiement : Phase de déploiement (INTÉGRER)
+  - 06-rituels-amelioration : Rituels et amélioration continue
+  - 07-annexes : Annexes et références
+- [ ] Correspondance avec les boucles AIAD (Annexes C1-C5)
+- [ ] Indication du temps nécessaire pour chaque chapitre
+- [ ] Navigation directe vers chaque chapitre
+- [ ] Badge "Essentiel" sur les chapitres critiques (01, 02, 03)
+
+---
+
+##### US-015b : Naviguer dans les Annexes
+**En tant que** utilisateur cherchant des ressources détaillées
+**Je veux** accéder facilement aux 45 annexes organisées par catégorie
+**Afin de** trouver rapidement templates, guides et bonnes pratiques
+
+**Complexité :** M
+
+**Critères d'acceptation :**
+- [ ] Page "Annexes" accessible depuis le menu principal
+- [ ] Vue d'ensemble des 9 catégories :
+  - Catégorie A : Templates Fondateurs (A1-A6 : PRD, Architecture, Agent-Guide, Specs, DoOD, DoOuD)
+  - Catégorie B : Rôles Détaillés (B1-B6 : PM, PE, QA, Tech Lead, Supporters, Agents Engineer)
+  - Catégorie C : Boucles AIAD (C1-C5 : Initialisation, Planifier, Implémenter, Valider, Intégrer)
+  - Catégorie D : Rituels (D1-D5 : Alignment, Demo, Tech Review, Rétro, Standup)
+  - Catégorie E : Métriques et Dashboards (E1-E2)
+  - Catégorie F : Agents Spécialisés (F1-F7 : Security, Quality, Architecture, Documentation, Performance, Code Review, Autres)
+  - Catégorie G : Configuration Technique (G1-G6 : Environnement, Agents IA, CI/CD, Permissions, MCP, SubAgents)
+  - Catégorie H : Bonnes Pratiques (H1-H5 : Prompts, Patterns, Anti-patterns, Cas d'usage, Notes)
+  - Catégorie I : Ressources (I1-I4 : Troubleshooting, Glossaire, Bibliographie, Communauté)
+- [ ] Navigation par catégorie avec filtres
+- [ ] Liens croisés vers Framework et Mode Opératoire
+- [ ] Badge indiquant le type de contenu (Template, Guide, Référence)
 
 ---
 
@@ -651,17 +682,23 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 #### EPIC 4 : Comprendre les Rôles
 
 ##### US-012 : Visualiser les rôles AIAD
-**En tant que** Manager d'équipe  
-**Je veux** voir une vue d'ensemble des rôles définis dans AIAD  
+**En tant que** Manager d'équipe
+**Je veux** voir une vue d'ensemble des rôles définis dans AIAD
 **Afin de** comprendre comment organiser mon équipe
 
 **Complexité :** L
 
 **Critères d'acceptation :**
 - [ ] Page "Rôles et Responsabilités" avec :
-  - Schéma visuel des 5 rôles (Product Owner, Tech Lead, Product Engineer, QA, DevOps)
+  - Schéma visuel des 6 rôles (basé sur Annexes B1-B6) :
+    - B1 : Product Manager
+    - B2 : Product Engineer
+    - B3 : QA Engineer
+    - B4 : Tech Lead
+    - B5 : Supporters (DevOps, Design, etc.)
+    - B6 : Agents Engineer
   - Vue d'ensemble des interactions entre rôles
-  - Mention des Agents Spécialisés (nouveauté Framework v1.0)
+  - Mention des 7 Agents Spécialisés (Annexes F1-F7)
 - [ ] Matrice RACI simplifiée (Responsable, Consulté, Informé par activité clé)
 - [ ] Comparaison "Avant AIAD" vs "Avec AIAD" pour chaque rôle
 - [ ] Indicateur du rôle le plus impacté (Product Engineer)
@@ -669,21 +706,21 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 ---
 
 ##### US-013 : Comprendre le rôle de Product Engineer
-**En tant que** développeur senior  
-**Je veux** comprendre en détail le rôle de Product Engineer  
+**En tant que** développeur senior
+**Je veux** comprendre en détail le rôle de Product Engineer
 **Afin de** savoir si cette évolution m'intéresse et comment m'y préparer
 
 **Complexité :** M
 
 **Critères d'acceptation :**
-- [ ] Page dédiée "Product Engineer" avec :
+- [ ] Page dédiée "Product Engineer" (basée sur Annexe B2-product-engineer.md) avec :
   - Mission principale (orchestrateur d'agent IA)
   - Responsabilités clés (liste des 5 responsabilités du framework)
   - Compétences requises (hard skills + soft skills)
   - Workflow type d'une journée
   - Livrables attendus
 - [ ] Section "Évolution de carrière" (d'où on vient, où on va)
-- [ ] Lien vers le workflow quotidien du Mode Opératoire (Partie 3.1 + 3.3)
+- [ ] Lien vers le workflow quotidien du Mode Opératoire (03-developpement.md)
 - [ ] Témoignage ou interview d'un Product Engineer
 - [ ] Quiz d'auto-évaluation "Suis-je prêt·e à devenir Product Engineer ?"
 
@@ -769,39 +806,43 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 ---
 
 ##### US-019 : Configurer les MCPs et Plugins
-**En tant que** Product Engineer  
-**Je veux** savoir quels MCPs et Plugins installer  
+**En tant que** Product Engineer
+**Je veux** savoir quels MCPs et Plugins installer
 **Afin d'** optimiser Claude Code pour mon projet
 
 **Complexité :** M
 
 **Critères d'acceptation :**
-- [ ] Page "MCPs et Plugins" avec :
+- [ ] Page "MCPs et Plugins" (basée sur Annexe G5-installation-mcp-plugins.md) avec :
   - Liste des MCPs recommandés (Context7, Playwright, etc.)
   - Description et cas d'usage de chaque MCP
   - Instructions d'installation (commandes exactes)
   - Configuration dans CLAUDE.md
 - [ ] Liste des Plugins recommandés (OpenSpec, frontend-design, playwright-skill)
 - [ ] Liens vers les repositories GitHub officiels
-- [ ] Section "Troubleshooting" pour problèmes courants
+- [ ] Section "Troubleshooting" pour problèmes courants (basée sur Annexe I1-troubleshooting.md)
 
 ---
 
 ##### US-020 : Créer et utiliser des SubAgents
-**En tant que** Tech Lead  
-**Je veux** comprendre le concept de SubAgents et savoir en créer  
+**En tant que** Tech Lead
+**Je veux** comprendre le concept de SubAgents et savoir en créer
 **Afin de** déléguer des tâches expertes à des agents spécialisés
 
 **Complexité :** L
 
 **Critères d'acceptation :**
-- [ ] Page "SubAgents" avec :
+- [ ] Page "SubAgents" (basée sur Annexe G6-creation-subagents.md) avec :
   - Concept et vision
   - Différence SubAgent vs Skill vs Hook (tableau comparatif)
-  - Catalogue des SubAgents recommandés :
-    - Code Reviewer
-    - Test Writer
-    - Autres SubAgents du framework (Sécurité, Architecture, etc.)
+  - Catalogue des 7 Agents Spécialisés (Annexes F1-F7) :
+    - F1 : Agent Security
+    - F2 : Agent Quality
+    - F3 : Agent Architecture
+    - F4 : Agent Documentation
+    - F5 : Agent Performance
+    - F6 : Agent Code Review
+    - F7 : Autres Agents (Test, Migration, Debug, etc.)
 - [ ] Pour chaque SubAgent :
   - Rôle et mission
   - Instructions de création
@@ -809,7 +850,7 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
   - Exemples d'utilisation
 - [ ] Section "Créer un SubAgent personnalisé"
 - [ ] Téléchargement des templates SubAgents
-- [ ] Lien vers la section Framework "Agents Spécialisés" (Partie 1.7)
+- [ ] Lien vers les Annexes F (Agents Spécialisés)
 
 ---
 
@@ -1177,11 +1218,12 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 13. US-031 : Partage social (S)
 
 **Livrables Sprint 2 :**
-- [ ] 100% Framework AIAD publié et navigable
-- [ ] 100% Mode Opératoire publié et navigable
-- [ ] Minimum 4 templates téléchargeables (PRD, ARCHITECTURE, CLAUDE.md, SPECS)
-- [ ] Recherche full-text opérationnelle
-- [ ] Glossaire complet (Framework + Mode Opératoire)
+- [ ] 100% Framework AIAD (8 chapitres) publié et navigable
+- [ ] 100% Mode Opératoire (8 chapitres) publié et navigable
+- [ ] 100% Annexes (45 fichiers, 9 catégories) publiées et navigables
+- [ ] 6 templates fondateurs téléchargeables (Annexes A1-A6 : PRD, ARCHITECTURE, CLAUDE.md, SPECS, DoOD, DoOuD)
+- [ ] Recherche full-text opérationnelle (Framework + Mode Opératoire + Annexes)
+- [ ] Glossaire complet (basé sur Annexe I2-glossaire.md)
 - [ ] Site mobile-friendly (tests iOS/Android)
 - [ ] Score Lighthouse > 90 sur tous les critères
 - [ ] Pages "Pour qui ?" et "Comparaisons" publiées
@@ -1211,11 +1253,11 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 
 **Livrables Sprint 3 :**
 - [ ] Parcours "Getting Started" complet et interactif
-- [ ] Guide phase d'initialisation détaillé (10 étapes)
-- [ ] Pages dédiées aux 5 rôles AIAD publiées
-- [ ] Page Product Engineer avec workflow détaillé
+- [ ] Guide phase d'initialisation détaillé (basé sur Mode Opératoire 01-initialisation.md + Annexe C1)
+- [ ] Pages dédiées aux 6 rôles AIAD (Annexes B1-B6) publiées
+- [ ] Page Product Engineer avec workflow détaillé (Annexe B2)
 - [ ] Diagramme des interactions entre rôles
-- [ ] FAQ enrichie (30+ questions Framework + Mode Opératoire)
+- [ ] FAQ enrichie (30+ questions basée sur Annexe I1-troubleshooting.md)
 
 ---
 
@@ -1232,12 +1274,14 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 6. US-022 : Études de cas (M)
 
 **Livrables Sprint 4 :**
-- [ ] Guide workflow quotidien détaillé avec exemples de prompts
-- [ ] Documentation MCPs/Plugins/SubAgents complète
-- [ ] Templates SubAgents (Code Reviewer, Test Writer) téléchargeables
+- [ ] Guide workflow quotidien détaillé avec exemples de prompts (basé sur Annexe H1-prompts-efficaces.md)
+- [ ] Documentation MCPs/Plugins complète (basée sur Annexe G5-installation-mcp-plugins.md)
+- [ ] Documentation SubAgents complète (basée sur Annexes G6 + F1-F7)
+- [ ] 7 pages Agents Spécialisés téléchargeables (Annexes F1-F7)
 - [ ] Instructions détaillées d'utilisation pour chaque template
 - [ ] Newsletter opérationnelle (formulaire + intégration Mailchimp)
 - [ ] 3 études de cas minimum publiées
+- [ ] Page Communication Décideurs publiée (basée sur communication/decideur.md)
 
 **Critères de validation V1 :**
 - [ ] Tous les critères d'acceptation des 11 US V1 validés
@@ -1314,8 +1358,12 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 ### Ressources Nécessaires
 
 **Contenu :**
-- ✅ Framework AIAD v1.0 (document Word fourni)
-- ✅ Mode Opératoire Exhaustif Claude Code + Framework AIAD v1.0 (document Word fourni)
+- ✅ Framework AIAD (8 chapitres en Markdown dans /framework/)
+- ✅ Mode Opératoire (8 chapitres en Markdown dans /mode opératoire/)
+- ✅ Annexes (45 fichiers en Markdown dans /annexes/, catégories A-I)
+- ✅ Communication (1 fichier decideur.md dans /communication/)
+- ✅ Référentiels de navigation (referentiel.md dans chaque dossier)
+- ✅ Guides d'intention (intention.md, intention-annexes.md, intention_mode_operatoire.md)
 - 🔲 Charte graphique et logo
 - 🔲 Illustrations / diagrammes (Figma, Excalidraw)
 - 🔲 Photos d'équipe (optionnel)
@@ -1330,38 +1378,72 @@ Accompagne les transformations d'organisations et cherche des frameworks éprouv
 
 ### Structure du Contenu
 
-**Framework AIAD v1.0 (4 parties) :**
-- Introduction
-- Partie 1 : Rôles et responsabilités (6 rôles + Agents Spécialisés)
-- Partie 2 : Artefacts et documentation (PRD, ARCHITECTURE, AGENT-GUIDE, SPECS)
-- Partie 3 : Rituels et workflow
-- Partie 4 : Métriques et amélioration continue
-- Annexes (Templates, Glossaire, FAQ)
+**Framework AIAD (8 chapitres) :**
+- 01-preambule.md : Introduction au framework, contexte, objectifs
+- 02-vision-philosophie.md : Principes fondateurs, valeurs, approche AIAD
+- 03-ecosysteme.md : Rôles (PM, PE, TL, QA), interactions, responsabilités
+- 04-artefacts.md : PRD, SPECS, ARCHITECTURE, AGENT-GUIDE, DoOD/DoOuD
+- 05-boucles-iteratives.md : PLANIFIER, IMPLÉMENTER, VALIDER, INTÉGRER
+- 06-synchronisations.md : Rituels d'équipe, alignement, communication
+- 07-metriques.md : KPIs, mesure de performance, dashboards
+- 08-annexes.md : Index vers les annexes détaillées
 
-**Mode Opératoire Exhaustif (7 parties) :**
-- Partie 0 : Préambule (Glossaire complet, Matrice RACI, Vue d'ensemble)
-- Partie 1 : Phase d'initialisation (10 étapes détaillées)
-- Partie 2 : Phase de planification
-- Partie 3 : Phase de développement (Workflow quotidien, Cycle fonctionnalité)
-- Partie 4 : Phase de validation
-- Partie 5 : Phase de déploiement
-- Partie 6 : Rituels et amélioration
-- Partie 7 : Annexes (Commandes Claude Code, Troubleshooting, Checklists, FAQ)
+**Mode Opératoire (8 chapitres) :**
+- 00-preambule.md : Préambule (glossaire, RACI, vue d'ensemble)
+- 01-initialisation.md : Phase d'initialisation (Démarrage projet)
+- 02-planification.md : Phase de planification (PLANIFIER)
+- 03-developpement.md : Phase de développement (IMPLÉMENTER)
+- 04-validation.md : Phase de validation (VALIDER)
+- 05-deploiement.md : Phase de déploiement (INTÉGRER)
+- 06-rituels-amelioration.md : Rituels et amélioration continue
+- 07-annexes.md : Annexes et références
+
+**Annexes (45 fichiers, 9 catégories) :**
+- **Catégorie A** : Templates Fondateurs (6 fichiers)
+  - A1-prd.md, A2-architecture.md, A3-agent-guide.md, A4-specs.md, A5-dood.md, A6-dooud.md
+- **Catégorie B** : Rôles Détaillés (6 fichiers)
+  - B1-product-manager.md, B2-product-engineer.md, B3-qa-engineer.md, B4-tech-lead.md, B5-supporters.md, B6-agents-engineer.md
+- **Catégorie C** : Boucles AIAD (5 fichiers)
+  - C1-phase-initialisation.md, C2-boucle-planifier.md, C3-boucle-implementer.md, C4-boucle-valider.md, C5-boucle-integrer.md
+- **Catégorie D** : Rituels (5 fichiers)
+  - D1-alignment-strategique.md, D2-demo-feedback.md, D3-tech-review.md, D4-retrospective.md, D5-standup.md
+- **Catégorie E** : Métriques et Dashboards (2 fichiers)
+  - E1-exemples-dashboards.md, E2-revue-trimestrielle.md
+- **Catégorie F** : Agents Spécialisés (7 fichiers)
+  - F1-agent-security.md, F2-agent-quality.md, F3-agent-architecture.md, F4-agent-documentation.md, F5-agent-performance.md, F6-agent-code-review.md, F7-autres-agents.md
+- **Catégorie G** : Configuration Technique (6 fichiers)
+  - G1-configuration-environnement.md, G2-installation-agents-ia.md, G3-setup-ci-cd.md, G4-configuration-permissions.md, G5-installation-mcp-plugins.md, G6-creation-subagents.md
+- **Catégorie H** : Bonnes Pratiques (5 fichiers)
+  - H1-prompts-efficaces.md, H2-patterns-code.md, H3-anti-patterns.md, H4-cas-usage-specs.md, H5-notes-apprentissage.md
+- **Catégorie I** : Ressources (4 fichiers)
+  - I1-troubleshooting.md, I2-glossaire.md, I3-bibliographie.md, I4-communaute.md
+
+**Communication (1 fichier) :**
+- decideur.md : Argumentaire pour convaincre les décideurs d'adopter AIAD
+- *À créer* : tech-lead.md, developpeurs.md, product-managers.md
 
 ---
 
 ### Contact et Validation
 
 **Pour toute question sur ce PRD :**
-- Product Owner : Steeve Evers
+- Product Manager : Steeve Evers
 - Tech Lead : Steeve Evers
 - Date de validation : 16/01/2026
 
 
 ---
 
-**Document vivant - Version 1.0**  
+**Document vivant - Version 1.1**
 *Ce PRD sera mis à jour au fil de l'avancement du projet et des apprentissages.*
 
 **Changelog :**
+- v1.1 (21 janvier 2026) : Mise à jour structure contenu selon référentiels réels
+  - Framework : 8 chapitres (au lieu de 4 parties)
+  - Mode Opératoire : 8 chapitres (au lieu de 7 parties)
+  - Ajout des 45 Annexes organisées en 9 catégories (A-I)
+  - Ajout section Communication (decideur.md)
+  - Nouvelle US-015b : Naviguer dans les Annexes
+  - Mise à jour des références aux annexes dans toutes les US
+  - Mise à jour des livrables des sprints
 - v1.0 (16 janvier 2026) : Version initiale validée pour implémentation
