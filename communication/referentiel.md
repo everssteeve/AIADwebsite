@@ -9,6 +9,7 @@ Ce fichier référence l'ensemble des documents de communication du framework AI
 | Fichier | Audience | Description |
 |---------|----------|-------------|
 | [decideur.md](decideur.md) | Décideurs / Management | Argumentaire pour convaincre les décideurs d'adopter AIAD |
+| [productmanager.md](productmanager.md) | Product Managers | Présentation AIAD ciblée pour les PM : nouveau rôle, livrables, collaboration |
 
 ---
 
@@ -17,9 +18,9 @@ Ce fichier référence l'ensemble des documents de communication du framework AI
 | Audience | Besoin Principal | Document |
 |----------|------------------|----------|
 | **Décideurs** | ROI, réduction des risques, avantage compétitif | [decideur.md](decideur.md) |
+| **Product Managers** | Nouveau rôle, outcomes, collaboration | [productmanager.md](productmanager.md) |
 | **Tech Leads** | Architecture, qualité, dette technique | *À créer* |
 | **Développeurs** | Productivité, workflow, outils | *À créer* |
-| **Product Managers** | Vélocité, prédictibilité, alignement | *À créer* |
 
 ---
 
@@ -55,6 +56,6 @@ Ce fichier référence l'ensemble des documents de communication du framework AI
 
 ## Statistiques
 
-- **Total fichiers** : 1
-- **Audiences couvertes** : 1/4
+- **Total fichiers** : 2
+- **Audiences couvertes** : 2/4
 - **Dernière mise à jour** : Janvier 2025
