@@ -81,7 +81,7 @@ Utilisez ce prompt pour démarrer chaque implémentation :
 Implémente la fonctionnalité suivante :
 
 **SPEC** : @docs/specs/T-XXX-nom-tache.md
-**Contexte** : @CLAUDE.md
+**Contexte** : @docs/CLAUDE.md
 **Architecture** : @docs/ARCHITECTURE.md
 
 Instructions :
