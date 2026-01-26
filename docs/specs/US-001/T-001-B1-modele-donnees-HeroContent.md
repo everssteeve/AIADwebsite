@@ -4,7 +4,7 @@
 |------------|--------|
 | **Version** | 2.0 |
 | **Date** | 26 janvier 2026 |
-| **Statut** | À implémenter |
+| **Statut** | ✅ Terminée |
 | **User Story** | [US-001 - Comprendre AIAD rapidement](../PRD.md#us-001--comprendre-aiad-rapidement) |
 | **Dépendances** | Aucune (tâche racine) |
 | **Bloque** | T-001-B4, T-001-F1 |
