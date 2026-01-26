@@ -100,3 +100,38 @@ pnpm test         # Tous les tests
 - Lighthouse > 90, LCP < 2s
 - RGAA AA (accessibilité)
 - RGESN (éco-conception)
+
+## Style visuel
+
+- Interface claire et minimaliste
+- Mode sombre : à définir pour le MVP
+
+## Contraintes et politiques
+
+- NE JAMAIS exposer les clés API au client
+- Valider toutes les entrées utilisateur côté serveur
+- Pas de données sensibles dans les logs
+
+## Dépendances
+
+- Préférer les composants existants plutôt que d'ajouter de nouvelles bibliothèques UI
+- Justifier toute nouvelle dépendance avant de l'ajouter
+
+## Workflow de développement
+
+- À la fin de chaque développement impliquant l'interface graphique, tester avec playwright-skill
+- L'interface doit être responsive, fonctionnelle et répondre au besoin développé
+- Vérifier l'accessibilité avant de valider une fonctionnalité UI
+
+## Context7
+
+Utilise toujours context7 lorsque tu as besoin de :
+- Génération de code
+- Étapes de configuration ou d'installation
+- Documentation de bibliothèque/API
+
+Cela signifie que tu dois automatiquement utiliser les outils MCP Context7 pour résoudre l'identifiant de bibliothèque et obtenir la documentation sans que je le demande explicitement.
+
+## Langue
+
+Toutes les spécifications doivent être rédigées en français.
