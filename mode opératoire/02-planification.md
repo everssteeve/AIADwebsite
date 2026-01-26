@@ -159,7 +159,7 @@ Décompose cette User Story en tâches atomiques.
 
 Identifie l'ordre d'implémentation optimal.
 ```
-
+Stockez dans un répertoire docs/specs/US-XXX
 ### 2.3.3 Exemple de décomposition
 
 ```markdown
