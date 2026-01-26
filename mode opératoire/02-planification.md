@@ -245,7 +245,9 @@ Chaque SPEC suit cette structure obligatoire :
 
 ### 2.4.2 Template SPEC complet
 
-Créez le fichier `docs/specs/T-XXX-X-[nom-tache].md` :
+Demander à Claude : Crée le fichier `docs/specs/T-XXX-X-[nom-tache].md`
+
+Exemple de fichier ci dessous :
 
 ````markdown
 # SPEC : T-XXX-X - [Nom de la tâche]
