@@ -63,9 +63,9 @@ export const heroMetadataSchema = z.object({
 export const heroContentSchema = z.object({
   id: z
     .string()
-    .min(3, "L'ID doit contenir au moins 3 caractères")
-    .max(50, "L'ID ne doit pas dépasser 50 caractères")
-    .regex(/^[a-z0-9-]+$/, "L'ID ne doit contenir que des minuscules, chiffres et tirets"),
+    .min(3, 'L\'ID doit contenir au moins 3 caractères')
+    .max(50, 'L\'ID ne doit pas dépasser 50 caractères')
+    .regex(/^[a-z0-9-]+$/, 'L\'ID ne doit contenir que des minuscules, chiffres et tirets'),
 
   title: z
     .string()
