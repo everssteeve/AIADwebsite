@@ -638,7 +638,7 @@ Ajoute la configuration des MCPs context7 et playwright dans la config du projet
 | 🔗 **DÉPENDANCES** | 1.7 MCPs installés |
 
 ### 1.8.1 Accès aux agents
-
+Vous pouvez générer vos agents directement avec Claude Code (commande /agents). Ensuite, utilisez les agents tels quels ou modifier avec les exemples ci après.
 ```bash
 # Dans Claude Code, accédez à la gestion des agents
 /agents
