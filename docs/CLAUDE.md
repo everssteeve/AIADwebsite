@@ -135,3 +135,12 @@ Cela signifie que tu dois automatiquement utiliser les outils MCP Context7 pour 
 ## Langue
 
 Toutes les spécifications doivent être rédigées en français.
+
+## 📚 Documentation de Référence
+
+| Document | Chemin |
+|----------|--------|
+| PRD | @docs/PRD.md |
+| Architecture | @docs/ARCHITECTURE.md |
+| SPECs actives | @docs/specs/_index.md |
+| SPECs en cours | @docs/specs/US-007/ |
