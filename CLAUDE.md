@@ -4,113 +4,99 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Site web pour le Framework AIAD (AI-Agent Iterative Development) - une plateforme de documentation statique présentant le framework et son Mode Opératoire. **Actuellement en phase de documentation/planification, l'implémentation n'a pas encore démarré.**
+Site web pour le Framework AIAD (AI-Agent Iterative Development) - une plateforme de documentation statique présentant le framework et son Mode Opératoire.
 
-## Current Repository State
+**État actuel** : Phase de documentation/planification. L'implémentation technique n'a pas encore démarré.
 
-Ce repository contient la **documentation source** et les **documents de planification** pour le futur site web:
+## Ce que tu peux faire maintenant
 
-### Content (Source pour le site)
-- `framework/` - Framework AIAD théorique (8 chapitres, 01 à 08)
-- `mode opératoire/` - Guide pratique opérationnel (8 chapitres, 00 à 07)
-- `annexes/` - 45+ fichiers organisés par catégorie (A-I):
-  - **A**: Templates (PRD, Architecture, Agent-Guide, Specs, DOOD, DOOUD)
-  - **B**: Rôles AIAD (Product Manager, Product Engineer, QA, Tech Lead, etc.)
-  - **C**: Phases et boucles itératives
-  - **D**: Rituels et synchronisations
-  - **E**: Métriques et dashboards
-  - **F**: Agents spécialisés (Security, Quality, Architecture, etc.)
-  - **G**: Configuration et installation
-  - **H**: Bonnes pratiques et patterns
-  - **I**: Troubleshooting, glossaire, bibliographie
-- `communication/` - Documents de communication (décideur, product manager)
+### Éditer le contenu source (Markdown)
+- `framework/` - 8 chapitres théoriques (01-preambule.md à 08-annexes.md)
+- `mode opératoire/` - 8 chapitres pratiques (00-preambule.md à 07-annexes.md)
+- `annexes/` - 45 fichiers organisés en 9 catégories (A-I)
+- `communication/` - Documents de communication (decideur.md, product-manager.md)
 
-### Planning Documents
-- `PRD.md` - Product Requirements Document complet
-- `ARCHITECTURE.md` - Architecture technique planifiée
+### Mettre à jour les documents de planification
+- `PRD.md` - Product Requirements Document (user stories, personas, planning)
+- `ARCHITECTURE.md` - Architecture technique détaillée (stack, patterns, tests)
 - `Cadrage.md` - Document de cadrage initial
 
-### Cross-references
-Chaque dossier contient un `referentiel.md` servant d'index des fichiers et `intention.md` décrivant les objectifs de la section.
+### Navigation dans le contenu
+Chaque dossier contient :
+- `referentiel.md` - Index des fichiers du dossier
+- `intention.md` - Objectifs et vision de la section
 
-## Planned Tech Stack (for implementation)
+## Structure des annexes (catégories A-I)
 
-When implementation starts, the project will use:
+| Cat. | Contenu | Fichiers |
+|------|---------|----------|
+| A | Templates fondateurs | PRD, Architecture, Agent-Guide, Specs, DoOD, DoOuD |
+| B | Rôles détaillés | PM, PE, QA, Tech Lead, Supporters, Agents Engineer |
+| C | Boucles AIAD | Initialisation, Planifier, Implémenter, Valider, Intégrer |
+| D | Rituels | Alignment, Demo, Tech Review, Rétro, Standup |
+| E | Métriques | Dashboards, Revue trimestrielle |
+| F | Agents spécialisés | Security, Quality, Architecture, Doc, Perf, Code Review |
+| G | Configuration | Environnement, Agents IA, CI/CD, Permissions, MCP, SubAgents |
+| H | Bonnes pratiques | Prompts, Patterns, Anti-patterns, Cas d'usage |
+| I | Ressources | Troubleshooting, Glossaire, Bibliographie, Communauté |
 
-- **Framework**: Astro 4.x (SSG, content-first, MDX natif)
-- **Language**: TypeScript 5.x (strict mode)
-- **Styling**: Tailwind CSS 3.x
-- **Content**: MDX via Astro Content Collections
-- **Search**: Pagefind (index statique)
-- **Package Manager**: pnpm 8.x
-- **Testing**: Vitest (unit), Playwright (E2E)
-- **Hosting**: Vercel
+## Stack technique (pour l'implémentation future)
 
-## Planned Commands (post-implementation)
+Voir `ARCHITECTURE.md` pour les détails complets.
+
+| Couche | Technologie |
+|--------|-------------|
+| Framework | Astro 4.x (SSG) |
+| Langage | TypeScript 5.x (strict) |
+| Styling | Tailwind CSS 3.x |
+| Contenu | MDX + Content Collections |
+| Recherche | Pagefind |
+| Package Manager | pnpm 8.x |
+| Tests | Vitest + Playwright |
+| Hosting | Vercel |
+
+## Commandes (après initialisation du projet Astro)
 
 ```bash
-pnpm dev              # Start dev server
-pnpm build            # Build + generate Pagefind index
-pnpm preview          # Preview production build
-pnpm lint             # ESLint check
-pnpm lint:fix         # ESLint fix
-pnpm typecheck        # Astro check + tsc
-pnpm format           # Prettier format
-pnpm test:unit        # Run Vitest
-pnpm test:e2e         # Run Playwright
-pnpm test             # Run all tests
+pnpm dev          # Serveur de développement
+pnpm build        # Build + index Pagefind
+pnpm preview      # Preview production
+pnpm lint         # ESLint
+pnpm typecheck    # Astro check + tsc
+pnpm test         # Tous les tests
 ```
 
-## Planned Architecture
+## Conventions de code
 
-### Content Collections Structure
-```
-src/content/
-├── framework/     # Théorie AIAD (from framework/)
-├── mode-operatoire/ # Pratique (from mode opératoire/)
-└── annexes/       # Resources (from annexes/)
-```
+### Nommage
+- Composants : `PascalCase.astro`
+- Utilitaires : `kebab-case.ts`
+- Contenu : `kebab-case.mdx`
 
-### Key Patterns
-- **Content Collections**: Type-safe MDX with Zod schema in `src/content/config.ts`
-- **Dynamic Routes**: `[...slug].astro` for content pages
-- **Island Architecture**: Interactive components with `client:load`/`client:idle`
-- **Layout Composition**: DocsLayout extends BaseLayout
-
-## Code Conventions (for implementation)
-
-### Naming
-- Components: PascalCase.astro
-- Utilities: kebab-case.ts
-- Content: kebab-case.mdx
-- Constants: SCREAMING_SNAKE_CASE
-
-### Formatting
-- No semicolons
+### Formatage
+- Pas de semicolons
 - Single quotes
-- 2 space indent
+- 2 espaces d'indentation
 - Trailing commas (es5)
-- 100 char line width
+- 100 caractères max par ligne
 
-### Path Aliases
+### Aliases TypeScript
 ```
-@/* → src/*
+@/*           → src/*
 @components/* → src/components/*
-@layouts/* → src/layouts/*
-@lib/* → src/lib/*
-@content/* → src/content/*
+@layouts/*    → src/layouts/*
+@lib/*        → src/lib/*
 ```
 
-## Quality Requirements
+## Règles de contenu
 
-- **Performance**: Lighthouse > 90, LCP < 2s
-- **Accessibility**: RGAA AA, keyboard navigation, 4.5:1 contrast
-- **SEO**: Semantic HTML, meta tags, sitemap, Open Graph
-- **Eco-design**: RGESN compliance, WebP images, lazy loading
+- **Langue** : Français uniquement (MVP)
+- **Framework** = théorie, **Mode Opératoire** = pratique
+- Créer des liens croisés entre Framework et Mode Opératoire
+- Marquer les sections critiques avec le badge "Essentiel"
 
-## Content Guidelines
+## Exigences qualité
 
-- French language only (MVP)
-- Framework = théorie, Mode Opératoire = pratique
-- Cross-link between Framework and Mode Opératoire sections
-- Badge "Essentiel" on critical sections
+- Lighthouse > 90, LCP < 2s
+- RGAA AA (accessibilité)
+- RGESN (éco-conception)
