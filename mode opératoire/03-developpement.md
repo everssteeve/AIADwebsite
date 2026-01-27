@@ -80,7 +80,7 @@ Utilisez ce prompt pour démarrer chaque implémentation :
 ```
 Implémente la fonctionnalité suivante :
 
-**SPEC** : @docs/specs/T-XXX-nom-tache.md
+**SPEC** : @docs/specs/US-XXX/T-XXX-nom-tache.md
 **Contexte** : @docs/CLAUDE.md
 **Architecture** : @docs/ARCHITECTURE.md
 
