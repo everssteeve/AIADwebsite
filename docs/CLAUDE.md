@@ -142,5 +142,12 @@ Toutes les spécifications doivent être rédigées en français.
 |----------|--------|
 | PRD | @docs/PRD.md |
 | Architecture | @docs/ARCHITECTURE.md |
-| SPECs actives | @docs/specs/_index.md |
-| SPECs en cours | @docs/specs/US-007/ |
+| SPECs index | @docs/specs/_index.md |
+| US-001 (en cours) | @docs/specs/US-001/spec.md |
+
+### SPECs US-001 détaillées
+
+| Tâche | Fichier |
+|-------|---------|
+| T-001-B1 HeroContent | @docs/specs/US-001/T-001-B1-modele-donnees-HeroContent.md |
+| T-001-B2 BenefitItem | @docs/specs/US-001/T-001-B2-modele-donnees-BenefitItem.md |

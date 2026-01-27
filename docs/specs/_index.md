@@ -7,7 +7,7 @@
 | ID | Titre | Status | Assigné | Spec |
 |----|-------|--------|---------|------|
 | T-001-B1 | Modèle de données `HeroContent` | 🟢 Terminée | - | [Spec](./US-001/T-001-B1-modele-donnees-HeroContent.md) |
-| T-001-B2 | Modèle de données `Benefit` | 🔵 À faire | - | - |
+| T-001-B2 | Modèle de données `BenefitItem` | 🔵 À faire | - | [Spec](./US-001/T-001-B2-modele-donnees-BenefitItem.md) |
 | T-001-B3 | Modèle de données `Statistic` | 🔵 À faire | - | - |
 | T-001-B4 | Fichier de contenu statique hero (JSON) | 🔵 À faire | - | - |
 
