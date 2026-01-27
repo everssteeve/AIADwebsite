@@ -36,7 +36,7 @@ Si vous n'avez pas de réponse claire, vous êtes dans la majorité. Et vous per
 |----------|----------------|
 | **Structure l'utilisation des agents IA** | Fin du "vibe coding" improductif. Chaque interaction IA est intentionnelle |
 | **Redéfinit les rôles** | Le Product Engineer orchestre l'IA au lieu de coder manuellement. Focus sur la valeur, pas sur la frappe |
-| **Maintient la qualité** | Artefacts clairs (PRD, ARCHITECTURE, SPECS) qui servent de contexte aux agents |
+| **Maintient la qualité** | Artefacts clairs (PRD, ARCHITECTURE, SPECS) qui servent de contexte aux agents (clairement définis dans un artefact AGENT) |
 | **Mesure les gains** | Métriques de productivité, qualité, efficacité IA, outcomes business |
 | **Accélère le time-to-market** | Boucles itératives continues au lieu de sprints rigides |
 
