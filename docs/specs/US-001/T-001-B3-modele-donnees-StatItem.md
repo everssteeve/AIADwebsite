@@ -4,7 +4,7 @@
 |------------|--------|
 | **Version** | 1.0 |
 | **Date** | 27 janvier 2026 |
-| **Statut** | 📋 À faire |
+| **Statut** | ✅ Terminé |
 | **User Story** | [US-001 - Comprendre AIAD rapidement](./spec.md) |
 | **Dépendances** | Aucune (tâche racine) |
 | **Bloque** | T-001-B6, T-001-F6 |
@@ -938,27 +938,27 @@ describe('StatItemList Schema', () => {
 
 ## 8. Critères d'acceptation
 
-- [ ] **CA-01** : L'interface `StatItem` est créée dans `src/types/stat.ts`
-- [ ] **CA-02** : Les types auxiliaires (`StatItemInput`, `StatItemUpdate`, `StatUnit`) sont définis
-- [ ] **CA-03** : La constante `STAT_UNITS` liste les unités supportées
-- [ ] **CA-04** : Le schéma Zod est intégré dans `src/content/config.ts`
-- [ ] **CA-05** : Les règles métier R1-R6 sont implémentées avec messages d'erreur explicites
-- [ ] **CA-06** : Le schéma de liste valide l'unicité des orders et le max 6 actifs
-- [ ] **CA-07** : Les types sont exportés via `src/types/index.ts`
-- [ ] **CA-08** : La documentation JSDoc est présente sur chaque champ et type
-- [ ] **CA-09** : Tous les tests passent (`pnpm test:unit -- stat-item`)
-- [ ] **CA-10** : Couverture de tests >= 90% sur les fichiers créés
+- [x] **CA-01** : L'interface `StatItem` est créée dans `src/types/stat.ts`
+- [x] **CA-02** : Les types auxiliaires (`StatItemInput`, `StatItemUpdate`, `StatUnit`) sont définis
+- [x] **CA-03** : La constante `STAT_UNITS` liste les unités supportées
+- [x] **CA-04** : Le schéma Zod est intégré dans `src/content/config.ts`
+- [x] **CA-05** : Les règles métier R1-R6 sont implémentées avec messages d'erreur explicites
+- [x] **CA-06** : Le schéma de liste valide l'unicité des orders et le max 6 actifs
+- [x] **CA-07** : Les types sont exportés via `src/types/index.ts`
+- [x] **CA-08** : La documentation JSDoc est présente sur chaque champ et type
+- [x] **CA-09** : Tous les tests passent (`pnpm test:unit -- stat-item`)
+- [x] **CA-10** : Couverture de tests >= 90% sur les fichiers créés
 
 ---
 
 ## 9. Definition of Done
 
-- [ ] Code implémenté selon les spécifications
-- [ ] Tests unitaires écrits et passants
-- [ ] TypeScript compile sans erreur (`pnpm typecheck`)
+- [x] Code implémenté selon les spécifications
+- [x] Tests unitaires écrits et passants
+- [x] TypeScript compile sans erreur (`pnpm typecheck`)
 - [ ] ESLint passe sans warning (`pnpm lint`)
 - [ ] Code reviewé par un pair
-- [ ] Documentation à jour
+- [x] Documentation à jour
 
 ---
 
