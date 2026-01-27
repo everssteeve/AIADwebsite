@@ -190,7 +190,7 @@ graph TD
 |-------|-----------------|
 | T-001-B1 | [T-001-B1-modele-donnees-HeroContent.md](./T-001-B1-modele-donnees-HeroContent.md) |
 | T-001-B2 | [T-001-B2-modele-donnees-BenefitItem.md](./T-001-B2-modele-donnees-BenefitItem.md) |
-| T-001-B3 | À créer |
+| T-001-B3 | [T-001-B3-modele-donnees-StatItem.md](./T-001-B3-modele-donnees-StatItem.md) |
 | T-001-F1 | À créer |
 | ... | ... |
 

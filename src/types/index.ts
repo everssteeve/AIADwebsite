@@ -16,3 +16,13 @@ export type {
 } from './benefit'
 
 export { BENEFIT_ICONS } from './benefit'
+
+export type {
+  StatItem,
+  StatItemInput,
+  StatItemUpdate,
+  StatItemList,
+  StatUnit,
+} from './stat'
+
+export { STAT_UNITS } from './stat'
