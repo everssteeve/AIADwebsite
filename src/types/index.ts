@@ -6,3 +6,13 @@ export type {
   HeroContentUpdate,
   HeroMetadata,
 } from './hero'
+
+export type {
+  BenefitItem,
+  BenefitItemInput,
+  BenefitItemUpdate,
+  BenefitItemList,
+  BenefitIcon,
+} from './benefit'
+
+export { BENEFIT_ICONS } from './benefit'

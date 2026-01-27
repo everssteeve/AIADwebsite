@@ -4,7 +4,7 @@
 |------------|--------|
 | **Version** | 1.0 |
 | **Date** | 26 janvier 2026 |
-| **Statut** | 📋 À faire |
+| **Statut** | ✅ Terminé |
 | **User Story** | [US-001 - Comprendre AIAD rapidement](./spec.md) |
 | **Dépendances** | Aucune (tâche racine) |
 | **Bloque** | T-001-B5, T-001-F4 |
@@ -897,27 +897,27 @@ describe('BenefitItemList Schema', () => {
 
 ## 8. Critères d'acceptation
 
-- [ ] **CA-01** : L'interface `BenefitItem` est créée dans `src/types/benefit.ts`
-- [ ] **CA-02** : Les types auxiliaires (`BenefitItemInput`, `BenefitItemUpdate`, `BenefitIcon`) sont définis
-- [ ] **CA-03** : La constante `BENEFIT_ICONS` liste toutes les icônes supportées
-- [ ] **CA-04** : Le schéma Zod est intégré dans `src/content/config.ts`
-- [ ] **CA-05** : Les règles métier R1-R5 sont implémentées avec messages d'erreur explicites
-- [ ] **CA-06** : Le schéma de liste valide l'unicité des orders et le max 5 actifs
-- [ ] **CA-07** : Les types sont exportés via `src/types/index.ts`
-- [ ] **CA-08** : La documentation JSDoc est présente sur chaque champ et type
-- [ ] **CA-09** : Tous les tests passent (`pnpm test:unit -- benefit-item`)
-- [ ] **CA-10** : Couverture de tests ≥ 90% sur les fichiers créés
+- [x] **CA-01** : L'interface `BenefitItem` est créée dans `src/types/benefit.ts`
+- [x] **CA-02** : Les types auxiliaires (`BenefitItemInput`, `BenefitItemUpdate`, `BenefitIcon`) sont définis
+- [x] **CA-03** : La constante `BENEFIT_ICONS` liste toutes les icônes supportées
+- [x] **CA-04** : Le schéma Zod est intégré dans `src/content/config.ts`
+- [x] **CA-05** : Les règles métier R1-R5 sont implémentées avec messages d'erreur explicites
+- [x] **CA-06** : Le schéma de liste valide l'unicité des orders et le max 5 actifs
+- [x] **CA-07** : Les types sont exportés via `src/types/index.ts`
+- [x] **CA-08** : La documentation JSDoc est présente sur chaque champ et type
+- [x] **CA-09** : Tous les tests passent (`pnpm test:unit -- benefit-item`)
+- [x] **CA-10** : Couverture de tests ≥ 90% sur les fichiers créés
 
 ---
 
 ## 9. Definition of Done
 
-- [ ] Code implémenté selon les spécifications
-- [ ] Tests unitaires écrits et passants
-- [ ] TypeScript compile sans erreur (`pnpm typecheck`)
-- [ ] ESLint passe sans warning (`pnpm lint`)
+- [x] Code implémenté selon les spécifications
+- [x] Tests unitaires écrits et passants (64 tests)
+- [x] TypeScript compile sans erreur (`pnpm typecheck`)
+- [x] ESLint passe sans warning (`pnpm lint`)
 - [ ] Code reviewé par un pair
-- [ ] Documentation à jour
+- [x] Documentation à jour
 
 ---
 
@@ -938,3 +938,4 @@ describe('BenefitItemList Schema', () => {
 | Version | Date | Modifications |
 |---------|------|---------------|
 | 1.0 | 26/01/2026 | Création initiale |
+| 1.1 | 27/01/2026 | Implémentation terminée - 64 tests passants |
