@@ -16,6 +16,6 @@
     "noUnusedParameters": true,
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*", "tests/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*", "tests/unit/**/*"],
+  "exclude": ["node_modules", "dist", "tests/e2e"]
 }
