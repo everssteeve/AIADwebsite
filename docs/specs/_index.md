@@ -8,7 +8,7 @@
 |----|-------|--------|---------|------|
 | T-001-B1 | Modèle de données `HeroContent` | 🟢 Terminée | - | [Spec](./US-001/T-001-B1-modele-donnees-HeroContent.md) |
 | T-001-B2 | Modèle de données `BenefitItem` | 🟢 Terminée | - | [Spec](./US-001/T-001-B2-modele-donnees-BenefitItem.md) |
-| T-001-B3 | Modèle de données `StatItem` | 🟡 En cours | - | [Spec](./US-001/T-001-B3-modele-donnees-StatItem.md) |
+| T-001-B3 | Modèle de données `StatItem` | 🟢 Terminée | - | [Spec](./US-001/T-001-B3-modele-donnees-StatItem.md) |
 | T-001-B4 | Fichier de contenu statique hero (JSON) | 🔵 À faire | - | - |
 
 ### Frontend
@@ -43,10 +43,10 @@
 | Métrique | Valeur |
 |----------|--------|
 | **Total tâches** | 19 |
-| **Terminées** | 2 |
-| **En cours** | 1 |
+| **Terminées** | 3 |
+| **En cours** | 0 |
 | **À faire** | 16 |
-| **Avancement** | 11% |
+| **Avancement** | 16% |
 
 ---
 
@@ -56,6 +56,7 @@
 |----|-------|-------|------|
 | T-001-B1 | Modèle de données `HeroContent` | US-001 | 26/01/2026 |
 | T-001-B2 | Modèle de données `BenefitItem` | US-001 | 27/01/2026 |
+| T-001-B3 | Modèle de données `StatItem` | US-001 | 02/02/2026 |
 
 ---
 
