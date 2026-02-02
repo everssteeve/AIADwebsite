@@ -151,3 +151,9 @@ Toutes les spécifications doivent être rédigées en français.
 |-------|---------|
 | T-001-B1 HeroContent | @docs/specs/US-001/T-001-B1-modele-donnees-HeroContent.md |
 | T-001-B2 BenefitItem | @docs/specs/US-001/T-001-B2-modele-donnees-BenefitItem.md |
+| T-001-B3 StatItem | @docs/specs/US-001/T-001-B3-modele-donnees-StatItem.md |
+| T-001-B4 Hero JSON (fr) | @docs/specs/US-001/T-001-B4-donnees-JSON-hero-content-francais.md |
+| T-001-F1 HeroTitle | @docs/specs/US-001/T-001-F1-composant-HeroTitle.md |
+| T-001-F2 ValueProposition | @docs/specs/US-001/T-001-F2-composant-ValueProposition.md |
+| T-001-F3 CTAButton | @docs/specs/US-001/T-001-F3-composant-CTAButton.md |
+| T-001-B5 Benefits JSON (fr) | @docs/specs/US-001/T-001-B5-donnees-JSON-benefices-cles.md |
