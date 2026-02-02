@@ -34,12 +34,12 @@
 
 | ID | Tâche | Durée | Dépendances | Statut |
 |----|-------|-------|-------------|--------|
-| T-001-B1 | Créer le modèle de données HeroContent | 2h | - | ✅ Terminée |
-| T-001-B2 | Créer le modèle de données BenefitItem (picto + titre + description) | 2h | - | 📋 À faire |
-| T-001-B3 | Créer le modèle de données StatItem (valeur + label + source) | 2h | - | 📋 À faire |
-| T-001-B4 | Créer les données JSON hero content (français) | 1h | T-001-B1 | 📋 À faire |
-| T-001-B5 | Créer les données JSON des 3 bénéfices clés | 1h | T-001-B2 | 📋 À faire |
-| T-001-B6 | Créer les données JSON des statistiques chiffrées | 1h | T-001-B3 | 📋 À faire |
+| T-001-B1 | Créer le modèle de données HeroContent | 2h | - | ✅ Terminé |
+| T-001-B2 | Créer le modèle de données BenefitItem (picto + titre + description) | 2h | - | ✅ Terminé |
+| T-001-B3 | Créer le modèle de données StatItem (valeur + label + source) | 2h | - | ✅ Terminé |
+| T-001-B4 | Créer les données JSON hero content (français) | 1h | T-001-B1 | ✅ Terminé |
+| T-001-B5 | Créer les données JSON des 3 bénéfices clés | 1h | T-001-B2 | ✅ Terminé |
+| T-001-B6 | Créer les données JSON des statistiques chiffrées | 1h | T-001-B3 | ✅ Terminé |
 
 ### 3.2 Frontend
 
@@ -47,8 +47,8 @@
 |----|-------|-------|-------------|--------|
 | T-001-F1 | Créer le composant HeroTitle (H1 + tagline) | 2h | T-001-B1 | ✅ Terminé |
 | T-001-F2 | Créer le composant ValueProposition | 1.5h | T-001-B1 | ✅ Terminé |
-| T-001-F3 | Créer le composant CTAButton ("Explorer le Framework") | 1.5h | - | 📋 À faire |
-| T-001-F4 | Créer le composant BenefitCard (picto + texte individuel) | 2h | T-001-B2 | 📋 À faire |
+| T-001-F3 | Créer le composant CTAButton ("Explorer le Framework") | 1.5h | - | ✅ Terminé |
+| T-001-F4 | Créer le composant BenefitCard (picto + texte individuel) | 2h | T-001-B2 | ✅ Terminé |
 | T-001-F5 | Créer le composant BenefitsList (grille des 3 bénéfices) | 2h | T-001-F4 | 📋 À faire |
 | T-001-F6 | Créer le composant StatDisplay (stat individuelle) | 1.5h | T-001-B3 | 📋 À faire |
 | T-001-F7 | Créer le composant StatsRow (ligne de statistiques) | 2h | T-001-F6 | 📋 À faire |
@@ -106,18 +106,18 @@ Phase 5 - Tests
 graph TD
     subgraph "Phase 1 - Données"
         B1[T-001-B1<br/>HeroContent ✅]
-        B2[T-001-B2<br/>BenefitItem]
-        B3[T-001-B3<br/>StatItem]
-        B4[T-001-B4<br/>Données Hero]
-        B5[T-001-B5<br/>Données Bénéfices]
-        B6[T-001-B6<br/>Données Stats]
+        B2[T-001-B2<br/>BenefitItem ✅]
+        B3[T-001-B3<br/>StatItem ✅]
+        B4[T-001-B4<br/>Données Hero ✅]
+        B5[T-001-B5<br/>Données Bénéfices ✅]
+        B6[T-001-B6<br/>Données Stats ✅]
     end
 
     subgraph "Phase 2 - Composants atomiques"
-        F1[T-001-F1<br/>HeroTitle]
-        F2[T-001-F2<br/>ValueProposition]
-        F3[T-001-F3<br/>CTAButton]
-        F4[T-001-F4<br/>BenefitCard]
+        F1[T-001-F1<br/>HeroTitle ✅]
+        F2[T-001-F2<br/>ValueProposition ✅]
+        F3[T-001-F3<br/>CTAButton ✅]
+        F4[T-001-F4<br/>BenefitCard ✅]
         F6[T-001-F6<br/>StatDisplay]
     end
 
