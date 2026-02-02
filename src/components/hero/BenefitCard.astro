@@ -1,0 +1,176 @@
+---
+// src/components/hero/BenefitCard.astro
+
+import type { BenefitIcon } from '@/types'
+import {
+  TrendingUp,
+  Target,
+  Wrench,
+  Shield,
+  Handshake,
+  Lightbulb,
+  RefreshCw,
+  Package,
+  CheckCircle,
+  Rocket,
+  Users,
+  Code,
+  Layers,
+  Cpu,
+  Globe,
+  Lock,
+  Star,
+  Award,
+  Compass,
+  Zap,
+} from 'lucide-astro'
+
+export interface Props {
+  icon: BenefitIcon
+  title: string
+  description: string
+  ariaLabel?: string
+  variant?: 'default' | 'compact' | 'featured'
+  iconPosition?: 'top' | 'left'
+  iconSize?: 'sm' | 'md' | 'lg'
+  class?: string
+}
+
+const {
+  icon,
+  title,
+  description,
+  ariaLabel,
+  variant = 'default',
+  iconPosition = 'top',
+  iconSize = 'md',
+  class: className = '',
+} = Astro.props
+
+// Runtime validation (development only)
+if (import.meta.env.DEV) {
+  if (!title || title.trim().length < 5) {
+    console.warn('[BenefitCard] Title should be at least 5 characters')
+  }
+  if (title && title.length > 50) {
+    console.warn('[BenefitCard] Title exceeds 50 characters')
+  }
+  if (!description || description.trim().length < 20) {
+    console.warn('[BenefitCard] Description should be at least 20 characters')
+  }
+  if (description && description.length > 150) {
+    console.warn('[BenefitCard] Description exceeds 150 characters')
+  }
+  if (!icon) {
+    console.error('[BenefitCard] Icon prop is required')
+  }
+}
+
+// Mapping des icônes Lucide
+const iconComponents: Record<BenefitIcon, typeof TrendingUp> = {
+  'trending-up': TrendingUp,
+  'target': Target,
+  'wrench': Wrench,
+  'shield': Shield,
+  'handshake': Handshake,
+  'lightbulb': Lightbulb,
+  'refresh-cw': RefreshCw,
+  'package': Package,
+  'check-circle': CheckCircle,
+  'rocket': Rocket,
+  'users': Users,
+  'code': Code,
+  'layers': Layers,
+  'cpu': Cpu,
+  'globe': Globe,
+  'lock': Lock,
+  'star': Star,
+  'award': Award,
+  'compass': Compass,
+  'zap': Zap,
+}
+
+const IconComponent = iconComponents[icon]
+
+// Mapping des variantes de conteneur
+const variantClasses = {
+  default: 'bg-white',
+  compact: 'bg-white',
+  featured: 'bg-blue-50 border border-blue-100 rounded-xl',
+} as const
+
+// Mapping des paddings selon variante
+const paddingClasses = {
+  default: 'p-6',
+  compact: 'p-4',
+  featured: 'p-6',
+} as const
+
+// Mapping des tailles d'icône
+const iconSizeClasses = {
+  sm: 'w-8 h-8',
+  md: 'w-10 h-10 md:w-12 md:h-12',
+  lg: 'w-14 h-14 md:w-16 md:h-16',
+} as const
+
+// Mapping des conteneurs d'icône selon taille
+const iconContainerClasses = {
+  sm: 'w-12 h-12 md:w-14 md:h-14',
+  md: 'w-14 h-14 md:w-16 md:h-16',
+  lg: 'w-18 h-18 md:w-20 md:h-20',
+} as const
+
+// Classes de layout selon position de l'icône
+const layoutClasses = iconPosition === 'top'
+  ? 'flex flex-col items-center text-center'
+  : 'flex flex-row items-start text-left gap-4'
+
+// Gap entre éléments selon position
+const gapClasses = iconPosition === 'top' ? 'gap-4' : ''
+
+// Classes pour le titre
+const titleSizeClasses = variant === 'compact'
+  ? 'text-base md:text-lg'
+  : 'text-lg md:text-xl'
+
+// Classes pour la description
+const descriptionSizeClasses = variant === 'compact'
+  ? 'text-sm'
+  : 'text-sm md:text-base'
+
+// Construction des classes du conteneur
+const containerClasses = [
+  variantClasses[variant],
+  paddingClasses[variant],
+  layoutClasses,
+  gapClasses,
+  className,
+].filter(Boolean).join(' ')
+
+// L'icône est-elle informative ou décorative ?
+const isDecorativeIcon = !ariaLabel
+---
+
+<article class={containerClasses}>
+  <!-- Conteneur de l'icône -->
+  <div
+    class={`flex items-center justify-center rounded-xl bg-blue-100 ${iconContainerClasses[iconSize]} flex-shrink-0`}
+    role={isDecorativeIcon ? 'presentation' : undefined}
+    aria-label={isDecorativeIcon ? undefined : ariaLabel}
+  >
+    <IconComponent
+      class={`${iconSizeClasses[iconSize]} text-blue-600`}
+      aria-hidden="true"
+    />
+  </div>
+
+  <!-- Contenu textuel -->
+  <div class={iconPosition === 'top' ? 'space-y-2' : 'space-y-1'}>
+    <h3 class={`font-semibold text-gray-900 ${titleSizeClasses}`}>
+      {title}
+    </h3>
+    <p class={`text-gray-600 leading-relaxed ${descriptionSizeClasses}`}>
+      {description}
+    </p>
+  </div>
+</article>
