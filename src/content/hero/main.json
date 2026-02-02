@@ -1,0 +1,13 @@
+{
+  "id": "hero-main-fr",
+  "title": "AIAD : Le framework pour développer avec des agents IA",
+  "tagline": "Structurez votre collaboration avec l'intelligence artificielle",
+  "valueProposition": "Une méthodologie éprouvée pour intégrer les agents IA dans votre workflow de développement et multiplier votre productivité.",
+  "locale": "fr",
+  "isActive": true,
+  "metadata": {
+    "seoTitle": "AIAD Framework - Développement avec agents IA",
+    "seoDescription": "Découvrez AIAD, le framework de référence pour structurer votre collaboration avec les agents IA de codage et booster votre productivité."
+  },
+  "updatedAt": "2026-02-02T10:00:00.000Z"
+}
