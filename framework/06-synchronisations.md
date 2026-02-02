@@ -317,4 +317,4 @@ Via Slack/Teams, chaque matin :
 
 ---
 
-*Prochaine section : [L'Écosystème d'Agents](07-ecosysteme.md)*
+*Prochaine section : [Les métriques](07-metriques.md)*
