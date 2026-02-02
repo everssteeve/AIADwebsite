@@ -309,4 +309,4 @@ Cette section définit les documents essentiels qui structurent le travail d'une
 
 ---
 
-*Prochaine section : [Les Boucles Itératives](05-boucles.md)*
+*Prochaine section : [Les Boucles Itératives](05-boucles-iteratives.md)*
