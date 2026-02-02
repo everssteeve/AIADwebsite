@@ -1,0 +1,122 @@
+---
+// src/components/hero/ValueProposition.astro
+
+export interface Props {
+  /**
+   * Texte de la proposition de valeur
+   * Correspond à HeroContent.valueProposition
+   * Doit se terminer par un point (validé par le schéma)
+   * @minLength 20
+   * @maxLength 200
+   */
+  text: string
+
+  /**
+   * Alignement horizontal du texte
+   * @default 'center'
+   */
+  align?: 'left' | 'center' | 'right'
+
+  /**
+   * Taille du texte
+   * - sm: text-sm/base
+   * - md: text-base/lg (défaut)
+   * - lg: text-lg/xl
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg'
+
+  /**
+   * Niveau de mise en avant visuelle
+   * - subtle: couleur plus claire (gray-500)
+   * - normal: couleur standard (gray-600)
+   * - strong: couleur plus foncée (gray-700) + font-medium
+   * @default 'normal'
+   */
+  emphasis?: 'subtle' | 'normal' | 'strong'
+
+  /**
+   * Contrainte de largeur maximale
+   * - sm: max-w-xl (36rem)
+   * - md: max-w-2xl (42rem)
+   * - lg: max-w-3xl (48rem) - défaut
+   * - full: pas de contrainte
+   * @default 'lg'
+   */
+  maxWidth?: 'sm' | 'md' | 'lg' | 'full'
+
+  /**
+   * Classes CSS additionnelles pour le conteneur
+   */
+  class?: string
+}
+
+const {
+  text,
+  align = 'center',
+  size = 'md',
+  emphasis = 'normal',
+  maxWidth = 'lg',
+  class: className = '',
+} = Astro.props
+
+// Runtime validation (development only)
+if (import.meta.env.DEV) {
+  if (!text || text.trim().length === 0) {
+    console.warn('[ValueProposition] Text should not be empty')
+  }
+  if (text && text.length < 20) {
+    console.warn('[ValueProposition] Text should be at least 20 characters for impact')
+  }
+  if (text && !text.trim().endsWith('.')) {
+    console.warn('[ValueProposition] Text should end with a period for readability')
+  }
+}
+
+// Mapping des alignements
+const alignClasses = {
+  left: 'text-left',
+  center: 'text-center mx-auto',
+  right: 'text-right ml-auto',
+}
+
+// Mapping des tailles
+const sizeClasses = {
+  sm: 'text-sm md:text-base',
+  md: 'text-base md:text-lg',
+  lg: 'text-lg md:text-xl',
+}
+
+// Mapping des emphases
+const emphasisClasses = {
+  subtle: 'text-gray-500 font-normal',
+  normal: 'text-gray-600 font-normal',
+  strong: 'text-gray-700 font-medium',
+}
+
+// Mapping des largeurs max
+const maxWidthClasses = {
+  sm: 'max-w-xl',
+  md: 'max-w-2xl',
+  lg: 'max-w-3xl',
+  full: '',
+}
+
+const currentAlign = alignClasses[align]
+const currentSize = sizeClasses[size]
+const currentEmphasis = emphasisClasses[emphasis]
+const currentMaxWidth = maxWidthClasses[maxWidth]
+---
+
+<p
+  class:list={[
+    'leading-relaxed',
+    currentAlign,
+    currentSize,
+    currentEmphasis,
+    currentMaxWidth,
+    className,
+  ]}
+>
+  {text}
+</p>

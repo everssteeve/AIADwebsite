@@ -45,8 +45,8 @@
 
 | ID | Tâche | Durée | Dépendances | Statut |
 |----|-------|-------|-------------|--------|
-| T-001-F1 | Créer le composant HeroTitle (H1 + tagline) | 2h | T-001-B1 | 📋 À faire |
-| T-001-F2 | Créer le composant ValueProposition | 1.5h | T-001-B1 | 📋 À faire |
+| T-001-F1 | Créer le composant HeroTitle (H1 + tagline) | 2h | T-001-B1 | ✅ Terminé |
+| T-001-F2 | Créer le composant ValueProposition | 1.5h | T-001-B1 | ✅ Terminé |
 | T-001-F3 | Créer le composant CTAButton ("Explorer le Framework") | 1.5h | - | 📋 À faire |
 | T-001-F4 | Créer le composant BenefitCard (picto + texte individuel) | 2h | T-001-B2 | 📋 À faire |
 | T-001-F5 | Créer le composant BenefitsList (grille des 3 bénéfices) | 2h | T-001-F4 | 📋 À faire |
@@ -191,7 +191,8 @@ graph TD
 | T-001-B1 | [T-001-B1-modele-donnees-HeroContent.md](./T-001-B1-modele-donnees-HeroContent.md) |
 | T-001-B2 | [T-001-B2-modele-donnees-BenefitItem.md](./T-001-B2-modele-donnees-BenefitItem.md) |
 | T-001-B3 | [T-001-B3-modele-donnees-StatItem.md](./T-001-B3-modele-donnees-StatItem.md) |
-| T-001-F1 | À créer |
+| T-001-B4 | [T-001-B4-donnees-JSON-hero-content-francais.md](./T-001-B4-donnees-JSON-hero-content-francais.md) |
+| T-001-F1 | [T-001-F1-composant-HeroTitle.md](./T-001-F1-composant-HeroTitle.md) |
 | ... | ... |
 
 ---
