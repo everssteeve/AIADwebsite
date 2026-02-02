@@ -1,0 +1,134 @@
+---
+// src/components/common/CTAButton.astro
+
+export interface Props {
+  text: string
+  href?: string
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
+  size?: 'sm' | 'md' | 'lg'
+  as?: 'link' | 'button'
+  type?: 'button' | 'submit' | 'reset'
+  icon?: 'arrow' | 'external' | 'none'
+  iconPosition?: 'left' | 'right'
+  fullWidth?: boolean
+  disabled?: boolean
+  newTab?: boolean
+  ariaLabel?: string
+  class?: string
+}
+
+const props = Astro.props
+
+const text = props.text
+const href = props.href || '#'
+const variant: 'primary' | 'secondary' | 'outline' | 'ghost' = props.variant ?? 'primary'
+const size: 'sm' | 'md' | 'lg' = props.size ?? 'lg'
+const as = props.as ?? 'link'
+const type = props.type ?? 'button'
+const icon: 'arrow' | 'external' | 'none' = props.icon ?? 'arrow'
+const iconPosition = props.iconPosition ?? 'right'
+const fullWidth = props.fullWidth ?? false
+const disabled = props.disabled ?? false
+const newTab = props.newTab ?? false
+const ariaLabel = props.ariaLabel
+const className = props.class ?? ''
+
+// Runtime validation (development only)
+if (import.meta.env.DEV) {
+  if (!text || text.trim().length < 2) {
+    console.warn('[CTAButton] Text should be at least 2 characters')
+  }
+  if (text && text.length > 50) {
+    console.warn('[CTAButton] Text exceeds 50 characters, may cause layout issues')
+  }
+  if (as === 'link' && !href) {
+    console.warn('[CTAButton] href is recommended when as="link"')
+  }
+  if (as === 'button' && href && href !== '#') {
+    console.warn('[CTAButton] href is ignored when as="button"')
+  }
+}
+
+// Mapping des variantes
+const variantClasses = {
+  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
+  secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500',
+  outline: 'bg-transparent text-blue-600 border-2 border-blue-600 hover:bg-blue-50 focus:ring-blue-500',
+  ghost: 'bg-transparent text-blue-600 hover:bg-blue-50 focus:ring-blue-500',
+} as const
+
+// Mapping des tailles
+const sizeClasses = {
+  sm: 'text-sm px-4 py-2 gap-1.5',
+  md: 'text-base px-6 py-3 gap-2',
+  lg: 'text-base md:text-lg px-6 md:px-8 py-3 md:py-4 gap-2.5',
+} as const
+
+// Mapping du font-weight selon la taille
+const weightClasses = {
+  sm: 'font-medium',
+  md: 'font-semibold',
+  lg: 'font-semibold',
+} as const
+
+// Classes de base communes
+const baseClasses = [
+  'inline-flex items-center justify-center',
+  'rounded-lg',
+  'transition-all duration-200 ease-in-out',
+  'focus:outline-none focus:ring-2 focus:ring-offset-2',
+  variantClasses[variant],
+  sizeClasses[size],
+  weightClasses[size],
+  fullWidth ? 'w-full' : '',
+  disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '',
+  className,
+].filter(Boolean).join(' ')
+
+// Attributs communs
+const commonAttrs = {
+  class: baseClasses,
+  'aria-label': ariaLabel || undefined,
+  'aria-disabled': disabled ? ('true' as const) : undefined,
+}
+
+// Attributs spécifiques au lien
+const linkAttrs = as === 'link' ? {
+  href: disabled ? undefined : href,
+  target: newTab ? '_blank' : undefined,
+  rel: newTab ? 'noopener noreferrer' : undefined,
+} : {}
+
+// Attributs spécifiques au bouton
+const buttonAttrs = as === 'button' ? {
+  type,
+  disabled: disabled || undefined,
+} : {}
+
+// Icônes SVG
+const icons = {
+  arrow: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+  </svg>`,
+  external: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+  </svg>`,
+  none: '',
+} as const
+
+const iconSvg = icons[icon]
+---
+
+{as === 'link' ? (
+  <a {...commonAttrs} {...linkAttrs}>
+    {iconPosition === 'left' && icon !== 'none' && <Fragment set:html={iconSvg} />}
+    <span>{text}</span>
+    {iconPosition === 'right' && icon !== 'none' && <Fragment set:html={iconSvg} />}
+  </a>
+) : (
+  <button {...commonAttrs} {...buttonAttrs}>
+    {iconPosition === 'left' && icon !== 'none' && <Fragment set:html={iconSvg} />}
+    <span>{text}</span>
+    {iconPosition === 'right' && icon !== 'none' && <Fragment set:html={iconSvg} />}
+  </button>
+)}
