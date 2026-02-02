@@ -195,4 +195,4 @@ Sans ignorer les éléments de droite, nous reconnaissons que **les éléments d
 
 ---
 
-*Prochaine section : [Responsabilités](03-responsabilites.md)*
+*Prochaine section : [Ecosystème](03-ecosysteme.md)*
