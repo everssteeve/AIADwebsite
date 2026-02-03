@@ -158,3 +158,5 @@ Toutes les spécifications doivent être rédigées en français.
 | T-001-F3 CTAButton | @docs/specs/US-001/T-001-F3-composant-CTAButton.md |
 | T-001-B5 Benefits JSON (fr) | @docs/specs/US-001/T-001-B5-donnees-JSON-benefices-cles.md |
 | T-001-B6 Stats JSON (fr) | @docs/specs/US-001/T-001-B6-donnees-JSON-statistiques-chiffrees.md |
+| T-001-F4 BenefitCard | @docs/specs/US-001/T-001-F4-composant-BenefitCard.md |
+| T-001-F5 BenefitsList | @docs/specs/US-001/T-001-F5-composant-BenefitsList.md |
