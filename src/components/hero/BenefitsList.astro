@@ -1,0 +1,226 @@
+---
+// src/components/hero/BenefitsList.astro
+
+import type { BenefitItem } from '@/types'
+import BenefitCard from './BenefitCard.astro'
+
+/**
+ * Nombre de colonnes de la grille
+ */
+export type BenefitsListColumns = 1 | 2 | 3 | 'auto'
+
+/**
+ * Taille de l'espacement entre les cartes
+ */
+export type BenefitsListGap = 'sm' | 'md' | 'lg'
+
+/**
+ * Variante des cartes de bénéfices
+ */
+export type BenefitCardVariant = 'default' | 'compact' | 'featured'
+
+/**
+ * Props du composant BenefitsList
+ *
+ * @example
+ * ```astro
+ * <BenefitsList
+ *   benefits={benefits}
+ *   columns="auto"
+ *   gap="md"
+ *   title="Pourquoi AIAD ?"
+ * />
+ * ```
+ */
+export interface Props {
+  /**
+   * Liste des bénéfices à afficher.
+   * Si non fourni, charge automatiquement depuis Content Collections.
+   */
+  benefits?: BenefitItem[]
+
+  /**
+   * Nombre de colonnes de la grille.
+   * - 'auto': responsive (1 col mobile → 3 col desktop)
+   * - 1/2/3: nombre fixe de colonnes
+   * @default 'auto'
+   */
+  columns?: BenefitsListColumns
+
+  /**
+   * Espacement entre les cartes.
+   * - 'sm': gap-4 md:gap-5 (16px → 20px)
+   * - 'md': gap-6 md:gap-8 (24px → 32px)
+   * - 'lg': gap-8 md:gap-12 (32px → 48px)
+   * @default 'md'
+   */
+  gap?: BenefitsListGap
+
+  /**
+   * Variante visuelle à appliquer à toutes les cartes.
+   * Transmis directement aux composants BenefitCard.
+   * @default 'default'
+   */
+  cardVariant?: BenefitCardVariant
+
+  /**
+   * Position de l'icône dans les cartes.
+   * @default 'top'
+   */
+  iconPosition?: 'top' | 'left'
+
+  /**
+   * Taille des icônes dans les cartes.
+   * @default 'md'
+   */
+  iconSize?: 'sm' | 'md' | 'lg'
+
+  /**
+   * Titre de la section (pour accessibilité).
+   * Si fourni avec `showTitle: false`, sera invisible mais accessible aux lecteurs d'écran.
+   * @default 'Bénéfices clés'
+   */
+  title?: string
+
+  /**
+   * Affiche le titre visiblement (vs sr-only).
+   * @default false
+   */
+  showTitle?: boolean
+
+  /**
+   * Centre la grille horizontalement dans son conteneur.
+   * @default true
+   */
+  centered?: boolean
+
+  /**
+   * Largeur maximale du conteneur.
+   * @default 'max-w-6xl'
+   */
+  maxWidth?: string
+
+  /**
+   * Classes CSS additionnelles pour le conteneur section.
+   */
+  class?: string
+
+  /**
+   * ID de la section pour les ancres/navigation.
+   */
+  id?: string
+}
+
+const {
+  benefits: benefitsProp,
+  columns = 'auto',
+  gap = 'md',
+  cardVariant = 'default',
+  iconPosition = 'top',
+  iconSize = 'md',
+  title = 'Bénéfices clés',
+  showTitle = false,
+  centered = true,
+  maxWidth = 'max-w-6xl',
+  class: className = '',
+  id,
+} = Astro.props
+
+// Charger les bénéfices depuis Content Collections si non fournis via props
+let benefits: BenefitItem[] = []
+
+if (benefitsProp && benefitsProp.length > 0) {
+  benefits = benefitsProp
+} else {
+  // Import dynamique pour éviter l'erreur si le module n'existe pas encore
+  try {
+    const { getCollection } = await import('astro:content')
+    const benefitsData = await getCollection('benefits')
+
+    // Trier par order et filtrer les actifs
+    benefits = benefitsData
+      .map((entry) => entry.data as BenefitItem)
+      .filter((b) => b.isActive !== false)
+      .sort((a, b) => a.order - b.order)
+  } catch {
+    // Fallback: pas de données disponibles
+    console.warn('[BenefitsList] Could not load benefits from Content Collections')
+    benefits = []
+  }
+}
+
+// Runtime validation (development only)
+if (import.meta.env.DEV) {
+  if (benefits.length === 0) {
+    console.warn('[BenefitsList] No benefits to display')
+  }
+  if (benefits.length > 5) {
+    console.warn('[BenefitsList] More than 5 benefits may affect layout')
+  }
+}
+
+// Génération de l'ID unique pour aria-labelledby
+const sectionId = id || 'benefits-section'
+const titleId = `${sectionId}-title`
+
+// Mapping des configurations de colonnes
+const columnClasses = {
+  'auto': 'grid-cols-1 md:grid-cols-3',
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-3',
+} as const
+
+// Mapping des gaps
+const gapClasses = {
+  'sm': 'gap-4 md:gap-5',
+  'md': 'gap-6 md:gap-8',
+  'lg': 'gap-8 md:gap-12',
+} as const
+
+// Construction des classes du conteneur grid
+const gridClasses = [
+  'grid',
+  columnClasses[columns],
+  gapClasses[gap],
+].join(' ')
+
+// Construction des classes du conteneur section
+const sectionClasses = [
+  centered ? 'mx-auto' : '',
+  maxWidth,
+  'w-full',
+  className,
+].filter(Boolean).join(' ')
+
+// Classes du titre
+const titleClasses = showTitle
+  ? 'text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-12'
+  : 'sr-only'
+---
+
+{benefits.length > 0 && (
+  <section
+    id={sectionId}
+    class={sectionClasses}
+    aria-labelledby={titleId}
+  >
+    <h2 id={titleId} class={titleClasses}>
+      {title}
+    </h2>
+
+    <div class={gridClasses}>
+      {benefits.map((benefit) => (
+        <BenefitCard
+          icon={benefit.icon}
+          title={benefit.title}
+          description={benefit.description}
+          ariaLabel={benefit.ariaLabel}
+          variant={cardVariant}
+          iconPosition={iconPosition}
+          iconSize={iconSize}
+        />
+      ))}
+    </div>
+  </section>
+)}
