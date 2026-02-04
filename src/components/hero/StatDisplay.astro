@@ -1,0 +1,211 @@
+---
+// src/components/hero/StatDisplay.astro
+
+/**
+ * Variantes visuelles de la statistique
+ */
+type StatDisplayVariant = 'default' | 'highlight' | 'compact'
+
+/**
+ * Alignement du contenu
+ */
+type StatDisplayAlignment = 'center' | 'left'
+
+export interface Props {
+  /**
+   * Valeur affichée de la statistique (ex: "50%", "3x", ">90%")
+   * @minLength 1
+   * @maxLength 20
+   */
+  value: string
+
+  /**
+   * Description courte de la statistique
+   * @minLength 10
+   * @maxLength 100
+   */
+  label: string
+
+  /**
+   * Source/attribution de la statistique
+   * @minLength 5
+   * @maxLength 150
+   */
+  source: string
+
+  /**
+   * URL de la source (optionnel)
+   * Si fourni et linkSource=true, la source devient un lien cliquable
+   */
+  sourceUrl?: string
+
+  /**
+   * Variante visuelle de la statistique
+   * - default: style standard (stats secondaires)
+   * - highlight: mise en avant avec fond coloré (stat principale)
+   * - compact: padding réduit (espaces contraints)
+   * @default 'default'
+   */
+  variant?: 'default' | 'highlight' | 'compact'
+
+  /**
+   * Alignement du contenu
+   * - center: centré (défaut, pour StatsRow)
+   * - left: aligné à gauche (pour usage standalone)
+   * @default 'center'
+   */
+  alignment?: 'center' | 'left'
+
+  /**
+   * Afficher la source
+   * @default true
+   */
+  showSource?: boolean
+
+  /**
+   * Rendre la source cliquable si sourceUrl est fourni
+   * @default true
+   */
+  linkSource?: boolean
+
+  /**
+   * Unité de mesure (pour séparer visuellement de la valeur)
+   * Si fourni, sera affiché en plus petit après la valeur
+   */
+  unit?: string
+
+  /**
+   * Classes CSS additionnelles pour le conteneur
+   */
+  class?: string
+}
+
+const {
+  value,
+  label,
+  source,
+  sourceUrl,
+  variant: variantProp = 'default',
+  alignment: alignmentProp = 'center',
+  showSource = true,
+  linkSource = true,
+  unit,
+  class: className = '',
+} = Astro.props
+
+// Explicit typing for variant and alignment
+const variant: StatDisplayVariant = variantProp
+const alignment: StatDisplayAlignment = alignmentProp
+
+// Runtime validation (development only)
+if (import.meta.env.DEV) {
+  if (!value || value.trim().length < 1) {
+    console.error('[StatDisplay] Value prop is required and must not be empty')
+  }
+  if (value && value.length > 20) {
+    console.warn('[StatDisplay] Value exceeds 20 characters')
+  }
+  if (!label || label.trim().length < 10) {
+    console.warn('[StatDisplay] Label should be at least 10 characters')
+  }
+  if (label && label.length > 100) {
+    console.warn('[StatDisplay] Label exceeds 100 characters')
+  }
+  if (!source || source.trim().length < 5) {
+    console.warn('[StatDisplay] Source should be at least 5 characters')
+  }
+  if (source && source.length > 150) {
+    console.warn('[StatDisplay] Source exceeds 150 characters')
+  }
+  if (sourceUrl && !sourceUrl.match(/^https?:\/\//)) {
+    console.warn('[StatDisplay] sourceUrl should be a valid URL')
+  }
+}
+
+// Mapping des variantes de conteneur
+const variantClasses = {
+  default: 'bg-transparent',
+  highlight: 'bg-blue-50 border border-blue-100 rounded-xl',
+  compact: 'bg-transparent',
+} as const
+
+// Mapping des paddings selon variante
+const paddingClasses = {
+  default: 'p-4 md:p-6',
+  highlight: 'p-5 md:p-8',
+  compact: 'p-2 md:p-3',
+} as const
+
+// Tailles de valeur selon variante
+const valueSizeClasses = {
+  default: 'text-3xl md:text-4xl',
+  highlight: 'text-4xl md:text-5xl',
+  compact: 'text-2xl md:text-3xl',
+} as const
+
+// Couleurs de valeur selon variante
+const valueColorClasses = {
+  default: 'text-blue-600',
+  highlight: 'text-blue-700',
+  compact: 'text-blue-600',
+} as const
+
+// Tailles de label selon variante
+const labelSizeClasses = {
+  default: 'text-sm md:text-base',
+  highlight: 'text-base md:text-lg',
+  compact: 'text-xs md:text-sm',
+} as const
+
+// Classes d'alignement
+const alignmentClasses = {
+  center: 'text-center items-center',
+  left: 'text-left items-start',
+} as const
+
+// Construction des classes du conteneur
+const containerClasses = [
+  'flex flex-col',
+  variantClasses[variant],
+  paddingClasses[variant],
+  alignmentClasses[alignment],
+  className,
+].filter(Boolean).join(' ')
+
+// Déterminer si la source doit être un lien
+const shouldLinkSource = linkSource && sourceUrl
+---
+
+<div class={containerClasses}>
+  <!-- Valeur statistique -->
+  <p class={`font-bold leading-none ${valueSizeClasses[variant]} ${valueColorClasses[variant]}`}>
+    <span class="stat-value">{value}</span>
+    {unit && (
+      <span class="text-[0.6em] font-semibold ml-0.5 opacity-80">{unit}</span>
+    )}
+  </p>
+
+  <!-- Label descriptif -->
+  <p class={`mt-2 font-medium text-gray-700 leading-snug max-w-xs ${labelSizeClasses[variant]}`}>
+    {label}
+  </p>
+
+  <!-- Source / Attribution -->
+  {showSource && (
+    <footer class="mt-3">
+      {shouldLinkSource ? (
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-xs text-blue-500 hover:text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded transition-colors"
+        >
+          <cite class="not-italic">{source}</cite>
+          <span class="sr-only">(ouvre dans un nouvel onglet)</span>
+        </a>
+      ) : (
+        <cite class="text-xs text-gray-500 not-italic">{source}</cite>
+      )}
+    </footer>
+  )}
+</div>
