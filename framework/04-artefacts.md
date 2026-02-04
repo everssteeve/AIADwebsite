@@ -98,7 +98,7 @@ Cette section définit les documents essentiels qui structurent le travail d'une
 **Bonnes pratiques :**
 
 1. **Évolutif** : L'architecture évolue avec le produit
-2. **Justifié** : Chaque choix a une rationale explicite
+2. **Justifié** : Chaque choix a une raison explicite
 3. **Pragmatique** : Pas d'over-engineering, YAGNI
 4. **Communicable** : Diagrammes visuels, pas que du texte
 5. **Actionnable** : Les PE peuvent s'y référer quotidiennement
