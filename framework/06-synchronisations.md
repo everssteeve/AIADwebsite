@@ -39,7 +39,7 @@ Cette section définit les moments où l'équipe se réunit. Sans synchronisatio
 
 ## Les cinq synchronisations
 
-### Sync 1 : Alignment Stratégique
+### Sync 1 : Alignement Stratégique
 
 **Essence** : S'assurer que l'équipe reste alignée avec la stratégie produit.
 
