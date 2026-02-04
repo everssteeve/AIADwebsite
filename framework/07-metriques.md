@@ -313,4 +313,4 @@ AIAD n'est pas gravé dans le marbre. Le framework doit évoluer avec l'équipe,
 
 ---
 
-*Prochaine section : [L'Écosystème d'Agents](08-ecosysteme.md)*
+*Prochaine section : [Annexes](08-annexes.md)*
