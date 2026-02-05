@@ -49,10 +49,10 @@
 | T-001-F2 | Créer le composant ValueProposition | 1.5h | T-001-B1 | ✅ Terminé |
 | T-001-F3 | Créer le composant CTAButton ("Explorer le Framework") | 1.5h | - | ✅ Terminé |
 | T-001-F4 | Créer le composant BenefitCard (picto + texte individuel) | 2h | T-001-B2 | ✅ Terminé |
-| T-001-F5 | Créer le composant BenefitsList (grille des 3 bénéfices) | 2h | T-001-F4 | 📋 À faire |
-| T-001-F6 | Créer le composant StatDisplay (stat individuelle) | 1.5h | T-001-B3 | 📋 À faire |
-| T-001-F7 | Créer le composant StatsRow (ligne de statistiques) | 2h | T-001-F6 | 📋 À faire |
-| T-001-F8 | Créer le composant HeroSection (assemblage complet) | 3h | T-001-F1, F2, F3, F5, F7 | 📋 À faire |
+| T-001-F5 | Créer le composant BenefitsList (grille des 3 bénéfices) | 2h | T-001-F4 | ✅ Terminé |
+| T-001-F6 | Créer le composant StatDisplay (stat individuelle) | 1.5h | T-001-B3 | ✅ Terminé |
+| T-001-F7 | Créer le composant StatsRow (ligne de statistiques) | 2h | T-001-F6 | ✅ Terminé |
+| T-001-F8 | Créer le composant HeroSection (assemblage complet) | 3h | T-001-F1, F2, F3, F5, F7 | ✅ Terminé |
 | T-001-F9 | Intégrer HeroSection dans la page d'accueil | 1h | T-001-F8, B4, B5, B6 | 📋 À faire |
 
 ### 3.3 Tests
@@ -118,16 +118,16 @@ graph TD
         F2[T-001-F2<br/>ValueProposition ✅]
         F3[T-001-F3<br/>CTAButton ✅]
         F4[T-001-F4<br/>BenefitCard ✅]
-        F6[T-001-F6<br/>StatDisplay]
+        F6[T-001-F6<br/>StatDisplay ✅]
     end
 
     subgraph "Phase 3 - Composants composés"
-        F5[T-001-F5<br/>BenefitsList]
-        F7[T-001-F7<br/>StatsRow]
+        F5[T-001-F5<br/>BenefitsList ✅]
+        F7[T-001-F7<br/>StatsRow ✅]
     end
 
     subgraph "Phase 4 - Assemblage"
-        F8[T-001-F8<br/>HeroSection]
+        F8[T-001-F8<br/>HeroSection ✅]
         F9[T-001-F9<br/>Intégration]
     end
 
@@ -193,7 +193,13 @@ graph TD
 | T-001-B3 | [T-001-B3-modele-donnees-StatItem.md](./T-001-B3-modele-donnees-StatItem.md) |
 | T-001-B4 | [T-001-B4-donnees-JSON-hero-content-francais.md](./T-001-B4-donnees-JSON-hero-content-francais.md) |
 | T-001-F1 | [T-001-F1-composant-HeroTitle.md](./T-001-F1-composant-HeroTitle.md) |
-| ... | ... |
+| T-001-F2 | [T-001-F2-composant-ValueProposition.md](./T-001-F2-composant-ValueProposition.md) |
+| T-001-F3 | [T-001-F3-composant-CTAButton.md](./T-001-F3-composant-CTAButton.md) |
+| T-001-F4 | [T-001-F4-composant-BenefitCard.md](./T-001-F4-composant-BenefitCard.md) |
+| T-001-F5 | [T-001-F5-composant-BenefitsList.md](./T-001-F5-composant-BenefitsList.md) |
+| T-001-F6 | [T-001-F6-composant-StatDisplay.md](./T-001-F6-composant-StatDisplay.md) |
+| T-001-F7 | [T-001-F7-composant-StatsRow.md](./T-001-F7-composant-StatsRow.md) |
+| T-001-F8 | [T-001-F8-composant-HeroSection.md](./T-001-F8-composant-HeroSection.md) |
 
 ---
 

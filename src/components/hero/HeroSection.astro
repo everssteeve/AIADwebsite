@@ -1,0 +1,226 @@
+---
+// src/components/hero/HeroSection.astro
+
+import type { HeroContent, BenefitItem, StatItem } from '@/types'
+import HeroTitle from './HeroTitle.astro'
+import ValueProposition from './ValueProposition.astro'
+import CTAButton from '@components/common/CTAButton.astro'
+import BenefitsList from './BenefitsList.astro'
+import StatsRow from './StatsRow.astro'
+
+export type HeroSectionSpacing = 'compact' | 'default' | 'spacious'
+export type HeroSectionBackground = 'none' | 'gradient' | 'subtle'
+
+export interface Props {
+  heroContent?: HeroContent
+  benefits?: BenefitItem[]
+  stats?: StatItem[]
+  ctaText?: string
+  ctaHref?: string
+  ctaVariant?: 'primary' | 'secondary' | 'outline' | 'ghost'
+  ctaSize?: 'sm' | 'md' | 'lg'
+  spacing?: HeroSectionSpacing
+  background?: HeroSectionBackground
+  centered?: boolean
+  maxWidth?: string
+  titleSize?: 'sm' | 'md' | 'lg'
+  valuePropositionSize?: 'sm' | 'md' | 'lg'
+  valuePropositionEmphasis?: 'subtle' | 'normal' | 'strong'
+  benefitsColumns?: 1 | 2 | 3 | 'auto'
+  benefitsCardVariant?: 'default' | 'compact' | 'featured'
+  statsShowDividers?: boolean
+  statsShowSources?: boolean
+  showValueProposition?: boolean
+  showCTA?: boolean
+  showBenefits?: boolean
+  showStats?: boolean
+  class?: string
+  id?: string
+}
+
+const {
+  heroContent: heroContentProp,
+  benefits,
+  stats,
+  ctaText = 'Explorer le Framework',
+  ctaHref = '/framework',
+  ctaVariant = 'primary',
+  ctaSize = 'lg',
+  spacing = 'default',
+  background = 'none',
+  centered = true,
+  maxWidth = 'max-w-7xl',
+  titleSize = 'lg',
+  valuePropositionSize = 'md',
+  valuePropositionEmphasis = 'normal',
+  benefitsColumns = 'auto',
+  benefitsCardVariant = 'default',
+  statsShowDividers = true,
+  statsShowSources = true,
+  showValueProposition = true,
+  showCTA = true,
+  showBenefits = true,
+  showStats = true,
+  class: className = '',
+  id = 'hero',
+} = Astro.props
+
+// ── Chargement des données hero ──────────────────────────────
+
+let heroContent: HeroContent | null = null
+
+if (heroContentProp) {
+  heroContent = heroContentProp
+} else {
+  try {
+    const { getCollection } = await import('astro:content')
+    const heroData = await getCollection('hero')
+    const activeHero = heroData
+      .map((entry) => entry.data as HeroContent)
+      .find((h) => h.isActive !== false && h.locale === 'fr')
+    heroContent = activeHero || null
+  } catch {
+    console.warn('[HeroSection] Could not load hero content from Content Collections')
+    heroContent = null
+  }
+}
+
+// Validation en développement
+if (import.meta.env.DEV) {
+  if (!heroContent) {
+    console.error(
+      '[HeroSection] No hero content available — section will render with fallback'
+    )
+  }
+  if (!heroContent?.title) {
+    console.warn('[HeroSection] Hero title is missing')
+  }
+}
+
+// Valeurs par défaut si aucune donnée disponible
+const title = heroContent?.title || 'AIAD'
+const tagline = heroContent?.tagline || ''
+const valueProposition = heroContent?.valueProposition || ''
+
+// ── Mapping des classes d'espacement ─────────────────────────
+
+const spacingClasses = {
+  compact: {
+    section: 'py-10 md:py-14',
+    afterTitle: 'mt-4',
+    afterValue: 'mt-6',
+    afterCta: 'mt-8 md:mt-10',
+    afterBenefits: 'mt-8 md:mt-10',
+  },
+  default: {
+    section: 'py-16 md:py-24',
+    afterTitle: 'mt-6',
+    afterValue: 'mt-8',
+    afterCta: 'mt-12 md:mt-16',
+    afterBenefits: 'mt-12 md:mt-16',
+  },
+  spacious: {
+    section: 'py-20 md:py-32',
+    afterTitle: 'mt-8',
+    afterValue: 'mt-10',
+    afterCta: 'mt-16 md:mt-20',
+    afterBenefits: 'mt-16 md:mt-20',
+  },
+} as const
+
+const currentSpacing = spacingClasses[spacing]
+
+// ── Mapping des classes de fond ──────────────────────────────
+
+const backgroundClasses = {
+  none: '',
+  gradient: 'bg-gradient-to-b from-white to-gray-50',
+  subtle: 'bg-gray-50',
+} as const
+
+// ── Construction des classes ─────────────────────────────────
+
+const sectionClasses = [
+  currentSpacing.section,
+  'px-4 md:px-6 lg:px-8',
+  backgroundClasses[background],
+  className,
+].filter(Boolean).join(' ')
+
+const containerClasses = [
+  'w-full',
+  maxWidth,
+  centered ? 'mx-auto' : '',
+].filter(Boolean).join(' ')
+
+const ctaContainerClasses = [
+  currentSpacing.afterValue,
+  centered ? 'flex justify-center' : '',
+].filter(Boolean).join(' ')
+---
+
+<section
+  id={id}
+  class={sectionClasses}
+  aria-labelledby={`${id}-title`}
+>
+  <div class={containerClasses}>
+    {/* ── HeroTitle (toujours affiché) ──────────────────── */}
+    <HeroTitle
+      title={title}
+      tagline={tagline}
+      size={titleSize}
+      align={centered ? 'center' : 'left'}
+      showTagline={!!tagline}
+      id={`${id}-title`}
+    />
+
+    {/* ── ValueProposition ─────────────────────────────── */}
+    {showValueProposition && valueProposition && (
+      <div class={currentSpacing.afterTitle}>
+        <ValueProposition
+          text={valueProposition}
+          align={centered ? 'center' : 'left'}
+          size={valuePropositionSize}
+          emphasis={valuePropositionEmphasis}
+        />
+      </div>
+    )}
+
+    {/* ── CTAButton ────────────────────────────────────── */}
+    {showCTA && (
+      <div class={ctaContainerClasses}>
+        <CTAButton
+          text={ctaText}
+          href={ctaHref}
+          variant={ctaVariant}
+          size={ctaSize}
+        />
+      </div>
+    )}
+
+    {/* ── BenefitsList ─────────────────────────────────── */}
+    {showBenefits && (
+      <div class={currentSpacing.afterCta}>
+        <BenefitsList
+          benefits={benefits}
+          columns={benefitsColumns}
+          cardVariant={benefitsCardVariant}
+          centered={centered}
+        />
+      </div>
+    )}
+
+    {/* ── StatsRow ─────────────────────────────────────── */}
+    {showStats && (
+      <div class={currentSpacing.afterBenefits}>
+        <StatsRow
+          stats={stats}
+          showDividers={statsShowDividers}
+          showSources={statsShowSources}
+          centered={centered}
+        />
+      </div>
+    )}
+  </div>
+</section>

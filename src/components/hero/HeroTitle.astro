@@ -8,6 +8,7 @@ export interface Props {
   size?: 'sm' | 'md' | 'lg'
   showTagline?: boolean
   class?: string
+  id?: string
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   size = 'lg',
   showTagline = true,
   class: className = '',
+  id,
 } = Astro.props
 
 // Runtime validation (development only)
@@ -61,6 +63,7 @@ const currentAlign = alignClasses[align]
 
 <div class:list={['flex flex-col', currentSize.gap, currentAlign, className]}>
   <h1
+    id={id}
     class:list={[
       currentSize.title,
       'font-bold tracking-tight text-gray-900',
