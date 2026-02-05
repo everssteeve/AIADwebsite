@@ -13,11 +13,37 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "WebFetch(domain:*)",
-      "Skill(*)"
+      "Skill(*)",
+      "Bash(cmd /c \"npm run build\")",
+      "Bash(cmd /c \"set PATH=C:\\\\nodejs\\\\bin;%PATH% && cd /d \"\"c:\\\\Users\\\\steeve.evers\\\\OneDrive - CONSERTO\\\\projets\\\\AIADwebsite\"\" && call npm run test 1>benefit-test-results.txt 2>&1\")",
+      "Bash(cmd /c \"set PATH=C:\\\\nodejs\\\\bin;%PATH% && cd /d \"\"c:\\\\Users\\\\steeve.evers\\\\OneDrive - CONSERTO\\\\projets\\\\AIADwebsite\"\" && npx vitest run --reporter=verbose 1>vitest-results.txt 2>&1\")",
+      "Bash(cmd /c \"\"\"c:\\\\Users\\\\steeve.evers\\\\OneDrive - CONSERTO\\\\projets\\\\AIADwebsite\\\\run-benefit-tests.bat\"\"\")",
+      "Bash(cmd /c \"del \"\"c:\\\\Users\\\\steeve.evers\\\\OneDrive - CONSERTO\\\\projets\\\\AIADwebsite\\\\run-benefit-tests.bat\"\" 2>nul\")",
+      "Bash(pnpm test:unit:*)",
+      "Bash(where:*)",
+      "Bash(where npm:*)",
+      "Bash(gh pr create:*)",
+      "Bash(git checkout:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(dir \"c:\\\\Users\\\\steeve.evers\\\\OneDrive - CONSERTO\\\\projets\\\\AIADwebsite\\\\src\\\\components\")",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm dev)",
+      "Bash(curl:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout:*)",
+      "Bash(pnpm vitest run:*)",
+      "Bash(git stash:*)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
       "Bash(sudo:*)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\src\\content",
+      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\tests",
+      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite"
     ]
   }
 }
