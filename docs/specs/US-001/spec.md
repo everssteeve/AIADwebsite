@@ -59,7 +59,7 @@
 
 | ID | Tâche | Durée | Dépendances | Statut |
 |----|-------|-------|-------------|--------|
-| T-001-T1 | Tests unitaires schémas Zod (BenefitItem, StatItem) | 2h | T-001-B2, B3 | 📋 À faire |
+| T-001-T1 | Tests unitaires schémas Zod (BenefitItem, StatItem) | 2h | T-001-B2, B3 | ✅ Terminé |
 | T-001-T2 | Tests unitaires composants (HeroTitle, CTA, BenefitCard) | 3h | T-001-F1 à F7 | 📋 À faire |
 | T-001-T3 | Tests d'intégration HeroSection | 2h | T-001-F8 | 📋 À faire |
 | T-001-T4 | Test accessibilité (a11y) hero section | 2h | T-001-F9 | 📋 À faire |
@@ -132,7 +132,7 @@ graph TD
     end
 
     subgraph "Phase 5 - Tests"
-        T1[T-001-T1<br/>Tests schémas]
+        T1[T-001-T1<br/>Tests schémas ✅]
         T2[T-001-T2<br/>Tests composants]
         T3[T-001-T3<br/>Tests intégration]
         T4[T-001-T4<br/>Tests a11y]
@@ -201,6 +201,7 @@ graph TD
 | T-001-F7 | [T-001-F7-composant-StatsRow.md](./T-001-F7-composant-StatsRow.md) |
 | T-001-F8 | [T-001-F8-composant-HeroSection.md](./T-001-F8-composant-HeroSection.md) |
 | T-001-F9 | [T-001-F9-integration-page-accueil.md](./T-001-F9-integration-page-accueil.md) |
+| T-001-T1 | [T-001-T1-tests-unitaires-schemas-zod.md](./T-001-T1-tests-unitaires-schemas-zod.md) |
 
 ---
 
