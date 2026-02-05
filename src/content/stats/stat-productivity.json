@@ -1,0 +1,14 @@
+{
+  "id": "stat-productivity",
+  "value": "50%",
+  "numericValue": 50,
+  "unit": "%",
+  "label": "Gain de productivité avec les agents IA",
+  "source": "McKinsey Global Institute - The economic potential of generative AI, 2024",
+  "sourceUrl": "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier",
+  "order": 1,
+  "locale": "fr",
+  "isActive": true,
+  "highlight": true,
+  "updatedAt": "2026-02-02T10:00:00.000Z"
+}

@@ -53,7 +53,7 @@
 | T-001-F6 | Créer le composant StatDisplay (stat individuelle) | 1.5h | T-001-B3 | ✅ Terminé |
 | T-001-F7 | Créer le composant StatsRow (ligne de statistiques) | 2h | T-001-F6 | ✅ Terminé |
 | T-001-F8 | Créer le composant HeroSection (assemblage complet) | 3h | T-001-F1, F2, F3, F5, F7 | ✅ Terminé |
-| T-001-F9 | Intégrer HeroSection dans la page d'accueil | 1h | T-001-F8, B4, B5, B6 | 📋 À faire |
+| T-001-F9 | Intégrer HeroSection dans la page d'accueil | 1h | T-001-F8, B4, B5, B6 | ✅ Terminé |
 
 ### 3.3 Tests
 
@@ -88,7 +88,7 @@ Phase 3 - Composants composés
 
 Phase 4 - Assemblage
 ├── T-001-F8 (HeroSection)      ←── dépend de F1, F2, F3, F5, F7
-└── T-001-F9 (Intégration)      ←── dépend de F8 + toutes données
+└── T-001-F9 (Intégration) ✅   ←── dépend de F8 + toutes données
 
 Phase 5 - Tests
 ├── T-001-T1 (tests schémas)    ←── parallèle avec Phase 2
@@ -128,7 +128,7 @@ graph TD
 
     subgraph "Phase 4 - Assemblage"
         F8[T-001-F8<br/>HeroSection ✅]
-        F9[T-001-F9<br/>Intégration]
+        F9[T-001-F9<br/>Intégration ✅]
     end
 
     subgraph "Phase 5 - Tests"
@@ -200,6 +200,7 @@ graph TD
 | T-001-F6 | [T-001-F6-composant-StatDisplay.md](./T-001-F6-composant-StatDisplay.md) |
 | T-001-F7 | [T-001-F7-composant-StatsRow.md](./T-001-F7-composant-StatsRow.md) |
 | T-001-F8 | [T-001-F8-composant-HeroSection.md](./T-001-F8-composant-HeroSection.md) |
+| T-001-F9 | [T-001-F9-integration-page-accueil.md](./T-001-F9-integration-page-accueil.md) |
 
 ---
 

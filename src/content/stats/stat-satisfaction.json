@@ -1,0 +1,14 @@
+{
+  "id": "stat-satisfaction",
+  "value": ">90%",
+  "numericValue": 90,
+  "unit": "%",
+  "label": "Des développeurs satisfaits de l'IA",
+  "source": "Stack Overflow Developer Survey 2024",
+  "sourceUrl": "https://survey.stackoverflow.co/2024/ai",
+  "order": 3,
+  "locale": "fr",
+  "isActive": true,
+  "highlight": false,
+  "updatedAt": "2026-02-02T10:00:00.000Z"
+}

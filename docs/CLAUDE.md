@@ -160,3 +160,7 @@ Toutes les spécifications doivent être rédigées en français.
 | T-001-B6 Stats JSON (fr) | @docs/specs/US-001/T-001-B6-donnees-JSON-statistiques-chiffrees.md |
 | T-001-F4 BenefitCard | @docs/specs/US-001/T-001-F4-composant-BenefitCard.md |
 | T-001-F5 BenefitsList | @docs/specs/US-001/T-001-F5-composant-BenefitsList.md |
+| T-001-F6 StatDisplay | @docs/specs/US-001/T-001-F6-composant-StatDisplay.md |
+| T-001-F7 StatsRow | @docs/specs/US-001/T-001-F7-composant-StatsRow.md |
+| T-001-F8 HeroSection | @docs/specs/US-001/T-001-F8-composant-HeroSection.md |
+| T-001-F9 Intégration accueil | @docs/specs/US-001/T-001-F9-integration-page-accueil.md |

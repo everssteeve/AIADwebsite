@@ -1,5 +1,37 @@
 ---
-// src/pages/index.astro
+import type { HeroContent, BenefitItem, StatItem } from '@/types'
+import HeroSection from '@components/hero/HeroSection.astro'
+
+// ── Chargement des données Content Collections ─────────────
+
+const { getCollection } = await import('astro:content')
+
+const heroEntries = await getCollection('hero')
+const heroContent = heroEntries
+  .map((entry: { data: unknown }) => entry.data as HeroContent)
+  .find((h: HeroContent) => h.isActive !== false && h.locale === 'fr')
+
+const benefitEntries = await getCollection('benefits')
+const benefits = (benefitEntries
+  .map((entry: { data: unknown }) => entry.data as BenefitItem)
+  .filter((b: BenefitItem) => b.isActive !== false && b.locale === 'fr') as BenefitItem[])
+  .sort((a: BenefitItem, b: BenefitItem) => a.order - b.order)
+
+const statEntries = await getCollection('stats')
+const stats = (statEntries
+  .map((entry: { data: unknown }) => entry.data as StatItem)
+  .filter((s: StatItem) => s.isActive !== false && s.locale === 'fr') as StatItem[])
+  .sort((a: StatItem, b: StatItem) => a.order - b.order)
+
+// ── Métadonnées SEO ────────────────────────────────────────
+
+const DEFAULT_TITLE = 'AIAD - Framework de développement avec agents IA'
+const DEFAULT_DESCRIPTION =
+  'AIAD : Le framework pour développer avec des agents IA'
+
+const seoTitle = heroContent?.metadata?.seoTitle || DEFAULT_TITLE
+const seoDescription =
+  heroContent?.metadata?.seoDescription || DEFAULT_DESCRIPTION
 ---
 
 <!doctype html>
@@ -7,13 +39,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIAD - Framework de développement avec agents IA</title>
-    <meta name="description" content="AIAD : Le framework pour développer avec des agents IA" />
+    <title>{seoTitle}</title>
+    <meta name="description" content={seoDescription} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={seoTitle} />
+    <meta property="og:description" content={seoDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
   </head>
-  <body>
+  <body class="min-h-screen bg-white text-gray-900 antialiased">
     <main>
-      <h1>AIAD</h1>
-      <p>Site en construction</p>
+      <HeroSection
+        heroContent={heroContent}
+        benefits={benefits}
+        stats={stats}
+        background="gradient"
+      />
     </main>
   </body>
 </html>

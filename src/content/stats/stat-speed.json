@@ -1,0 +1,14 @@
+{
+  "id": "stat-speed",
+  "value": "3x",
+  "numericValue": 3,
+  "unit": "x",
+  "label": "Plus rapide pour coder avec assistance IA",
+  "source": "GitHub Copilot Research - Developer productivity study, 2023",
+  "sourceUrl": "https://github.blog/2023-06-27-the-economic-impact-of-the-ai-powered-developer-lifecycle-and-lessons-from-github-copilot/",
+  "order": 2,
+  "locale": "fr",
+  "isActive": true,
+  "highlight": false,
+  "updatedAt": "2026-02-02T10:00:00.000Z"
+}
