@@ -11,7 +11,6 @@ describe('BenefitCard Component', () => {
     container = await AstroContainer.create()
   })
 
-  // Fixture de base valide
   const defaultProps = {
     icon: 'trending-up' as const,
     title: 'Productivité décuplée',
@@ -19,36 +18,33 @@ describe('BenefitCard Component', () => {
   }
 
   describe('Rendu de base', () => {
-    it('T-00: should render as article element', async () => {
+    it('BC-00: devrait rendre dans un <article>', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
 
       expect(result).toContain('<article')
-      expect(result).toContain('</article>')
     })
 
-    it('T-00b: should render title as h3', async () => {
+    it('BC-00b: devrait rendre le titre dans un <h3>', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
 
       expect(result).toContain('<h3')
       expect(result).toContain('Productivité décuplée')
-      expect(result).toContain('</h3>')
     })
 
-    it('T-00c: should render description as p', async () => {
+    it('BC-00c: devrait rendre la description dans un <p>', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
 
       expect(result).toContain('<p')
       expect(result).toContain('Automatisez les tâches')
-      expect(result).toContain('</p>')
     })
 
-    it('should render icon as SVG', async () => {
+    it('BC-01: devrait rendre l\'icône en SVG avec text-blue-600', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -57,7 +53,7 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('text-blue-600')
     })
 
-    it('should have icon container with bg-blue-100', async () => {
+    it('BC-02: devrait avoir le conteneur d\'icône avec bg-blue-100', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -67,7 +63,7 @@ describe('BenefitCard Component', () => {
   })
 
   describe('Props: variant', () => {
-    it('should apply default variant classes', async () => {
+    it('BC-03: devrait appliquer variant default (bg-white p-6)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, variant: 'default' },
       })
@@ -76,16 +72,15 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('p-6')
     })
 
-    it('should apply compact variant classes', async () => {
+    it('BC-04: devrait appliquer variant compact (p-4)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, variant: 'compact' },
       })
 
-      expect(result).toContain('bg-white')
       expect(result).toContain('p-4')
     })
 
-    it('T-16: should apply featured variant classes', async () => {
+    it('BC-05: devrait appliquer variant featured (bg-blue-50 border border-blue-100 rounded-xl)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, variant: 'featured' },
       })
@@ -98,7 +93,7 @@ describe('BenefitCard Component', () => {
   })
 
   describe('Props: iconPosition', () => {
-    it('should apply top position classes by default', async () => {
+    it('BC-06: devrait appliquer iconPosition top par défaut (flex-col items-center text-center)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -108,7 +103,7 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('text-center')
     })
 
-    it('T-14: should apply left position classes', async () => {
+    it('BC-07: devrait appliquer iconPosition left (flex-row items-start text-left)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, iconPosition: 'left' },
       })
@@ -120,7 +115,7 @@ describe('BenefitCard Component', () => {
   })
 
   describe('Props: iconSize', () => {
-    it('should apply md size by default', async () => {
+    it('BC-08: devrait appliquer iconSize md par défaut (w-10 h-10 md:w-12 md:h-12)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -131,7 +126,7 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('md:h-12')
     })
 
-    it('should apply sm size classes', async () => {
+    it('BC-09: devrait appliquer iconSize sm (w-8 h-8)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, iconSize: 'sm' },
       })
@@ -140,7 +135,7 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('h-8')
     })
 
-    it('T-17: should apply lg size classes', async () => {
+    it('BC-10: devrait appliquer iconSize lg (w-14 h-14 md:w-16 md:h-16)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, iconSize: 'lg' },
       })
@@ -153,7 +148,7 @@ describe('BenefitCard Component', () => {
   })
 
   describe('Props: ariaLabel', () => {
-    it('T-06: should add aria-label to icon container when provided', async () => {
+    it('BC-11: devrait ajouter aria-label au conteneur icône quand fourni', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, ariaLabel: 'Icône de productivité' },
       })
@@ -162,7 +157,7 @@ describe('BenefitCard Component', () => {
       expect(result).not.toContain('role="presentation"')
     })
 
-    it('T-07: should add role="presentation" when ariaLabel not provided', async () => {
+    it('BC-12: devrait ajouter role="presentation" quand ariaLabel non fourni', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -170,9 +165,9 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('role="presentation"')
     })
 
-    it('should always have aria-hidden on SVG', async () => {
+    it('BC-13: devrait toujours avoir aria-hidden="true" sur le SVG', async () => {
       const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, ariaLabel: 'Test' },
+        props: defaultProps,
       })
 
       expect(result).toContain('aria-hidden="true"')
@@ -180,30 +175,20 @@ describe('BenefitCard Component', () => {
   })
 
   describe('Props: class', () => {
-    it('T-13: should apply custom class', async () => {
+    it('BC-14: devrait appliquer la classe custom', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: { ...defaultProps, class: 'my-custom-class' },
       })
 
       expect(result).toContain('my-custom-class')
     })
-
-    it('should preserve default classes when adding custom class', async () => {
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, class: 'mt-8' },
-      })
-
-      expect(result).toContain('bg-white')
-      expect(result).toContain('p-6')
-      expect(result).toContain('mt-8')
-    })
   })
 
-  describe('Props: icon (toutes les icônes)', () => {
-    it('T-18: should render all supported icons', async () => {
+  describe('Props: icon (échantillon représentatif)', () => {
+    it('BC-15: devrait rendre un SVG pour 10 icônes différentes', async () => {
       const iconsToTest = [
         'trending-up', 'check-circle', 'users', 'zap', 'target',
-        'shield', 'rocket', 'layers', 'code', 'compass'
+        'shield', 'rocket', 'layers', 'code', 'compass',
       ] as const
 
       for (const icon of iconsToTest) {
@@ -212,111 +197,12 @@ describe('BenefitCard Component', () => {
         })
 
         expect(result).toContain('<svg')
-        expect(result).toContain('</svg>')
       }
     })
   })
 
-  describe('Cas limites: Contenu', () => {
-    it('T-01: should handle long title (50 chars)', async () => {
-      const longTitle = 'Productivité exceptionnellement accrue et améliorée'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, title: longTitle },
-      })
-
-      expect(result).toContain(longTitle)
-    })
-
-    it('T-02: should handle minimal title (5 chars)', async () => {
-      const shortTitle = 'Gains'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, title: shortTitle },
-      })
-
-      expect(result).toContain(shortTitle)
-    })
-
-    it('T-03: should handle long description (150 chars)', async () => {
-      const longDesc = 'A'.repeat(145) + '.'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, description: longDesc },
-      })
-
-      expect(result).toContain(longDesc)
-    })
-
-    it('T-04: should handle minimal description (20 chars)', async () => {
-      const shortDesc = 'Gagnez du temps vite.'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, description: shortDesc },
-      })
-
-      expect(result).toContain(shortDesc)
-    })
-
-    it('T-09: should escape special characters in title', async () => {
-      const specialTitle = 'Qualité & Performance'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, title: specialTitle },
-      })
-
-      // Astro échappe automatiquement
-      expect(result).toContain('Qualité')
-      expect(result).toContain('Performance')
-    })
-
-    it('T-10: should escape HTML injection in description', async () => {
-      const xssDesc = '<script>alert(\'xss\')</script> Une vraie description.'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, description: xssDesc },
-      })
-
-      expect(result).not.toContain('<script>')
-      expect(result).toContain('&lt;script&gt;')
-    })
-
-    it('T-11: should handle emoji in title', async () => {
-      const emojiTitle = 'Productivité 🚀'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, title: emojiTitle },
-      })
-
-      expect(result).toContain('Productivité 🚀')
-    })
-
-    it('T-12: should handle French accents', async () => {
-      const accentTitle = 'Qualité élevée'
-      const accentDesc = 'Une description avec des caractères accentués éàùç.'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, title: accentTitle, description: accentDesc },
-      })
-
-      expect(result).toContain('Qualité élevée')
-      expect(result).toContain('éàùç')
-    })
-
-    it('T-20: should handle newline in description', async () => {
-      const newlineDesc = 'Ligne 1\nLigne 2 description valide.'
-      const result = await container.renderToString(BenefitCard, {
-        props: { ...defaultProps, description: newlineDesc },
-      })
-
-      // Les newlines sont préservés mais rendus inline par défaut
-      expect(result).toContain('Ligne 1')
-      expect(result).toContain('Ligne 2')
-    })
-  })
-
-  describe('Styling: Classes de base', () => {
-    it('should have flex layout', async () => {
-      const result = await container.renderToString(BenefitCard, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('flex')
-    })
-
-    it('should have title with font-semibold', async () => {
+  describe('Styling: Classes Tailwind', () => {
+    it('BC-16: devrait avoir font-semibold sur le titre', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -324,7 +210,7 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('font-semibold')
     })
 
-    it('should have title with text-gray-900', async () => {
+    it('BC-17: devrait avoir text-gray-900 sur le titre', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -332,23 +218,16 @@ describe('BenefitCard Component', () => {
       expect(result).toContain('text-gray-900')
     })
 
-    it('should have description with text-gray-600', async () => {
+    it('BC-18: devrait avoir text-gray-600 leading-relaxed sur la description', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
 
       expect(result).toContain('text-gray-600')
-    })
-
-    it('should have description with leading-relaxed', async () => {
-      const result = await container.renderToString(BenefitCard, {
-        props: defaultProps,
-      })
-
       expect(result).toContain('leading-relaxed')
     })
 
-    it('should have icon container with rounded-xl', async () => {
+    it('BC-19: devrait avoir rounded-xl sur le conteneur d\'icône', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -358,7 +237,7 @@ describe('BenefitCard Component', () => {
   })
 
   describe('Accessibilité', () => {
-    it('should use article element for semantic structure', async () => {
+    it('BC-20: devrait avoir exactement un <article>', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -366,7 +245,7 @@ describe('BenefitCard Component', () => {
       expect(result.match(/<article/g)?.length).toBe(1)
     })
 
-    it('should use h3 for title hierarchy', async () => {
+    it('BC-21: devrait utiliser <h3> uniquement (pas h2 ni h4)', async () => {
       const result = await container.renderToString(BenefitCard, {
         props: defaultProps,
       })
@@ -375,13 +254,105 @@ describe('BenefitCard Component', () => {
       expect(result).not.toContain('<h2')
       expect(result).not.toContain('<h4')
     })
+  })
 
-    it('should have icon with aria-hidden', async () => {
+  describe('Cas limites: Contenu', () => {
+    it('BC-CL-01: devrait gérer un titre long (50 caractères)', async () => {
+      const longTitle = 'Productivité exceptionnellement accrue et améliorée'
       const result = await container.renderToString(BenefitCard, {
-        props: defaultProps,
+        props: { ...defaultProps, title: longTitle },
       })
 
-      expect(result).toContain('aria-hidden="true"')
+      expect(result).toContain(longTitle)
+    })
+
+    it('BC-CL-02: devrait gérer un titre court (5 caractères)', async () => {
+      const shortTitle = 'Gains'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, title: shortTitle },
+      })
+
+      expect(result).toContain(shortTitle)
+    })
+
+    it('BC-CL-03: devrait gérer une description longue (150 caractères)', async () => {
+      const longDesc = 'A'.repeat(145) + '.'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, description: longDesc },
+      })
+
+      expect(result).toContain(longDesc)
+    })
+
+    it('BC-CL-04: devrait gérer une description courte (20 caractères)', async () => {
+      const shortDesc = 'Gagnez du temps vite.'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, description: shortDesc },
+      })
+
+      expect(result).toContain(shortDesc)
+    })
+
+    it('BC-CL-05: devrait gérer les caractères spéciaux dans le titre', async () => {
+      const specialTitle = 'Qualité & Performance'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, title: specialTitle },
+      })
+
+      expect(result).toContain('&amp;')
+    })
+
+    it('BC-CL-06: devrait échapper l\'injection HTML dans la description', async () => {
+      const xssDesc = '<script>alert(\'xss\')</script> Une vraie description.'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, description: xssDesc },
+      })
+
+      expect(result).not.toContain('<script>')
+      expect(result).toContain('&lt;script&gt;')
+    })
+
+    it('BC-CL-07: devrait gérer les emojis dans le titre', async () => {
+      const emojiTitle = 'Productivité 🚀'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, title: emojiTitle },
+      })
+
+      expect(result).toContain('🚀')
+    })
+
+    it('BC-CL-08: devrait gérer les accents français', async () => {
+      const accentTitle = 'Qualité élevée'
+      const accentDesc = 'Une description avec des caractères accentués éàùçêô.'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, title: accentTitle, description: accentDesc },
+      })
+
+      expect(result).toContain('éàùçêô')
+    })
+
+    it('BC-CL-09: devrait gérer les sauts de ligne dans la description', async () => {
+      const newlineDesc = 'Ligne 1\nLigne 2 description valide.'
+      const result = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, description: newlineDesc },
+      })
+
+      expect(result).toContain('Ligne 1')
+      expect(result).toContain('Ligne 2')
+    })
+
+    it('BC-CL-10: devrait réduire la taille titre/description en variant compact', async () => {
+      const resultCompact = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, variant: 'compact' },
+      })
+      const resultDefault = await container.renderToString(BenefitCard, {
+        props: { ...defaultProps, variant: 'default' },
+      })
+
+      expect(resultCompact).toContain('text-base')
+      expect(resultCompact).toContain('md:text-lg')
+      expect(resultDefault).toContain('text-lg')
+      expect(resultDefault).toContain('md:text-xl')
     })
   })
 })

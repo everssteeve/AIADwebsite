@@ -129,7 +129,7 @@ const {
 // Charger les bénéfices depuis Content Collections si non fournis via props
 let benefits: BenefitItem[] = []
 
-if (benefitsProp && benefitsProp.length > 0) {
+if (benefitsProp !== undefined) {
   benefits = benefitsProp
 } else {
   // Import dynamique pour éviter l'erreur si le module n'existe pas encore

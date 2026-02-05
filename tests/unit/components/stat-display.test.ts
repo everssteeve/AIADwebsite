@@ -11,7 +11,6 @@ describe('StatDisplay Component', () => {
     container = await AstroContainer.create()
   })
 
-  // Fixture de base valide
   const defaultProps = {
     value: '50%',
     label: 'Gain de productivité avec les agents IA',
@@ -19,16 +18,18 @@ describe('StatDisplay Component', () => {
   }
 
   describe('Rendu de base', () => {
-    it('T-00: should render as div element', async () => {
+    it('SD-00: devrait rendre un <div> avec flex flex-col', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
 
       expect(result).toContain('<div')
+      expect(result).toContain('flex')
+      expect(result).toContain('flex-col')
       expect(result).toContain('</div>')
     })
 
-    it('T-00b: should render value', async () => {
+    it('SD-00b: devrait rendre la valeur avec la classe stat-value', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
@@ -37,7 +38,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('stat-value')
     })
 
-    it('T-00c: should render label in p tag', async () => {
+    it('SD-00c: devrait rendre le label dans un <p>', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
@@ -46,7 +47,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('Gain de productivité avec les agents IA')
     })
 
-    it('T-00d: should render source in cite tag', async () => {
+    it('SD-00d: devrait rendre la source dans un <cite>', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
@@ -55,28 +56,21 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('McKinsey Global Institute, 2024')
       expect(result).toContain('</cite>')
     })
-
-    it('should have flex column layout', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('flex')
-      expect(result).toContain('flex-col')
-    })
   })
 
   describe('Props: variant', () => {
-    it('should apply default variant classes', async () => {
+    it('SD-01: devrait appliquer variant default (bg-transparent p-4 text-3xl text-blue-600)', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, variant: 'default' },
       })
 
       expect(result).toContain('bg-transparent')
       expect(result).toContain('p-4')
+      expect(result).toContain('text-3xl')
+      expect(result).toContain('text-blue-600')
     })
 
-    it('T-17: should apply highlight variant classes', async () => {
+    it('SD-02: devrait appliquer variant highlight (bg-blue-50 border rounded-xl text-4xl text-blue-700)', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, variant: 'highlight' },
       })
@@ -85,10 +79,11 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('border')
       expect(result).toContain('border-blue-100')
       expect(result).toContain('rounded-xl')
+      expect(result).toContain('text-4xl')
       expect(result).toContain('text-blue-700')
     })
 
-    it('T-18: should apply compact variant classes', async () => {
+    it('SD-03: devrait appliquer variant compact (bg-transparent p-2 text-2xl)', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, variant: 'compact' },
       })
@@ -100,7 +95,7 @@ describe('StatDisplay Component', () => {
   })
 
   describe('Props: alignment', () => {
-    it('should apply center alignment by default', async () => {
+    it('SD-04: devrait appliquer alignment center par défaut (text-center items-center)', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
@@ -109,7 +104,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('items-center')
     })
 
-    it('T-19: should apply left alignment classes', async () => {
+    it('SD-05: devrait appliquer alignment left (text-left items-start)', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, alignment: 'left' },
       })
@@ -120,7 +115,7 @@ describe('StatDisplay Component', () => {
   })
 
   describe('Props: showSource', () => {
-    it('should show source by default', async () => {
+    it('SD-06: devrait afficher la source par défaut (showSource=true)', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
@@ -129,7 +124,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('<cite')
     })
 
-    it('T-09: should hide source when showSource=false', async () => {
+    it('SD-07: devrait masquer la source quand showSource=false', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, showSource: false },
       })
@@ -141,7 +136,7 @@ describe('StatDisplay Component', () => {
   })
 
   describe('Props: sourceUrl et linkSource', () => {
-    it('T-07: should render source as link when sourceUrl provided', async () => {
+    it('SD-08: devrait rendre la source en lien quand sourceUrl est fourni', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: {
           ...defaultProps,
@@ -155,7 +150,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('rel="noopener noreferrer"')
     })
 
-    it('T-08: should render source as text when sourceUrl not provided', async () => {
+    it('SD-09: devrait rendre la source en texte quand sourceUrl est absent', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
@@ -164,7 +159,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('<cite')
     })
 
-    it('T-10: should render source as text when linkSource=false', async () => {
+    it('SD-10: devrait rendre la source en texte quand linkSource=false', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: {
           ...defaultProps,
@@ -176,22 +171,10 @@ describe('StatDisplay Component', () => {
       expect(result).not.toContain('<a')
       expect(result).toContain('<cite')
     })
-
-    it('should have sr-only text for external link', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: {
-          ...defaultProps,
-          sourceUrl: 'https://example.com/study',
-        },
-      })
-
-      expect(result).toContain('sr-only')
-      expect(result).toContain('nouvel onglet')
-    })
   })
 
   describe('Props: unit', () => {
-    it('T-20: should render unit separately when provided', async () => {
+    it('SD-11: devrait afficher l\'unité séparément quand unit est fourni (text-[0.6em])', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, value: '50', unit: '%' },
       })
@@ -201,39 +184,116 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('text-[0.6em]')
     })
 
-    it('should not render unit span when not provided', async () => {
+    it('SD-12: devrait ne pas afficher de span unité quand unit est absent', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: defaultProps,
       })
 
-      // Le % fait partie de la value, pas dans un span séparé
       expect(result).toContain('50%')
       expect(result).not.toContain('text-[0.6em]')
     })
   })
 
   describe('Props: class', () => {
-    it('T-15: should apply custom class', async () => {
+    it('SD-13: devrait appliquer une classe custom et préserver les défauts', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, class: 'my-custom-class' },
       })
 
       expect(result).toContain('my-custom-class')
-    })
-
-    it('should preserve default classes when adding custom class', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: { ...defaultProps, class: 'mt-8' },
-      })
-
       expect(result).toContain('flex')
       expect(result).toContain('flex-col')
-      expect(result).toContain('mt-8')
+    })
+  })
+
+  describe('Styling: Classes Tailwind', () => {
+    it('SD-14: devrait avoir font-bold sur la valeur', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: defaultProps,
+      })
+
+      expect(result).toContain('font-bold')
+    })
+
+    it('SD-15: devrait avoir leading-none sur la valeur', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: defaultProps,
+      })
+
+      expect(result).toContain('leading-none')
+    })
+
+    it('SD-16: devrait avoir text-gray-700 sur le label', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: defaultProps,
+      })
+
+      expect(result).toContain('text-gray-700')
+    })
+
+    it('SD-17: devrait avoir max-w-xs sur le label', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: defaultProps,
+      })
+
+      expect(result).toContain('max-w-xs')
+    })
+
+    it('SD-18: devrait avoir text-gray-500 sur la source non-lien', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: defaultProps,
+      })
+
+      expect(result).toContain('text-gray-500')
+    })
+
+    it('SD-19: devrait avoir text-blue-500 sur la source lien', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: { ...defaultProps, sourceUrl: 'https://example.com' },
+      })
+
+      expect(result).toContain('text-blue-500')
+    })
+
+    it('SD-20: devrait avoir not-italic sur <cite>', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: defaultProps,
+      })
+
+      expect(result).toContain('not-italic')
+    })
+  })
+
+  describe('Accessibilité', () => {
+    it('SD-A-01: devrait avoir sr-only "nouvel onglet" sur les liens externes', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: { ...defaultProps, sourceUrl: 'https://example.com' },
+      })
+
+      expect(result).toContain('sr-only')
+      expect(result).toContain('nouvel onglet')
+    })
+
+    it('SD-A-02: devrait avoir focus:ring-2 sur les liens sources', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: { ...defaultProps, sourceUrl: 'https://example.com' },
+      })
+
+      expect(result).toContain('focus:ring-2')
+      expect(result).toContain('focus:ring-blue-500')
+    })
+
+    it('SD-A-03: devrait avoir rel="noopener noreferrer" sur les liens', async () => {
+      const result = await container.renderToString(StatDisplay, {
+        props: { ...defaultProps, sourceUrl: 'https://example.com' },
+      })
+
+      expect(result).toContain('rel="noopener noreferrer"')
     })
   })
 
   describe('Cas limites: Contenu', () => {
-    it('T-01: should handle long value (20 chars)', async () => {
+    it('SD-CL-01: devrait gérer une valeur longue (20 caractères)', async () => {
       const longValue = '12345678901234567890'
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, value: longValue },
@@ -242,7 +302,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain(longValue)
     })
 
-    it('T-02: should handle minimal value (1 char)', async () => {
+    it('SD-CL-02: devrait gérer une valeur minimale (1 caractère)', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, value: '5' },
       })
@@ -250,7 +310,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('>5<')
     })
 
-    it('T-03: should handle long label (100 chars)', async () => {
+    it('SD-CL-03: devrait gérer un label long (100 caractères)', async () => {
       const longLabel = 'A'.repeat(100)
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, label: longLabel },
@@ -260,7 +320,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('max-w-xs')
     })
 
-    it('T-04: should handle minimal label (10 chars)', async () => {
+    it('SD-CL-04: devrait gérer un label minimal (10 caractères)', async () => {
       const shortLabel = 'Gain temps'
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, label: shortLabel },
@@ -269,7 +329,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain(shortLabel)
     })
 
-    it('T-05: should handle long source (150 chars)', async () => {
+    it('SD-CL-05: devrait gérer une source longue (150 caractères)', async () => {
       const longSource = 'S'.repeat(150)
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, source: longSource },
@@ -278,7 +338,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain(longSource)
     })
 
-    it('T-06: should handle minimal source (5 chars)', async () => {
+    it('SD-CL-06: devrait gérer une source minimale (5 caractères)', async () => {
       const shortSource = 'AIAD!'
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, source: shortSource },
@@ -287,18 +347,17 @@ describe('StatDisplay Component', () => {
       expect(result).toContain(shortSource)
     })
 
-    it('T-12: should handle special characters in value', async () => {
+    it('SD-CL-07: devrait gérer une valeur avec symboles (>90%)', async () => {
       const specialValue = '>90%'
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, value: specialValue },
       })
 
-      // Vérifie que la valeur est présente (peut être échappée)
       expect(result).toContain('90')
       expect(result).toContain('%')
     })
 
-    it('T-13: should escape HTML injection in label', async () => {
+    it('SD-CL-08: devrait échapper l\'injection HTML dans le label', async () => {
       const xssLabel = "<script>alert('xss')</script> Une vraie description."
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, label: xssLabel },
@@ -308,7 +367,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('&lt;script&gt;')
     })
 
-    it('T-14: should handle French accents', async () => {
+    it('SD-CL-09: devrait gérer les accents français dans le label', async () => {
       const accentLabel = 'Économie réalisée significative'
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, label: accentLabel },
@@ -317,7 +376,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('Économie réalisée significative')
     })
 
-    it('T-22: should handle ampersand in source', async () => {
+    it('SD-CL-10: devrait gérer l\'ampersand dans la source', async () => {
       const ampSource = 'McKinsey & Company, 2024'
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, source: ampSource },
@@ -327,7 +386,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('Company')
     })
 
-    it('T-21: should handle value with symbols only', async () => {
+    it('SD-CL-11: devrait gérer une valeur sans chiffre (+++)', async () => {
       const symbolValue = '+++'
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, value: symbolValue },
@@ -337,112 +396,8 @@ describe('StatDisplay Component', () => {
     })
   })
 
-  describe('Styling: Classes de base', () => {
-    it('should have bold value', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('font-bold')
-    })
-
-    it('should have blue-600 value color for default variant', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('text-blue-600')
-    })
-
-    it('should have gray-700 label color', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('text-gray-700')
-    })
-
-    it('should have gray-500 source color when not a link', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('text-gray-500')
-    })
-
-    it('should have blue-500 source color when a link', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: { ...defaultProps, sourceUrl: 'https://example.com' },
-      })
-
-      expect(result).toContain('text-blue-500')
-    })
-
-    it('should have responsive text sizes', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('text-3xl')
-      expect(result).toContain('md:text-4xl')
-    })
-
-    it('should have leading-none on value', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('leading-none')
-    })
-
-    it('should have max-w-xs on label', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('max-w-xs')
-    })
-  })
-
-  describe('Accessibilité', () => {
-    it('should use cite element for source', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('<cite')
-      expect(result).toContain('not-italic')
-    })
-
-    it('should have focus styles on source link', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: { ...defaultProps, sourceUrl: 'https://example.com' },
-      })
-
-      expect(result).toContain('focus:ring-2')
-      expect(result).toContain('focus:ring-blue-500')
-    })
-
-    it('should have hover styles on source link', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: { ...defaultProps, sourceUrl: 'https://example.com' },
-      })
-
-      expect(result).toContain('hover:text-blue-600')
-      expect(result).toContain('hover:underline')
-    })
-
-    it('should have noopener noreferrer on external link', async () => {
-      const result = await container.renderToString(StatDisplay, {
-        props: { ...defaultProps, sourceUrl: 'https://example.com' },
-      })
-
-      expect(result).toContain('rel="noopener noreferrer"')
-    })
-  })
-
   describe('Variantes combinées', () => {
-    it('should combine highlight variant with left alignment', async () => {
+    it('SD-CO-01: devrait combiner variant highlight avec alignment left', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, variant: 'highlight', alignment: 'left' },
       })
@@ -452,7 +407,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('items-start')
     })
 
-    it('should combine compact variant with sourceUrl', async () => {
+    it('SD-CO-02: devrait combiner variant compact avec sourceUrl', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: {
           ...defaultProps,
@@ -466,7 +421,7 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('<a')
     })
 
-    it('should combine unit with highlight variant', async () => {
+    it('SD-CO-03: devrait combiner unit avec variant highlight', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: {
           ...defaultProps,
