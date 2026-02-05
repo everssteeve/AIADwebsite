@@ -1,0 +1,253 @@
+---
+// src/components/hero/StatsRow.astro
+
+import type { StatItem } from '@/types'
+import StatDisplay from './StatDisplay.astro'
+
+/**
+ * Nombre de colonnes de la grille
+ */
+export type StatsRowColumns = 1 | 2 | 3 | 'auto'
+
+/**
+ * Taille de l'espacement entre les stats
+ */
+export type StatsRowGap = 'sm' | 'md' | 'lg'
+
+/**
+ * Variante des statistiques individuelles
+ */
+export type StatDisplayVariant = 'default' | 'highlight' | 'compact'
+
+/**
+ * Props du composant StatsRow
+ *
+ * @example
+ * ```astro
+ * <StatsRow
+ *   stats={stats}
+ *   columns="auto"
+ *   gap="md"
+ *   showDividers={true}
+ *   title="Chiffres clés"
+ * />
+ * ```
+ */
+export interface Props {
+  /**
+   * Liste des statistiques à afficher.
+   * Si non fourni, charge automatiquement depuis Content Collections.
+   */
+  stats?: StatItem[]
+
+  /**
+   * Nombre de colonnes de la grille.
+   * - 'auto': responsive (1 col mobile → 3 col desktop)
+   * - 1/2/3: nombre fixe de colonnes
+   * @default 'auto'
+   */
+  columns?: StatsRowColumns
+
+  /**
+   * Espacement entre les statistiques.
+   * - 'sm': gap-4 md:gap-5 (16px → 20px)
+   * - 'md': gap-6 md:gap-8 (24px → 32px)
+   * - 'lg': gap-8 md:gap-12 (32px → 48px)
+   * @default 'md'
+   */
+  gap?: StatsRowGap
+
+  /**
+   * Variante visuelle à appliquer à toutes les stats.
+   * Si non fourni, utilise le champ `highlight` de chaque StatItem.
+   * @default undefined (auto basé sur stat.highlight)
+   */
+  statVariant?: StatDisplayVariant
+
+  /**
+   * Afficher les séparateurs entre les statistiques.
+   * Sur mobile: séparateurs horizontaux
+   * Sur desktop: séparateurs verticaux
+   * @default true
+   */
+  showDividers?: boolean
+
+  /**
+   * Titre de la section (pour accessibilité).
+   * Si fourni avec `showTitle: false`, sera invisible mais accessible aux lecteurs d'écran.
+   * @default 'Chiffres clés'
+   */
+  title?: string
+
+  /**
+   * Affiche le titre visiblement (vs sr-only).
+   * @default false
+   */
+  showTitle?: boolean
+
+  /**
+   * Afficher les sources sur chaque StatDisplay.
+   * @default true
+   */
+  showSources?: boolean
+
+  /**
+   * Rendre les sources cliquables si sourceUrl fourni.
+   * @default true
+   */
+  linkSources?: boolean
+
+  /**
+   * Centre la ligne horizontalement dans son conteneur.
+   * @default true
+   */
+  centered?: boolean
+
+  /**
+   * Largeur maximale du conteneur.
+   * @default 'max-w-5xl'
+   */
+  maxWidth?: string
+
+  /**
+   * Classes CSS additionnelles pour le conteneur section.
+   */
+  class?: string
+
+  /**
+   * ID de la section pour les ancres/navigation.
+   */
+  id?: string
+}
+
+const {
+  stats: statsProp,
+  columns = 'auto',
+  gap = 'md',
+  statVariant,
+  showDividers = true,
+  title = 'Chiffres clés',
+  showTitle = false,
+  showSources = true,
+  linkSources = true,
+  centered = true,
+  maxWidth = 'max-w-5xl',
+  class: className = '',
+  id,
+} = Astro.props
+
+// Charger les statistiques depuis Content Collections si non fournies via props
+let stats: StatItem[] = []
+
+if (statsProp && statsProp.length > 0) {
+  stats = statsProp
+} else {
+  try {
+    const { getCollection } = await import('astro:content')
+    const statsData = await getCollection('stats')
+
+    stats = statsData
+      .map((entry) => entry.data as StatItem)
+      .filter((s) => s.isActive !== false)
+      .sort((a, b) => a.order - b.order)
+  } catch {
+    console.warn('[StatsRow] Could not load stats from Content Collections')
+    stats = []
+  }
+}
+
+// Runtime validation (development only)
+if (import.meta.env.DEV) {
+  if (stats.length === 0) {
+    console.warn('[StatsRow] No stats to display')
+  }
+  if (stats.length > 6) {
+    console.warn('[StatsRow] More than 6 stats may affect layout')
+  }
+}
+
+// Génération de l'ID unique pour aria-labelledby
+const sectionId = id || 'stats-section'
+const titleId = `${sectionId}-title`
+
+// Mapping des configurations de colonnes
+const columnClasses = {
+  'auto': 'grid-cols-1 md:grid-cols-3',
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-3',
+} as const
+
+// Mapping des gaps
+const gapClasses = {
+  'sm': 'gap-4 md:gap-5',
+  'md': 'gap-6 md:gap-8',
+  'lg': 'gap-8 md:gap-12',
+} as const
+
+// Construction des classes du conteneur grid
+const gridClasses = [
+  'grid',
+  columnClasses[columns],
+  gapClasses[gap],
+].join(' ')
+
+// Construction des classes du conteneur section
+const sectionClasses = [
+  centered ? 'mx-auto' : '',
+  maxWidth,
+  'w-full',
+  className,
+].filter(Boolean).join(' ')
+
+// Classes du titre
+const titleClasses = showTitle
+  ? 'text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-12'
+  : 'sr-only'
+
+/**
+ * Détermine la variante de chaque StatDisplay
+ */
+function getStatVariant(stat: StatItem): 'default' | 'highlight' | 'compact' {
+  if (statVariant) return statVariant
+  return stat.highlight ? 'highlight' : 'default'
+}
+
+/**
+ * Classes pour le conteneur wrapper de chaque stat (gère les séparateurs)
+ */
+function getStatWrapperClasses(index: number): string {
+  if (!showDividers || index === 0) return ''
+  return 'border-t border-gray-200 pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-8'
+}
+---
+
+{stats.length > 0 && (
+  <section
+    id={sectionId}
+    class={sectionClasses}
+    aria-labelledby={titleId}
+  >
+    <h2 id={titleId} class={titleClasses}>
+      {title}
+    </h2>
+
+    <div class={gridClasses}>
+      {stats.map((stat, index) => (
+        <div class={getStatWrapperClasses(index)}>
+          <StatDisplay
+            value={stat.value}
+            label={stat.label}
+            source={stat.source}
+            sourceUrl={stat.sourceUrl}
+            variant={getStatVariant(stat)}
+            unit={stat.unit}
+            showSource={showSources}
+            linkSource={linkSources}
+            alignment="center"
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+)}
