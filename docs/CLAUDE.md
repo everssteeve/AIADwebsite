@@ -165,3 +165,5 @@ Toutes les spécifications doivent être rédigées en français.
 | T-001-F8 HeroSection | @docs/specs/US-001/T-001-F8-composant-HeroSection.md |
 | T-001-F9 Intégration accueil | @docs/specs/US-001/T-001-F9-integration-page-accueil.md |
 | T-001-T1 Tests schémas Zod | @docs/specs/US-001/T-001-T1-tests-unitaires-schemas-zod.md |
+| T-001-T2 Tests composants | @docs/specs/US-001/T-001-T2-tests-unitaires-composants.md |
+| T-001-T3 Tests intégration HeroSection | @docs/specs/US-001/T-001-T3-tests-integration-HeroSection.md |
