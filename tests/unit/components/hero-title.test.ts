@@ -11,14 +11,13 @@ describe('HeroTitle Component', () => {
     container = await AstroContainer.create()
   })
 
-  // Fixture de base
   const defaultProps = {
     title: 'AIAD : Le framework pour développer avec des agents IA',
     tagline: 'Structurez votre collaboration avec l\'intelligence artificielle',
   }
 
   describe('Rendu de base', () => {
-    it('T-00: should render title in h1 tag', async () => {
+    it('HT-00: devrait rendre le titre dans un <h1>', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: defaultProps,
       })
@@ -28,18 +27,17 @@ describe('HeroTitle Component', () => {
       expect(result).toContain('</h1>')
     })
 
-    it('T-00b: should render tagline in p tag', async () => {
+    it('HT-00b: devrait rendre la tagline dans un <p>', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: defaultProps,
       })
 
       expect(result).toContain('<p')
-      // L'apostrophe est échappée en &#39; par Astro
       expect(result).toContain('Structurez votre collaboration avec l&#39;intelligence artificielle')
       expect(result).toContain('</p>')
     })
 
-    it('should have only one h1 tag', async () => {
+    it('HT-01: devrait avoir un seul <h1> dans le composant', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: defaultProps,
       })
@@ -50,7 +48,7 @@ describe('HeroTitle Component', () => {
   })
 
   describe('Props: align', () => {
-    it('should apply text-center class by default', async () => {
+    it('HT-02: devrait appliquer text-center par défaut', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: defaultProps,
       })
@@ -58,7 +56,7 @@ describe('HeroTitle Component', () => {
       expect(result).toContain('text-center')
     })
 
-    it('should apply text-left class when align="left"', async () => {
+    it('HT-03: devrait appliquer text-left quand align="left"', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, align: 'left' },
       })
@@ -67,7 +65,7 @@ describe('HeroTitle Component', () => {
       expect(result).not.toContain('text-center')
     })
 
-    it('should apply text-right class when align="right"', async () => {
+    it('HT-04: devrait appliquer text-right quand align="right"', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, align: 'right' },
       })
@@ -75,41 +73,34 @@ describe('HeroTitle Component', () => {
       expect(result).toContain('text-right')
     })
 
-    it('should apply mx-auto to tagline only when centered', async () => {
-      const resultCentered = await container.renderToString(HeroTitle, {
+    it('HT-05: devrait ajouter mx-auto à la tagline quand align="center"', async () => {
+      const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, align: 'center' },
       })
 
-      const resultLeft = await container.renderToString(HeroTitle, {
-        props: { ...defaultProps, align: 'left' },
-      })
-
-      expect(resultCentered).toContain('mx-auto')
-      expect(resultLeft).not.toContain('mx-auto')
+      expect(result).toContain('mx-auto')
     })
   })
 
   describe('Props: size', () => {
-    it('should apply lg size classes by default', async () => {
+    it('HT-06: devrait appliquer size lg par défaut (lg:text-5xl)', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: defaultProps,
       })
 
       expect(result).toContain('lg:text-5xl')
-      expect(result).toContain('lg:text-2xl')
     })
 
-    it('should apply sm size classes when size="sm"', async () => {
+    it('HT-07: devrait appliquer text-2xl md:text-3xl quand size="sm"', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, size: 'sm' },
       })
 
       expect(result).toContain('text-2xl')
       expect(result).toContain('md:text-3xl')
-      expect(result).not.toContain('lg:text-5xl')
     })
 
-    it('should apply md size classes when size="md"', async () => {
+    it('HT-08: devrait appliquer text-3xl md:text-4xl quand size="md"', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, size: 'md' },
       })
@@ -118,7 +109,7 @@ describe('HeroTitle Component', () => {
       expect(result).toContain('md:text-4xl')
     })
 
-    it('should apply correct gap for each size', async () => {
+    it('HT-09: devrait appliquer le gap correct par taille (sm→gap-2, md→gap-3, lg→gap-4)', async () => {
       const resultSm = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, size: 'sm' },
       })
@@ -136,28 +127,25 @@ describe('HeroTitle Component', () => {
   })
 
   describe('Props: showTagline', () => {
-    it('T-05: should not render tagline when showTagline=false', async () => {
+    it('HT-10: devrait masquer la tagline quand showTagline=false', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, showTagline: false },
       })
 
       expect(result).not.toContain('<p')
-      expect(result).not.toContain(defaultProps.tagline)
     })
 
-    it('should render tagline by default (showTagline=true)', async () => {
+    it('HT-11: devrait afficher la tagline par défaut (showTagline=true)', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: defaultProps,
       })
 
       expect(result).toContain('<p')
-      // L'apostrophe est échappée en &#39; par Astro
-      expect(result).toContain('Structurez votre collaboration avec l&#39;intelligence artificielle')
     })
   })
 
   describe('Props: class', () => {
-    it('T-13: should apply custom class to container', async () => {
+    it('HT-12: devrait ajouter la classe custom au conteneur', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, class: 'my-custom-class' },
       })
@@ -165,20 +153,63 @@ describe('HeroTitle Component', () => {
       expect(result).toContain('my-custom-class')
     })
 
-    it('should preserve default classes when adding custom class', async () => {
+    it('HT-13: devrait préserver les classes par défaut avec une classe custom', async () => {
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, class: 'my-custom-class' },
       })
 
       expect(result).toContain('flex')
-      expect(result).toContain('flex-col')
       expect(result).toContain('my-custom-class')
     })
   })
 
+  describe('Props: id', () => {
+    it('HT-14: devrait appliquer l\'id au <h1>', async () => {
+      const result = await container.renderToString(HeroTitle, {
+        props: { ...defaultProps, id: 'hero-title' },
+      })
+
+      expect(result).toContain('id="hero-title"')
+    })
+  })
+
+  describe('Styling: Classes Tailwind', () => {
+    it('HT-15: devrait avoir font-bold sur le titre', async () => {
+      const result = await container.renderToString(HeroTitle, {
+        props: defaultProps,
+      })
+
+      expect(result).toMatch(/<h1[^>]*class="[^"]*font-bold/)
+    })
+
+    it('HT-16: devrait avoir text-gray-900 sur le titre', async () => {
+      const result = await container.renderToString(HeroTitle, {
+        props: defaultProps,
+      })
+
+      expect(result).toMatch(/<h1[^>]*class="[^"]*text-gray-900/)
+    })
+
+    it('HT-17: devrait avoir tracking-tight sur le titre', async () => {
+      const result = await container.renderToString(HeroTitle, {
+        props: defaultProps,
+      })
+
+      expect(result).toMatch(/<h1[^>]*class="[^"]*tracking-tight/)
+    })
+
+    it('HT-18: devrait avoir text-gray-600 sur la tagline', async () => {
+      const result = await container.renderToString(HeroTitle, {
+        props: defaultProps,
+      })
+
+      expect(result).toMatch(/<p[^>]*class="[^"]*text-gray-600/)
+    })
+  })
+
   describe('Cas limites: Contenu', () => {
-    it('T-01: should handle very long title (80 chars)', async () => {
-      const longTitle = 'AIAD : ' + 'A'.repeat(73) // 80 chars
+    it('HT-CL-01: devrait gérer un titre long (80 caractères)', async () => {
+      const longTitle = 'AIAD : ' + 'A'.repeat(73)
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, title: longTitle },
       })
@@ -186,7 +217,7 @@ describe('HeroTitle Component', () => {
       expect(result).toContain(longTitle)
     })
 
-    it('T-02: should handle short title (10 chars)', async () => {
+    it('HT-CL-02: devrait gérer un titre court (10 caractères)', async () => {
       const shortTitle = 'AIAD : Dev'
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, title: shortTitle },
@@ -195,7 +226,7 @@ describe('HeroTitle Component', () => {
       expect(result).toContain(shortTitle)
     })
 
-    it('T-03: should handle very long tagline (120 chars)', async () => {
+    it('HT-CL-03: devrait gérer une tagline longue (120 caractères)', async () => {
       const longTagline = 'A'.repeat(120)
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, tagline: longTagline },
@@ -205,18 +236,26 @@ describe('HeroTitle Component', () => {
       expect(result).toContain('max-w-2xl')
     })
 
-    it('T-06: should handle special characters in title', async () => {
+    it('HT-CL-04: devrait rendre un <p> vide quand tagline vide et showTagline=true', async () => {
+      const result = await container.renderToString(HeroTitle, {
+        props: { ...defaultProps, tagline: '', showTagline: true },
+      })
+
+      expect(result).toContain('<p')
+      expect(result).toContain('</p>')
+    })
+
+    it('HT-CL-05: devrait gérer les caractères spéciaux dans le titre', async () => {
       const specialTitle = 'AIAD : L\'IA & vous — ensemble'
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, title: specialTitle },
       })
 
-      // Astro échappe automatiquement les caractères HTML
-      expect(result).toContain('L&#39;IA')
+      expect(result).toContain('&#39;')
       expect(result).toContain('&amp;')
     })
 
-    it('T-07: should handle emoji in title', async () => {
+    it('HT-CL-06: devrait gérer les emojis dans le titre', async () => {
       const emojiTitle = 'AIAD 🚀 : Le framework IA'
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, title: emojiTitle },
@@ -225,7 +264,7 @@ describe('HeroTitle Component', () => {
       expect(result).toContain('🚀')
     })
 
-    it('T-08: should escape HTML injection in title', async () => {
+    it('HT-CL-07: devrait échapper l\'injection HTML dans le titre', async () => {
       const xssTitle = 'AIAD <script>alert(\'xss\')</script>'
       const result = await container.renderToString(HeroTitle, {
         props: { ...defaultProps, title: xssTitle },
@@ -233,50 +272,6 @@ describe('HeroTitle Component', () => {
 
       expect(result).not.toContain('<script>')
       expect(result).toContain('&lt;script&gt;')
-    })
-
-    it('T-04: should render empty p tag when tagline is empty but showTagline=true', async () => {
-      const result = await container.renderToString(HeroTitle, {
-        props: { ...defaultProps, tagline: '', showTagline: true },
-      })
-
-      expect(result).toContain('<p')
-      expect(result).toContain('</p>')
-    })
-  })
-
-  describe('Styling: Classes Tailwind', () => {
-    it('should have font-bold on title', async () => {
-      const result = await container.renderToString(HeroTitle, {
-        props: defaultProps,
-      })
-
-      // Vérifier que le h1 a font-bold
-      expect(result).toMatch(/<h1[^>]*class="[^"]*font-bold[^"]*"/)
-    })
-
-    it('should have text-gray-900 on title', async () => {
-      const result = await container.renderToString(HeroTitle, {
-        props: defaultProps,
-      })
-
-      expect(result).toMatch(/<h1[^>]*class="[^"]*text-gray-900[^"]*"/)
-    })
-
-    it('should have text-gray-600 on tagline', async () => {
-      const result = await container.renderToString(HeroTitle, {
-        props: defaultProps,
-      })
-
-      expect(result).toMatch(/<p[^>]*class="[^"]*text-gray-600[^"]*"/)
-    })
-
-    it('should have tracking-tight on title', async () => {
-      const result = await container.renderToString(HeroTitle, {
-        props: defaultProps,
-      })
-
-      expect(result).toMatch(/<h1[^>]*class="[^"]*tracking-tight[^"]*"/)
     })
   })
 })

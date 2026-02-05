@@ -164,3 +164,4 @@ Toutes les spécifications doivent être rédigées en français.
 | T-001-F7 StatsRow | @docs/specs/US-001/T-001-F7-composant-StatsRow.md |
 | T-001-F8 HeroSection | @docs/specs/US-001/T-001-F8-composant-HeroSection.md |
 | T-001-F9 Intégration accueil | @docs/specs/US-001/T-001-F9-integration-page-accueil.md |
+| T-001-T1 Tests schémas Zod | @docs/specs/US-001/T-001-T1-tests-unitaires-schemas-zod.md |

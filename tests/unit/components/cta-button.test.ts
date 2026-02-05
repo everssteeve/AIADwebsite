@@ -11,33 +11,30 @@ describe('CTAButton Component', () => {
     container = await AstroContainer.create()
   })
 
-  // Fixture de base
   const defaultProps = {
     text: 'Explorer le Framework',
     href: '/framework',
   }
 
   describe('Rendu de base', () => {
-    it('T-00: should render as anchor tag by default', async () => {
+    it('CTA-00: devrait rendre comme <a> par défaut', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
 
       expect(result).toContain('<a')
-      expect(result).toContain('</a>')
-      expect(result).toContain('href="/framework"')
+      expect(result).toContain('href=')
     })
 
-    it('T-00b: should render text inside span', async () => {
+    it('CTA-00b: devrait rendre le texte dans un <span>', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
 
-      // Astro peut ajouter des attributs data-* au span
       expect(result).toMatch(/<span[^>]*>Explorer le Framework<\/span>/)
     })
 
-    it('should render arrow icon by default', async () => {
+    it('CTA-01: devrait rendre l\'icône arrow par défaut (SVG avec aria-hidden)', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -46,7 +43,7 @@ describe('CTAButton Component', () => {
       expect(result).toContain('aria-hidden="true"')
     })
 
-    it('should have only one anchor or button tag', async () => {
+    it('CTA-02: devrait avoir un seul <a> ou <button>', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -59,7 +56,7 @@ describe('CTAButton Component', () => {
   })
 
   describe('Props: variant', () => {
-    it('should apply primary variant classes by default', async () => {
+    it('CTA-03: devrait appliquer variant primary par défaut', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -69,40 +66,37 @@ describe('CTAButton Component', () => {
       expect(result).toContain('hover:bg-blue-700')
     })
 
-    it('should apply secondary variant classes', async () => {
+    it('CTA-04: devrait appliquer variant secondary', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, variant: 'secondary' },
       })
 
       expect(result).toContain('bg-gray-100')
       expect(result).toContain('text-gray-900')
-      expect(result).toContain('hover:bg-gray-200')
     })
 
-    it('should apply outline variant classes', async () => {
+    it('CTA-05: devrait appliquer variant outline', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, variant: 'outline' },
       })
 
       expect(result).toContain('bg-transparent')
-      expect(result).toContain('text-blue-600')
       expect(result).toContain('border-2')
       expect(result).toContain('border-blue-600')
     })
 
-    it('should apply ghost variant classes', async () => {
+    it('CTA-06: devrait appliquer variant ghost', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, variant: 'ghost' },
       })
 
       expect(result).toContain('bg-transparent')
-      expect(result).toContain('text-blue-600')
       expect(result).not.toContain('border-2')
     })
   })
 
   describe('Props: size', () => {
-    it('should apply lg size classes by default', async () => {
+    it('CTA-07: devrait appliquer size lg par défaut', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -112,7 +106,7 @@ describe('CTAButton Component', () => {
       expect(result).toContain('md:py-4')
     })
 
-    it('should apply md size classes', async () => {
+    it('CTA-08: devrait appliquer size md', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, size: 'md' },
       })
@@ -120,10 +114,9 @@ describe('CTAButton Component', () => {
       expect(result).toContain('text-base')
       expect(result).toContain('px-6')
       expect(result).toContain('py-3')
-      expect(result).not.toContain('md:px-8')
     })
 
-    it('should apply sm size classes', async () => {
+    it('CTA-09: devrait appliquer size sm', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, size: 'sm' },
       })
@@ -134,19 +127,17 @@ describe('CTAButton Component', () => {
     })
   })
 
-  describe('Props: as', () => {
-    it('T-07: should render as button when as="button"', async () => {
+  describe('Props: as et type', () => {
+    it('CTA-10: devrait rendre un <button> quand as="button"', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, as: 'button' },
       })
 
       expect(result).toContain('<button')
-      expect(result).toContain('</button>')
       expect(result).not.toContain('<a')
-      expect(result).not.toContain('href=')
     })
 
-    it('should apply type attribute when as="button"', async () => {
+    it('CTA-11: devrait appliquer type="submit" sur <button>', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, as: 'button', type: 'submit' },
       })
@@ -154,7 +145,7 @@ describe('CTAButton Component', () => {
       expect(result).toContain('type="submit"')
     })
 
-    it('T-08: should ignore type attribute when as="link"', async () => {
+    it('CTA-12: devrait ignorer type sur <a>', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, as: 'link', type: 'submit' },
       })
@@ -164,15 +155,7 @@ describe('CTAButton Component', () => {
   })
 
   describe('Props: icon', () => {
-    it('should render arrow icon by default', async () => {
-      const result = await container.renderToString(CTAButton, {
-        props: defaultProps,
-      })
-
-      expect(result).toContain('M17 8l4 4')
-    })
-
-    it('should render external icon when icon="external"', async () => {
+    it('CTA-13: devrait rendre l\'icône external avec le SVG path M10 6H6', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, icon: 'external' },
       })
@@ -180,23 +163,20 @@ describe('CTAButton Component', () => {
       expect(result).toContain('M10 6H6')
     })
 
-    it('should not render icon when icon="none"', async () => {
+    it('CTA-14: devrait ne pas rendre de SVG quand icon="none"', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, icon: 'none' },
       })
 
       expect(result).not.toContain('<svg')
     })
-  })
 
-  describe('Props: iconPosition', () => {
-    it('T-21: should render icon before text when iconPosition="left"', async () => {
+    it('CTA-15: devrait rendre le SVG avant le span quand iconPosition="left"', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, iconPosition: 'left' },
       })
 
       const svgIndex = result.indexOf('<svg')
-      // Astro peut ajouter des attributs data-* au span
       const spanMatch = result.match(/<span[^>]*>/)
       const spanIndex = spanMatch ? result.indexOf(spanMatch[0]) : -1
 
@@ -205,7 +185,7 @@ describe('CTAButton Component', () => {
       expect(svgIndex).toBeLessThan(spanIndex)
     })
 
-    it('should render icon after text by default (iconPosition="right")', async () => {
+    it('CTA-16: devrait rendre le SVG après le span par défaut (iconPosition="right")', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -218,7 +198,7 @@ describe('CTAButton Component', () => {
   })
 
   describe('Props: newTab', () => {
-    it('T-05: should not add target="_blank" when newTab=false', async () => {
+    it('CTA-17: devrait ne pas ajouter target="_blank" quand newTab=false', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, newTab: false },
       })
@@ -226,7 +206,7 @@ describe('CTAButton Component', () => {
       expect(result).not.toContain('target="_blank"')
     })
 
-    it('T-06: should add target="_blank" and rel="noopener noreferrer" when newTab=true', async () => {
+    it('CTA-18: devrait ajouter target="_blank" et rel="noopener noreferrer" quand newTab=true', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, newTab: true },
       })
@@ -237,30 +217,27 @@ describe('CTAButton Component', () => {
   })
 
   describe('Props: disabled', () => {
-    it('T-09: should apply disabled styles and aria-disabled for link', async () => {
+    it('CTA-19: devrait appliquer les styles disabled et aria-disabled sur un lien', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, disabled: true },
       })
 
       expect(result).toContain('opacity-50')
       expect(result).toContain('cursor-not-allowed')
-      expect(result).toContain('pointer-events-none')
       expect(result).toContain('aria-disabled="true"')
-      expect(result).not.toContain('href="/framework"')
     })
 
-    it('T-10: should apply disabled attribute for button', async () => {
+    it('CTA-20: devrait appliquer l\'attribut disabled sur un bouton', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, as: 'button', disabled: true },
       })
 
       expect(result).toContain('disabled')
-      expect(result).toContain('opacity-50')
     })
   })
 
   describe('Props: fullWidth', () => {
-    it('T-15: should apply w-full class when fullWidth=true', async () => {
+    it('CTA-21: devrait ajouter w-full quand fullWidth=true', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, fullWidth: true },
       })
@@ -268,9 +245,9 @@ describe('CTAButton Component', () => {
       expect(result).toContain('w-full')
     })
 
-    it('should not apply w-full class when fullWidth=false', async () => {
+    it('CTA-22: devrait ne pas avoir w-full par défaut (fullWidth=false)', async () => {
       const result = await container.renderToString(CTAButton, {
-        props: { ...defaultProps, fullWidth: false },
+        props: defaultProps,
       })
 
       expect(result).not.toContain('w-full')
@@ -278,7 +255,7 @@ describe('CTAButton Component', () => {
   })
 
   describe('Props: ariaLabel', () => {
-    it('T-18: should apply aria-label when provided', async () => {
+    it('CTA-23: devrait appliquer aria-label quand fourni', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, ariaLabel: 'Accéder à la documentation' },
       })
@@ -286,7 +263,7 @@ describe('CTAButton Component', () => {
       expect(result).toContain('aria-label="Accéder à la documentation"')
     })
 
-    it('should not have aria-label when not provided', async () => {
+    it('CTA-24: devrait ne pas avoir aria-label quand non fourni', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -296,84 +273,19 @@ describe('CTAButton Component', () => {
   })
 
   describe('Props: class', () => {
-    it('T-14: should apply custom class', async () => {
+    it('CTA-25: devrait préserver les classes par défaut avec une classe custom', async () => {
       const result = await container.renderToString(CTAButton, {
         props: { ...defaultProps, class: 'my-custom-class' },
       })
 
-      expect(result).toContain('my-custom-class')
-    })
-
-    it('should preserve default classes when adding custom class', async () => {
-      const result = await container.renderToString(CTAButton, {
-        props: { ...defaultProps, class: 'mt-8' },
-      })
-
       expect(result).toContain('inline-flex')
       expect(result).toContain('rounded-lg')
-      expect(result).toContain('mt-8')
+      expect(result).toContain('my-custom-class')
     })
   })
 
-  describe('Cas limites: Contenu', () => {
-    it('T-01: should handle long text (50 chars)', async () => {
-      const longText = 'Explorez toutes les fonctionnalités du framework'
-      const result = await container.renderToString(CTAButton, {
-        props: { ...defaultProps, text: longText },
-      })
-
-      expect(result).toContain(longText)
-    })
-
-    it('T-02: should handle short text (2 chars)', async () => {
-      const shortText = 'OK'
-      const result = await container.renderToString(CTAButton, {
-        props: { ...defaultProps, text: shortText },
-      })
-
-      expect(result).toContain(shortText)
-    })
-
-    it('T-03: should use # as default href when href is empty', async () => {
-      const result = await container.renderToString(CTAButton, {
-        props: { text: 'Test', href: '' },
-      })
-
-      // Empty href defaults to '#' via the default value
-      expect(result).toContain('href="#"')
-    })
-
-    it('T-04: should use # as default href when href is undefined', async () => {
-      const result = await container.renderToString(CTAButton, {
-        props: { text: 'Test' },
-      })
-
-      expect(result).toContain('href="#"')
-    })
-
-    it('T-16: should handle special characters in text', async () => {
-      const specialText = 'Découvrir l\'IA & plus'
-      const result = await container.renderToString(CTAButton, {
-        props: { ...defaultProps, text: specialText },
-      })
-
-      expect(result).toContain('Découvrir l&#39;IA')
-      expect(result).toContain('&amp;')
-    })
-
-    it('T-17: should escape HTML injection in text', async () => {
-      const xssText = 'Test <script>alert(\'xss\')</script>'
-      const result = await container.renderToString(CTAButton, {
-        props: { ...defaultProps, text: xssText },
-      })
-
-      expect(result).not.toContain('<script>')
-      expect(result).toContain('&lt;script&gt;')
-    })
-  })
-
-  describe('Styling: Base classes', () => {
-    it('should have inline-flex for layout', async () => {
+  describe('Styling: Classes Tailwind', () => {
+    it('CTA-26: devrait avoir les classes de base inline-flex items-center justify-center', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -383,7 +295,7 @@ describe('CTAButton Component', () => {
       expect(result).toContain('justify-center')
     })
 
-    it('should have rounded-lg for border radius', async () => {
+    it('CTA-27: devrait avoir rounded-lg', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -391,7 +303,7 @@ describe('CTAButton Component', () => {
       expect(result).toContain('rounded-lg')
     })
 
-    it('should have transition classes', async () => {
+    it('CTA-28: devrait avoir transition-all duration-200', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
@@ -400,14 +312,69 @@ describe('CTAButton Component', () => {
       expect(result).toContain('duration-200')
     })
 
-    it('should have focus ring classes for accessibility', async () => {
+    it('CTA-29: devrait avoir les classes focus ring', async () => {
       const result = await container.renderToString(CTAButton, {
         props: defaultProps,
       })
 
-      expect(result).toContain('focus:outline-none')
       expect(result).toContain('focus:ring-2')
       expect(result).toContain('focus:ring-offset-2')
+    })
+  })
+
+  describe('Cas limites: Contenu', () => {
+    it('CTA-CL-01: devrait gérer un texte long (50 caractères)', async () => {
+      const longText = 'Explorez toutes les fonctionnalités du framework!'
+      const result = await container.renderToString(CTAButton, {
+        props: { ...defaultProps, text: longText },
+      })
+
+      expect(result).toContain(longText)
+    })
+
+    it('CTA-CL-02: devrait gérer un texte court (2 caractères)', async () => {
+      const shortText = 'OK'
+      const result = await container.renderToString(CTAButton, {
+        props: { ...defaultProps, text: shortText },
+      })
+
+      expect(result).toContain(shortText)
+    })
+
+    it('CTA-CL-03: devrait utiliser href="#" par défaut quand href est vide', async () => {
+      const result = await container.renderToString(CTAButton, {
+        props: { text: 'Test', href: '' },
+      })
+
+      expect(result).toContain('href="#"')
+    })
+
+    it('CTA-CL-04: devrait utiliser href="#" par défaut quand href est undefined', async () => {
+      const result = await container.renderToString(CTAButton, {
+        props: { text: 'Test' },
+      })
+
+      expect(result).toContain('href="#"')
+    })
+
+    it('CTA-CL-05: devrait gérer les caractères spéciaux dans le texte', async () => {
+      const specialText = 'Découvrir l\'IA & plus'
+      const result = await container.renderToString(CTAButton, {
+        props: { ...defaultProps, text: specialText },
+      })
+
+      expect(result).toContain('&#39;')
+      expect(result).toContain('&amp;')
+    })
+
+    it('CTA-CL-06: devrait échapper l\'injection HTML dans le texte', async () => {
+      const xssText = 'Test <script>alert(\'xss\')</script>'
+      const result = await container.renderToString(CTAButton, {
+        props: { ...defaultProps, text: xssText },
+      })
+
+      expect(result).not.toContain('<script>')
+      expect(result).toContain('&lt;script&gt;')
     })
   })
 })

@@ -139,7 +139,7 @@ const {
 // Charger les statistiques depuis Content Collections si non fournies via props
 let stats: StatItem[] = []
 
-if (statsProp && statsProp.length > 0) {
+if (statsProp !== undefined) {
   stats = statsProp
 } else {
   try {

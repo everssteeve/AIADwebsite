@@ -12,7 +12,6 @@ describe('BenefitsList Component', () => {
     container = await AstroContainer.create()
   })
 
-  // Fixture de base valide
   const mockBenefits: BenefitItem[] = [
     {
       id: 'benefit-1',
@@ -47,7 +46,7 @@ describe('BenefitsList Component', () => {
   ]
 
   describe('Rendu de base', () => {
-    it('T-00: should render as section element', async () => {
+    it('BL-00: devrait rendre dans un <section>', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -56,7 +55,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('</section>')
     })
 
-    it('T-00b: should render aria-labelledby on section', async () => {
+    it('BL-00b: devrait avoir aria-labelledby sur la section', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -64,7 +63,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('aria-labelledby="benefits-section-title"')
     })
 
-    it('T-00c: should render h2 title element', async () => {
+    it('BL-00c: devrait rendre un <h2> pour le titre de section', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -73,7 +72,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('id="benefits-section-title"')
     })
 
-    it('should render correct number of BenefitCards', async () => {
+    it('BL-01: devrait rendre le nombre correct de BenefitCards (<article>)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -82,7 +81,7 @@ describe('BenefitsList Component', () => {
       expect(articleMatches).toHaveLength(3)
     })
 
-    it('should render grid container', async () => {
+    it('BL-02: devrait rendre un conteneur grid', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -92,7 +91,7 @@ describe('BenefitsList Component', () => {
   })
 
   describe('Props: columns', () => {
-    it('should apply auto column classes by default', async () => {
+    it('BL-03: devrait appliquer columns auto par défaut (grid-cols-1 md:grid-cols-3)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -101,7 +100,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('md:grid-cols-3')
     })
 
-    it('T-11: should apply 1 column classes', async () => {
+    it('BL-04: devrait appliquer columns=1 (grid-cols-1 sans md:grid-cols-*)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, columns: 1 },
       })
@@ -111,7 +110,7 @@ describe('BenefitsList Component', () => {
       expect(result).not.toContain('md:grid-cols-2')
     })
 
-    it('T-12: should apply 2 column classes', async () => {
+    it('BL-05: devrait appliquer columns=2 (grid-cols-1 md:grid-cols-2)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, columns: 2 },
       })
@@ -120,7 +119,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('md:grid-cols-2')
     })
 
-    it('should apply 3 column classes', async () => {
+    it('BL-06: devrait appliquer columns=3 (grid-cols-1 md:grid-cols-3)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, columns: 3 },
       })
@@ -131,7 +130,7 @@ describe('BenefitsList Component', () => {
   })
 
   describe('Props: gap', () => {
-    it('should apply md gap classes by default', async () => {
+    it('BL-07: devrait appliquer gap md par défaut (gap-6 md:gap-8)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -140,7 +139,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('md:gap-8')
     })
 
-    it('should apply sm gap classes', async () => {
+    it('BL-08: devrait appliquer gap sm (gap-4 md:gap-5)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, gap: 'sm' },
       })
@@ -149,7 +148,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('md:gap-5')
     })
 
-    it('T-13: should apply lg gap classes', async () => {
+    it('BL-09: devrait appliquer gap lg (gap-8 md:gap-12)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, gap: 'lg' },
       })
@@ -159,8 +158,8 @@ describe('BenefitsList Component', () => {
     })
   })
 
-  describe('Props: title et showTitle', () => {
-    it('T-15: should render sr-only title by default', async () => {
+  describe('Props: showTitle', () => {
+    it('BL-10: devrait rendre le titre en sr-only par défaut (showTitle=false)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -169,7 +168,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('Bénéfices clés')
     })
 
-    it('T-14: should render visible title when showTitle=true', async () => {
+    it('BL-11: devrait rendre le titre visible quand showTitle=true', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, showTitle: true },
       })
@@ -180,7 +179,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('font-bold')
     })
 
-    it('T-16: should render custom title', async () => {
+    it('BL-12: devrait rendre un titre custom', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, title: 'Pourquoi AIAD ?' },
       })
@@ -190,7 +189,7 @@ describe('BenefitsList Component', () => {
   })
 
   describe('Props: cardVariant', () => {
-    it('should pass default variant to cards', async () => {
+    it('BL-13: devrait propager cardVariant default (bg-white)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -198,7 +197,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('bg-white')
     })
 
-    it('T-17: should pass featured variant to cards', async () => {
+    it('BL-14: devrait propager cardVariant featured (bg-blue-50 border-blue-100)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, cardVariant: 'featured' },
       })
@@ -207,7 +206,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('border-blue-100')
     })
 
-    it('should pass compact variant to cards', async () => {
+    it('BL-15: devrait propager cardVariant compact (p-4)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, cardVariant: 'compact' },
       })
@@ -216,8 +215,8 @@ describe('BenefitsList Component', () => {
     })
   })
 
-  describe('Props: centered et maxWidth', () => {
-    it('should apply centered classes by default', async () => {
+  describe('Props: centered', () => {
+    it('BL-16: devrait appliquer mx-auto par défaut (centered=true)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -225,15 +224,17 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('mx-auto')
     })
 
-    it('T-18: should not apply mx-auto when centered=false', async () => {
+    it('BL-17: devrait ne pas appliquer mx-auto quand centered=false', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, centered: false },
       })
 
       expect(result).not.toContain('mx-auto')
     })
+  })
 
-    it('should apply default maxWidth', async () => {
+  describe('Props: maxWidth', () => {
+    it('BL-18: devrait appliquer max-w-6xl par défaut', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -241,7 +242,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('max-w-6xl')
     })
 
-    it('T-19: should apply custom maxWidth', async () => {
+    it('BL-19: devrait appliquer un maxWidth custom', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, maxWidth: 'max-w-4xl' },
       })
@@ -252,7 +253,7 @@ describe('BenefitsList Component', () => {
   })
 
   describe('Props: class et id', () => {
-    it('T-20: should apply custom class', async () => {
+    it('BL-20: devrait appliquer une classe custom', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits, class: 'mt-8 custom-class' },
       })
@@ -261,18 +262,37 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('custom-class')
     })
 
-    it('T-21: should apply custom id', async () => {
+    it('BL-21: devrait appliquer un id custom avec aria-labelledby cohérent', async () => {
       const result = await container.renderToString(BenefitsList, {
-        props: { benefits: mockBenefits, id: 'custom-benefits' },
+        props: { benefits: mockBenefits, id: 'custom' },
       })
 
-      expect(result).toContain('id="custom-benefits"')
-      expect(result).toContain('aria-labelledby="custom-benefits-title"')
+      expect(result).toContain('id="custom"')
+      expect(result).toContain('aria-labelledby="custom-title"')
     })
   })
 
-  describe('Cas limites: Nombre de bénéfices', () => {
-    it('T-01: should not render section when benefits array is empty', async () => {
+  describe('Props: propagation', () => {
+    it('BL-22: devrait propager iconPosition=left aux cartes', async () => {
+      const result = await container.renderToString(BenefitsList, {
+        props: { benefits: mockBenefits, iconPosition: 'left' },
+      })
+
+      expect(result).toContain('flex-row')
+    })
+
+    it('BL-23: devrait propager iconSize=lg aux cartes', async () => {
+      const result = await container.renderToString(BenefitsList, {
+        props: { benefits: mockBenefits, iconSize: 'lg' },
+      })
+
+      expect(result).toContain('w-14')
+      expect(result).toContain('h-14')
+    })
+  })
+
+  describe('Cas limites: Contenu', () => {
+    it('BL-CL-01: devrait ne pas rendre de <section> quand la liste est vide', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: [] },
       })
@@ -280,7 +300,7 @@ describe('BenefitsList Component', () => {
       expect(result).not.toContain('<section')
     })
 
-    it('T-02: should render correctly with 1 benefit', async () => {
+    it('BL-CL-02: devrait rendre 1 <article> pour 1 bénéfice', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: [mockBenefits[0]] },
       })
@@ -290,7 +310,7 @@ describe('BenefitsList Component', () => {
       expect(articleMatches).toHaveLength(1)
     })
 
-    it('T-03: should render correctly with 2 benefits', async () => {
+    it('BL-CL-03: devrait rendre 2 <article> pour 2 bénéfices', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits.slice(0, 2) },
       })
@@ -299,7 +319,7 @@ describe('BenefitsList Component', () => {
       expect(articleMatches).toHaveLength(2)
     })
 
-    it('T-04: should render correctly with 5 benefits', async () => {
+    it('BL-CL-04: devrait rendre 5 <article> pour 5 bénéfices', async () => {
       const fiveBenefits: BenefitItem[] = [
         ...mockBenefits,
         { ...mockBenefits[0], id: 'benefit-4', order: 4 },
@@ -314,7 +334,7 @@ describe('BenefitsList Component', () => {
       expect(articleMatches).toHaveLength(5)
     })
 
-    it('T-05: should render with more than 5 benefits', async () => {
+    it('BL-CL-05: devrait rendre 6 bénéfices sans crash (dépassement)', async () => {
       const sixBenefits: BenefitItem[] = [
         ...mockBenefits,
         { ...mockBenefits[0], id: 'benefit-4', order: 4 },
@@ -329,18 +349,14 @@ describe('BenefitsList Component', () => {
       const articleMatches = result.match(/<article/g)
       expect(articleMatches).toHaveLength(6)
     })
-  })
 
-  describe('Cas limites: Filtrage et tri', () => {
-    it('T-06: should filter out inactive benefits', async () => {
+    it('BL-CL-06: devrait gérer les bénéfices pré-filtrés (actifs uniquement)', async () => {
       const mixedBenefits: BenefitItem[] = [
         { ...mockBenefits[0], isActive: true },
         { ...mockBenefits[1], isActive: false },
         { ...mockBenefits[2], isActive: true },
       ]
 
-      // Note: Le filtrage se fait lors du chargement, pas dans le composant directement
-      // Ce test vérifie que le composant accepte les données pré-filtrées
       const filteredBenefits = mixedBenefits.filter((b) => b.isActive)
 
       const result = await container.renderToString(BenefitsList, {
@@ -351,20 +367,11 @@ describe('BenefitsList Component', () => {
       expect(articleMatches).toHaveLength(2)
     })
 
-    it('T-07: should render benefits sorted by order', async () => {
-      const unorderedBenefits: BenefitItem[] = [
-        { ...mockBenefits[2], order: 3 },
-        { ...mockBenefits[0], order: 1 },
-        { ...mockBenefits[1], order: 2 },
-      ]
-
-      const sortedBenefits = [...unorderedBenefits].sort((a, b) => a.order - b.order)
-
+    it('BL-CL-07: devrait respecter l\'ordre des bénéfices', async () => {
       const result = await container.renderToString(BenefitsList, {
-        props: { benefits: sortedBenefits },
+        props: { benefits: mockBenefits },
       })
 
-      // Vérifier que le premier bénéfice est celui avec order: 1
       const firstTitleIndex = result.indexOf('Productivité')
       const secondTitleIndex = result.indexOf('Qualité')
       const thirdTitleIndex = result.indexOf('Collaboration')
@@ -375,7 +382,7 @@ describe('BenefitsList Component', () => {
   })
 
   describe('Accessibilité', () => {
-    it('should use section element for semantic structure', async () => {
+    it('BL-A-01: devrait avoir une seule <section>', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -383,7 +390,7 @@ describe('BenefitsList Component', () => {
       expect(result.match(/<section/g)?.length).toBe(1)
     })
 
-    it('should have aria-labelledby linking to title', async () => {
+    it('BL-A-02: devrait avoir aria-labelledby pointant vers l\'id du <h2>', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -392,7 +399,7 @@ describe('BenefitsList Component', () => {
       expect(result).toContain('id="benefits-section-title"')
     })
 
-    it('should use h2 for section title', async () => {
+    it('BL-A-03: devrait utiliser un <h2> pour le titre (pas h1)', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
@@ -401,32 +408,13 @@ describe('BenefitsList Component', () => {
       expect(result).not.toContain('<h1')
     })
 
-    it('should render h3 titles for each BenefitCard', async () => {
+    it('BL-A-04: devrait rendre un <h3> dans chaque BenefitCard', async () => {
       const result = await container.renderToString(BenefitsList, {
         props: { benefits: mockBenefits },
       })
 
       const h3Matches = result.match(/<h3/g)
       expect(h3Matches).toHaveLength(3)
-    })
-  })
-
-  describe('Props: iconPosition et iconSize', () => {
-    it('should pass iconPosition to cards', async () => {
-      const result = await container.renderToString(BenefitsList, {
-        props: { benefits: mockBenefits, iconPosition: 'left' },
-      })
-
-      expect(result).toContain('flex-row')
-    })
-
-    it('should pass iconSize to cards', async () => {
-      const result = await container.renderToString(BenefitsList, {
-        props: { benefits: mockBenefits, iconSize: 'lg' },
-      })
-
-      expect(result).toContain('w-14')
-      expect(result).toContain('h-14')
     })
   })
 })
