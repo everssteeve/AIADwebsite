@@ -63,7 +63,7 @@
 | T-001-T2 | Tests unitaires composants (HeroTitle, CTA, BenefitCard) | 3h | T-001-F1 à F7 | ✅ Terminé |
 | T-001-T3 | Tests d'intégration HeroSection | 2h | T-001-F8 | ✅ Terminé |
 | T-001-T4 | Test accessibilité (a11y) hero section | 2h | T-001-F9 | ✅ Terminé |
-| T-001-T5 | Test utilisateur temps de lecture < 30s (5 utilisateurs) | 3h | T-001-F9 | 📋 À faire |
+| T-001-T5 | Test utilisateur temps de lecture < 30s (5 utilisateurs) | 3h | T-001-F9 | 🚧 En cours |
 
 ---
 
@@ -136,7 +136,7 @@ graph TD
         T2[T-001-T2<br/>Tests composants ✅]
         T3[T-001-T3<br/>Tests intégration ✅]
         T4[T-001-T4<br/>Tests a11y ✅]
-        T5[T-001-T5<br/>Tests utilisateur]
+        T5[T-001-T5<br/>Tests utilisateur 🚧]
     end
 
     B1 --> B4
@@ -205,6 +205,7 @@ graph TD
 | T-001-T2 | [T-001-T2-tests-unitaires-composants.md](./T-001-T2-tests-unitaires-composants.md) |
 | T-001-T3 | [T-001-T3-tests-integration-HeroSection.md](./T-001-T3-tests-integration-HeroSection.md) |
 | T-001-T4 | [T-001-T4-tests-accessibilite-hero-section.md](./T-001-T4-tests-accessibilite-hero-section.md) |
+| T-001-T5 | [T-001-T5-tests-utilisateur-temps-lecture.md](./T-001-T5-tests-utilisateur-temps-lecture.md) |
 
 ---
 
@@ -214,3 +215,4 @@ graph TD
 |---------|------|---------------|
 | 1.0 | 26/01/2026 | Création initiale avec décomposition en 20 tâches |
 | 1.1 | 09/02/2026 | T-001-T3 terminé (125 tests intégration), T-001-T4 terminé (87 tests a11y × 3 viewports) |
+| 1.2 | 09/02/2026 | T-001-T5 volet 1 terminé (43 tests E2E Playwright), protocole utilisateur documenté |

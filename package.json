@@ -17,6 +17,9 @@
     "test:a11y:headed": "playwright test tests/a11y/ --headed",
     "test:a11y:mobile": "playwright test tests/a11y/ --project=mobile",
     "test:a11y:report": "playwright test tests/a11y/ --reporter=html && playwright show-report",
+    "test:e2e": "playwright test tests/e2e/",
+    "test:e2e:reading": "playwright test tests/e2e/hero-reading-time.e2e.test.ts",
+    "test:e2e:headed": "playwright test tests/e2e/ --headed",
     "test": "vitest run"
   },
   "dependencies": {
