@@ -182,3 +182,4 @@ Toutes les spécifications doivent être rédigées en français.
 | Tâche | Fichier |
 |-------|---------|
 | T-004-B1 Types TypeScript navigation | @docs/specs/US-004/T-004-B1-types-typescript-navigation.md |
+| T-004-B2 Schémas Zod navigation | @docs/specs/US-004/T-004-B2-schemas-zod-navigation.md |
