@@ -58,12 +58,15 @@ Voir `ARCHITECTURE.md` pour les détails complets.
 ## Commandes (après initialisation du projet Astro)
 
 ```bash
-pnpm dev          # Serveur de développement
-pnpm build        # Build + index Pagefind
-pnpm preview      # Preview production
-pnpm lint         # ESLint
-pnpm typecheck    # Astro check + tsc
-pnpm test         # Tous les tests
+pnpm dev              # Serveur de développement
+pnpm build            # Build + index Pagefind
+pnpm preview          # Preview production
+pnpm lint             # ESLint
+pnpm typecheck        # Astro check + tsc
+pnpm test             # Tous les tests
+pnpm test:unit        # Tests unitaires (Vitest)
+pnpm test:a11y        # Tests accessibilité (Playwright + axe-core)
+pnpm test:a11y:headed # Tests a11y avec navigateur visible
 ```
 
 ## Conventions de code
@@ -167,3 +170,4 @@ Toutes les spécifications doivent être rédigées en français.
 | T-001-T1 Tests schémas Zod | @docs/specs/US-001/T-001-T1-tests-unitaires-schemas-zod.md |
 | T-001-T2 Tests composants | @docs/specs/US-001/T-001-T2-tests-unitaires-composants.md |
 | T-001-T3 Tests intégration HeroSection | @docs/specs/US-001/T-001-T3-tests-integration-HeroSection.md |
+| T-001-T4 Tests accessibilité HeroSection | @docs/specs/US-001/T-001-T4-tests-accessibilite-hero-section.md |

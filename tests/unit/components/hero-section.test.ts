@@ -412,6 +412,8 @@ describe('HeroSection', () => {
       const result = await container.renderToString(HeroSection, {
         props: {
           heroContent: { ...mockHeroContent, valueProposition: '' },
+          showBenefits: false,
+          showStats: false,
         },
       })
 

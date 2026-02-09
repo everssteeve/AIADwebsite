@@ -247,12 +247,12 @@ describe('StatDisplay Component', () => {
       expect(result).toContain('text-gray-500')
     })
 
-    it('SD-19: devrait avoir text-blue-500 sur la source lien', async () => {
+    it('SD-19: devrait avoir text-blue-600 sur la source lien', async () => {
       const result = await container.renderToString(StatDisplay, {
         props: { ...defaultProps, sourceUrl: 'https://example.com' },
       })
 
-      expect(result).toContain('text-blue-500')
+      expect(result).toContain('text-blue-600')
     })
 
     it('SD-20: devrait avoir not-italic sur <cite>', async () => {
