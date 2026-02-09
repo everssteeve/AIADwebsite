@@ -34,7 +34,16 @@
       "Bash(findstr:*)",
       "Bash(timeout:*)",
       "Bash(pnpm vitest run:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm exec playwright install:*)",
+      "Bash(pnpm test:a11y:*)",
+      "Bash(pnpm exec playwright test:*)",
+      "Bash(git status:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(dir:*)",
+      "Bash(cmd /c:*)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
@@ -43,7 +52,8 @@
     "additionalDirectories": [
       "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\src\\content",
       "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\tests",
-      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite"
+      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite",
+      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\docs\\specs\\US-002"
     ]
   }
 }

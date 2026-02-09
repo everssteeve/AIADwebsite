@@ -26,3 +26,28 @@ export type {
 } from './stat'
 
 export { STAT_UNITS } from './stat'
+
+export type {
+  NavigationItem,
+  NavigationItemInput,
+  NavigationItemUpdate,
+  NavigationTree,
+  NavigationSection,
+  NavigationBadge,
+  BreadcrumbItem,
+  BreadcrumbList,
+  TableOfContentsItem,
+  TableOfContentsList,
+  TOCHeadingDepth,
+  PrevNextItem,
+  PrevNextLinks,
+  FlatNavigationItem,
+  FlatNavigationList,
+} from './navigation'
+
+export {
+  NAVIGATION_SECTIONS,
+  NAVIGATION_BADGES,
+  MAX_NAVIGATION_DEPTH,
+  TOC_HEADING_DEPTHS,
+} from './navigation'
