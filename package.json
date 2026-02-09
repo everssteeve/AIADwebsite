@@ -13,6 +13,10 @@
     "format": "prettier --write .",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
+    "test:a11y": "playwright test tests/a11y/",
+    "test:a11y:headed": "playwright test tests/a11y/ --headed",
+    "test:a11y:mobile": "playwright test tests/a11y/ --project=mobile",
+    "test:a11y:report": "playwright test tests/a11y/ --reporter=html && playwright show-report",
     "test": "vitest run"
   },
   "dependencies": {
@@ -25,6 +29,8 @@
     "tailwindcss": "^3.4.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@playwright/test": "^1.58.2",
     "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
