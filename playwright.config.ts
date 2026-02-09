@@ -1,7 +1,8 @@
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
-  testDir: 'tests/a11y',
+  testDir: 'tests',
+  testIgnore: ['**/unit/**', '**/integration/**'],
   fullyParallel: true,
   retries: 1,
   reporter: 'list',

@@ -67,6 +67,9 @@ pnpm test             # Tous les tests
 pnpm test:unit        # Tests unitaires (Vitest)
 pnpm test:a11y        # Tests accessibilité (Playwright + axe-core)
 pnpm test:a11y:headed # Tests a11y avec navigateur visible
+pnpm test:e2e         # Tests E2E (Playwright)
+pnpm test:e2e:reading # Tests temps de lecture hero
+pnpm test:e2e:headed  # Tests E2E avec navigateur visible
 ```
 
 ## Conventions de code
@@ -171,3 +174,4 @@ Toutes les spécifications doivent être rédigées en français.
 | T-001-T2 Tests composants | @docs/specs/US-001/T-001-T2-tests-unitaires-composants.md |
 | T-001-T3 Tests intégration HeroSection | @docs/specs/US-001/T-001-T3-tests-integration-HeroSection.md |
 | T-001-T4 Tests accessibilité HeroSection | @docs/specs/US-001/T-001-T4-tests-accessibilite-hero-section.md |
+| T-001-T5 Tests temps de lecture | @docs/specs/US-001/T-001-T5-tests-utilisateur-temps-lecture.md |
