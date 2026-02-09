@@ -38,15 +38,28 @@
 
 ---
 
+## US-004 : Naviguer facilement dans le framework
+
+### Backend / Données
+
+| ID | Titre | Status | Assigné | Spec |
+|----|-------|--------|---------|------|
+| T-004-B1 | Types TypeScript navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-B1-types-typescript-navigation.md) |
+| T-004-B2 | Schémas Zod navigation | 🔵 À faire | - | [Spec](./US-004/spec-US-004.md) |
+| T-004-B3 | Configuration navigation | 🔵 À faire | - | [Spec](./US-004/spec-US-004.md) |
+| T-004-B4 | Helpers navigation | 🔵 À faire | - | [Spec](./US-004/spec-US-004.md) |
+
+---
+
 ## Progression
 
 | Métrique | Valeur |
 |----------|--------|
-| **Total tâches** | 19 |
-| **Terminées** | 4 |
+| **Total tâches** | 23 |
+| **Terminées** | 5 |
 | **En cours** | 0 |
-| **À faire** | 15 |
-| **Avancement** | 21% |
+| **À faire** | 18 |
+| **Avancement** | 22% |
 
 ---
 
@@ -58,6 +71,7 @@
 | T-001-B2 | Modèle de données `BenefitItem` | US-001 | 27/01/2026 |
 | T-001-B3 | Modèle de données `StatItem` | US-001 | 02/02/2026 |
 | T-001-B4 | Fichier de contenu statique hero (JSON) | US-001 | 02/02/2026 |
+| T-004-B1 | Types TypeScript navigation | US-004 | 09/02/2026 |
 
 ---
 

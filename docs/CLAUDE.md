@@ -150,6 +150,7 @@ Toutes les spécifications doivent être rédigées en français.
 | Architecture | @docs/ARCHITECTURE.md |
 | SPECs index | @docs/specs/_index.md |
 | US-001 (en cours) | @docs/specs/US-001/spec.md |
+| US-004 (en cours) | @docs/specs/US-004/spec-US-004.md |
 
 ### SPECs US-001 détaillées
 
@@ -175,3 +176,9 @@ Toutes les spécifications doivent être rédigées en français.
 | T-001-T3 Tests intégration HeroSection | @docs/specs/US-001/T-001-T3-tests-integration-HeroSection.md |
 | T-001-T4 Tests accessibilité HeroSection | @docs/specs/US-001/T-001-T4-tests-accessibilite-hero-section.md |
 | T-001-T5 Tests temps de lecture | @docs/specs/US-001/T-001-T5-tests-utilisateur-temps-lecture.md |
+
+### SPECs US-004 détaillées
+
+| Tâche | Fichier |
+|-------|---------|
+| T-004-B1 Types TypeScript navigation | @docs/specs/US-004/T-004-B1-types-typescript-navigation.md |

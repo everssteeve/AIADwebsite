@@ -3,7 +3,7 @@
 | Métadonnée | Valeur |
 |------------|--------|
 | **Complexité** | L (Large) |
-| **Statut** | 🔵 À faire |
+| **Statut** | 🟡 En cours |
 | **Date création** | 9 février 2026 |
 | **Epic** | EPIC 2 : Consulter le Framework |
 
@@ -83,7 +83,7 @@
 
 | ID | Tâche | Durée | Dépendances | Statut |
 |----|-------|-------|-------------|--------|
-| T-004-B1 | Définir les types TypeScript de navigation (NavigationItem, BreadcrumbItem, TOCItem, PrevNextItem) | 2h | - | 🔵 À faire |
+| T-004-B1 | Définir les types TypeScript de navigation (NavigationItem, BreadcrumbItem, TOCItem, PrevNextItem) | 2h | - | 🟢 Terminée |
 | T-004-B2 | Créer les schémas Zod de validation pour les données de navigation | 1.5h | T-004-B1 | 🔵 À faire |
 | T-004-B3 | Créer la configuration de navigation (arbre hiérarchique Framework 8 chap. + Mode Opératoire 8 chap. + Annexes 9 cat.) | 3h | T-004-B1 | 🔵 À faire |
 | T-004-B4 | Créer les helpers de navigation (getNavigation, getBreadcrumbs, getPrevNext, getCurrentSection, flattenNav) | 3h | T-004-B1, T-004-B3 | 🔵 À faire |
@@ -169,7 +169,7 @@ Phase 7 - Tests (parallélisable, démarrage anticipé possible)
 ```mermaid
 graph TD
     subgraph "Phase 1 - Fondations données"
-        B1[T-004-B1<br/>Types TypeScript 🔵]
+        B1[T-004-B1<br/>Types TypeScript 🟢]
         B2[T-004-B2<br/>Schémas Zod 🔵]
         B3[T-004-B3<br/>Config navigation 🔵]
     end
