@@ -1,0 +1,90 @@
+---
+import '@/styles/global.css'
+
+export interface Props {
+  title: string
+  description: string
+  canonical?: string
+  ogType?: 'website' | 'article'
+  ogImage?: string
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
+  skipLinkText?: string
+  skipLinkTarget?: string
+  bodyClass?: string
+  class?: string
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogType = 'website',
+  ogImage = '/images/og/default.png',
+  jsonLd,
+  skipLinkText = 'Aller au contenu principal',
+  skipLinkTarget = 'main-content',
+  bodyClass = '',
+  class: htmlClass = '',
+} = Astro.props
+
+// ── Construction du titre ─────────────────────────────────
+const formattedTitle = title.includes('AIAD') ? title : `${title} | AIAD`
+
+// ── Classes body ──────────────────────────────────────────
+const bodyClasses = [
+  'min-h-screen',
+  'bg-white',
+  'text-gray-900',
+  'antialiased',
+  bodyClass,
+].filter(Boolean).join(' ')
+
+// ── Classes html ──────────────────────────────────────────
+const htmlClasses = htmlClass || undefined
+---
+
+<!doctype html>
+<html lang="fr" class={htmlClasses}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {/* ── Titre ──────────────────────────────────────── */}
+    <title>{formattedTitle}</title>
+
+    {/* ── Meta SEO ───────────────────────────────────── */}
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    {/* ── Open Graph ─────────────────────────────────── */}
+    <meta property="og:title" content={formattedTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="fr_FR" />
+
+    {/* ── Slot head (meta/link additionnels) ─────────── */}
+    <slot name="head" />
+
+    {/* ── JSON-LD (donnees structurees) ──────────────── */}
+    {jsonLd && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd)}
+      />
+    )}
+  </head>
+  <body class={bodyClasses}>
+    {/* ── Skip-link (premier element focusable) ──────── */}
+    <a
+      href={`#${skipLinkTarget}`}
+      class="skip-link sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-blue-600 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+    >
+      {skipLinkText}
+    </a>
+
+    {/* ── Contenu principal (slot par defaut) ─────────── */}
+    <slot />
+  </body>
+</html>
