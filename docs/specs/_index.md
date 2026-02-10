@@ -45,9 +45,15 @@
 | ID | Titre | Status | Assigné | Spec |
 |----|-------|--------|---------|------|
 | T-004-B1 | Types TypeScript navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-B1-types-typescript-navigation.md) |
-| T-004-B2 | Schémas Zod navigation | 🔵 À faire | - | [Spec](./US-004/spec-US-004.md) |
-| T-004-B3 | Configuration navigation | 🔵 À faire | - | [Spec](./US-004/spec-US-004.md) |
-| T-004-B4 | Helpers navigation | 🔵 À faire | - | [Spec](./US-004/spec-US-004.md) |
+| T-004-B2 | Schémas Zod navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-B2-schemas-zod-navigation.md) |
+| T-004-B3 | Configuration navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-B3-configuration-navigation.md) |
+| T-004-B4 | Helpers navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-B4-helpers-navigation.md) |
+
+### Frontend
+
+| ID | Titre | Status | Assigné | Spec |
+|----|-------|--------|---------|------|
+| T-004-F1 | Composant `BaseLayout` | 🟢 Terminée | - | [Spec](./US-004/T-004-F1-composant-BaseLayout.md) |
 
 ---
 
@@ -55,11 +61,11 @@
 
 | Métrique | Valeur |
 |----------|--------|
-| **Total tâches** | 23 |
-| **Terminées** | 5 |
+| **Total tâches** | 24 |
+| **Terminées** | 9 |
 | **En cours** | 0 |
-| **À faire** | 18 |
-| **Avancement** | 22% |
+| **À faire** | 15 |
+| **Avancement** | 38% |
 
 ---
 
@@ -72,6 +78,10 @@
 | T-001-B3 | Modèle de données `StatItem` | US-001 | 02/02/2026 |
 | T-001-B4 | Fichier de contenu statique hero (JSON) | US-001 | 02/02/2026 |
 | T-004-B1 | Types TypeScript navigation | US-004 | 09/02/2026 |
+| T-004-B2 | Schémas Zod navigation | US-004 | 09/02/2026 |
+| T-004-B3 | Configuration navigation | US-004 | 09/02/2026 |
+| T-004-B4 | Helpers navigation | US-004 | 09/02/2026 |
+| T-004-F1 | Composant BaseLayout | US-004 | 10/02/2026 |
 
 ---
 
