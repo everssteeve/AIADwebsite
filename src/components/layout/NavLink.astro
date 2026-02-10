@@ -1,0 +1,219 @@
+---
+// src/components/layout/NavLink.astro
+
+import type { NavigationBadge, NavigationSection } from '@/types/navigation'
+
+/**
+ * Props du composant NavLink.
+ *
+ * Lien de navigation atomique avec etat actif, badge et variantes contextuelles.
+ * Brique de base pour Header, DropdownMenu, MobileMenu et Sidebar.
+ *
+ * @example
+ * ```astro
+ * ---
+ * import NavLink from '@components/layout/NavLink.astro'
+ * ---
+ * <NavLink
+ *   href="/framework/preambule"
+ *   label="Preambule"
+ *   variant="sidebar"
+ *   badge="essential"
+ * />
+ * ```
+ */
+export interface Props {
+  // ── Navigation ─────────────────────────────────────
+
+  /**
+   * URL de destination du lien.
+   * Doit commencer par '/' (navigation interne).
+   */
+  href: string
+
+  /**
+   * Texte affiche dans le lien.
+   */
+  label: string
+
+  // ── Etat actif ─────────────────────────────────────
+
+  /**
+   * Mode de detection de l'etat actif.
+   * - 'exact' : actif uniquement si pathname === href
+   * - 'prefix' : actif si pathname commence par href
+   * @default 'exact'
+   */
+  activeMatch?: 'exact' | 'prefix'
+
+  /**
+   * Forcer l'etat actif (outrepasse la detection automatique).
+   * Utile pour les cas ou le parent controle l'etat.
+   */
+  isActive?: boolean
+
+  // ── Visuels ────────────────────────────────────────
+
+  /**
+   * Variante visuelle adaptee au contexte d'utilisation.
+   * @default 'sidebar'
+   */
+  variant?: 'header' | 'sidebar' | 'dropdown' | 'mobile'
+
+  /**
+   * Badge visuel a cote du label.
+   */
+  badge?: NavigationBadge
+
+  /**
+   * Section du site (pour le code couleur par section).
+   * Non utilise directement par NavLink mais transmis par les parents
+   * pour un eventuel rendu conditionnel.
+   */
+  section?: NavigationSection
+
+  /**
+   * Indique que ce lien a des enfants (sous-menu).
+   * Affiche un chevron a droite du label.
+   * @default false
+   */
+  hasChildren?: boolean
+
+  // ── HTML ───────────────────────────────────────────
+
+  /**
+   * Classes CSS additionnelles sur le <a>.
+   */
+  class?: string
+
+  /**
+   * Attribut id du lien (utile pour aria-labelledby).
+   */
+  id?: string
+
+  /**
+   * Role ARIA si necessaire (ex: 'menuitem' dans un dropdown).
+   */
+  role?: astroHTML.JSX.AriaRole
+
+  /**
+   * Tabindex personnalise (ex: -1 pour les items de dropdown non focuses).
+   */
+  tabindex?: number
+}
+
+const {
+  href,
+  label,
+  activeMatch = 'exact',
+  isActive: forcedActive,
+  variant = 'sidebar',
+  badge,
+  section,
+  hasChildren = false,
+  class: className = '',
+  id,
+  role,
+  tabindex,
+} = Astro.props
+
+// ── Detection de l'etat actif ──────────────────────────
+const pathname = Astro.url.pathname
+// Normaliser les trailing slashes pour la comparaison
+const normalizedPathname =
+  pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname
+const normalizedHref = href.endsWith('/') && href !== '/' ? href.slice(0, -1) : href
+
+const isCurrentPage =
+  forcedActive !== undefined
+    ? forcedActive
+    : activeMatch === 'prefix'
+      ? normalizedPathname === normalizedHref ||
+        normalizedPathname.startsWith(normalizedHref + '/')
+      : normalizedPathname === normalizedHref
+
+// ── Classes par variante ───────────────────────────────
+const variantStyles = {
+  header: {
+    base: 'inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150',
+    active: 'text-blue-700 border-b-2 border-blue-600 rounded-b-none',
+    inactive: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
+  },
+  sidebar: {
+    base: 'flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors duration-150',
+    active: 'bg-blue-50 text-blue-700 font-medium border-l-2 border-blue-600 -ml-px',
+    inactive: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
+  },
+  dropdown: {
+    base: 'flex items-center gap-2 w-full px-3 py-2 text-sm rounded-md transition-colors duration-150',
+    active: 'bg-blue-50 text-blue-700 font-medium',
+    inactive: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
+  },
+  mobile: {
+    base: 'flex items-center gap-2 w-full px-4 py-3 text-base rounded-md transition-colors duration-150',
+    active: 'bg-blue-50 text-blue-700 font-medium border-l-2 border-blue-600',
+    inactive: 'text-gray-900 hover:bg-gray-50',
+  },
+} as const
+
+const styles = variantStyles[variant]
+const stateClasses = isCurrentPage ? styles.active : styles.inactive
+
+// ── Classes badge ──────────────────────────────────────
+const badgeStyles = {
+  new: 'bg-green-100 text-green-800',
+  essential: 'bg-amber-100 text-amber-800',
+} as const
+
+// ── Assemblage des classes finales ─────────────────────
+const linkClasses = [
+  styles.base,
+  stateClasses,
+  'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+  className,
+]
+  .filter(Boolean)
+  .join(' ')
+---
+
+<a
+  href={href}
+  class={linkClasses}
+  aria-current={isCurrentPage ? 'page' : undefined}
+  id={id}
+  role={role}
+  tabindex={tabindex}
+  data-section={section}
+  data-navlink
+>
+  <span class="truncate">{label}</span>
+
+  {
+    badge && (
+      <span
+        class={`inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${badgeStyles[badge]}`}
+      >
+        {badge === 'new' ? 'Nouveau' : 'Essentiel'}
+      </span>
+    )
+  }
+
+  {
+    hasChildren && (
+      <svg
+        class="ml-auto h-4 w-4 shrink-0 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    )
+  }
+</a>
