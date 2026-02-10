@@ -93,7 +93,7 @@
 | ID | Tâche | Durée | Dépendances | Statut |
 |----|-------|-------|-------------|--------|
 | T-004-F1 | Créer le composant BaseLayout (HTML shell, head, meta, skip-link, slots) | 2h | - | 🟢 Terminée |
-| T-004-F2 | Créer le composant NavLink (lien de navigation avec état actif et indicateur visuel) | 1.5h | T-004-B1 | 🔵 À faire |
+| T-004-F2 | Créer le composant NavLink (lien de navigation avec état actif et indicateur visuel) | 1.5h | T-004-B1 | 🟢 Terminée |
 | T-004-F3 | Créer le composant DropdownMenu (sous-menu déroulant multi-niveaux avec séparation visuelle Framework/ModeOp/Annexes) | 3h | T-004-F2, T-004-B3 | 🔵 À faire |
 | T-004-F4 | Créer le composant Header (barre de navigation principale desktop avec 3 sections + dropdowns) | 3h | T-004-F3, T-004-B3 | 🔵 À faire |
 | T-004-F5 | Créer le composant MobileMenu (hamburger + overlay plein écran + navigation accordéon) | 3h | T-004-F2, T-004-B3 | 🔵 À faire |
