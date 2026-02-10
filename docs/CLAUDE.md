@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Site web pour le Framework AIAD (AI-Agent Iterative Development) - une plateforme de documentation statique présentant le framework et son Mode Opératoire.
 
-**État actuel** : Phase de documentation/planification. L'implémentation technique n'a pas encore démarré.
+**État actuel** : Implémentation en cours. US-001 (Hero Section) terminée. US-004 (Navigation) : backend/données terminé (B1-B4), frontend en attente.
 
 ## Ce que tu peux faire maintenant
 
@@ -183,3 +183,5 @@ Toutes les spécifications doivent être rédigées en français.
 |-------|---------|
 | T-004-B1 Types TypeScript navigation | @docs/specs/US-004/T-004-B1-types-typescript-navigation.md |
 | T-004-B2 Schémas Zod navigation | @docs/specs/US-004/T-004-B2-schemas-zod-navigation.md |
+| T-004-B3 Configuration navigation | @docs/specs/US-004/T-004-B3-configuration-navigation.md |
+| T-004-B4 Helpers navigation | @docs/specs/US-004/T-004-B4-helpers-navigation.md |

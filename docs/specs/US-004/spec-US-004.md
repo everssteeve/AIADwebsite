@@ -85,8 +85,8 @@
 |----|-------|-------|-------------|--------|
 | T-004-B1 | Définir les types TypeScript de navigation (NavigationItem, BreadcrumbItem, TOCItem, PrevNextItem) | 2h | - | 🟢 Terminée |
 | T-004-B2 | Créer les schémas Zod de validation pour les données de navigation | 1.5h | T-004-B1 | 🟢 Terminée |
-| T-004-B3 | Créer la configuration de navigation (arbre hiérarchique Framework 8 chap. + Mode Opératoire 8 chap. + Annexes 9 cat.) | 3h | T-004-B1 | 🔵 À faire |
-| T-004-B4 | Créer les helpers de navigation (getNavigation, getBreadcrumbs, getPrevNext, getCurrentSection, flattenNav) | 3h | T-004-B1, T-004-B3 | 🔵 À faire |
+| T-004-B3 | Créer la configuration de navigation (arbre hiérarchique Framework 8 chap. + Mode Opératoire 8 chap. + Annexes 9 cat.) | 3h | T-004-B1 | 🟢 Terminée |
+| T-004-B4 | Créer les helpers de navigation (getNavigation, getBreadcrumbs, getPrevNext, getCurrentSection, flattenNav) | 3h | T-004-B1, T-004-B3 | 🟢 Terminée |
 
 ### 4.2 Frontend
 
