@@ -1,0 +1,135 @@
+---
+// src/components/layout/PrevNextLinks.astro
+
+import type { PrevNextLinks as PrevNextLinksType, NavigationTree } from '@/types/navigation'
+import { getPrevNext, getCurrentSection, SECTION_LABELS } from '@/lib/navigation'
+import { NAVIGATION_TREE } from '@/data/navigation'
+
+export interface Props {
+  links?: PrevNextLinksType
+  tree?: NavigationTree
+  class?: string
+}
+
+const {
+  links,
+  tree = NAVIGATION_TREE,
+  class: className = '',
+} = Astro.props
+
+// ── Calcul des liens prev/next ──────────────────────
+const currentPath = Astro.url.pathname
+const prevNextLinks = links ?? getPrevNext(tree, currentPath)
+const { prev, next } = prevNextLinks
+
+// ── Detection cross-section ─────────────────────────
+const currentSection = getCurrentSection(currentPath)
+
+function isCrossSection(itemSection?: string): boolean {
+  if (!currentSection || !itemSection) return false
+  return currentSection !== itemSection
+}
+
+function getSectionLabel(section?: string): string | null {
+  if (!section) return null
+  return SECTION_LABELS[section as keyof typeof SECTION_LABELS] ?? null
+}
+
+// ── Aucun lien disponible → pas de rendu ────────────
+const hasLinks = prev !== null || next !== null
+---
+
+{hasLinks && (
+  <nav
+    aria-label="Navigation entre les pages"
+    class:list={[
+      'prev-next-container border-t border-gray-200 pt-6 mt-8',
+      className,
+    ]}
+    data-prev-next
+  >
+    <div class="flex flex-col md:flex-row md:justify-between gap-4">
+      {/* ── Lien Precedent ──────────────────────────── */}
+      {prev ? (
+        <a
+          href={prev.href}
+          class="group flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:max-w-[calc(50%-0.5rem)]"
+          aria-label={`Precedent : ${prev.label}`}
+          data-prev-next-prev
+        >
+          <svg
+            class="h-5 w-5 shrink-0 text-gray-400 group-hover:text-blue-600 transition-colors duration-150"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          <div class="min-w-0">
+            <span class="block text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <span class="hidden md:inline">Precedent</span>
+              <span class="md:hidden">Prec.</span>
+            </span>
+            <span class="block text-sm font-medium text-gray-900 group-hover:text-blue-700 truncate transition-colors duration-150" data-prev-next-prev-title>
+              {prev.label}
+            </span>
+            {isCrossSection(prev.section) && (
+              <span class="block text-xs text-gray-400 mt-0.5" data-prev-next-prev-section>
+                {getSectionLabel(prev.section)}
+              </span>
+            )}
+          </div>
+        </a>
+      ) : (
+        <div class="hidden md:block" />
+      )}
+
+      {/* ── Lien Suivant ────────────────────────────── */}
+      {next ? (
+        <a
+          href={next.href}
+          class="group flex items-center justify-end gap-3 px-4 py-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:max-w-[calc(50%-0.5rem)] md:ml-auto text-right"
+          aria-label={`Suivant : ${next.label}`}
+          data-prev-next-next
+        >
+          <div class="min-w-0">
+            <span class="block text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <span class="hidden md:inline">Suivant</span>
+              <span class="md:hidden">Suiv.</span>
+            </span>
+            <span class="block text-sm font-medium text-gray-900 group-hover:text-blue-700 truncate transition-colors duration-150" data-prev-next-next-title>
+              {next.label}
+            </span>
+            {isCrossSection(next.section) && (
+              <span class="block text-xs text-gray-400 mt-0.5" data-prev-next-next-section>
+                {getSectionLabel(next.section)}
+              </span>
+            )}
+          </div>
+          <svg
+            class="h-5 w-5 shrink-0 text-gray-400 group-hover:text-blue-600 transition-colors duration-150"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </a>
+      ) : (
+        <div class="hidden md:block" />
+      )}
+    </div>
+  </nav>
+)}
