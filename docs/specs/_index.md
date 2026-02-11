@@ -55,6 +55,7 @@
 |----|-------|--------|---------|------|
 | T-004-F1 | Composant `BaseLayout` | 🟢 Terminée | - | [Spec](./US-004/T-004-F1-composant-BaseLayout.md) |
 | T-004-F2 | Composant `NavLink` | 🟢 Terminée | - | [Spec](./US-004/T-004-F2-composant-NavLink.md) |
+| T-004-F6 | Composant `Breadcrumb` | 🟢 Terminée | - | [Spec](./US-004/T-004-F6-composant-Breadcrumb.md) |
 | T-004-F7 | Composant `TableOfContents` | 🟢 Terminée | - | [Spec](./US-004/T-004-F7-composant-TableOfContents.md) |
 
 ---
@@ -64,10 +65,10 @@
 | Métrique | Valeur |
 |----------|--------|
 | **Total tâches** | 25 |
-| **Terminées** | 11 |
+| **Terminées** | 12 |
 | **En cours** | 0 |
-| **À faire** | 14 |
-| **Avancement** | 44% |
+| **À faire** | 13 |
+| **Avancement** | 48% |
 
 ---
 
@@ -86,6 +87,7 @@
 | T-004-F1 | Composant BaseLayout | US-004 | 10/02/2026 |
 | T-004-F2 | Composant NavLink | US-004 | 10/02/2026 |
 | T-004-F7 | Composant TableOfContents | US-004 | 11/02/2026 |
+| T-004-F6 | Composant Breadcrumb | US-004 | 11/02/2026 |
 
 ---
 

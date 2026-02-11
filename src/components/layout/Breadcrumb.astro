@@ -1,0 +1,201 @@
+---
+// src/components/layout/Breadcrumb.astro
+
+import type { BreadcrumbList, NavigationTree } from '@/types/navigation'
+import { getBreadcrumbs } from '@/lib/navigation'
+import { NAVIGATION_TREE } from '@/data/navigation'
+
+/**
+ * Props du composant Breadcrumb.
+ *
+ * Fil d'Ariane dynamique avec JSON-LD SEO et troncature responsive.
+ * Calcule automatiquement le chemin a partir de l'URL courante.
+ *
+ * @example
+ * ```astro
+ * ---
+ * import Breadcrumb from '@components/layout/Breadcrumb.astro'
+ * ---
+ * <Breadcrumb />
+ * ```
+ *
+ * @example
+ * ```astro
+ * <!-- Avec items pre-calcules -->
+ * <Breadcrumb items={myBreadcrumbs} />
+ * ```
+ */
+export interface Props {
+  // ── Donnees ──────────────────────────────────────
+
+  /**
+   * Liste des elements du breadcrumb.
+   * Si fourni, outrepasse le calcul automatique via getBreadcrumbs().
+   * Utile pour les pages qui ne sont pas dans l'arbre de navigation.
+   */
+  items?: BreadcrumbList | null
+
+  /**
+   * Arbre de navigation a utiliser pour le calcul.
+   * Si non fourni, utilise NAVIGATION_TREE par defaut.
+   * Utile pour l'injection dans les tests.
+   */
+  tree?: NavigationTree
+
+  // ── Configuration ────────────────────────────────
+
+  /**
+   * URL de base du site pour les URLs absolues dans le JSON-LD.
+   * Si non fourni, utilise Astro.site ou Astro.url.origin.
+   */
+  siteUrl?: string
+
+  /**
+   * Desactiver le bloc JSON-LD SEO.
+   * @default false
+   */
+  noJsonLd?: boolean
+
+  // ── HTML ─────────────────────────────────────────
+
+  /**
+   * Classes CSS additionnelles sur le <nav>.
+   */
+  class?: string
+}
+
+const {
+  items,
+  tree = NAVIGATION_TREE,
+  siteUrl,
+  noJsonLd = false,
+  class: className = '',
+} = Astro.props
+
+// ── Calcul du breadcrumb ──────────────────────────────
+const currentPath = Astro.url.pathname
+// Si items est explicitement fourni (meme null), on l'utilise tel quel
+// Sinon (undefined), on calcule automatiquement via getBreadcrumbs()
+const breadcrumbs = items !== undefined ? items : getBreadcrumbs(tree, currentPath)
+
+// ── URL de base pour JSON-LD ──────────────────────────
+const baseUrl = siteUrl ?? (Astro.site ? Astro.site.origin : Astro.url.origin)
+
+// ── JSON-LD schema.org/BreadcrumbList ─────────────────
+function buildJsonLd(crumbs: BreadcrumbList): string {
+  const itemListElement = crumbs.map((crumb, index) => {
+    const entry: Record<string, unknown> = {
+      '@type': 'ListItem',
+      'position': index + 1,
+      'name': crumb.label,
+    }
+    // Le dernier item n'a pas de propriete "item" (URL)
+    if (!crumb.isCurrent) {
+      entry.item = `${baseUrl}${crumb.href}`
+    }
+    return entry
+  })
+
+  // Echappement des caracteres HTML pour eviter les injections XSS
+  // dans le contexte d'un <script> (Google recommande \u003c/\u003e)
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement,
+  }).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
+}
+---
+
+{breadcrumbs && breadcrumbs.length > 0 && (
+  <nav
+    aria-label="Fil d'Ariane"
+    class:list={[
+      'breadcrumb-container',
+      className,
+    ]}
+    data-breadcrumb
+  >
+    <ol class="flex items-center flex-wrap gap-y-1 text-sm">
+      {breadcrumbs.map((crumb, index) => {
+        const isFirst = index === 0
+        const isLast = crumb.isCurrent === true
+        const isMiddle = !isFirst && !isLast
+
+        // Sur mobile (< md), masquer les items intermediaires quand il y a > 3 niveaux
+        const mobileHiddenClass =
+          breadcrumbs.length > 3 && isMiddle ? 'hidden md:inline-flex' : 'inline-flex'
+
+        return (
+          <li class={`${mobileHiddenClass} items-center`}>
+            {/* Separateur (sauf pour le premier item) */}
+            {index > 0 && (
+              <svg
+                class="mx-2 h-4 w-4 shrink-0 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            )}
+
+            {/* Lien ou texte courant */}
+            {isLast ? (
+              <span
+                class="text-gray-500 font-medium truncate max-w-[200px] md:max-w-none"
+                aria-current="page"
+                data-breadcrumb-current
+              >
+                {crumb.label}
+              </span>
+            ) : (
+              <a
+                href={crumb.href}
+                class="text-gray-600 hover:text-gray-900 hover:underline transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm truncate max-w-[150px] md:max-w-none"
+                data-breadcrumb-link
+              >
+                {crumb.label}
+              </a>
+            )}
+          </li>
+        )
+      })}
+
+      {/* Indicateur de troncature mobile (visible uniquement sur mobile quand > 3 niveaux) */}
+      {breadcrumbs.length > 3 && (
+        <li class="inline-flex md:hidden items-center" aria-hidden="true" data-breadcrumb-ellipsis>
+          <svg
+            class="mx-2 h-4 w-4 shrink-0 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+          <span class="text-gray-400">...</span>
+        </li>
+      )}
+    </ol>
+
+    {/* JSON-LD pour le SEO */}
+    {!noJsonLd && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={buildJsonLd(breadcrumbs)}
+      />
+    )}
+  </nav>
+)}
