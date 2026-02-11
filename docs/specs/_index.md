@@ -57,6 +57,7 @@
 | T-004-F2 | Composant `NavLink` | 🟢 Terminée | - | [Spec](./US-004/T-004-F2-composant-NavLink.md) |
 | T-004-F6 | Composant `Breadcrumb` | 🟢 Terminée | - | [Spec](./US-004/T-004-F6-composant-Breadcrumb.md) |
 | T-004-F7 | Composant `TableOfContents` | 🟢 Terminée | - | [Spec](./US-004/T-004-F7-composant-TableOfContents.md) |
+| T-004-F8 | Composant `PrevNextLinks` | 🟢 Terminée | - | [Spec](./US-004/T-004-F8-composant-PrevNextLinks.md) |
 
 ---
 
@@ -64,11 +65,11 @@
 
 | Métrique | Valeur |
 |----------|--------|
-| **Total tâches** | 25 |
-| **Terminées** | 12 |
+| **Total tâches** | 26 |
+| **Terminées** | 13 |
 | **En cours** | 0 |
 | **À faire** | 13 |
-| **Avancement** | 48% |
+| **Avancement** | 50% |
 
 ---
 
@@ -88,6 +89,7 @@
 | T-004-F2 | Composant NavLink | US-004 | 10/02/2026 |
 | T-004-F7 | Composant TableOfContents | US-004 | 11/02/2026 |
 | T-004-F6 | Composant Breadcrumb | US-004 | 11/02/2026 |
+| T-004-F8 | Composant PrevNextLinks | US-004 | 11/02/2026 |
 
 ---
 
