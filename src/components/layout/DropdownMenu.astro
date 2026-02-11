@@ -1,0 +1,407 @@
+---
+// src/components/layout/DropdownMenu.astro
+
+import type { NavigationItem, NavigationSection } from '@/types/navigation'
+import NavLink from '@components/layout/NavLink.astro'
+
+/**
+ * Props du composant DropdownMenu.
+ *
+ * Sous-menu deroulant accessible avec navigation clavier complete,
+ * support multi-niveaux (groupes pour les Annexes) et enhancement progressif.
+ *
+ * Consomme NavLink (T-004-F2) en variante `dropdown` pour chaque item.
+ *
+ * @example
+ * ```astro
+ * ---
+ * import DropdownMenu from '@components/layout/DropdownMenu.astro'
+ * import { NAVIGATION_TREE } from '@/data/navigation'
+ * ---
+ * <DropdownMenu
+ *   label="Framework"
+ *   section="framework"
+ *   items={NAVIGATION_TREE.framework}
+ *   href="/framework"
+ * />
+ * ```
+ */
+export interface Props {
+  // ── Contenu ─────────────────────────────────────
+
+  /**
+   * Label du bouton declencheur.
+   * Ex: "Framework", "Mode Operatoire", "Annexes"
+   */
+  label: string
+
+  /**
+   * Items de navigation a afficher dans le menu.
+   * Pour Framework/ModeOp : liste de chapitres (items feuilles).
+   * Pour Annexes : liste de categories avec `children` (fiches).
+   */
+  items: NavigationItem[]
+
+  // ── Navigation ─────────────────────────────────
+
+  /**
+   * Section de navigation associee.
+   * Utilisee pour la detection de l'etat actif (prefix match)
+   * et pour la transmission aux NavLink enfants.
+   */
+  section: NavigationSection
+
+  /**
+   * URL de la page index de la section.
+   * Utilisee comme fallback href sans JavaScript.
+   * Ex: "/framework", "/mode-operatoire", "/annexes"
+   */
+  href: string
+
+  // ── HTML ────────────────────────────────────────
+
+  /**
+   * Classes CSS additionnelles sur le conteneur racine.
+   */
+  class?: string
+
+  /**
+   * Identifiant unique du composant.
+   * Genere automatiquement si non fourni (base sur la section).
+   * Utilise pour aria-labelledby et les data attributes.
+   */
+  id?: string
+}
+
+const {
+  label,
+  items,
+  section,
+  href,
+  class: className = '',
+  id: providedId,
+} = Astro.props
+
+// ── IDs uniques ─────────────────────────────────
+const baseId = providedId ?? `dropdown-${section}`
+const buttonId = `${baseId}-button`
+const menuId = `${baseId}-menu`
+
+// ── Detection du mode groupe (Annexes) ──────────
+const hasGroups = items.some((item) => item.children && item.children.length > 0)
+
+// ── Tri des items par order ─────────────────────
+const sortedItems = [...items].sort((a, b) => a.order - b.order)
+---
+
+<div
+  class:list={['dropdown-container relative', className]}
+  data-dropdown
+  data-dropdown-section={section}
+  id={baseId}
+>
+  {/* ── Bouton declencheur ───────────────────── */}
+  <button
+    type="button"
+    class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls={menuId}
+    id={buttonId}
+    data-dropdown-trigger
+  >
+    <span>{label}</span>
+    <svg
+      class="h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      data-dropdown-chevron
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  </button>
+
+  {/* ── Fallback sans JS ─────────────────────── */}
+  <noscript>
+    <a
+      href={href}
+      class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    >
+      {label}
+    </a>
+  </noscript>
+
+  {/* ── Panneau du menu ──────────────────────── */}
+  <div
+    role="menu"
+    aria-labelledby={buttonId}
+    id={menuId}
+    class="absolute left-0 top-full z-50 mt-1 hidden w-64 max-h-[70vh] overflow-y-auto origin-top-left rounded-lg border border-gray-200 bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
+    data-dropdown-menu
+    tabindex="-1"
+  >
+    {!hasGroups ? (
+      /* ── Mode flat (Framework, Mode Operatoire) ── */
+      <div class="py-1" role="none">
+        {sortedItems.map((item) => (
+          <NavLink
+            href={item.href}
+            label={item.label}
+            variant="dropdown"
+            badge={item.badge}
+            section={section}
+            role="menuitem"
+            tabindex={-1}
+          />
+        ))}
+      </div>
+    ) : (
+      /* ── Mode grouped (Annexes) ───────────────── */
+      sortedItems.map((category, catIndex) => (
+        <div role="group" aria-labelledby={`${baseId}-group-${category.id}`}>
+          {catIndex > 0 && (
+            <hr class="my-1 border-gray-200" role="separator" />
+          )}
+          <div
+            class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500"
+            id={`${baseId}-group-${category.id}`}
+            role="presentation"
+          >
+            <a
+              href={category.href}
+              class="hover:text-gray-700 transition-colors duration-150"
+              role="menuitem"
+              tabindex={-1}
+              data-dropdown-group-link
+            >
+              {category.label}
+            </a>
+          </div>
+          {category.children && (
+            <div class="pl-2" role="none">
+              {[...category.children]
+                .sort((a, b) => a.order - b.order)
+                .map((fiche) => (
+                  <NavLink
+                    href={fiche.href}
+                    label={fiche.label}
+                    variant="dropdown"
+                    badge={fiche.badge}
+                    section={section}
+                    role="menuitem"
+                    tabindex={-1}
+                  />
+                ))}
+            </div>
+          )}
+        </div>
+      ))
+    )}
+  </div>
+</div>
+
+<script>
+  /**
+   * Script client pour le comportement interactif du DropdownMenu.
+   *
+   * Fonctionnalites :
+   * - Toggle ouverture/fermeture au clic sur le bouton
+   * - Navigation clavier : Arrow Down/Up, Home, End, Escape, caractere
+   * - Fermeture au clic exterieur
+   * - Fermeture quand le focus quitte le menu (Tab/Shift+Tab)
+   * - Rotation du chevron a l'ouverture
+   * - Focus management sur les menuitems
+   * - Un seul dropdown ouvert a la fois
+   */
+  function initDropdown(container: HTMLElement) {
+    const trigger = container.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')
+    const menu = container.querySelector<HTMLDivElement>('[data-dropdown-menu]')
+    const chevron = container.querySelector<SVGElement>('[data-dropdown-chevron]')
+
+    if (!trigger || !menu) return
+
+    // ── Helpers ───────────────────────────────────
+    function getMenuItems(): HTMLElement[] {
+      return Array.from(menu!.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+    }
+
+    function isOpen(): boolean {
+      return trigger!.getAttribute('aria-expanded') === 'true'
+    }
+
+    function closeAllOtherDropdowns() {
+      document.querySelectorAll<HTMLElement>('[data-dropdown-open]').forEach((el) => {
+        if (el !== container) {
+          const otherTrigger = el.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')
+          const otherMenu = el.querySelector<HTMLDivElement>('[data-dropdown-menu]')
+          const otherChevron = el.querySelector<SVGElement>('[data-dropdown-chevron]')
+          if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false')
+          if (otherMenu) otherMenu.classList.add('hidden')
+          if (otherChevron) otherChevron.classList.remove('rotate-180')
+          el.removeAttribute('data-dropdown-open')
+        }
+      })
+    }
+
+    function open() {
+      closeAllOtherDropdowns()
+      trigger!.setAttribute('aria-expanded', 'true')
+      menu!.classList.remove('hidden')
+      chevron?.classList.add('rotate-180')
+      container.setAttribute('data-dropdown-open', '')
+    }
+
+    function close() {
+      trigger!.setAttribute('aria-expanded', 'false')
+      menu!.classList.add('hidden')
+      chevron?.classList.remove('rotate-180')
+      container.removeAttribute('data-dropdown-open')
+    }
+
+    function focusItem(index: number) {
+      const items = getMenuItems()
+      if (items.length === 0) return
+      const clampedIndex = ((index % items.length) + items.length) % items.length
+      items[clampedIndex].focus()
+    }
+
+    function focusFirstItem() {
+      focusItem(0)
+    }
+
+    function focusLastItem() {
+      const items = getMenuItems()
+      focusItem(items.length - 1)
+    }
+
+    function getCurrentFocusIndex(): number {
+      const items = getMenuItems()
+      const focused = document.activeElement as HTMLElement
+      return items.indexOf(focused)
+    }
+
+    function focusNextItem() {
+      focusItem(getCurrentFocusIndex() + 1)
+    }
+
+    function focusPrevItem() {
+      const index = getCurrentFocusIndex()
+      focusItem(index <= 0 ? getMenuItems().length - 1 : index - 1)
+    }
+
+    function focusItemByChar(char: string) {
+      const items = getMenuItems()
+      const currentIndex = getCurrentFocusIndex()
+      const lowerChar = char.toLowerCase()
+
+      // Chercher a partir de l'item suivant (cyclique)
+      for (let i = 1; i <= items.length; i++) {
+        const idx = (currentIndex + i) % items.length
+        const text = items[idx].textContent?.trim().toLowerCase() ?? ''
+        if (text.startsWith(lowerChar)) {
+          items[idx].focus()
+          return
+        }
+      }
+    }
+
+    // ── Event: clic sur le bouton ─────────────────
+    trigger.addEventListener('click', () => {
+      if (isOpen()) {
+        close()
+        trigger.focus()
+      } else {
+        open()
+        focusFirstItem()
+      }
+    })
+
+    // ── Event: clavier sur le bouton ──────────────
+    trigger.addEventListener('keydown', (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault()
+          if (!isOpen()) open()
+          focusFirstItem()
+          break
+        case 'ArrowUp':
+          e.preventDefault()
+          if (!isOpen()) open()
+          focusLastItem()
+          break
+        case 'Escape':
+          if (isOpen()) {
+            e.preventDefault()
+            close()
+            trigger.focus()
+          }
+          break
+      }
+    })
+
+    // ── Event: clavier dans le menu ───────────────
+    menu.addEventListener('keydown', (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault()
+          focusNextItem()
+          break
+        case 'ArrowUp':
+          e.preventDefault()
+          focusPrevItem()
+          break
+        case 'Home':
+          e.preventDefault()
+          focusFirstItem()
+          break
+        case 'End':
+          e.preventDefault()
+          focusLastItem()
+          break
+        case 'Escape':
+          e.preventDefault()
+          close()
+          trigger.focus()
+          break
+        case 'Tab':
+          // Laisser le Tab natif se produire, fermer le menu
+          close()
+          break
+        default:
+          // Navigation par caractere
+          if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+            e.preventDefault()
+            focusItemByChar(e.key)
+          }
+          break
+      }
+    })
+
+    // ── Event: clic exterieur ─────────────────────
+    document.addEventListener('click', (e: MouseEvent) => {
+      if (isOpen() && !container.contains(e.target as Node)) {
+        close()
+      }
+    })
+
+    // ── Event: focus quitte le conteneur ──────────
+    container.addEventListener('focusout', (_e: FocusEvent) => {
+      // Utiliser requestAnimationFrame pour laisser le focus se deplacer
+      requestAnimationFrame(() => {
+        if (isOpen() && !container.contains(document.activeElement)) {
+          close()
+        }
+      })
+    })
+  }
+
+  // ── Initialisation de tous les dropdowns ────────
+  document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach(initDropdown)
+</script>
