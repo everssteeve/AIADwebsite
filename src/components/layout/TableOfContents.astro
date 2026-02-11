@@ -1,0 +1,301 @@
+---
+// src/components/layout/TableOfContents.astro
+
+import type { TableOfContentsItem } from '@/types/navigation'
+
+/**
+ * Props du composant TableOfContents.
+ *
+ * Table des matieres sticky avec scroll spy et navigation par ancres.
+ * Consomme les headings extraits par Astro lors du rendu MDX.
+ *
+ * @example
+ * ```astro
+ * ---
+ * import TableOfContents from '@components/layout/TableOfContents.astro'
+ * const { Content, headings } = await post.render()
+ * ---
+ * <TableOfContents headings={headings} />
+ * ```
+ */
+export interface Props {
+  // ── Donnees ──────────────────────────────────────
+
+  /**
+   * Tableau des headings de la page.
+   * Fourni par Astro via `post.render()`.
+   * Filtre automatiquement pour ne garder que h2-h4.
+   */
+  headings: TableOfContentsItem[]
+
+  // ── Configuration ────────────────────────────────
+
+  /**
+   * Titre affiche au-dessus de la liste.
+   * @default 'Sur cette page'
+   */
+  title?: string
+
+  /**
+   * Profondeur minimale de heading a afficher.
+   * @default 2
+   */
+  minDepth?: 2 | 3 | 4
+
+  /**
+   * Profondeur maximale de heading a afficher.
+   * @default 4
+   */
+  maxDepth?: 2 | 3 | 4
+
+  // ── HTML ─────────────────────────────────────────
+
+  /**
+   * Classes CSS additionnelles sur le <nav>.
+   */
+  class?: string
+}
+
+const {
+  headings,
+  title = 'Sur cette page',
+  minDepth = 2,
+  maxDepth = 4,
+  class: className = '',
+} = Astro.props
+
+// ── Filtrer les headings par profondeur ──────────────
+const filteredHeadings = headings.filter(
+  (h) => h.depth >= minDepth && h.depth <= maxDepth,
+)
+
+// ── Classes d'indentation par niveau ─────────────────
+const depthClasses: Record<number, string> = {
+  2: 'pl-0',
+  3: 'pl-4',
+  4: 'pl-8',
+}
+
+// ── Classes de style par niveau ──────────────────────
+const depthTextClasses: Record<number, string> = {
+  2: 'text-sm font-medium text-gray-700',
+  3: 'text-sm text-gray-600',
+  4: 'text-xs text-gray-500',
+}
+---
+
+{filteredHeadings.length > 0 && (
+  <nav
+    aria-label="Table des matieres"
+    class:list={[
+      'toc-container',
+      className,
+    ]}
+    data-toc
+  >
+    {/* ── Desktop : sticky, toujours visible ──────────── */}
+    <div class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+      <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+        {title}
+      </p>
+      <ul class="space-y-1 border-l border-gray-200" data-toc-list>
+        {filteredHeadings.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class:list={[
+                'block py-1 -ml-px border-l-2 border-transparent transition-colors duration-150',
+                'hover:text-gray-900 hover:border-gray-300',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm',
+                depthClasses[heading.depth],
+                depthTextClasses[heading.depth],
+              ]}
+              data-toc-link={heading.slug}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* ── Mobile/Tablette : collapsible ───────────────── */}
+    <div class="lg:hidden" data-toc-mobile>
+      <button
+        type="button"
+        class="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+        aria-expanded="false"
+        aria-controls="toc-mobile-list"
+        data-toc-toggle
+      >
+        <span>{title}</span>
+        <svg
+          class="h-5 w-5 text-gray-400 transition-transform duration-200"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          data-toc-chevron
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      <ul
+        id="toc-mobile-list"
+        class="mt-2 space-y-1 border-l border-gray-200 pl-2"
+        hidden
+        data-toc-mobile-list
+      >
+        {filteredHeadings.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class:list={[
+                'block py-1.5 -ml-px border-l-2 border-transparent transition-colors duration-150',
+                'hover:text-gray-900 hover:border-gray-300',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm',
+                depthClasses[heading.depth],
+                depthTextClasses[heading.depth],
+              ]}
+              data-toc-link={heading.slug}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+)}
+
+<script>
+  /**
+   * TableOfContents — Script cote client
+   *
+   * Fonctionnalites :
+   * 1. Scroll spy via IntersectionObserver
+   * 2. Smooth scroll sur clic des liens
+   * 3. Toggle mobile (ouvrir/fermer la TOC)
+   *
+   * Progressive enhancement : sans ce script, les liens d'ancrage
+   * fonctionnent toujours (saut natif du navigateur).
+   */
+
+  function initTableOfContents(): void {
+    const tocEl = document.querySelector<HTMLElement>('[data-toc]')
+    if (!tocEl) return
+    const tocContainer = tocEl
+
+    // ── Scroll spy ────────────────────────────────────
+    const tocLinks = tocContainer.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')
+    if (tocLinks.length === 0) return
+
+    const headingElements = Array.from(tocLinks)
+      .map((link) => {
+        const slug = link.getAttribute('data-toc-link')
+        return slug ? document.getElementById(slug) : null
+      })
+      .filter((el): el is HTMLElement => el !== null)
+
+    let activeLink: HTMLAnchorElement | null = null
+
+    function setActiveLink(slug: string): void {
+      // Retirer l'etat actif du lien precedent
+      if (activeLink) {
+        activeLink.classList.remove(
+          'text-blue-700', 'border-blue-600', 'bg-blue-50/50', 'font-medium',
+        )
+        activeLink.classList.add('border-transparent')
+        activeLink.removeAttribute('aria-current')
+      }
+
+      // Appliquer l'etat actif au nouveau lien
+      const links = tocContainer.querySelectorAll<HTMLAnchorElement>(
+        `[data-toc-link="${slug}"]`,
+      )
+      links.forEach((link) => {
+        link.classList.add(
+          'text-blue-700', 'border-blue-600', 'bg-blue-50/50', 'font-medium',
+        )
+        link.classList.remove('border-transparent')
+        link.setAttribute('aria-current', 'true')
+        activeLink = link
+      })
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveLink(entry.target.id)
+          }
+        }
+      },
+      {
+        rootMargin: '0px 0px -80% 0px',
+        threshold: 0,
+      },
+    )
+
+    headingElements.forEach((heading) => observer.observe(heading))
+
+    // ── Smooth scroll ─────────────────────────────────
+    tocLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault()
+        const slug = link.getAttribute('data-toc-link')
+        if (!slug) return
+
+        const target = document.getElementById(slug)
+        if (!target) return
+
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        history.replaceState(null, '', `#${slug}`)
+
+        // Fermer le menu mobile apres navigation
+        const mobileList = tocContainer.querySelector('[data-toc-mobile-list]')
+        const toggleBtn = tocContainer.querySelector('[data-toc-toggle]')
+        if (mobileList && !mobileList.hasAttribute('hidden')) {
+          mobileList.setAttribute('hidden', '')
+          toggleBtn?.setAttribute('aria-expanded', 'false')
+          const chevron = toggleBtn?.querySelector('[data-toc-chevron]')
+          chevron?.classList.remove('rotate-180')
+        }
+      })
+    })
+
+    // ── Toggle mobile ─────────────────────────────────
+    const toggleBtn = tocContainer.querySelector('[data-toc-toggle]')
+    const mobileList = tocContainer.querySelector('[data-toc-mobile-list]')
+
+    if (toggleBtn && mobileList) {
+      toggleBtn.addEventListener('click', () => {
+        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true'
+
+        if (isExpanded) {
+          mobileList.setAttribute('hidden', '')
+          toggleBtn.setAttribute('aria-expanded', 'false')
+        } else {
+          mobileList.removeAttribute('hidden')
+          toggleBtn.setAttribute('aria-expanded', 'true')
+        }
+
+        // Rotation du chevron
+        const chevron = toggleBtn.querySelector('[data-toc-chevron]')
+        chevron?.classList.toggle('rotate-180')
+      })
+    }
+  }
+
+  // Initialiser quand le DOM est pret
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTableOfContents)
+  } else {
+    initTableOfContents()
+  }
+</script>
