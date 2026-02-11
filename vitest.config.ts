@@ -5,7 +5,7 @@ export default getViteConfig({
   test: {
     globals: true,
     include: ['tests/**/*.test.ts'],
-    exclude: ['tests/a11y/**'],
+    exclude: ['tests/a11y/**', 'tests/e2e/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

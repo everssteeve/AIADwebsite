@@ -1,0 +1,44 @@
+[
+  {
+    "id": "stat-productivity",
+    "value": "50%",
+    "numericValue": 50,
+    "unit": "%",
+    "label": "Gain de productivité avec les agents IA",
+    "source": "McKinsey Global Institute - The economic potential of generative AI, 2024",
+    "sourceUrl": "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier",
+    "order": 1,
+    "locale": "fr",
+    "isActive": true,
+    "highlight": true,
+    "updatedAt": "2026-02-02T10:00:00.000Z"
+  },
+  {
+    "id": "stat-speed",
+    "value": "3x",
+    "numericValue": 3,
+    "unit": "x",
+    "label": "Plus rapide pour coder avec assistance IA",
+    "source": "GitHub Copilot Research - Developer productivity study, 2023",
+    "sourceUrl": "https://github.blog/2023-06-27-the-economic-impact-of-the-ai-powered-developer-lifecycle-and-lessons-from-github-copilot/",
+    "order": 2,
+    "locale": "fr",
+    "isActive": true,
+    "highlight": false,
+    "updatedAt": "2026-02-02T10:00:00.000Z"
+  },
+  {
+    "id": "stat-satisfaction",
+    "value": ">90%",
+    "numericValue": 90,
+    "unit": "%",
+    "label": "Des développeurs satisfaits de l'IA",
+    "source": "Stack Overflow Developer Survey 2024",
+    "sourceUrl": "https://survey.stackoverflow.co/2024/ai",
+    "order": 3,
+    "locale": "fr",
+    "isActive": true,
+    "highlight": false,
+    "updatedAt": "2026-02-02T10:00:00.000Z"
+  }
+]
