@@ -95,7 +95,7 @@
 | T-004-F1 | Créer le composant BaseLayout (HTML shell, head, meta, skip-link, slots) | 2h | - | 🟢 Terminée |
 | T-004-F2 | Créer le composant NavLink (lien de navigation avec état actif et indicateur visuel) | 1.5h | T-004-B1 | 🟢 Terminée |
 | T-004-F3 | Créer le composant DropdownMenu (sous-menu déroulant multi-niveaux avec séparation visuelle Framework/ModeOp/Annexes) | 3h | T-004-F2, T-004-B3 | 🟢 Terminée |
-| T-004-F4 | Créer le composant Header (barre de navigation principale desktop avec 3 sections + dropdowns) | 3h | T-004-F3, T-004-B3 | 🔵 À faire |
+| T-004-F4 | Créer le composant Header (barre de navigation principale desktop avec 3 sections + dropdowns) | 3h | T-004-F3, T-004-B3 | 🟢 Terminée |
 | T-004-F5 | Créer le composant MobileMenu (hamburger + overlay plein écran + navigation accordéon) | 3h | T-004-F2, T-004-B3 | 🟢 Terminée |
 | T-004-F6 | Créer le composant Breadcrumb (fil d'Ariane dynamique basé sur l'URL) | 2h | T-004-B4 | 🟢 Terminée |
 | T-004-F7 | Créer le composant TableOfContents sticky (extraction automatique des headings h2-h4) | 2.5h | T-004-B1 | 🔵 À faire |
@@ -193,7 +193,7 @@ graph TD
     end
 
     subgraph "Phase 5 - Assemblage"
-        F4[T-004-F4<br/>Header 🔵]
+        F4[T-004-F4<br/>Header 🟢]
         F10[T-004-F10<br/>DocsLayout 🔵]
     end
 
