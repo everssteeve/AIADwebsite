@@ -1,0 +1,90 @@
+---
+// src/components/layout/Header.astro
+
+import type { NavigationTree } from '@/types/navigation'
+import { NAVIGATION_TREE } from '@/data/navigation'
+import DropdownMenu from '@components/layout/DropdownMenu.astro'
+import MobileMenu from '@components/layout/MobileMenu.astro'
+
+export interface Props {
+  tree?: NavigationTree
+  siteName?: string
+  homeHref?: string
+  class?: string
+  id?: string
+}
+
+const {
+  tree = NAVIGATION_TREE,
+  siteName = 'AIAD',
+  homeHref = '/',
+  class: className = '',
+  id: providedId,
+} = Astro.props
+
+// ── ID unique ──────────────────────────────────
+const baseId = providedId ?? 'site-header'
+const navId = `${baseId}-nav`
+---
+
+<header
+  class:list={[
+    'sticky top-0 z-40 w-full border-b border-gray-200 bg-white',
+    className,
+  ]}
+  id={baseId}
+  data-header
+>
+  <nav
+    aria-label="Navigation principale"
+    id={navId}
+    class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+  >
+    <div class="flex h-16 items-center justify-between">
+      {/* ── Logo / Branding ────────────────────── */}
+      <div class="flex shrink-0 items-center">
+        <a
+          href={homeHref}
+          class="text-xl font-bold text-gray-900 transition-colors duration-150 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md px-1"
+          aria-label={`${siteName} - Accueil`}
+          data-header-logo
+        >
+          {siteName}
+        </a>
+      </div>
+
+      {/* ── Navigation desktop ─────────────────── */}
+      <div
+        class="hidden lg:flex lg:items-center lg:gap-1"
+        data-header-desktop-nav
+      >
+        <DropdownMenu
+          label="Framework"
+          section="framework"
+          items={tree.framework}
+          href="/framework"
+        />
+        <DropdownMenu
+          label="Mode Operatoire"
+          section="mode-operatoire"
+          items={tree.modeOperatoire}
+          href="/mode-operatoire"
+        />
+        <DropdownMenu
+          label="Annexes"
+          section="annexes"
+          items={tree.annexes}
+          href="/annexes"
+        />
+      </div>
+
+      {/* ── Bouton hamburger mobile ────────────── */}
+      <div class="lg:hidden" data-header-mobile-trigger>
+        {/* Le bouton hamburger est gere par MobileMenu */}
+      </div>
+    </div>
+  </nav>
+
+  {/* ── MobileMenu (overlay) ───────────────────── */}
+  <MobileMenu tree={tree} />
+</header>

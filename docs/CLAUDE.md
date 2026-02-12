@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Site web pour le Framework AIAD (AI-Agent Iterative Development) - une plateforme de documentation statique présentant le framework et son Mode Opératoire.
 
-**État actuel** : Implémentation en cours. US-001 (Hero Section) terminée. US-004 (Navigation) : backend/données terminé (B1-B4), frontend en cours (F1-F3, F5-F9 terminés).
+**État actuel** : Implémentation en cours. US-001 (Hero Section) terminée. US-004 (Navigation) : backend/données terminé (B1-B4), frontend en cours (F1-F4, F5-F9 terminés).
 
 ## Ce que tu peux faire maintenant
 
