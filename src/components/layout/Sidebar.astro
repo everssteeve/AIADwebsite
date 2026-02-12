@@ -1,0 +1,330 @@
+---
+// src/components/layout/Sidebar.astro
+
+import type { NavigationItem, NavigationTree } from '@/types/navigation'
+import NavLink from '@components/layout/NavLink.astro'
+import { NAVIGATION_TREE } from '@/data/navigation'
+
+/**
+ * Props du composant Sidebar.
+ *
+ * Navigation laterale persistante pour les pages de documentation,
+ * avec 3 sections depliables (Framework, Mode Operatoire, Annexes),
+ * sous-accordeon pour les Annexes, et auto-depliement de la section active.
+ *
+ * Consomme NavLink (T-004-F2) en variante `sidebar` pour chaque item.
+ *
+ * @example
+ * ```astro
+ * ---
+ * import Sidebar from '@components/layout/Sidebar.astro'
+ * ---
+ * <Sidebar />
+ * ```
+ *
+ * @example
+ * ```astro
+ * <!-- Avec arbre custom (pour les tests) -->
+ * <Sidebar tree={myTestTree} />
+ * ```
+ */
+export interface Props {
+  // ── Donnees ───────────────────────────────────────
+
+  /**
+   * Arbre de navigation a utiliser.
+   * Si non fourni, utilise NAVIGATION_TREE par defaut.
+   * Utile pour l'injection dans les tests.
+   */
+  tree?: NavigationTree
+
+  // ── HTML ──────────────────────────────────────────
+
+  /**
+   * Classes CSS additionnelles sur le conteneur racine `<aside>`.
+   */
+  class?: string
+
+  /**
+   * Identifiant unique du composant.
+   * Genere automatiquement si non fourni ('sidebar').
+   * Utilise pour aria-controls et les data attributes.
+   */
+  id?: string
+}
+
+const {
+  tree = NAVIGATION_TREE,
+  class: className = '',
+  id: providedId,
+} = Astro.props
+
+// ── IDs uniques ─────────────────────────────────
+const baseId = providedId ?? 'sidebar'
+
+// ── Detection de la section active ──────────────
+const currentPath = Astro.url.pathname
+function detectActiveSection(): string | null {
+  if (currentPath.startsWith('/framework')) return 'framework'
+  if (currentPath.startsWith('/mode-operatoire')) return 'mode-operatoire'
+  if (currentPath.startsWith('/annexes')) return 'annexes'
+  return null
+}
+const activeSection = detectActiveSection()
+
+// ── Detection de la categorie active (Annexes) ──
+function detectActiveCategory(): string | null {
+  if (!currentPath.startsWith('/annexes/')) return null
+  for (const cat of tree.annexes) {
+    if (currentPath.startsWith(cat.href)) return cat.id
+  }
+  return null
+}
+const activeCategory = detectActiveCategory()
+
+// ── Sections de navigation ──────────────────────
+const sections = [
+  { key: 'framework', label: 'Framework', items: [...tree.framework].sort((a, b) => a.order - b.order), href: '/framework' },
+  { key: 'mode-operatoire', label: 'Mode Operatoire', items: [...tree.modeOperatoire].sort((a, b) => a.order - b.order), href: '/mode-operatoire' },
+  { key: 'annexes', label: 'Annexes', items: [...tree.annexes].sort((a, b) => a.order - b.order), href: '/annexes' },
+] as const
+
+// ── Helper : detection de children ──────────────
+function hasChildren(item: NavigationItem): boolean {
+  return !!item.children && item.children.length > 0
+}
+---
+
+<aside
+  class:list={[
+    'hidden lg:block w-64 shrink-0 sticky top-0 max-h-screen overflow-y-auto',
+    'border-r border-gray-200 bg-white',
+    'scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent',
+    className,
+  ]}
+  aria-label="Navigation des documents"
+  data-sidebar
+  id={baseId}
+>
+  <nav class="px-3 py-4" aria-label="Sections de documentation">
+    {sections.map((section, sectionIndex) => {
+      const sectionButtonId = `${baseId}-section-${section.key}-button`
+      const sectionPanelId = `${baseId}-section-${section.key}-panel`
+      const isActiveSection = activeSection === section.key
+
+      return (
+        <div data-sidebar-section={section.key}>
+          {/* Separateur entre les sections (sauf avant la premiere) */}
+          {sectionIndex > 0 && (
+            <hr class="my-3 border-gray-200" role="separator" />
+          )}
+
+          {/* Bouton titre de section (accordeon) */}
+          <button
+            type="button"
+            class="flex items-center justify-between w-full px-2 py-2 text-left text-sm font-semibold text-gray-900 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+            aria-expanded={isActiveSection ? 'true' : 'false'}
+            aria-controls={sectionPanelId}
+            id={sectionButtonId}
+            data-sidebar-section-toggle
+            data-section={section.key}
+          >
+            <span>{section.label}</span>
+            <svg
+              class:list={[
+                'h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200',
+                isActiveSection ? 'rotate-180' : '',
+              ]}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              data-sidebar-section-chevron
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          {/* Panneau de la section (accordeon) */}
+          <div
+            class:list={[
+              'mt-1',
+              isActiveSection ? '' : 'hidden',
+            ]}
+            role="region"
+            aria-labelledby={sectionButtonId}
+            id={sectionPanelId}
+            data-sidebar-section-panel
+          >
+            {section.key !== 'annexes' ? (
+              /* ── Mode simple (Framework, Mode Operatoire) ── */
+              <div class="space-y-0.5">
+                {section.items.map((item) => (
+                  <NavLink
+                    href={item.href}
+                    label={item.label}
+                    variant="sidebar"
+                    badge={item.badge}
+                    section={section.key as any}
+                  />
+                ))}
+              </div>
+            ) : (
+              /* ── Mode sous-accordeon (Annexes) ─────────── */
+              <div class="space-y-0.5">
+                {section.items.map((category) => {
+                  const categoryButtonId = `${baseId}-category-${category.id}-button`
+                  const categoryPanelId = `${baseId}-category-${category.id}-panel`
+                  const isCategoryActive = activeCategory === category.id
+
+                  return (
+                    <div data-sidebar-category={category.id}>
+                      {/* Bouton titre de categorie (sous-accordeon) */}
+                      <button
+                        type="button"
+                        class="flex items-center justify-between w-full px-2 py-1.5 text-left text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+                        aria-expanded={isCategoryActive ? 'true' : 'false'}
+                        aria-controls={categoryPanelId}
+                        id={categoryButtonId}
+                        data-sidebar-category-toggle
+                      >
+                        <span class="truncate">{category.label}</span>
+                        {hasChildren(category) && (
+                          <svg
+                            class:list={[
+                              'h-3.5 w-3.5 shrink-0 text-gray-400 transition-transform duration-200',
+                              isCategoryActive ? 'rotate-180' : '',
+                            ]}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            data-sidebar-category-chevron
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        )}
+                      </button>
+
+                      {/* Panneau de la categorie (fiches enfants) */}
+                      {hasChildren(category) && (
+                        <div
+                          class:list={[
+                            'pl-3 mt-0.5',
+                            isCategoryActive ? '' : 'hidden',
+                          ]}
+                          role="region"
+                          aria-labelledby={categoryButtonId}
+                          id={categoryPanelId}
+                          data-sidebar-category-panel
+                        >
+                          <div class="space-y-0.5">
+                            {[...category.children!]
+                              .sort((a, b) => a.order - b.order)
+                              .map((fiche) => (
+                                <NavLink
+                                  href={fiche.href}
+                                  label={fiche.label}
+                                  variant="sidebar"
+                                  badge={fiche.badge}
+                                  section="annexes"
+                                />
+                              ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      )
+    })}
+  </nav>
+</aside>
+
+<script>
+  /**
+   * Script client pour le comportement interactif de la Sidebar.
+   *
+   * Fonctionnalites :
+   * - Accordeon non exclusif : deplier/replier les sections independamment
+   * - Sous-accordeon exclusif pour les categories d'Annexes
+   * - Rotation des chevrons a l'ouverture/fermeture
+   */
+  function initSidebar(container: HTMLElement) {
+    // ── Accordeon sections ────────────────────────
+    function toggleSection(button: HTMLButtonElement) {
+      const controlsId = button.getAttribute('aria-controls')
+      const targetPanel = controlsId ? document.getElementById(controlsId) : null
+
+      if (!targetPanel) return
+
+      const isExpanded = button.getAttribute('aria-expanded') === 'true'
+
+      // Toggle la section courante (non exclusif : pas de fermeture des autres)
+      button.setAttribute('aria-expanded', isExpanded ? 'false' : 'true')
+      targetPanel.classList.toggle('hidden')
+      const chevron = button.querySelector('[data-sidebar-section-chevron]')
+      chevron?.classList.toggle('rotate-180')
+    }
+
+    // ── Accordeon categories (Annexes) ────────────
+    function toggleCategory(button: HTMLButtonElement) {
+      const controlsId = button.getAttribute('aria-controls')
+      const targetPanel = controlsId ? document.getElementById(controlsId) : null
+
+      if (!targetPanel) return
+
+      const isExpanded = button.getAttribute('aria-expanded') === 'true'
+
+      if (!isExpanded) {
+        // Fermer les autres categories dans la meme section (sous-accordeon exclusif)
+        const parentSection = button.closest('[data-sidebar-section]')
+        if (parentSection) {
+          parentSection.querySelectorAll<HTMLButtonElement>('[data-sidebar-category-toggle]').forEach((btn) => {
+            if (btn !== button) {
+              btn.setAttribute('aria-expanded', 'false')
+              const chevron = btn.querySelector('[data-sidebar-category-chevron]')
+              chevron?.classList.remove('rotate-180')
+              const otherControlsId = btn.getAttribute('aria-controls')
+              const otherPanel = otherControlsId ? document.getElementById(otherControlsId) : null
+              otherPanel?.classList.add('hidden')
+            }
+          })
+        }
+      }
+
+      // Toggle la categorie courante
+      button.setAttribute('aria-expanded', isExpanded ? 'false' : 'true')
+      targetPanel.classList.toggle('hidden')
+      const chevron = button.querySelector('[data-sidebar-category-chevron]')
+      chevron?.classList.toggle('rotate-180')
+    }
+
+    // ── Events: accordeons sections ───────────────
+    container.querySelectorAll<HTMLButtonElement>('[data-sidebar-section-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => toggleSection(btn))
+    })
+
+    // ── Events: accordeons categories ─────────────
+    container.querySelectorAll<HTMLButtonElement>('[data-sidebar-category-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => toggleCategory(btn))
+    })
+  }
+
+  // ── Initialisation ──────────────────────────────
+  document.querySelectorAll<HTMLElement>('[data-sidebar]').forEach(initSidebar)
+</script>

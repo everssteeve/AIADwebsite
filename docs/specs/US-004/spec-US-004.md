@@ -100,7 +100,7 @@
 | T-004-F6 | Créer le composant Breadcrumb (fil d'Ariane dynamique basé sur l'URL) | 2h | T-004-B4 | 🟢 Terminée |
 | T-004-F7 | Créer le composant TableOfContents sticky (extraction automatique des headings h2-h4) | 2.5h | T-004-B1 | 🔵 À faire |
 | T-004-F8 | Créer le composant PrevNextLinks (liens Précédent/Suivant contextuels) | 2h | T-004-B4 | 🔵 À faire |
-| T-004-F9 | Créer le composant Sidebar (navigation latérale docs avec sections dépliables) | 3h | T-004-F2, T-004-B3 | 🔵 À faire |
+| T-004-F9 | Créer le composant Sidebar (navigation latérale docs avec sections dépliables) | 3h | T-004-F2, T-004-B3 | 🟢 Terminée |
 | T-004-F10 | Créer le layout DocsLayout (assemblage Header + Sidebar + Content + TOC + Breadcrumb + PrevNext) | 3h | T-004-F1, T-004-F4, T-004-F5, T-004-F6, T-004-F7, T-004-F8, T-004-F9 | 🔵 À faire |
 | T-004-F11 | Intégrer la navigation dans les pages existantes et créer les routes dynamiques | 2h | T-004-F10 | 🔵 À faire |
 

@@ -60,6 +60,7 @@
 | T-004-F3 | Composant `DropdownMenu` | 🟢 Terminée | - | [Spec](./US-004/T-004-F3-composant-DropdownMenu.md) |
 | T-004-F8 | Composant `PrevNextLinks` | 🟢 Terminée | - | [Spec](./US-004/T-004-F8-composant-PrevNextLinks.md) |
 | T-004-F5 | Composant `MobileMenu` | 🟢 Terminée | - | [Spec](./US-004/T-004-F5-composant-MobileMenu.md) |
+| T-004-F9 | Composant `Sidebar` | 🟢 Terminée | - | [Spec](./US-004/T-004-F9-composant-Sidebar.md) |
 
 ---
 
@@ -68,10 +69,10 @@
 | Métrique | Valeur |
 |----------|--------|
 | **Total tâches** | 26 |
-| **Terminées** | 15 |
+| **Terminées** | 16 |
 | **En cours** | 0 |
-| **À faire** | 11 |
-| **Avancement** | 58% |
+| **À faire** | 10 |
+| **Avancement** | 62% |
 
 ---
 
@@ -94,6 +95,7 @@
 | T-004-F8 | Composant PrevNextLinks | US-004 | 11/02/2026 |
 | T-004-F3 | Composant DropdownMenu | US-004 | 11/02/2026 |
 | T-004-F5 | Composant MobileMenu | US-004 | 12/02/2026 |
+| T-004-F9 | Composant Sidebar | US-004 | 12/02/2026 |
 
 ---
 
