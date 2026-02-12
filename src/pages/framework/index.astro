@@ -1,0 +1,38 @@
+---
+// src/pages/framework/index.astro
+
+import { getCollection } from 'astro:content'
+import DocsLayout from '@layouts/DocsLayout.astro'
+
+const posts = await getCollection('framework', ({ data }) => {
+  if (import.meta.env.PROD) return !data.draft
+  return true
+})
+const sortedPosts = posts.sort((a, b) => a.data.order - b.data.order)
+---
+
+<DocsLayout
+  title="Framework AIAD"
+  description="Le Framework AIAD definit la theorie, les principes et la methodologie pour developper avec des agents IA."
+  showToc={false}
+  showPrevNext={false}
+>
+  <h1>Framework AIAD</h1>
+  <p class="text-lg text-gray-600 mb-8">
+    Le Framework AIAD definit les fondements theoriques, les roles, les artefacts et les processus
+    pour une collaboration efficace entre humains et agents IA.
+  </p>
+
+  <div class="grid gap-4" data-section-index>
+    {sortedPosts.map((post) => (
+      <a
+        href={`/framework/${post.slug}`}
+        class="block p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+        data-section-card
+      >
+        <h2 class="text-lg font-semibold text-gray-900">{post.data.title}</h2>
+        <p class="text-sm text-gray-600 mt-1">{post.data.description}</p>
+      </a>
+    ))}
+  </div>
+</DocsLayout>

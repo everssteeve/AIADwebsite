@@ -1,0 +1,45 @@
+---
+// src/pages/annexes/index.astro
+
+import { getCollection } from 'astro:content'
+import DocsLayout from '@layouts/DocsLayout.astro'
+
+const posts = await getCollection('annexes', ({ data }) => {
+  if (import.meta.env.PROD) return !data.draft
+  return true
+})
+
+// Filtrer les index de categorie (_index) et les trier
+const categoryIndexes = posts
+  .filter((post) => post.slug.endsWith('/_index'))
+  .sort((a, b) => a.data.order - b.data.order)
+---
+
+<DocsLayout
+  title="Annexes"
+  description="Annexes du framework AIAD : templates, roles, boucles, rituels, metriques, agents, configuration, bonnes pratiques et ressources."
+  showToc={false}
+  showPrevNext={false}
+>
+  <h1>Annexes</h1>
+  <p class="text-lg text-gray-600 mb-8">
+    Les annexes fournissent les references detaillees, templates et guides pratiques
+    du framework AIAD, organises en 9 categories.
+  </p>
+
+  <div class="grid gap-4" data-section-index>
+    {categoryIndexes.map((cat) => {
+      const slug = cat.slug.replace(/\/_index$/, '')
+      return (
+        <a
+          href={`/annexes/${slug}`}
+          class="block p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+          data-section-card
+        >
+          <h2 class="text-lg font-semibold text-gray-900">{cat.data.title}</h2>
+          <p class="text-sm text-gray-600 mt-1">{cat.data.description}</p>
+        </a>
+      )
+    })}
+  </div>
+</DocsLayout>
