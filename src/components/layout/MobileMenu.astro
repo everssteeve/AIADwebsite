@@ -1,0 +1,557 @@
+---
+// src/components/layout/MobileMenu.astro
+
+import type { NavigationItem, NavigationTree } from '@/types/navigation'
+import NavLink from '@components/layout/NavLink.astro'
+import { NAVIGATION_TREE } from '@/data/navigation'
+
+/**
+ * Props du composant MobileMenu.
+ *
+ * Menu de navigation mobile accessible avec overlay plein ecran,
+ * accordeon 3 sections, focus trap et verrouillage du scroll.
+ *
+ * Consomme NavLink (T-004-F2) en variante `mobile` pour chaque item.
+ *
+ * @example
+ * ```astro
+ * ---
+ * import MobileMenu from '@components/layout/MobileMenu.astro'
+ * ---
+ * <MobileMenu />
+ * ```
+ *
+ * @example
+ * ```astro
+ * <!-- Avec arbre custom (pour les tests) -->
+ * <MobileMenu tree={myTestTree} />
+ * ```
+ */
+export interface Props {
+  // ── Donnees ───────────────────────────────────────
+
+  /**
+   * Arbre de navigation a utiliser.
+   * Si non fourni, utilise NAVIGATION_TREE par defaut.
+   * Utile pour l'injection dans les tests.
+   */
+  tree?: NavigationTree
+
+  // ── HTML ──────────────────────────────────────────
+
+  /**
+   * Classes CSS additionnelles sur le conteneur racine.
+   */
+  class?: string
+
+  /**
+   * Identifiant unique du composant.
+   * Genere automatiquement si non fourni.
+   * Utilise pour aria-controls et les data attributes.
+   */
+  id?: string
+}
+
+const {
+  tree = NAVIGATION_TREE,
+  class: className = '',
+  id: providedId,
+} = Astro.props
+
+// ── IDs uniques ─────────────────────────────────
+const baseId = providedId ?? 'mobile-menu'
+const panelId = `${baseId}-panel`
+const toggleId = `${baseId}-toggle`
+const closeId = `${baseId}-close`
+
+// ── Detection de la section active ──────────────
+const currentPath = Astro.url.pathname
+function detectActiveSection(): string | null {
+  if (currentPath.startsWith('/framework')) return 'framework'
+  if (currentPath.startsWith('/mode-operatoire')) return 'mode-operatoire'
+  if (currentPath.startsWith('/annexes')) return 'annexes'
+  return null
+}
+const activeSection = detectActiveSection()
+
+// ── Sections de navigation ──────────────────────
+const sections = [
+  { key: 'framework', label: 'Framework', items: [...tree.framework].sort((a, b) => a.order - b.order), href: '/framework' },
+  { key: 'mode-operatoire', label: 'Mode Operatoire', items: [...tree.modeOperatoire].sort((a, b) => a.order - b.order), href: '/mode-operatoire' },
+  { key: 'annexes', label: 'Annexes', items: [...tree.annexes].sort((a, b) => a.order - b.order), href: '/annexes' },
+] as const
+
+// ── Helper : detection de children ──────────────
+function hasChildren(item: NavigationItem): boolean {
+  return !!item.children && item.children.length > 0
+}
+---
+
+{/* ── Bouton hamburger ─────────────────────────── */}
+<div class:list={['lg:hidden', className]} data-mobile-menu id={baseId}>
+  <button
+    type="button"
+    class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+    aria-expanded="false"
+    aria-controls={panelId}
+    aria-label="Menu de navigation"
+    id={toggleId}
+    data-mobile-menu-toggle
+  >
+    {/* Icone hamburger (visible quand ferme) */}
+    <svg
+      class="h-6 w-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      data-mobile-menu-icon-open
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"
+      />
+    </svg>
+    {/* Icone croix (visible quand ouvert, masquee par defaut) */}
+    <svg
+      class="hidden h-6 w-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      data-mobile-menu-icon-close
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+  </button>
+
+  {/* ── Overlay plein ecran ──────────────────────── */}
+  <div
+    class="fixed inset-0 z-50 hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Navigation principale"
+    id={panelId}
+    data-mobile-menu-panel
+  >
+    {/* Backdrop sombre */}
+    <div
+      class="absolute inset-0 bg-black/50"
+      data-mobile-menu-backdrop
+      aria-hidden="true"
+    />
+
+    {/* Panneau de navigation */}
+    <div
+      class="absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl flex flex-col overflow-hidden"
+      data-mobile-menu-content
+    >
+      {/* En-tete du panneau */}
+      <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+        <span class="text-lg font-semibold text-gray-900">Navigation</span>
+        <button
+          type="button"
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+          aria-label="Fermer le menu"
+          id={closeId}
+          data-mobile-menu-close
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Corps scrollable */}
+      <nav class="flex-1 overflow-y-auto px-2 py-4" aria-label="Navigation mobile">
+        {sections.map((section, sectionIndex) => {
+          const sectionButtonId = `${baseId}-section-${section.key}-button`
+          const sectionPanelId = `${baseId}-section-${section.key}-panel`
+          const isActiveSection = activeSection === section.key
+
+          return (
+            <div data-mobile-menu-section={section.key}>
+              {/* Separateur entre les sections (sauf avant la premiere) */}
+              {sectionIndex > 0 && (
+                <hr class="my-2 border-gray-200" role="separator" />
+              )}
+
+              {/* Bouton titre de section (accordeon) */}
+              <button
+                type="button"
+                class="flex items-center justify-between w-full px-4 py-3 text-left text-base font-semibold text-gray-900 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+                aria-expanded={isActiveSection ? 'true' : 'false'}
+                aria-controls={sectionPanelId}
+                id={sectionButtonId}
+                data-mobile-menu-section-toggle
+                data-section={section.key}
+              >
+                <span>{section.label}</span>
+                <svg
+                  class:list={[
+                    'h-5 w-5 shrink-0 text-gray-400 transition-transform duration-200',
+                    isActiveSection ? 'rotate-180' : '',
+                  ]}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  data-mobile-menu-section-chevron
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              {/* Panneau de la section (accordeon) */}
+              <div
+                class:list={[
+                  'pl-2',
+                  isActiveSection ? '' : 'hidden',
+                ]}
+                role="region"
+                aria-labelledby={sectionButtonId}
+                id={sectionPanelId}
+                data-mobile-menu-section-panel
+              >
+                {section.key !== 'annexes' ? (
+                  /* ── Mode simple (Framework, Mode Operatoire) ── */
+                  <div class="space-y-0.5 py-1">
+                    {section.items.map((item) => (
+                      <NavLink
+                        href={item.href}
+                        label={item.label}
+                        variant="mobile"
+                        badge={item.badge}
+                        section={section.key as any}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  /* ── Mode sous-accordeon (Annexes) ─────────── */
+                  <div class="space-y-0.5 py-1">
+                    {section.items.map((category) => {
+                      const categoryButtonId = `${baseId}-category-${category.id}-button`
+                      const categoryPanelId = `${baseId}-category-${category.id}-panel`
+                      const isCategoryActive = currentPath.startsWith(category.href)
+
+                      return (
+                        <div data-mobile-menu-category={category.id}>
+                          {/* Bouton titre de categorie (sous-accordeon) */}
+                          <button
+                            type="button"
+                            class="flex items-center justify-between w-full px-4 py-2.5 text-left text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+                            aria-expanded={isCategoryActive ? 'true' : 'false'}
+                            aria-controls={categoryPanelId}
+                            id={categoryButtonId}
+                            data-mobile-menu-category-toggle
+                          >
+                            <span>{category.label}</span>
+                            {hasChildren(category) && (
+                              <svg
+                                class:list={[
+                                  'h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200',
+                                  isCategoryActive ? 'rotate-180' : '',
+                                ]}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                                data-mobile-menu-category-chevron
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            )}
+                          </button>
+
+                          {/* Panneau de la categorie (fiches enfants) */}
+                          {hasChildren(category) && (
+                            <div
+                              class:list={[
+                                'pl-4',
+                                isCategoryActive ? '' : 'hidden',
+                              ]}
+                              role="region"
+                              aria-labelledby={categoryButtonId}
+                              id={categoryPanelId}
+                              data-mobile-menu-category-panel
+                            >
+                              <div class="space-y-0.5 py-1">
+                                {[...category.children!]
+                                  .sort((a, b) => a.order - b.order)
+                                  .map((fiche) => (
+                                    <NavLink
+                                      href={fiche.href}
+                                      label={fiche.label}
+                                      variant="mobile"
+                                      badge={fiche.badge}
+                                      section="annexes"
+                                    />
+                                  ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        })}
+      </nav>
+
+      {/* Lien vers l'accueil (pied du panneau) */}
+      <div class="border-t border-gray-200 px-4 py-3">
+        <a
+          href="/"
+          class="flex items-center justify-center gap-2 w-full px-4 py-3 text-base font-medium text-gray-700 bg-gray-50 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150"
+          data-mobile-menu-home
+        >
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"
+            />
+          </svg>
+          Accueil
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /**
+   * Script client pour le comportement interactif du MobileMenu.
+   *
+   * Fonctionnalites :
+   * - Toggle ouverture/fermeture de l'overlay
+   * - Accordeon : deplier/replier les sections (exclusif)
+   * - Sous-accordeon pour les categories d'Annexes (exclusif)
+   * - Focus trap dans l'overlay ouvert
+   * - Verrouillage du scroll du body
+   * - Fermeture au clic backdrop, Escape, clic sur lien
+   * - Swap icone hamburger/croix
+   */
+  function initMobileMenu(container: HTMLElement) {
+    const toggle = container.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]')
+    const panel = container.querySelector<HTMLDivElement>('[data-mobile-menu-panel]')
+    const closeBtn = container.querySelector<HTMLButtonElement>('[data-mobile-menu-close]')
+    const backdrop = container.querySelector<HTMLDivElement>('[data-mobile-menu-backdrop]')
+    const iconOpen = container.querySelector<SVGElement>('[data-mobile-menu-icon-open]')
+    const iconClose = container.querySelector<SVGElement>('[data-mobile-menu-icon-close]')
+    const content = container.querySelector<HTMLDivElement>('[data-mobile-menu-content]')
+
+    if (!toggle || !panel || !closeBtn || !backdrop) return
+
+    // ── Helpers ───────────────────────────────────
+    function isOpen(): boolean {
+      return toggle!.getAttribute('aria-expanded') === 'true'
+    }
+
+    function getFocusableElements(): HTMLElement[] {
+      if (!content) return []
+      return Array.from(
+        content.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => !el.closest('[hidden]') && !el.closest('.hidden'))
+    }
+
+    function open() {
+      toggle!.setAttribute('aria-expanded', 'true')
+      panel!.classList.remove('hidden')
+      iconOpen?.classList.add('hidden')
+      iconClose?.classList.remove('hidden')
+      document.body.style.overflow = 'hidden'
+      container.setAttribute('data-mobile-menu-open', '')
+
+      // Focus sur le bouton fermer
+      requestAnimationFrame(() => {
+        closeBtn!.focus()
+      })
+    }
+
+    function close() {
+      toggle!.setAttribute('aria-expanded', 'false')
+      panel!.classList.add('hidden')
+      iconOpen?.classList.remove('hidden')
+      iconClose?.classList.add('hidden')
+      document.body.style.overflow = ''
+      container.removeAttribute('data-mobile-menu-open')
+
+      // Retour du focus sur le hamburger
+      toggle!.focus()
+    }
+
+    // ── Accordeon sections ────────────────────────
+    function toggleSection(button: HTMLButtonElement) {
+      const controlsId = button.getAttribute('aria-controls')
+      const targetPanel = controlsId ? document.getElementById(controlsId) : null
+
+      if (!targetPanel) return
+
+      const isExpanded = button.getAttribute('aria-expanded') === 'true'
+
+      if (!isExpanded) {
+        // Fermer les autres sections (accordeon exclusif)
+        container.querySelectorAll<HTMLButtonElement>('[data-mobile-menu-section-toggle]').forEach((btn) => {
+          if (btn !== button) {
+            btn.setAttribute('aria-expanded', 'false')
+            const chevron = btn.querySelector('[data-mobile-menu-section-chevron]')
+            chevron?.classList.remove('rotate-180')
+            const otherControlsId = btn.getAttribute('aria-controls')
+            const otherPanel = otherControlsId ? document.getElementById(otherControlsId) : null
+            otherPanel?.classList.add('hidden')
+          }
+        })
+      }
+
+      // Toggle la section courante
+      button.setAttribute('aria-expanded', isExpanded ? 'false' : 'true')
+      targetPanel.classList.toggle('hidden')
+      const chevron = button.querySelector('[data-mobile-menu-section-chevron]')
+      chevron?.classList.toggle('rotate-180')
+    }
+
+    // ── Accordeon categories (Annexes) ────────────
+    function toggleCategory(button: HTMLButtonElement) {
+      const controlsId = button.getAttribute('aria-controls')
+      const targetPanel = controlsId ? document.getElementById(controlsId) : null
+
+      if (!targetPanel) return
+
+      const isExpanded = button.getAttribute('aria-expanded') === 'true'
+
+      if (!isExpanded) {
+        // Fermer les autres categories dans la meme section (sous-accordeon exclusif)
+        const parentSection = button.closest('[data-mobile-menu-section]')
+        if (parentSection) {
+          parentSection.querySelectorAll<HTMLButtonElement>('[data-mobile-menu-category-toggle]').forEach((btn) => {
+            if (btn !== button) {
+              btn.setAttribute('aria-expanded', 'false')
+              const chevron = btn.querySelector('[data-mobile-menu-category-chevron]')
+              chevron?.classList.remove('rotate-180')
+              const otherControlsId = btn.getAttribute('aria-controls')
+              const otherPanel = otherControlsId ? document.getElementById(otherControlsId) : null
+              otherPanel?.classList.add('hidden')
+            }
+          })
+        }
+      }
+
+      // Toggle la categorie courante
+      button.setAttribute('aria-expanded', isExpanded ? 'false' : 'true')
+      targetPanel.classList.toggle('hidden')
+      const chevron = button.querySelector('[data-mobile-menu-category-chevron]')
+      chevron?.classList.toggle('rotate-180')
+    }
+
+    // ── Focus trap ────────────────────────────────
+    function handleFocusTrap(e: KeyboardEvent) {
+      if (e.key !== 'Tab' || !isOpen()) return
+
+      const focusable = getFocusableElements()
+      if (focusable.length === 0) return
+
+      const firstEl = focusable[0]
+      const lastEl = focusable[focusable.length - 1]
+
+      if (e.shiftKey) {
+        // Shift+Tab : si on est sur le premier, aller au dernier
+        if (document.activeElement === firstEl) {
+          e.preventDefault()
+          lastEl.focus()
+        }
+      } else {
+        // Tab : si on est sur le dernier, aller au premier
+        if (document.activeElement === lastEl) {
+          e.preventDefault()
+          firstEl.focus()
+        }
+      }
+    }
+
+    // ── Events: bouton hamburger ──────────────────
+    toggle.addEventListener('click', () => {
+      if (isOpen()) {
+        close()
+      } else {
+        open()
+      }
+    })
+
+    // ── Events: bouton fermer ─────────────────────
+    closeBtn.addEventListener('click', () => {
+      close()
+    })
+
+    // ── Events: backdrop ──────────────────────────
+    backdrop.addEventListener('click', () => {
+      if (isOpen()) {
+        close()
+      }
+    })
+
+    // ── Events: Escape ────────────────────────────
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen()) {
+        e.preventDefault()
+        close()
+      }
+    })
+
+    // ── Events: focus trap ────────────────────────
+    panel.addEventListener('keydown', handleFocusTrap)
+
+    // ── Events: accordeons sections ───────────────
+    container.querySelectorAll<HTMLButtonElement>('[data-mobile-menu-section-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => toggleSection(btn))
+    })
+
+    // ── Events: accordeons categories ─────────────
+    container.querySelectorAll<HTMLButtonElement>('[data-mobile-menu-category-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => toggleCategory(btn))
+    })
+  }
+
+  // ── Initialisation ──────────────────────────────
+  document.querySelectorAll<HTMLElement>('[data-mobile-menu]').forEach(initMobileMenu)
+</script>
