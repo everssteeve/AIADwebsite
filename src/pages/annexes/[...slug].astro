@@ -1,0 +1,42 @@
+---
+// src/pages/annexes/[...slug].astro
+
+import { getCollection } from 'astro:content'
+import DocsLayout from '@layouts/DocsLayout.astro'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('annexes', ({ data }) => {
+    if (import.meta.env.PROD) return !data.draft
+    return true
+  })
+
+  return posts.map((post) => {
+    // Transformer les slugs "_index" en slug de categorie
+    // "templates/_index" → "templates"
+    // "templates/prd" → "templates/prd"
+    const slug = post.slug.replace(/\/_index$/, '')
+
+    return {
+      params: { slug },
+      props: { post },
+    }
+  })
+}
+
+type Post = Awaited<ReturnType<typeof getCollection<'annexes'>>>[number]
+
+interface Props {
+  post: Post
+}
+
+const { post } = Astro.props
+const { Content, headings } = await post.render()
+---
+
+<DocsLayout
+  title={post.data.title}
+  description={post.data.description}
+  headings={headings}
+>
+  <Content />
+</DocsLayout>

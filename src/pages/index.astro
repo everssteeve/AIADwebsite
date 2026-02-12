@@ -1,10 +1,14 @@
 ---
+// src/pages/index.astro
+
 import type { HeroContent, BenefitItem, StatItem } from '@/types'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import Header from '@components/layout/Header.astro'
 import HeroSection from '@components/hero/HeroSection.astro'
 
-// ── Chargement des données Content Collections ─────────────
-
 const { getCollection } = await import('astro:content')
+
+// ── Chargement des donnees Content Collections ─────────────
 
 const heroEntries = await getCollection('hero')
 const heroContent = heroEntries
@@ -23,39 +27,30 @@ const stats = (statEntries
   .filter((s: StatItem) => s.isActive !== false && s.locale === 'fr') as StatItem[])
   .sort((a: StatItem, b: StatItem) => a.order - b.order)
 
-// ── Métadonnées SEO ────────────────────────────────────────
+// ── Metadonnees SEO ────────────────────────────────────────
 
-const DEFAULT_TITLE = 'AIAD - Framework de développement avec agents IA'
+const DEFAULT_TITLE = 'AIAD - Framework de developpement avec agents IA'
 const DEFAULT_DESCRIPTION =
-  'AIAD : Le framework pour développer avec des agents IA'
+  'AIAD : Le framework pour developper avec des agents IA'
 
 const seoTitle = heroContent?.metadata?.seoTitle || DEFAULT_TITLE
 const seoDescription =
   heroContent?.metadata?.seoDescription || DEFAULT_DESCRIPTION
 ---
 
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{seoTitle}</title>
-    <meta name="description" content={seoDescription} />
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogType="website"
+>
+  <Header />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content={seoTitle} />
-    <meta property="og:description" content={seoDescription} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="fr_FR" />
-  </head>
-  <body class="min-h-screen bg-white text-gray-900 antialiased">
-    <main>
-      <HeroSection
-        heroContent={heroContent}
-        benefits={benefits}
-        stats={stats}
-        background="gradient"
-      />
-    </main>
-  </body>
-</html>
+  <main>
+    <HeroSection
+      heroContent={heroContent}
+      benefits={benefits}
+      stats={stats}
+      background="gradient"
+    />
+  </main>
+</BaseLayout>

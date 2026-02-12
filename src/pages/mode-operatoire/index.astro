@@ -1,0 +1,38 @@
+---
+// src/pages/mode-operatoire/index.astro
+
+import { getCollection } from 'astro:content'
+import DocsLayout from '@layouts/DocsLayout.astro'
+
+const posts = await getCollection('mode-operatoire', ({ data }) => {
+  if (import.meta.env.PROD) return !data.draft
+  return true
+})
+const sortedPosts = posts.sort((a, b) => a.data.order - b.data.order)
+---
+
+<DocsLayout
+  title="Mode Operatoire"
+  description="Le Mode Operatoire AIAD est le guide pratique pour mettre en oeuvre le framework au quotidien."
+  showToc={false}
+  showPrevNext={false}
+>
+  <h1>Mode Operatoire</h1>
+  <p class="text-lg text-gray-600 mb-8">
+    Le Mode Operatoire AIAD est le guide pratique pour mettre en oeuvre le framework au quotidien,
+    de l'initialisation au deploiement.
+  </p>
+
+  <div class="grid gap-4" data-section-index>
+    {sortedPosts.map((post) => (
+      <a
+        href={`/mode-operatoire/${post.slug}`}
+        class="block p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+        data-section-card
+      >
+        <h2 class="text-lg font-semibold text-gray-900">{post.data.title}</h2>
+        <p class="text-sm text-gray-600 mt-1">{post.data.description}</p>
+      </a>
+    ))}
+  </div>
+</DocsLayout>

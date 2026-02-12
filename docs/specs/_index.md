@@ -63,6 +63,7 @@
 | T-004-F9 | Composant `Sidebar` | 🟢 Terminée | - | [Spec](./US-004/T-004-F9-composant-Sidebar.md) |
 | T-004-F4 | Composant `Header` | 🟢 Terminée | - | [Spec](./US-004/T-004-F4-composant-Header.md) |
 | T-004-F10 | Layout `DocsLayout` | 🟢 Terminée | - | [Spec](./US-004/T-004-F10-layout-DocsLayout.md) |
+| T-004-F11 | Intégration pages navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-F11-integration-pages-navigation.md) |
 
 ---
 
@@ -70,11 +71,11 @@
 
 | Métrique | Valeur |
 |----------|--------|
-| **Total tâches** | 27 |
-| **Terminées** | 18 |
+| **Total tâches** | 28 |
+| **Terminées** | 19 |
 | **En cours** | 0 |
 | **À faire** | 9 |
-| **Avancement** | 67% |
+| **Avancement** | 68% |
 
 ---
 
@@ -100,6 +101,7 @@
 | T-004-F9 | Composant Sidebar | US-004 | 12/02/2026 |
 | T-004-F4 | Composant Header | US-004 | 12/02/2026 |
 | T-004-F10 | Layout DocsLayout | US-004 | 12/02/2026 |
+| T-004-F11 | Intégration pages navigation | US-004 | 12/02/2026 |
 
 ---
 

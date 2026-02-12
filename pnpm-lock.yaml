@@ -54,6 +54,9 @@ importers:
       eslint-plugin-astro:
         specifier: ^1.2.0
         version: 1.5.0(eslint@8.57.1)
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
       prettier:
         specifier: ^3.3.0
         version: 3.8.1
