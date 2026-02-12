@@ -1,0 +1,125 @@
+---
+// src/layouts/DocsLayout.astro
+
+import type { TableOfContentsItem, NavigationTree } from '@/types/navigation'
+import { getBreadcrumbs } from '@/lib/navigation'
+import { NAVIGATION_TREE } from '@/data/navigation'
+import BaseLayout from '@layouts/BaseLayout.astro'
+import Header from '@components/layout/Header.astro'
+import Sidebar from '@components/layout/Sidebar.astro'
+import Breadcrumb from '@components/layout/Breadcrumb.astro'
+import TableOfContents from '@components/layout/TableOfContents.astro'
+import PrevNextLinks from '@components/layout/PrevNextLinks.astro'
+
+export interface Props {
+  title: string
+  description: string
+  canonical?: string
+  ogImage?: string
+  headings?: TableOfContentsItem[]
+  tree?: NavigationTree
+  showSidebar?: boolean
+  showToc?: boolean
+  showBreadcrumb?: boolean
+  showPrevNext?: boolean
+  class?: string
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage,
+  headings = [],
+  tree,
+  showSidebar = true,
+  showToc = true,
+  showBreadcrumb = true,
+  showPrevNext = true,
+  class: className = '',
+} = Astro.props
+
+// ── Navigation tree (pour injection dans les enfants) ──
+const navTree = tree ?? NAVIGATION_TREE
+
+// ── Breadcrumb data + JSON-LD ──────────────────────────
+const currentPath = Astro.url.pathname
+const breadcrumbs = getBreadcrumbs(navTree, currentPath)
+
+const breadcrumbJsonLd = breadcrumbs
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': breadcrumbs.map((item, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'name': item.label,
+        ...(item.isCurrent ? {} : { 'item': `https://aiad.dev${item.href}` }),
+      })),
+    }
+  : undefined
+
+// ── TOC visibility ─────────────────────────────────────
+const hasToc = showToc && headings.length > 0
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogType="article"
+  ogImage={ogImage}
+  jsonLd={breadcrumbJsonLd}
+  skipLinkTarget="main-content"
+>
+  {/* ── Header ──────────────────────────────────────────── */}
+  <Header tree={navTree} />
+
+  {/* ── Breadcrumb ──────────────────────────────────────── */}
+  {showBreadcrumb && breadcrumbs && (
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3" data-docs-breadcrumb>
+      <Breadcrumb items={breadcrumbs} tree={navTree} noJsonLd />
+    </div>
+  )}
+
+  {/* ── Layout 3 colonnes ───────────────────────────────── */}
+  <div
+    class:list={[
+      'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8',
+      'flex flex-col lg:flex-row',
+      className,
+    ]}
+    data-docs-layout
+  >
+    {/* ── Sidebar (colonne gauche) ──────────────────────── */}
+    {showSidebar && (
+      <Sidebar tree={navTree} />
+    )}
+
+    {/* ── Zone centrale : Contenu + PrevNext ────────────── */}
+    <div class="flex-1 min-w-0 lg:pl-8 xl:pr-8">
+      {/* ── Contenu principal ──────────────────────────── */}
+      <main id="main-content" class="py-8" data-docs-main>
+        <article class="prose prose-gray max-w-none" data-docs-article>
+          <slot />
+        </article>
+      </main>
+
+      {/* ── PrevNextLinks ──────────────────────────────── */}
+      {showPrevNext && (
+        <div class="border-t border-gray-200 py-8" data-docs-prevnext>
+          <PrevNextLinks tree={navTree} />
+        </div>
+      )}
+    </div>
+
+    {/* ── TOC (colonne droite) ──────────────────────────── */}
+    {hasToc && (
+      <div class="hidden xl:block xl:w-56 xl:shrink-0" data-docs-toc>
+        <div class="sticky top-20 py-8">
+          <TableOfContents headings={headings} />
+        </div>
+      </div>
+    )}
+  </div>
+</BaseLayout>
