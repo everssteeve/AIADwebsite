@@ -65,6 +65,12 @@
 | T-004-F10 | Layout `DocsLayout` | 🟢 Terminée | - | [Spec](./US-004/T-004-F10-layout-DocsLayout.md) |
 | T-004-F11 | Intégration pages navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-F11-integration-pages-navigation.md) |
 
+### Tests
+
+| ID | Titre | Status | Assigné | Spec |
+|----|-------|--------|---------|------|
+| T-004-T1 | Tests unitaires schémas Zod navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-T1-tests-schemas-zod-navigation.md) |
+
 ---
 
 ## Progression
@@ -72,10 +78,10 @@
 | Métrique | Valeur |
 |----------|--------|
 | **Total tâches** | 28 |
-| **Terminées** | 19 |
+| **Terminées** | 20 |
 | **En cours** | 0 |
-| **À faire** | 9 |
-| **Avancement** | 68% |
+| **À faire** | 8 |
+| **Avancement** | 71% |
 
 ---
 
@@ -102,6 +108,7 @@
 | T-004-F4 | Composant Header | US-004 | 12/02/2026 |
 | T-004-F10 | Layout DocsLayout | US-004 | 12/02/2026 |
 | T-004-F11 | Intégration pages navigation | US-004 | 12/02/2026 |
+| T-004-T1 | Tests unitaires schémas Zod navigation | US-004 | 13/02/2026 |
 
 ---
 

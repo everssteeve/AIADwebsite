@@ -108,7 +108,7 @@
 
 | ID | Tâche | Durée | Dépendances | Statut |
 |----|-------|-------|-------------|--------|
-| T-004-T1 | Tests unitaires schémas Zod de navigation (types, validation, cas limites) | 2h | T-004-B2 | 🔵 À faire |
+| T-004-T1 | Tests unitaires schémas Zod de navigation (types, validation, cas limites) | 2h | T-004-B2 | 🟢 Terminée |
 | T-004-T2 | Tests unitaires helpers de navigation (getBreadcrumbs, getPrevNext, flattenNav, getCurrentSection) | 2.5h | T-004-B4 | 🔵 À faire |
 | T-004-T3 | Tests unitaires composants atomiques (NavLink, Breadcrumb, PrevNextLinks, TableOfContents) | 3h | T-004-F2, T-004-F6, T-004-F7, T-004-F8 | 🔵 À faire |
 | T-004-T4 | Tests d'intégration Header + DropdownMenu (ouverture/fermeture, navigation, responsive) | 2.5h | T-004-F4 | 🔵 À faire |
@@ -202,7 +202,7 @@ graph TD
     end
 
     subgraph "Phase 7 - Tests"
-        T1[T-004-T1<br/>Tests schémas Zod 🔵]
+        T1[T-004-T1<br/>Tests schémas Zod 🟢]
         T2[T-004-T2<br/>Tests helpers 🔵]
         T3[T-004-T3<br/>Tests composants 🔵]
         T4[T-004-T4<br/>Tests Header intég. 🔵]
