@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 describe('Stats Content - main.json', () => {
-  let statsContent: unknown[]
+  let statsContent: Record<string, unknown>[]
 
   beforeAll(() => {
     const filePath = join(process.cwd(), 'src/content/stats/main.json')
