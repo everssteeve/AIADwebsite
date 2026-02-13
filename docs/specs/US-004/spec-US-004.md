@@ -98,11 +98,11 @@
 | T-004-F4 | Créer le composant Header (barre de navigation principale desktop avec 3 sections + dropdowns) | 3h | T-004-F3, T-004-B3 | 🟢 Terminée |
 | T-004-F5 | Créer le composant MobileMenu (hamburger + overlay plein écran + navigation accordéon) | 3h | T-004-F2, T-004-B3 | 🟢 Terminée |
 | T-004-F6 | Créer le composant Breadcrumb (fil d'Ariane dynamique basé sur l'URL) | 2h | T-004-B4 | 🟢 Terminée |
-| T-004-F7 | Créer le composant TableOfContents sticky (extraction automatique des headings h2-h4) | 2.5h | T-004-B1 | 🔵 À faire |
-| T-004-F8 | Créer le composant PrevNextLinks (liens Précédent/Suivant contextuels) | 2h | T-004-B4 | 🔵 À faire |
+| T-004-F7 | Créer le composant TableOfContents sticky (extraction automatique des headings h2-h4) | 2.5h | T-004-B1 | 🟢 Terminée |
+| T-004-F8 | Créer le composant PrevNextLinks (liens Précédent/Suivant contextuels) | 2h | T-004-B4 | 🟢 Terminée |
 | T-004-F9 | Créer le composant Sidebar (navigation latérale docs avec sections dépliables) | 3h | T-004-F2, T-004-B3 | 🟢 Terminée |
 | T-004-F10 | Créer le layout DocsLayout (assemblage Header + Sidebar + Content + TOC + Breadcrumb + PrevNext) | 3h | T-004-F1, T-004-F4, T-004-F5, T-004-F6, T-004-F7, T-004-F8, T-004-F9 | 🟢 Terminée |
-| T-004-F11 | Intégrer la navigation dans les pages existantes et créer les routes dynamiques | 2h | T-004-F10 | 🔵 À faire |
+| T-004-F11 | Intégrer la navigation dans les pages existantes et créer les routes dynamiques | 2h | T-004-F10 | 🟢 Terminée |
 
 ### 4.3 Tests
 
@@ -171,25 +171,25 @@ graph TD
     subgraph "Phase 1 - Fondations données"
         B1[T-004-B1<br/>Types TypeScript 🟢]
         B2[T-004-B2<br/>Schémas Zod 🟢]
-        B3[T-004-B3<br/>Config navigation 🔵]
+        B3[T-004-B3<br/>Config navigation 🟢]
     end
 
     subgraph "Phase 2 - Helpers + Base"
-        B4[T-004-B4<br/>Helpers navigation 🔵]
-        F1[T-004-F1<br/>BaseLayout 🔵]
+        B4[T-004-B4<br/>Helpers navigation 🟢]
+        F1[T-004-F1<br/>BaseLayout 🟢]
     end
 
     subgraph "Phase 3 - Composants atomiques"
-        F2[T-004-F2<br/>NavLink 🔵]
-        F6[T-004-F6<br/>Breadcrumb 🔵]
-        F7[T-004-F7<br/>TableOfContents 🔵]
-        F8[T-004-F8<br/>PrevNextLinks 🔵]
+        F2[T-004-F2<br/>NavLink 🟢]
+        F6[T-004-F6<br/>Breadcrumb 🟢]
+        F7[T-004-F7<br/>TableOfContents 🟢]
+        F8[T-004-F8<br/>PrevNextLinks 🟢]
     end
 
     subgraph "Phase 4 - Composants composés"
-        F3[T-004-F3<br/>DropdownMenu 🔵]
-        F5[T-004-F5<br/>MobileMenu 🔵]
-        F9[T-004-F9<br/>Sidebar 🔵]
+        F3[T-004-F3<br/>DropdownMenu 🟢]
+        F5[T-004-F5<br/>MobileMenu 🟢]
+        F9[T-004-F9<br/>Sidebar 🟢]
     end
 
     subgraph "Phase 5 - Assemblage"
@@ -198,7 +198,7 @@ graph TD
     end
 
     subgraph "Phase 6 - Intégration"
-        F11[T-004-F11<br/>Intégration pages 🔵]
+        F11[T-004-F11<br/>Intégration pages 🟢]
     end
 
     subgraph "Phase 7 - Tests"
