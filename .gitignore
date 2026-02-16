@@ -3,3 +3,7 @@ node_modules/
 .env.local
 dist/
 .DS_Store
+.astro/
+nul
+test-output.txt
+test-results/
