@@ -110,7 +110,7 @@
 |----|-------|-------|-------------|--------|
 | T-004-T1 | Tests unitaires schémas Zod de navigation (types, validation, cas limites) | 2h | T-004-B2 | 🟢 Terminée |
 | T-004-T2 | Tests unitaires helpers de navigation (getBreadcrumbs, getPrevNext, flattenNav, getCurrentSection) | 2.5h | T-004-B4 | 🟢 Terminée |
-| T-004-T3 | Tests unitaires composants atomiques (NavLink, Breadcrumb, PrevNextLinks, TableOfContents) | 3h | T-004-F2, T-004-F6, T-004-F7, T-004-F8 | 🔵 À faire |
+| T-004-T3 | Tests unitaires composants atomiques (NavLink, Breadcrumb, PrevNextLinks, TableOfContents) | 3h | T-004-F2, T-004-F6, T-004-F7, T-004-F8 | 🟢 Terminée |
 | T-004-T4 | Tests d'intégration Header + DropdownMenu (ouverture/fermeture, navigation, responsive) | 2.5h | T-004-F4 | 🔵 À faire |
 | T-004-T5 | Tests d'intégration DocsLayout complet (assemblage, responsive, slots) | 3h | T-004-F10 | 🔵 À faire |
 | T-004-T6 | Tests navigation clavier (Tab, Shift+Tab, Enter, Escape, focus trap mobile) | 2.5h | T-004-F4, T-004-F5 | 🔵 À faire |
@@ -204,7 +204,7 @@ graph TD
     subgraph "Phase 7 - Tests"
         T1[T-004-T1<br/>Tests schémas Zod 🟢]
         T2[T-004-T2<br/>Tests helpers 🟢]
-        T3[T-004-T3<br/>Tests composants 🔵]
+        T3[T-004-T3<br/>Tests composants 🟢]
         T4[T-004-T4<br/>Tests Header intég. 🔵]
         T5[T-004-T5<br/>Tests DocsLayout 🔵]
         T6[T-004-T6<br/>Tests clavier 🔵]
