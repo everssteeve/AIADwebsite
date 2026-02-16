@@ -43,7 +43,13 @@
       "Bash(git status:*)",
       "Bash(powershell -Command:*)",
       "Bash(dir:*)",
-      "Bash(cmd /c:*)"
+      "Bash(cmd /c:*)",
+      "Bash(node -e:*)",
+      "Bash(start:*)",
+      "Bash(del \"C:\\\\Users\\\\steeve.evers\\\\OneDrive - CONSERTO\\\\projets\\\\AIADwebsite\\\\src\\\\content\\\\benefits\\\\main.json\")",
+      "Bash(pnpm list:*)",
+      "Bash(node:*)",
+      "Bash(cd:*)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
@@ -53,7 +59,12 @@
       "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\src\\content",
       "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\tests",
       "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite",
-      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\docs\\specs\\US-002"
+      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\docs\\specs\\US-002",
+      "c:\\Users\\steeve.evers\\OneDrive - CONSERTO\\projets\\AIADwebsite\\src"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "context7",
+    "playwright"
+  ]
 }
