@@ -70,6 +70,7 @@
 | ID | Titre | Status | Assigné | Spec |
 |----|-------|--------|---------|------|
 | T-004-T1 | Tests unitaires schémas Zod navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-T1-tests-schemas-zod-navigation.md) |
+| T-004-T2 | Tests unitaires helpers navigation | 🟢 Terminée | - | [Spec](./US-004/T-004-T2-tests-helpers-navigation.md) |
 
 ---
 
@@ -78,10 +79,10 @@
 | Métrique | Valeur |
 |----------|--------|
 | **Total tâches** | 28 |
-| **Terminées** | 20 |
+| **Terminées** | 21 |
 | **En cours** | 0 |
-| **À faire** | 8 |
-| **Avancement** | 71% |
+| **À faire** | 7 |
+| **Avancement** | 75% |
 
 ---
 
@@ -109,6 +110,7 @@
 | T-004-F10 | Layout DocsLayout | US-004 | 12/02/2026 |
 | T-004-F11 | Intégration pages navigation | US-004 | 12/02/2026 |
 | T-004-T1 | Tests unitaires schémas Zod navigation | US-004 | 13/02/2026 |
+| T-004-T2 | Tests unitaires helpers navigation | US-004 | 16/02/2026 |
 
 ---
 
